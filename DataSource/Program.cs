@@ -100,7 +100,7 @@ namespace DataSource
         {
             string jsonString = JsonSerializer.Serialize(pages);
             Console.WriteLine(jsonString);
-            File.WriteAllText("../../../../ContentValidation.Test/appsettings.json", jsonString);
+            File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
         }
     }
 }

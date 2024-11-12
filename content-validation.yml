@@ -1,0 +1,80 @@
+name: Run Content Validation Tool
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: DotNetSdkVersion  
+    value: '8.0.x' 
+
+jobs:
+  - job: ContentValidation
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET Core SDK'
+      inputs:
+        packageType: 'sdk'
+        version: $(DotNetSdkVersion)
+        installationPath: $(Agent.ToolsDirectory)/dotnet 
+
+    - task: DotNetCoreCLI@2
+      displayName: New Manifest for tool
+      inputs:
+        command: custom
+        custom: 'new '
+        arguments: tool-manifest
+
+    - task: DotNetCoreCLI@2
+      displayName: Install Playwright CLI
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: install Microsoft.Playwright.CLI
+
+    - task: DotNetCoreCLI@2
+      displayName: Build all projects and libraries
+      inputs:
+        command: 'build'
+        projects: 'content-validation.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: Run Playwright Install
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: run playwright install
+
+    - task: DotNetCoreCLI@2
+      displayName: Build get data source project
+      inputs:
+        command: 'build'
+        projects: 'DataSource/DataSource.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Get test data source
+      inputs:
+        command: 'run'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
+
+    # - task: Bash@3
+    #   displayName: Get Test Data Source
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       cd DataSource
+    #       dotnet run
+
+    - task: DotNetCoreCLI@2
+      displayName: Build test project
+      inputs:
+        command: 'build'
+        projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Run test case
+      inputs:
+        command: 'test'
+        projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+        arguments: '-e BROWSER=chromium'
+        testRunTitle: 'Content Validation Testing Start'
