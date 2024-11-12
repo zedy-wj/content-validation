@@ -9,7 +9,7 @@ variables:
     value: '8.0.x' 
 
 jobs:
-  - job: Run Content Validation Test Case
+  - job: RunContentValidationTestCase
     steps:
     - task: UseDotNet@2
       displayName: 'Install .NET Core SDK'
