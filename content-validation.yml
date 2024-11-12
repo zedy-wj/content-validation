@@ -9,7 +9,7 @@ variables:
     value: '8.0.x' 
 
 jobs:
-  - job: RunContentValidationTestCase
+  - job: ContentValidation
     steps:
     - task: UseDotNet@2
       displayName: 'Install .NET Core SDK'
@@ -17,3 +17,12 @@ jobs:
         packageType: 'sdk'
         version: $(DotNetSdkVersion)
         installationPath: $(Agent.ToolsDirectory)/dotnet 
+
+    - task: Bash@3
+      displayName: Get Test Data Source
+      inputs:
+        targetType: inline
+        script: |
+          cd DataSource
+          dotnet build
+          dotnet run
