@@ -19,6 +19,13 @@ jobs:
         installationPath: $(Agent.ToolsDirectory)/dotnet 
 
     - task: Bash@3
+      displayName: Build All Project
+      inputs:
+        targetType: inline
+        script: |
+          dotnet build
+
+    - task: Bash@3
       displayName: Get Test Data Source
       inputs:
         targetType: inline
@@ -26,3 +33,12 @@ jobs:
           cd DataSource
           dotnet build
           dotnet run
+
+    - task: Bash@3
+      displayName: Run Test Cases
+      inputs:
+        targetType: inline
+        script: |
+          cd ContentValidation.Test
+          dotnet build
+          dotnet test

@@ -10,7 +10,7 @@ namespace ContentValidation.Test
 
         static TestPageContent()
         {
-            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("appsettings.json")) ?? new List<string>();
         }
 
         [Test]
