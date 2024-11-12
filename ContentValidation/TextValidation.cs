@@ -6,10 +6,6 @@ public class TextValidation
 {
     private IPlaywright _playwright;
 
-    public TextValidation()
-    {
-    }
-
     public TextValidation(IPlaywright playwright)
     {
         _playwright = playwright;

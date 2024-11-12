@@ -7,12 +7,10 @@ namespace ContentValidation.Test
     public class TestPageLabel
     {
         public static List<string> TestLinks { get; set; }
-        public static LabelValidation Validation { get; set; }
 
         static TestPageLabel()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-            Validation = new LabelValidation();
         }
 
         [Test]
@@ -21,7 +19,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            Validation = new LabelValidation(playwright);
+            var Validation = new LabelValidation(playwright);
 
             var res = await Validation.FindExtraLabel(testLink);
 

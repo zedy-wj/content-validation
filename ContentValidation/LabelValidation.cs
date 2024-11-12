@@ -6,10 +6,6 @@ public class LabelValidation
 {
     private IPlaywright _playwright;
 
-    public LabelValidation()
-    {
-    }
-
     public LabelValidation(IPlaywright playwright)
     {
         _playwright = playwright;
