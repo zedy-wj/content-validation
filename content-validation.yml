@@ -51,13 +51,19 @@ jobs:
         command: 'build'
         projects: 'DataSource/DataSource.csproj'
 
-    - task: Bash@3
-      displayName: Get Test Data Source
+    - task: DotNetCoreCLI@2
+      displayName: Get test data source
       inputs:
-        targetType: inline
-        script: |
-          cd DataSource
-          dotnet run
+        command: 'run'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
+
+    # - task: Bash@3
+    #   displayName: Get Test Data Source
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       cd DataSource
+    #       dotnet run
 
     - task: DotNetCoreCLI@2
       displayName: Build test project
