@@ -18,28 +18,63 @@ jobs:
         version: $(DotNetSdkVersion)
         installationPath: $(Agent.ToolsDirectory)/dotnet 
 
-    - task: Bash@3
-      displayName: Build All Project
+    - task: DotNetCoreCLI@2
+      displayName: New Manifest for tool
       inputs:
-        targetType: inline
-        script: |
-          dotnet build
+        command: custom
+        custom: 'new '
+        arguments: tool-manifest
 
-    - task: Bash@3
-      displayName: Get Test Data Source
+    - task: DotNetCoreCLI@2
+      displayName: Install Playwright CLI
       inputs:
-        targetType: inline
-        script: |
-          cd DataSource
-          dotnet build
-          dotnet run
+        command: custom
+        custom: 'tool '
+        arguments: install Microsoft.Playwright.CLI
 
-    - task: Bash@3
-      displayName: Run Test Cases
+    - task: DotNetCoreCLI@2
+      displayName: Build test project
       inputs:
-        targetType: inline
-        script: |
-          cd ContentValidation.Test
-          dotnet build
-          pwsh bin/Debug/net8.0/playwright.ps1 install    
-          dotnet test
+        command: 'build'
+        projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Run Playwright Install
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: run playwright install
+
+    - task: DotNetCoreCLI@2
+      displayName: Running Test Case
+      inputs:
+        command: 'test'
+        projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+        arguments: '-e BROWSER=chromium'
+        testRunTitle: 'Content Validation Testing Start'
+
+    # - task: Bash@3
+    #   displayName: Build All Project
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       dotnet build
+
+    # - task: Bash@3
+    #   displayName: Get Test Data Source
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       cd DataSource
+    #       dotnet build
+    #       dotnet run
+
+    # - task: Bash@3
+    #   displayName: Run Test Cases
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       cd ContentValidation.Test
+    #       dotnet build
+    #       pwsh bin/Debug/net8.0/playwright.ps1 install    
+    #       dotnet test
