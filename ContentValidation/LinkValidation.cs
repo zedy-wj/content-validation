@@ -9,7 +9,7 @@ public class LinkValidation
         return (true, string.Join(",", errorList));
     }
 
-        public (bool Result, string? ErrorMsg) CheckCrossLink(string text)
+    public (bool Result, string? ErrorMsg) CheckCrossLink(string text)
     {
         var errorList = new List<string>();
         //TODO
