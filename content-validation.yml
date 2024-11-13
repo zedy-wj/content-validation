@@ -57,14 +57,6 @@ jobs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
 
-    # - task: Bash@3
-    #   displayName: Get Test Data Source
-    #   inputs:
-    #     targetType: inline
-    #     script: |
-    #       cd DataSource
-    #       dotnet run
-
     - task: DotNetCoreCLI@2
       displayName: Build test project
       inputs:
