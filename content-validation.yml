@@ -33,6 +33,25 @@ jobs:
         arguments: install Microsoft.Playwright.CLI
 
     - task: DotNetCoreCLI@2
+      displayName: Build all projects and libraries
+      inputs:
+        command: 'build'
+        projects: 'content-validation.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: Run Playwright Install
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: run playwright install
+
+    - task: DotNetCoreCLI@2
+      displayName: Build get data source project
+      inputs:
+        command: 'build'
+        projects: 'DataSource/DataSource.csproj'
+
+    - task: DotNetCoreCLI@2
       displayName: Get data source
       inputs:
         command: 'run'
@@ -43,13 +62,6 @@ jobs:
       inputs:
         command: 'build'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
-
-    - task: DotNetCoreCLI@2
-      displayName: Run Playwright Install
-      inputs:
-        command: custom
-        custom: 'tool '
-        arguments: run playwright install
 
     - task: DotNetCoreCLI@2
       displayName: Run test case
