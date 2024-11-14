@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class TextValidation
+public class TextValidation: IValidation
 {
     private IPlaywright _playwright;
 
@@ -10,25 +10,13 @@ public class TextValidation
     {
         _playwright = playwright;
     }
-    public (bool Result, string? ErrorMsg) FindDuplicateService(string text)
-    {
-        var errorList = new List<string>();
-        //TODO
-        return (true, string.Join(",", errorList));
-    }
 
-    public (bool Result, string? ErrorMsg) FindGarbledText(string text)
-    {
-        var errorList = new List<string>();
-        //TODO
-        return (true, string.Join(",", errorList));
-    }
-
-    public async Task<bool> FindEmptyTable(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
+        var res = new TResult();
 
         var tableLocator = page.Locator("table");
         var rows = await tableLocator.Locator("tr").AllAsync();
@@ -41,13 +29,15 @@ public class TextValidation
                 var textContent = await cell.TextContentAsync();
                 if (string.IsNullOrWhiteSpace(textContent))
                 {
-                    return false;
+                    res.Result = false;
+                    // TODO: res.ErrorMsg = ""
+                    return res;
                 } 
             }
         }
 
         await browser.CloseAsync();
 
-        return true;
+        return res;
     }
 }

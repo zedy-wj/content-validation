@@ -19,11 +19,11 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            var Validation = new TextValidation(playwright);
+            IValidation Validation = new TextValidation(playwright);
 
-            var res = await Validation.FindEmptyTable(testLink);
+            var res = await Validation.Validate(testLink);
 
-            Assert.That(res, testLink + " has table is empty.");
+            Assert.That(res.Result, testLink + " has table is empty.");
 
         }
     }
