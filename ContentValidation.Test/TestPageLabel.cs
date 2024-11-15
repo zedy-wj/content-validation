@@ -19,7 +19,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new LabelValidation(playwright);
+            IValidation Validation = new ExtraLabelValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 

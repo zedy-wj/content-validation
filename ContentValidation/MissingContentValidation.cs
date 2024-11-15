@@ -2,11 +2,11 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class TextValidation: IValidation
+public class MissingContentValidation: IValidation
 {
     private IPlaywright _playwright;
 
-    public TextValidation(IPlaywright playwright)
+    public MissingContentValidation(IPlaywright playwright)
     {
         _playwright = playwright;
     }
