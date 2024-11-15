@@ -2,7 +2,7 @@
 
 namespace UtilityLibraries;
 
-public class LabelValidation
+public class LabelValidation: IValidation
 {
     private IPlaywright _playwright;
 
@@ -10,7 +10,7 @@ public class LabelValidation
     {
         _playwright = playwright;
     }
-    public async Task<TResult> FindExtraLabel(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
         var errorList = new List<string>();
         var res = new TResult();
@@ -66,23 +66,5 @@ public class LabelValidation
         await browser.CloseAsync();
 
         return res;
-    }
-
-    public (bool Result, string? ErrorMsg) FindUnnecessarySymbol(string text)
-    {
-        var errorList = new List<string>();
-        //TODO
-        return (true, string.Join(",", errorList));
-    }
-}
-
-public class TResult
-{
-    public bool Result { get; set; }
-    public string? ErrorMsg { get; set; }
-
-    public TResult(){
-        Result = true;
-        ErrorMsg = "";
     }
 }

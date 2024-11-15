@@ -19,9 +19,9 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            var Validation = new LabelValidation(playwright);
+            IValidation Validation = new ExtraLabelValidation(playwright);
 
-            var res = await Validation.FindExtraLabel(testLink);
+            var res = await Validation.Validate(testLink);
 
             Assert.That(res.Result, testLink + " has extra label of  " + res.ErrorMsg);
 
