@@ -4,26 +4,27 @@ using UtilityLibraries;
 
 namespace ContentValidation.Test
 {
-    public class TestPageLabel
+    public class TestPageAnnotation
     {
         public static List<string> TestLinks { get; set; }
 
-        static TestPageLabel()
+        static TestPageAnnotation()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
-        public async Task TestExtraLabel(string testLink)
+        public async Task TestMissingTypeAnnotation(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new ExtraLabelValidation(playwright);
+            IValidation Validation = new MissingTypeAnnotation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has extra label £º\n\n" + res.Display());
+            Assert.That(res.Result, testLink + " has wrong type annotations £º\n\n" + res.Display());
+
         }
     }
 }
