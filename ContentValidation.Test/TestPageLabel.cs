@@ -26,6 +26,20 @@ namespace ContentValidation.Test
             Assert.That(res.Result, testLink + " has extra label of  " + res.ErrorMsg);
 
         }
+
+        [Test]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestUnnecessarySymbols(string testLink)
+        {
+            var playwright = await Playwright.CreateAsync();
+
+            IValidation Validation = new UnnecessarySymbolsValidation(playwright);
+
+            var res = await Validation.Validate(testLink);
+
+            Assert.That(res.Result, testLink + " has unnecessary symbols:\n  " + res.ErrorMsg);
+
+        }
     }
 }
 

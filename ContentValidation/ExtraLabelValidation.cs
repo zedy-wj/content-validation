@@ -2,11 +2,11 @@
 
 namespace UtilityLibraries;
 
-public class LabelValidation: IValidation
+public class ExtraLabelValidation: IValidation
 {
     private IPlaywright _playwright;
 
-    public LabelValidation(IPlaywright playwright)
+    public ExtraLabelValidation(IPlaywright playwright)
     {
         _playwright = playwright;
     }
