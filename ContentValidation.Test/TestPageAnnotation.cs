@@ -23,7 +23,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has wrong type annotations £º\n\n" + res.Display());
+            Assert.That(res.Result, testLink + " has wrong type annotations \n\n" + res.Display());
 
         }
     }

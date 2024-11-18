@@ -35,19 +35,6 @@ public class TResult
         return sb.ToString();
     }
 
-    //public void Display()
-    //{
-    //    foreach (var Error in ErrorManger)
-    //    {
-    //        Console.WriteLine($"Error: {Error.Key}");
-    //        foreach (var desc in Error.Value)
-    //        {
-    //            Console.WriteLine($"  {desc.Title}: {desc.Content}");
-    //        }
-    //        Console.WriteLine();
-    //    }
-    //}
-
     public bool IsEmpty()
     {
         return ErrorManger.Count == 0;

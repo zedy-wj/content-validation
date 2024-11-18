@@ -22,7 +22,6 @@ public class ExtraLabelValidation : IValidation
             "<h5",
             "<h6",
             "<em",
-            "<a",
             "<span",
             "<div",
             "<ul",
@@ -62,7 +61,7 @@ public class ExtraLabelValidation : IValidation
             if (count != 0)
             {
                 res.Result = false;
-                res.Add($"Label : {label}", "Count", count.ToString());
+                res.Add("", $"{label}", count.ToString() + " times");
             }
         }
 

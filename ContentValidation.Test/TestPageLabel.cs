@@ -11,7 +11,7 @@ namespace ContentValidation.Test
         static TestPageLabel()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-        }
+         }
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
@@ -23,7 +23,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has extra label £º\n\n" + res.Display());
+            Assert.That(res.Result, testLink + " has extra label \n\n" + res.Display());
         }
     }
 }

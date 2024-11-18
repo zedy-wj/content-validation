@@ -20,9 +20,6 @@ public class MissingTypeAnnotation : IValidation
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
 
-        //var errorList = new List<string>();
-
-
         Dictionary<string, List<string>>? pyClassParamMap = null;
         Dictionary<string, List<string>>? pyMethodParamMap = null;
 
@@ -39,13 +36,6 @@ public class MissingTypeAnnotation : IValidation
 
         ValidParamMap(pyClassParamMap!, true,res);
         ValidParamMap(pyMethodParamMap!, false,res);
-        //List<string> pyClassErrorList = ValidParamMap(pyClassParamMap!, true);
-        //List<string> pyMethodErrorList = ValidParamMap(pyMethodParamMap!, false);
-        //errorList.AddRange(pyClassErrorList);
-        //errorList.AddRange(pyMethodErrorList);
-
-        //errorList = errorList.Distinct().ToList();
-
 
         if (!res.IsEmpty())
         {
@@ -140,7 +130,10 @@ public class MissingTypeAnnotation : IValidation
             var regex = new Regex(@"(?<key>.+?)\((?<params>.+?)\)");
             var match = regex.Match(codeText);
 
-            if (!match.Success)
+            string key = "";
+            string paramsText = "";
+
+            if (!match.Success && !isClass)
             {
                 Console.WriteLine("Ignore codeText : ");
                 Console.WriteLine(codeText);
@@ -148,8 +141,16 @@ public class MissingTypeAnnotation : IValidation
                 continue;
             }
 
-            string key = match.Groups["key"].Value.Trim();
-            string paramsText = match.Groups["params"].Value.Trim();
+            if (!match.Success && isClass)
+            {
+                 key = codeText;
+            }
+
+            if (match.Success)
+            {
+                key = match.Groups["key"].Value.Trim();
+                paramsText = match.Groups["params"].Value.Trim();
+            }
 
             var paramList = SplitParameters(paramsText);
 
@@ -201,8 +202,6 @@ public class MissingTypeAnnotation : IValidation
     void ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass,TResult res)
     {
 
-        var errorList = new List<string>();
-
         foreach (var item in paramMap)
         {
             string key = item.Key;
@@ -210,8 +209,6 @@ public class MissingTypeAnnotation : IValidation
 
             if (isClass && paramList.Count == 0)
             {
-                //errorList.Add($"Empty argument : {key}");
-                //Console.WriteLine($"Empty argument : {key}");
                 res.Add($"{key}", "argument", "Class empty argument");
             }
 
@@ -221,13 +218,11 @@ public class MissingTypeAnnotation : IValidation
 
                 if (!IsCorrectTypeAnnotation(text))
                 {
-                    //errorList.Add($"{key}     :       {text}");
                     res.Add($"{key}", "argument", text);
                 }
             }
         }
 
-        //return errorList;
     }
 
 }
