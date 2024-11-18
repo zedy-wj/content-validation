@@ -34,8 +34,8 @@ public class MissingTypeAnnotation : IValidation
             pyMethodParamMap = await GetParamMap4LearnMicrosoft(page, false);
         }
 
-        ValidParamMap(pyClassParamMap!, true,res);
-        ValidParamMap(pyMethodParamMap!, false,res);
+        ValidParamMap(pyClassParamMap!, true, res);
+        ValidParamMap(pyMethodParamMap!, false, res);
 
         if (!res.IsEmpty())
         {
@@ -143,7 +143,7 @@ public class MissingTypeAnnotation : IValidation
 
             if (!match.Success && isClass)
             {
-                 key = codeText;
+                key = codeText;
             }
 
             if (match.Success)
@@ -199,7 +199,7 @@ public class MissingTypeAnnotation : IValidation
     }
 
 
-    void ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass,TResult res)
+    void ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass, TResult res)
     {
 
         foreach (var item in paramMap)

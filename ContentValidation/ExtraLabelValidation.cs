@@ -51,17 +51,17 @@ public class ExtraLabelValidation : IValidation
         {
 
             int index = 0;
-            int count = 0; 
+            int count = 0;
             while ((index = text.IndexOf(label, index)) != -1)
             {
-                count++; 
+                count++;
                 index += label.Length;
             }
 
             if (count != 0)
             {
                 res.Result = false;
-                res.Add("", $"{label}", count.ToString() + " times");
+                res.Add("", $"{label}", count.ToString());
             }
         }
 

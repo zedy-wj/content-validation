@@ -11,7 +11,7 @@ namespace ContentValidation.Test
         static TestPageLabel()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-         }
+        }
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
