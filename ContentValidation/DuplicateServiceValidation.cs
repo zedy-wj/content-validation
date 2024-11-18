@@ -19,7 +19,7 @@ public class DuplicateServiceValidation : IValidation
         var page = await browser.NewPageAsync();
         var res = new TResult();
         var set = new HashSet<string>();
-        var list = new List<string>();
+        var errorList = new List<string>();
 
         await page.GotoAsync(testLink);
         await page.WaitForSelectorAsync("li.border-top.tree-item.is-expanded");
@@ -35,12 +35,12 @@ public class DuplicateServiceValidation : IValidation
                 if (!set.Add(text))
                 {
                     res.Result = false;
-                    list.Add(text);
+                    errorList.Add(text);
                 }
                 
             }
         }
-        res.ErrorMsg += testLink + "has duplicate service at " + string.Join(",", list);
+        res.ErrorMsg = testLink + " has duplicate service at " + string.Join(",", errorList);
 
         await browser.CloseAsync();
 
