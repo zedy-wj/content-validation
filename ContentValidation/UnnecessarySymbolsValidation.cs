@@ -33,7 +33,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 foreach (Match match in paragraphMatches)
                 {
-                    errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
+                    errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}\n");
                 }
             }
         }
@@ -50,7 +50,7 @@ public class UnnecessarySymbolsValidation : IValidation
             var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>|~");
             foreach (Match match in tagMatches)
             {
-                errorList.Add($"Table no.{i + 1} contains unnecessary symbol: {match.Value}");
+                errorList.Add($"Table no.{i + 1} contains unnecessary symbol: {match.Value}\n");
             }
         }
 
@@ -62,7 +62,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 var tildeMatches = Regex.Matches(codeBlock, @"~");
                 foreach (Match match in tildeMatches)
                 {
-                    errorList.Add($"Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
+                    errorList.Add($"Code block no.{i + 1} contains unnecessary symbol: {match.Value}\n");
                 }
             }
         }
