@@ -61,7 +61,7 @@ public class ExtraLabelValidation : IValidation
             if (count != 0)
             {
                 res.Result = false;
-                res.Add("", $"{label}", count.ToString());
+                res.Add("", $"{label}", $"appeared {count.ToString()} times ");
             }
         }
 

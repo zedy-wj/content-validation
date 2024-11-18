@@ -23,16 +23,8 @@ public class MissingTypeAnnotation : IValidation
         Dictionary<string, List<string>>? pyClassParamMap = null;
         Dictionary<string, List<string>>? pyMethodParamMap = null;
 
-        if (testLink.Contains("azuresdkdocs", StringComparison.OrdinalIgnoreCase))
-        {
-            pyClassParamMap = await GetParamMap4AzureSdkDocs(page, true);
-            pyMethodParamMap = await GetParamMap4AzureSdkDocs(page, false);
-        }
-        else if (testLink.Contains("learn.microsoft", StringComparison.OrdinalIgnoreCase))
-        {
-            pyClassParamMap = await GetParamMap4LearnMicrosoft(page, true);
-            pyMethodParamMap = await GetParamMap4LearnMicrosoft(page, false);
-        }
+        pyClassParamMap = await GetParamMap(page, true);
+        pyMethodParamMap = await GetParamMap(page, false);
 
         ValidParamMap(pyClassParamMap!, true, res);
         ValidParamMap(pyMethodParamMap!, false, res);
@@ -71,43 +63,7 @@ public class MissingTypeAnnotation : IValidation
         }
     }
 
-    async Task<Dictionary<string, List<string>>> GetParamMap4AzureSdkDocs(IPage page, bool isClass)
-    {
-        Dictionary<string, List<string>> paramMap = new Dictionary<string, List<string>>();
-
-        IReadOnlyList<ILocator>? HTMLElementList = null;
-        if (isClass)
-        {
-            HTMLElementList = await page.Locator(".py.class").AllAsync();
-        }
-        else
-        {
-            HTMLElementList = await page.Locator(".py.method").AllAsync();
-        }
-
-
-        for (int i = 0; i < HTMLElementList.Count; i++)
-        {
-            var HTMLElement = HTMLElementList[i];
-            var dtElement = HTMLElement.Locator("dt").Nth(0);
-            var key = await dtElement.GetAttributeAsync("id");
-            var paramLocatorsList = await dtElement.Locator(".sig-param").AllAsync();
-
-            List<string> paramList = new List<string>();
-
-            foreach (var locator in paramLocatorsList)
-            {
-                var innerText = await locator.InnerTextAsync();
-                paramList.Add(innerText);
-            }
-
-            paramMap[key] = paramList;
-        }
-
-        return paramMap;
-    }
-
-    async Task<Dictionary<string, List<string>>> GetParamMap4LearnMicrosoft(IPage page, bool isClass)
+    async Task<Dictionary<string, List<string>>> GetParamMap(IPage page, bool isClass)
     {
         Dictionary<string, List<string>> paramMap = new Dictionary<string, List<string>>();
 
