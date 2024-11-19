@@ -26,6 +26,20 @@ namespace ContentValidation.Test
             Assert.That(res.Result, testLink + " has table is empty.");
 
         }
+        
+        [Test]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestDuplicateService(string testLink)
+        {
+            var playwright = await Playwright.CreateAsync();
+
+            IValidation Validation = new DuplicateServiceValidation(playwright);
+
+            var res = await Validation.Validate(testLink);
+
+            Assert.That(res.Result, res.ErrorMsg);
+
+        }
     }
 }
 
