@@ -19,36 +19,36 @@ namespace UtilityLibraries
             await page.GotoAsync(testLink);
             var res = new TResult();
 
-            // 获取所有 <p> 标签和包含 data-heading-level 的 <div> 标签
+            // Fetch all <p> tags and <div> tags containing data-heading-level
             var pLocators = await page.Locator("p").AllAsync();
             var headingDivs = await page.Locator("div.heading-wrapper[data-heading-level]").AllAsync();
-            var errorMessages = new List<string>(); // 用于存储所有错误消息
+            var errorMessages = new List<string>(); // Used to store all error messages.
 
-            // 遍历每个 <p> 标签
+            // Loop through each <p> tag.
             foreach (var pLocator in pLocators)
             {
                 var text = await pLocator.TextContentAsync();
-                string specificAnchorHref = string.Empty; // 存储最近的链接
+                string specificAnchorHref = string.Empty;
 
-                // 获取当前 <p> 标签的边界框
+                // Fetch the bounding box of the current <p> tag.
                 var pBoundingBox = await pLocator.BoundingBoxAsync();
 
-                // 检查边界框是否有效
+                // Check if the bounding box is valid.
                 if (pBoundingBox != null && pBoundingBox.Width > 0 && pBoundingBox.Height > 0)
                 {
-                    // 计算 p 标签的底部位置
+                    // Calculate the bottom position of the <p> tag.
                     double pBottom = pBoundingBox.Y + pBoundingBox.Height;
 
-                    // 遍历 headingDivs 查找最近的 <div> 标签
+                    // Iterate through headingDivs and find the nearest <div> tag.
                     foreach (var divLocator in headingDivs)
                     {
-                        // 获取当前 <div> 标签的边界框
+                        // Fetch the bounding box of the current <div> tag.
                         var divBoundingBox = await divLocator.BoundingBoxAsync();
 
-                        // 检查当前 <div> 标签的边界框是否有效并在当前 <p> 标签之前
+                        // Checks if the bounding box of the current <div> tag is valid and precedes the current <p> tag.
                         if (divBoundingBox != null && divBoundingBox.Y + divBoundingBox.Height < pBottom)
                         {
-                            // 从最近的 <div> 提取链接
+                            // Extract the link from the nearest <div> tag.
                             var anchorLocators = await divLocator.Locator("a").AllAsync();
                             if (anchorLocators.Count > 0)
                             {
@@ -58,7 +58,6 @@ namespace UtilityLibraries
                     }
                 }
 
-                // 检查文本是否匹配乱码模式
                 if (Regex.IsMatch(text, @":[\w]+(?:\s+[\w]+){0,2}:"))
                 {
                     res.Result = false;
