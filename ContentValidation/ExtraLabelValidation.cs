@@ -2,7 +2,8 @@
 
 namespace UtilityLibraries;
 
-public class ExtraLabelValidation: IValidation
+
+public class ExtraLabelValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -12,7 +13,6 @@ public class ExtraLabelValidation: IValidation
     }
     public async Task<TResult> Validate(string testLink)
     {
-        var errorList = new List<string>();
         var res = new TResult();
         var labelList = new List<string> {
             "<br",
@@ -23,7 +23,6 @@ public class ExtraLabelValidation: IValidation
             "<h5",
             "<h6",
             "<em",
-            "<a",
             "<span",
             "<div",
             "<ul",
@@ -52,15 +51,19 @@ public class ExtraLabelValidation: IValidation
         foreach (var label in labelList)
         {
 
-            if (text.Contains(label))
+            int index = 0;
+            int count = 0;
+            while ((index = text.IndexOf(label, index)) != -1)
             {
-                errorList.Add(label);
+                count++;
+                index += label.Length;
             }
-        }
 
-        if(errorList.Count != 0){
-            res.Result = false;
-            res.ErrorMsg = string.Join(",", errorList);
+            if (count != 0)
+            {
+                res.Result = false;
+                res.Add("", $"{label}", $"appeared {count.ToString()} times ");
+            }
         }
 
         await browser.CloseAsync();

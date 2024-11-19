@@ -23,8 +23,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has extra label of  " + res.ErrorMsg);
-
+            Assert.That(res.Result, testLink + " has extra label \n\n" + res.Display());
         }
 
         [Test]
