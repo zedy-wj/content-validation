@@ -23,7 +23,21 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has table is empty.");
+            Assert.That(res.Result, testLink + " has table is empty." + res.ErrorMsg);
+
+        }
+
+        [Test]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestGarbledText(string testLink)
+        {
+            var playwright = await Playwright.CreateAsync();
+
+            IValidation Validation = new GarbledTextValidation(playwright);
+
+            var res = await Validation.Validate(testLink);
+
+            Assert.That(res.Result, testLink +" have Garbled Text:\n" + res.ErrorMsg);
 
         }
         
