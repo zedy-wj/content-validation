@@ -2,7 +2,6 @@
 
 namespace UtilityLibraries;
 
-
 public class ExtraLabelValidation : IValidation
 {
     private IPlaywright _playwright;
