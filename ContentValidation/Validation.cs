@@ -49,6 +49,25 @@ public class TResult
     }
 }
 
+public class TResultNew
+{
+    public bool Result { get; set; }
+    public string? ErrorLink { get; set; }
+    public string? ErrorInfo { get; set; }
+    public int NumberOfOccurrences { get; set; }
+    public List<string> LocationsOfErrors { get; set; }
+    public object? AdditionalNotes { get; set; }
+
+    public TResultNew()
+    {
+        Result = true;
+        ErrorLink = "";
+        ErrorInfo = "";
+        NumberOfOccurrences = 0;
+        LocationsOfErrors = new List<string>();
+    }
+}
+
 
 public class Description
 {
