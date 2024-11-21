@@ -7,10 +7,16 @@ namespace ContentValidation.Test
     public class TestPageContent
     {
         public static List<string> TestLinks { get; set; }
+        public static List<string> DuplicateTestLink { get; set; }
 
         static TestPageContent()
         {
-            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            //TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+
+            DuplicateTestLink = new List<string>
+            {
+                "https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python"
+            };
         }
 
         [Test]
@@ -42,16 +48,16 @@ namespace ContentValidation.Test
         }
         
         [Test]
-        [TestCaseSource(nameof(TestLinks))]
+        [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new DuplicateServiceValidation(playwright);
+            IValidationNew Validation = new DuplicateServiceValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, res.ErrorMsg);
+            Assert.That(res.Result, "Error Link: " + res.ErrorLink + "\n Error Info: " + res.ErrorInfo + "\n Number of Occurrences: " + res.NumberOfOccurrences);
 
         }
     }
