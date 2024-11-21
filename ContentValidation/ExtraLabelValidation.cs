@@ -1,18 +1,17 @@
-﻿using Microsoft.Playwright;
+﻿﻿using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class LabelValidation: IValidation
+public class ExtraLabelValidation : IValidation
 {
     private IPlaywright _playwright;
 
-    public LabelValidation(IPlaywright playwright)
+    public ExtraLabelValidation(IPlaywright playwright)
     {
         _playwright = playwright;
     }
     public async Task<TResult> Validate(string testLink)
     {
-        var errorList = new List<string>();
         var res = new TResult();
         var labelList = new List<string> {
             "<br",
@@ -23,7 +22,6 @@ public class LabelValidation: IValidation
             "<h5",
             "<h6",
             "<em",
-            "<a",
             "<span",
             "<div",
             "<ul",
@@ -52,15 +50,19 @@ public class LabelValidation: IValidation
         foreach (var label in labelList)
         {
 
-            if (text.Contains(label))
+            int index = 0;
+            int count = 0;
+            while ((index = text.IndexOf(label, index)) != -1)
             {
-                errorList.Add(label);
+                count++;
+                index += label.Length;
             }
-        }
 
-        if(errorList.Count != 0){
-            res.Result = false;
-            res.ErrorMsg = string.Join(",", errorList);
+            if (count != 0)
+            {
+                res.Result = false;
+                res.Add("", $"{label}", $"appeared {count.ToString()} times ");
+            }
         }
 
         await browser.CloseAsync();
