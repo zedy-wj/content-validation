@@ -11,8 +11,9 @@ namespace ContentValidation.Test
 
         static TestPageContent()
         {
-            //TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
 
+            //This list is for testing duplicate services.
             DuplicateTestLink = new List<string>
             {
                 "https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python"
