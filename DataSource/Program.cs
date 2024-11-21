@@ -21,9 +21,6 @@ namespace DataSource
             string? service = config["ServiceName"];
             string? package = config["PackageName"];
 
-            // string? service = Environment.GetEnvironmentVariable("ServiceName");
-            // string? package = Environment.GetEnvironmentVariable("PackageName");
-
             // Fetch all need to be validated pages in a service/packages.
             List<string> pages = new List<string>();
 
