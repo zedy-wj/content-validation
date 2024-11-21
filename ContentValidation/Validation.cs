@@ -5,6 +5,10 @@ public interface IValidation{
     Task<TResult> Validate(string testLink);
 }
 
+public interface IValidationNew{
+    Task<TResultNew> Validate(string testLink);
+}
+
 public class TResult
 {
     public bool Result { get; set; }
