@@ -5,6 +5,10 @@ public interface IValidation{
     Task<TResult> Validate(string testLink);
 }
 
+public interface IValidationNew{
+    Task<TResultNew> Validate(string testLink);
+}
+
 public class TResult
 {
     public bool Result { get; set; }
@@ -46,6 +50,25 @@ public class TResult
         Result = true;
         ErrorMsg = "";
         ErrorManger = new Dictionary<string, List<Description>>();
+    }
+}
+
+public class TResultNew
+{
+    public bool Result { get; set; }
+    public string? ErrorLink { get; set; }
+    public string? ErrorInfo { get; set; }
+    public int NumberOfOccurrences { get; set; }
+    public List<string> LocationsOfErrors { get; set; }
+    public object? AdditionalNotes { get; set; }
+
+    public TResultNew()
+    {
+        Result = true;
+        ErrorLink = "";
+        ErrorInfo = "";
+        NumberOfOccurrences = 0;
+        LocationsOfErrors = new List<string>();
     }
 }
 
