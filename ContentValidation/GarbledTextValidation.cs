@@ -22,7 +22,6 @@ namespace UtilityLibraries
 
             // Fetch all <p> tags
             var pLocators = await page.Locator("p").AllAsync();
-            var numbers = 0;
             var errorMessage = "";
 
             // Loop through each <p> tag.
@@ -35,13 +34,12 @@ namespace UtilityLibraries
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    numbers += 1;
-                    errorMessage += $"\n{numbers}.\n" + text;
+                    errorMessage += $"\n{res.NumberOfOccurrences}.\n" + text;
                 }
             }
 
             res.ErrorLink = $"\nError Link: {testLink}\n";
-            res.ErrorInfo = "Error Info: The testLink have Garbled Text.\n";
+            res.ErrorInfo = "Error Info: The test link has garbled text.\n";
             res.LocationsOfErrors.Add("Locations of Errors:" + errorMessage);
 
             await browser.CloseAsync();
