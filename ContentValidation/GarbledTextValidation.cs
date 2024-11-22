@@ -22,7 +22,7 @@ namespace UtilityLibraries
 
             // Fetch all <p> tags
             var pLocators = await page.Locator("p").AllAsync();
-            var errorMessage = "";
+            var errorMessages = new List<string>();
 
             // Loop through each <p> tag.
             foreach (var pLocator in pLocators)
@@ -34,12 +34,12 @@ namespace UtilityLibraries
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    errorMessage += $"\n{res.NumberOfOccurrences}. " + text;
+                    errorMessages.Add($"\n{res.NumberOfOccurrences}. " + text);
                 }
             }
             res.ErrorLink = testLink;
             res.ErrorInfo = "The test link has garbled text";
-            res.LocationsOfErrors.Add(errorMessage);
+            res.LocationsOfErrors.Add(string.Join("", errorMessages));
 
             await browser.CloseAsync();
             return res;
