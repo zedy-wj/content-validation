@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class MissingContentValidation : IValidationNew
+public class MissingContentValidation: IValidationNew
 {
     private IPlaywright _playwright;
 
