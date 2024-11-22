@@ -32,11 +32,11 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new UnnecessarySymbolsValidation(playwright);
+            IValidationNew Validation = new UnnecessarySymbolsValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has unnecessary symbols:\n  " + res.ErrorMsg);
+            Assert.That(res.Result, "Error Link: " + res.ErrorLink + "\nError Info: " + res.ErrorInfo + "\nNumber of Occurrences: " + res.NumberOfOccurrences + string.Join("",res.LocationsOfErrors));
 
         }
     }
