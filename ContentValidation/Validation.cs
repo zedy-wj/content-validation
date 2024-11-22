@@ -71,13 +71,13 @@ public class TResultNew
         LocationsOfErrors = new List<string>();
     }
 
-    public string FormatErrorMessage(TResultNew res, string testLink){
+    public string FormatErrorMessage(){
         return $@"
-Error Link: {testLink}.
-Error Info: {res.ErrorLink}.
-Number of Occurrences: {res.NumberOfOccurrences}.
+Error Link: {ErrorLink}.
+Error Info: {ErrorInfo}.
+Number of Occurrences: {NumberOfOccurrences}.
 Locations of Errors: 
-{string.Join("\n", res.LocationsOfErrors)}
+{string.Join("\n", LocationsOfErrors)}
 ";
     }
 }
