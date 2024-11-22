@@ -23,7 +23,7 @@ public class MissingContentValidation : IValidationNew
         var tableLocator = page.Locator("table");
         var rows = await tableLocator.Locator("tr").AllAsync();
         var headingDivs = await page.Locator("div.heading-wrapper[data-heading-level]").AllAsync();
-        var errorMessages = "";
+        var errorMessages = new List<string>();
 
         //Fetch all <tr> tags in the table tag.
         foreach (var row in rows)
@@ -65,13 +65,13 @@ public class MissingContentValidation : IValidationNew
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    errorMessages += $"\n{res.NumberOfOccurrences}. " + $" {testLink}+{specificAnchorHref}";
+                    errorMessages.Add($"\n{res.NumberOfOccurrences}. " + $" {testLink}+{specificAnchorHref}");
                 }
             }
         }
         res.ErrorLink = testLink;
         res.ErrorInfo = "Some cells in the table are missing content";
-        res.LocationsOfErrors.Add(errorMessages);
+        res.LocationsOfErrors.Add(string.Join("", errorMessages));
 
         await browser.CloseAsync();
 
