@@ -24,7 +24,6 @@ public class MissingContentValidation: IValidationNew
         var rows = await tableLocator.Locator("tr").AllAsync();
         var headingDivs = await page.Locator("div.heading-wrapper[data-heading-level]").AllAsync();
         var errorMessages = "";
-        var numbers = 0;
 
         //Fetch all <tr> tags in the table tag.
         foreach (var row in rows)
@@ -66,8 +65,7 @@ public class MissingContentValidation: IValidationNew
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    numbers += 1;
-                    errorMessages += $"\n{numbers}." + $" {testLink}+{specificAnchorHref}";
+                    errorMessages += $"\n{res.NumberOfOccurrences}." + $" {testLink}+{specificAnchorHref}";
                 } 
             }
         }
