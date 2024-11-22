@@ -10,11 +10,7 @@ namespace ContentValidation.Test
 
         static TestPageLabel()
         {
-            //TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-            TestLinks = new List<string>
-            {
-                "https://learn.microsoft.com/en-us/python/api/azure-security-attestation/azure.security.attestation.aio.attestationadministrationclient?view=azure-python"
-            };
+            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [Test]
@@ -27,7 +23,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, res.FormatErrorMessage(res, testLink));
+            Assert.That(res.Result, res.FormatErrorMessage());
         }
 
         [Test]

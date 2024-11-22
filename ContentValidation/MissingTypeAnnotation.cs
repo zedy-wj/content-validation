@@ -186,7 +186,7 @@ public class MissingTypeAnnotation : IValidationNew
             // If the argument list for the class is empty, add it to the errorList.
             if (isClass && paramList.Count == 0)
             {
-                errorList.Add("Class name: " + key + ":    Class empty argument");
+                errorList.Add("Class name: " + key + ", the arguments of this class are empty.");
             }
 
             // If a parameter is found to be missing a type annotation, add it to the errorList.
@@ -203,7 +203,7 @@ public class MissingTypeAnnotation : IValidationNew
             }
             if (errorParam.Length > 0)
             {
-                errorList.Add(errorMessage + key + "    argument:  " + errorParam);
+                errorList.Add(errorMessage + key + ",    arguments:  " + errorParam);
             }
         }
 
