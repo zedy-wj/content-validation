@@ -84,13 +84,12 @@ public class UnnecessarySymbolsValidation : IValidationNew
             }
         }
 
-        //Log the error message in the report.
         if (errorList.Count != 0){
             res.Result = false;
             res.ErrorLink = testLink;
-            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(" ",valueSet)}";
+            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",",valueSet)}";
             res.NumberOfOccurrences = errorList.Count;
-            res.LocationsOfErrors.Add("\nLocations of Errors:\n" + string.Join("", errorList));
+            res.LocationsOfErrors.Add(string.Join("", errorList));
         }
         
         await browser.CloseAsync();
