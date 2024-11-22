@@ -60,7 +60,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                 var value = match.Value;
                 if (!value.Equals("~"))
                 {
-                    value = "<";
+                    value = ">";
                 }
                 valueSet.Add($"{value}");
                 errorList.Add($"{errorList.Count+1}. Table no.{i + 1} contains unnecessary symbol: {value} \n");
