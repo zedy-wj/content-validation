@@ -58,7 +58,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, "Error Link: " + res.ErrorLink + "\n Error Info: " + res.ErrorInfo + "\n Number of Occurrences: " + res.NumberOfOccurrences);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
     }

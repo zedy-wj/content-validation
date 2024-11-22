@@ -1,4 +1,5 @@
 ﻿using Microsoft.Playwright;
+using System.Collections.Generic;
 using UtilityLibraries;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -32,8 +33,8 @@ public class DuplicateServiceValidation : IValidationNew
         {
             var text = await element.InnerTextAsync();
 
-            //Store the names in the HashSet.
-            //When HashSet returns false, duplicate service names are stored in errorlist.
+            //Store the names in the `HashSet`.
+            //When `HashSet` returns false, duplicate service names are stored in another array.
             if (!set.Add(text))
             {
                 errorList.Add(text);
@@ -44,7 +45,7 @@ public class DuplicateServiceValidation : IValidationNew
             }
 
         }
-        res.ErrorInfo = "Has Duplicate Service: " + string.Join(",", errorList);
+        res.ErrorInfo = "Have Duplicate Service: " + string.Join(",", errorList);
         
         await browser.CloseAsync();
 
