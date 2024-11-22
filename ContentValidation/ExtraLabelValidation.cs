@@ -1,5 +1,4 @@
-﻿using Microsoft.Playwright;
-using System.Reflection.Emit;
+using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
@@ -68,7 +67,7 @@ public class ExtraLabelValidation : IValidationNew
             }
             if (count > 0)
             {
-                errorList.Add(label);
+                errorList.Add($"{errorList.Count + 1}. {label} : {count} times");
             }
 
         }

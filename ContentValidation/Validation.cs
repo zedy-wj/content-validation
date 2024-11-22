@@ -70,6 +70,16 @@ public class TResultNew
         NumberOfOccurrences = 0;
         LocationsOfErrors = new List<string>();
     }
+
+    public string FormatErrorMessage(TResultNew res, string testLink){
+        return $@"
+Error Link: {testLink}.
+Error Info: {res.ErrorLink}.
+Number of Occurrences: {res.NumberOfOccurrences}.
+Locations of Errors: 
+{string.Join("\n", res.LocationsOfErrors)}
+";
+    }
 }
 
 

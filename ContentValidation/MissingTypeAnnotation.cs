@@ -33,6 +33,11 @@ public class MissingTypeAnnotation : IValidationNew
         errorList.AddRange(list1);
         errorList.AddRange(list2);
 
+        for (int i = 0; i < errorList.Count; i++)
+        {
+            errorList[i] = $"{i + 1}. {errorList[i]}";
+        }
+
         if (errorList.Count > 0)
         {
             res.Result = false;
