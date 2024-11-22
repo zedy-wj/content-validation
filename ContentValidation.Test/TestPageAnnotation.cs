@@ -10,12 +10,7 @@ namespace ContentValidation.Test
 
         static TestPageAnnotation()
         {
-            //TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-            TestLinks = new List<string> {
-                "https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.phonenumberproperties?view=azure-python",
-                "https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.microsoftteamsappproperties?view=azure-python",
-                "https://learn.microsoft.com/en-us/python/api/azure-batch/azure.batch.operations.accountoperations?view=azure-python"
-            };
+            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [Test]
