@@ -10,7 +10,12 @@ namespace ContentValidation.Test
 
         static TestPageAnnotation()
         {
-            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            //TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            TestLinks = new List<string> {
+                "https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.phonenumberproperties?view=azure-python",
+                "https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.microsoftteamsappproperties?view=azure-python",
+                "https://learn.microsoft.com/en-us/python/api/azure-batch/azure.batch.operations.accountoperations?view=azure-python"
+            };
         }
 
         [Test]
@@ -19,11 +24,19 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new MissingTypeAnnotation(playwright);
+            IValidationNew Validation = new MissingTypeAnnotation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has wrong type annotations \n\n" + res.Display());
+            string errorMsg = $@"
+ErrorLink: {res.ErrorLink}
+ErrorInfo: {res.ErrorInfo}
+Number of Occurrences: {res.NumberOfOccurrences}
+Locations of Errors: 
+        {string.Join("\n\t\t", res.LocationsOfErrors)}
+";
+
+            Assert.That(res.Result, errorMsg);
 
         }
     }

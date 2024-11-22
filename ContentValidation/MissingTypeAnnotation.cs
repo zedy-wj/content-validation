@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace UtilityLibraries;
 
-public class MissingTypeAnnotation : IValidation
+public class MissingTypeAnnotation : IValidationNew
 {
     private IPlaywright _playwright;
 
@@ -12,26 +12,34 @@ public class MissingTypeAnnotation : IValidation
     {
         _playwright = playwright;
     }
-    public async Task<TResult> Validate(string testLink)
+    public async Task<TResultNew> Validate(string testLink)
     {
-        var res = new TResult();
+        var res = new TResultNew();
+        List<string> errorList = new List<string>();
 
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
 
+        // Get all the class and method parameters in the test page.
         Dictionary<string, List<string>>? pyClassParamMap = null;
         Dictionary<string, List<string>>? pyMethodParamMap = null;
-
         pyClassParamMap = await GetParamMap(page, true);
         pyMethodParamMap = await GetParamMap(page, false);
 
-        ValidParamMap(pyClassParamMap!, true, res);
-        ValidParamMap(pyMethodParamMap!, false, res);
+        // Check each class and method parameter for correct type annotations and record any missing or incorrect ones.
+        var list1 = ValidParamMap(pyClassParamMap!, true);
+        var list2 = ValidParamMap(pyMethodParamMap!, false);
+        errorList.AddRange(list1);
+        errorList.AddRange(list2);
 
-        if (!res.IsEmpty())
+        if (errorList.Count > 0)
         {
             res.Result = false;
+            res.ErrorLink = testLink;
+            res.ErrorInfo = "Missing Type Annotation";
+            res.NumberOfOccurrences = errorList.Count;
+            res.LocationsOfErrors = errorList;
         }
 
         await browser.CloseAsync();
@@ -42,6 +50,10 @@ public class MissingTypeAnnotation : IValidation
     bool IsCorrectTypeAnnotation(string text)
     {
         if (text == "*")
+        {
+            return true;
+        }
+        if (text == "/")
         {
             return true;
         }
@@ -155,30 +167,42 @@ public class MissingTypeAnnotation : IValidation
     }
 
 
-    void ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass, TResult res)
+    List<string> ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass)
     {
 
+        List<string> errorList = new List<string>();
+
+        // Extract parameter maps for classes and methods.
         foreach (var item in paramMap)
         {
             string key = item.Key;
             var paramList = item.Value;
 
+            // If the argument list for the class is empty, add it to the errorList.
             if (isClass && paramList.Count == 0)
             {
-                res.Add($"{key}", "argument", "Class empty argument");
+                errorList.Add("Class name: " + key + ":    Class empty argument");
             }
 
+            // If a parameter is found to be missing a type annotation, add it to the errorList.
+            string errorMessage = isClass ? "Class name:  " : "Method name: ";
+            string errorParam = "";
             for (int i = 0; i < paramList.Count; i++)
             {
                 var text = paramList[i];
 
                 if (!IsCorrectTypeAnnotation(text))
                 {
-                    res.Add($"{key}", "argument", text);
+                    errorParam += text + " ;    ";
                 }
+            }
+            if (errorParam.Length > 0)
+            {
+                errorList.Add(errorMessage + key + "    argument:  " + errorParam);
             }
         }
 
+        return errorList;
     }
 
 }
