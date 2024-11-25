@@ -65,13 +65,13 @@ public class MissingContentValidation: IValidationNew
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    errorMessages.Add($"\n{res.NumberOfOccurrences}. " + $" {testLink}+{specificAnchorHref}");
+                    errorMessages.Add($"{res.NumberOfOccurrences}. " + $" {testLink}+{specificAnchorHref}");
                 }
             }
         }
         res.ErrorLink = testLink;
         res.ErrorInfo = "Some cells in the table are missing content";
-        res.LocationsOfErrors.Add(string.Join("", errorMessages));
+        res.LocationsOfErrors.Add(string.Join("\n", errorMessages));
 
         await browser.CloseAsync();
 
