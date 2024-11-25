@@ -36,7 +36,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                 foreach (Match match in paragraphMatches)
                 {
                     valueSet.Add(match.Value);
-                    errorList.Add($"{errorList.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}\n");
+                    errorList.Add($"{errorList.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
             }
         }
@@ -63,7 +63,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                     value = ">";
                 }
                 valueSet.Add($"{value}");
-                errorList.Add($"{errorList.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value} \n");
+                errorList.Add($"{errorList.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value}");
             }
             index++;
         }
@@ -80,7 +80,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                 foreach (Match match in tildeMatches)
                 {
                     valueSet.Add(match.Value);
-                    errorList.Add($"{errorList.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}\n");
+                    errorList.Add($"{errorList.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
                 }
             }
         }
@@ -90,7 +90,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
             res.ErrorLink = testLink;
             res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",",valueSet)}";
             res.NumberOfOccurrences = errorList.Count;
-            res.LocationsOfErrors.Add(string.Join("", errorList));
+            res.LocationsOfErrors.Add(string.Join("\n", errorList));
         }
         
         await browser.CloseAsync();
