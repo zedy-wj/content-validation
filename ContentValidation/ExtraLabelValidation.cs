@@ -54,7 +54,7 @@ public class ExtraLabelValidation : IValidationNew
 
         // Iterate through labelList and check if the page content contains any of the tags. If any tags are found, add them to the errorList.
         int sum = 0;
-        string ErrorInfo = "Extra label found: ";
+        string errorInfo = "Extra label found: ";
         foreach (var label in labelList)
         {
 
@@ -68,7 +68,7 @@ public class ExtraLabelValidation : IValidationNew
             }
             if (count > 0)
             {
-                ErrorInfo += label;
+                errorInfo += label;
                 errorList.Add($"{errorList.Count + 1}. {label} : {count} times");
             }
 
@@ -78,7 +78,7 @@ public class ExtraLabelValidation : IValidationNew
         {
             res.Result = false;
             res.ErrorLink = testLink;
-            res.ErrorInfo = ErrorInfo;
+            res.ErrorInfo = errorInfo;
             res.NumberOfOccurrences = sum;
             res.LocationsOfErrors = errorList;
         }
