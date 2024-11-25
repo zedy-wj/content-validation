@@ -19,11 +19,11 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new MissingTypeAnnotation(playwright);
+            IValidation Validation = new TypeAnnotationValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has wrong type annotations \n\n" + res.Display());
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
     }

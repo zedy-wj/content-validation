@@ -7,15 +7,22 @@ namespace ContentValidation.Test
     public class TestPageContent
     {
         public static List<string> TestLinks { get; set; }
+        public static List<string> DuplicateTestLink { get; set; }
 
         static TestPageContent()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+
+            //This list is for testing duplicate services.
+            DuplicateTestLink = new List<string>
+            {
+                "https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python"
+            };
         }
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
-        public async Task TestIsTableEmpty(string testLink)
+        public async Task TestTableMissingContent(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
 
@@ -23,7 +30,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has table is empty." + res.ErrorMsg);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
 
@@ -37,12 +44,12 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink +" have Garbled Text:\n" + res.ErrorMsg);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
-        
+
         [Test]
-        [TestCaseSource(nameof(TestLinks))]
+        [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
@@ -51,7 +58,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, res.ErrorMsg);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
     }

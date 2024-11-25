@@ -1,6 +1,5 @@
 ﻿using Microsoft.Playwright;
 using UtilityLibraries;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ContentValidation;
 
@@ -15,33 +14,37 @@ public class DuplicateServiceValidation : IValidation
 
     public async Task<TResult> Validate(string testLink)
     {
+        //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
+
         var res = new TResult();
         var set = new HashSet<string>();
         var errorList = new List<string>();
 
+        //Get all service tags in the test page.
         await page.GotoAsync(testLink);
-        await page.WaitForSelectorAsync("li.border-top.tree-item.is-expanded");
+        var aElements = await page.Locator("li.has-three-text-columns-list-items.is-unstyled a[data-linktype='relative-path']").AllAsync();
 
-        var parentLi = await page.QuerySelectorAsync("li.border-top.tree-item.is-expanded");
-        var liElements = await parentLi.QuerySelectorAllAsync("ul.tree-group > li[aria-level='2']");
-
-        foreach (var element in liElements)
+        //Check if there are duplicate services.
+        foreach (var element in aElements)
         {
             var text = await element.InnerTextAsync();
-            if (text != "Overview")
-            {
-                if (!set.Add(text))
-                {
-                    res.Result = false;
-                    errorList.Add(text);
-                }
-                
-            }
-        }
-        res.ErrorMsg = testLink + " has duplicate service at " + string.Join(",", errorList);
 
+            //Store the names in the `HashSet`.
+            //When `HashSet` returns false, duplicate service names are stored in another array.
+            if (!set.Add(text))
+            {
+                errorList.Add(text);
+
+                res.Result = false;
+                res.ErrorLink = testLink;
+                res.NumberOfOccurrences += 1;
+            }
+
+        }
+        res.ErrorInfo = "Have Duplicate Service: " + string.Join(",", errorList);
+        
         await browser.CloseAsync();
 
         return res;

@@ -14,15 +14,16 @@ public class UnnecessarySymbolsValidation : IValidation
 
     public async Task<TResult> Validate(string testLink)
     {
-        var errorList = new List<string>();
+        var valueSet = new HashSet<string>();
         var res = new TResult();
+
+        //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
+
+        //Fetch all 'p' tags content to store in a list. Use regular expressions to find matching target symbols.
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
         var paragraphs = await page.Locator("p").AllInnerTextsAsync();
-        var tableContents = new List<string>();
-        var tableCount = await page.Locator("table").CountAsync();
-        var codeBlocks = await page.Locator("code").AllInnerTextsAsync();
 
         if (paragraphs != null)
         {
@@ -33,10 +34,16 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 foreach (Match match in paragraphMatches)
                 {
-                    errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}\n");
+                    valueSet.Add(match.Value);
+                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
             }
         }
+
+        //Fetch all 'table' content to store in a list. Use regular expressions to find the occurrence of unnecessary symbols between two closing tags.
+        var tableContents = new List<string>();
+        var tableCount = await page.Locator("table").CountAsync();
+        int index = 0;
 
         for (int i = 0; i < tableCount; i++)
         {
@@ -44,15 +51,24 @@ public class UnnecessarySymbolsValidation : IValidation
             tableContents.Add(tableContent);
         }
 
-        for (int i = 0; i < tableContents.Count; i++)
+        foreach (var tableContent in tableContents)
         {
-            var tableContent = tableContents[i];
             var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>|~");
             foreach (Match match in tagMatches)
             {
-                errorList.Add($"Table no.{i + 1} contains unnecessary symbol: {match.Value}\n");
+                var value = match.Value;
+                if (!value.Equals("~"))
+                {
+                    value = ">";
+                }
+                valueSet.Add($"{value}");
+                res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value}");
             }
+            index++;
         }
+
+        //Fetch all 'code' content to store in a list. Use regular expressions to find matching target symbols.
+        var codeBlocks = await page.Locator("code").AllInnerTextsAsync();
 
         if (codeBlocks != null)
         {
@@ -62,14 +78,17 @@ public class UnnecessarySymbolsValidation : IValidation
                 var tildeMatches = Regex.Matches(codeBlock, @"~");
                 foreach (Match match in tildeMatches)
                 {
-                    errorList.Add($"Code block no.{i + 1} contains unnecessary symbol: {match.Value}\n");
+                    valueSet.Add(match.Value);
+                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
                 }
             }
         }
 
-        if (errorList.Count != 0){
+        if (res.LocationsOfErrors.Count != 0){
             res.Result = false;
-            res.ErrorMsg = string.Join(",", errorList);
+            res.ErrorLink = testLink;
+            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",",valueSet)}";
+            res.NumberOfOccurrences = res.LocationsOfErrors.Count;
         }
         
         await browser.CloseAsync();

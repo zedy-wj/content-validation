@@ -23,7 +23,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has extra label \n\n" + res.Display());
+            Assert.That(res.Result, res.FormatErrorMessage());
         }
 
         [Test]
@@ -36,8 +36,7 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has unnecessary symbols:\n  " + res.ErrorMsg);
-
+            Assert.That(res.Result, res.FormatErrorMessage());
         }
     }
 }
