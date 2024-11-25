@@ -12,7 +12,7 @@ namespace ContentValidation.Test
         static TestPageContent()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-            
+
             //This list is for testing duplicate services.
             DuplicateTestLink = new List<string>
             {
