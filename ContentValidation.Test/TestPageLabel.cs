@@ -19,11 +19,11 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new ExtraLabelValidation(playwright);
+            IValidationNew Validation = new ExtraLabelValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has extra label \n\n" + res.Display());
+            Assert.That(res.Result, res.FormatErrorMessage());
         }
 
         [Test]
