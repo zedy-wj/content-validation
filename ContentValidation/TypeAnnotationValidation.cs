@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace UtilityLibraries;
 
-public class TypeAnnotationValidation : IValidationNew
+public class TypeAnnotationValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -12,9 +12,9 @@ public class TypeAnnotationValidation : IValidationNew
     {
         _playwright = playwright;
     }
-    public async Task<TResultNew> Validate(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
-        var res = new TResultNew();
+        var res = new TResult();
         List<string> errorList = new List<string>();
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });

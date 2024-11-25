@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class ExtraLabelValidation : IValidationNew
+public class ExtraLabelValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -10,9 +10,9 @@ public class ExtraLabelValidation : IValidationNew
     {
         _playwright = playwright;
     }
-    public async Task<TResultNew> Validate(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
-        var res = new TResultNew();
+        var res = new TResult();
         var errorList = new List<string>();
 
         // Define a list (labelList) containing various HTML tags and entities.

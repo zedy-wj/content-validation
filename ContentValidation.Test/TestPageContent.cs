@@ -26,7 +26,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidationNew Validation = new MissingContentValidation(playwright);
+            IValidation Validation = new MissingContentValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
@@ -40,7 +40,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidationNew Validation = new GarbledTextValidation(playwright);
+            IValidation Validation = new GarbledTextValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
@@ -54,7 +54,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidationNew Validation = new DuplicateServiceValidation(playwright);
+            IValidation Validation = new DuplicateServiceValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 

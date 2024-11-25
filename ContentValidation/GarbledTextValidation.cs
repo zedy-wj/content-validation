@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries
 {
-    public class GarbledTextValidation : IValidationNew
+    public class GarbledTextValidation : IValidation
     {
         private readonly IPlaywright _playwright;
 
@@ -12,13 +12,13 @@ namespace UtilityLibraries
             _playwright = playwright;
         }
 
-        public async Task<TResultNew> Validate(string testLink)
+        public async Task<TResult> Validate(string testLink)
         {
             //Create a browser instance.
             var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
             var page = await browser.NewPageAsync();
             await page.GotoAsync(testLink);
-            var res = new TResultNew();
+            var res = new TResult();
 
             // Fetch all <p> tags
             var pLocators = await page.Locator("p").AllAsync();

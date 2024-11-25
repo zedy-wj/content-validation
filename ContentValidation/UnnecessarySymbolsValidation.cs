@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace UtilityLibraries;
 
-public class UnnecessarySymbolsValidation : IValidationNew
+public class UnnecessarySymbolsValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -12,10 +12,10 @@ public class UnnecessarySymbolsValidation : IValidationNew
         _playwright = playwright;
     }
 
-    public async Task<TResultNew> Validate(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
         var valueSet = new HashSet<string>();
-        var res = new TResultNew();
+        var res = new TResult();
 
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });

@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class MissingContentValidation: IValidationNew
+public class MissingContentValidation: IValidation
 {
     private IPlaywright _playwright;
 
@@ -11,13 +11,13 @@ public class MissingContentValidation: IValidationNew
         _playwright = playwright;
     }
 
-    public async Task<TResultNew> Validate(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
-        var res = new TResultNew();
+        var res = new TResult();
 
         //Fetch all <table> tags and <div> tags containing data-heading-level
         var tableLocator = page.Locator("table");

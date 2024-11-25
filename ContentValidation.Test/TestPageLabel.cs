@@ -19,7 +19,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidationNew Validation = new ExtraLabelValidation(playwright);
+            IValidation Validation = new ExtraLabelValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
@@ -32,7 +32,7 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidationNew Validation = new UnnecessarySymbolsValidation(playwright);
+            IValidation Validation = new UnnecessarySymbolsValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 

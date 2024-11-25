@@ -1,11 +1,9 @@
 ﻿using Microsoft.Playwright;
-using System.Collections.Generic;
 using UtilityLibraries;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ContentValidation;
 
-public class DuplicateServiceValidation : IValidationNew
+public class DuplicateServiceValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -14,13 +12,13 @@ public class DuplicateServiceValidation : IValidationNew
         _playwright = playwright;
     }
 
-    public async Task<TResultNew> Validate(string testLink)
+    public async Task<TResult> Validate(string testLink)
     {
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
 
-        var res = new TResultNew();
+        var res = new TResult();
         var set = new HashSet<string>();
         var errorList = new List<string>();
 
