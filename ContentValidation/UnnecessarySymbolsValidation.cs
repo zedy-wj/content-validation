@@ -44,6 +44,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
         //Fetch all 'table' content to store in a list. Use regular expressions to find the occurrence of unnecessary symbols between two closing tags.
         var tableContents = new List<string>();
         var tableCount = await page.Locator("table").CountAsync();
+        int index = 0;
 
         for (int i = 0; i < tableCount; i++)
         {
@@ -51,9 +52,8 @@ public class UnnecessarySymbolsValidation : IValidationNew
             tableContents.Add(tableContent);
         }
 
-        for (int i = 0; i < tableContents.Count; i++)
+        foreach (var tableContent in tableContents)
         {
-            var tableContent = tableContents[i];
             var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>|~");
             foreach (Match match in tagMatches)
             {
@@ -63,8 +63,9 @@ public class UnnecessarySymbolsValidation : IValidationNew
                     value = ">";
                 }
                 valueSet.Add($"{value}");
-                errorList.Add($"{errorList.Count+1}. Table no.{i + 1} contains unnecessary symbol: {value} \n");
+                errorList.Add($"{errorList.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value} \n");
             }
+            index++;
         }
 
         //Fetch all 'code' content to store in a list. Use regular expressions to find matching target symbols.
