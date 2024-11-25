@@ -34,12 +34,12 @@ namespace UtilityLibraries
                 {
                     res.Result = false;
                     res.NumberOfOccurrences += 1;
-                    errorMessages.Add($"\n{res.NumberOfOccurrences}. " + text);
+                    errorMessages.Add($"{res.NumberOfOccurrences}. " + text);
                 }
             }
             res.ErrorLink = testLink;
             res.ErrorInfo = "The test link has garbled text";
-            res.LocationsOfErrors.Add(string.Join("", errorMessages));
+            res.LocationsOfErrors.Add(string.Join("\n", errorMessages));
 
             await browser.CloseAsync();
             return res;
