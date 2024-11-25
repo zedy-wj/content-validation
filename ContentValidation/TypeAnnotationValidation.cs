@@ -3,12 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace UtilityLibraries;
 
-public class MissingTypeAnnotation : IValidationNew
+public class TypeAnnotationValidation : IValidationNew
 {
     private IPlaywright _playwright;
 
 
-    public MissingTypeAnnotation(IPlaywright playwright)
+    public TypeAnnotationValidation(IPlaywright playwright)
     {
         _playwright = playwright;
     }
