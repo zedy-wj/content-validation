@@ -22,15 +22,15 @@ namespace ContentValidation.Test
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
-        public async Task TestIsTableEmpty(string testLink)
+        public async Task TestTableMissingContent(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new MissingContentValidation(playwright);
+            IValidationNew Validation = new MissingContentValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink + " has table is empty." + res.ErrorMsg);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
 
@@ -40,14 +40,14 @@ namespace ContentValidation.Test
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new GarbledTextValidation(playwright);
+            IValidationNew Validation = new GarbledTextValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
-            Assert.That(res.Result, testLink +" have Garbled Text:\n" + res.ErrorMsg);
+            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
-        
+
         [Test]
         [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)

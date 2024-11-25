@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries
 {
-    public class GarbledTextValidation : IValidation
+    public class GarbledTextValidation : IValidationNew
     {
         private readonly IPlaywright _playwright;
 
@@ -12,60 +12,32 @@ namespace UtilityLibraries
             _playwright = playwright;
         }
 
-        public async Task<TResult> Validate(string testLink)
+        public async Task<TResultNew> Validate(string testLink)
         {
+            //Create a browser instance.
             var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
             var page = await browser.NewPageAsync();
             await page.GotoAsync(testLink);
-            var res = new TResult();
+            var res = new TResultNew();
 
-            // Fetch all <p> tags and <div> tags containing data-heading-level
+            // Fetch all <p> tags
             var pLocators = await page.Locator("p").AllAsync();
-            var headingDivs = await page.Locator("div.heading-wrapper[data-heading-level]").AllAsync();
-            var errorMessages = new List<string>(); // Used to store all error messages.
 
             // Loop through each <p> tag.
             foreach (var pLocator in pLocators)
             {
                 var text = await pLocator.TextContentAsync();
-                string specificAnchorHref = string.Empty;
 
-                // Fetch the bounding box of the current <p> tag.
-                var pBoundingBox = await pLocator.BoundingBoxAsync();
-
-                // Check if the bounding box is valid.
-                if (pBoundingBox != null && pBoundingBox.Width > 0 && pBoundingBox.Height > 0)
-                {
-                    // Calculate the bottom position of the <p> tag.
-                    double pBottom = pBoundingBox.Y + pBoundingBox.Height;
-
-                    // Iterate through headingDivs and find the nearest <div> tag.
-                    foreach (var divLocator in headingDivs)
-                    {
-                        // Fetch the bounding box of the current <div> tag.
-                        var divBoundingBox = await divLocator.BoundingBoxAsync();
-
-                        // Checks if the bounding box of the current <div> tag is valid and precedes the current <p> tag.
-                        if (divBoundingBox != null && divBoundingBox.Y + divBoundingBox.Height < pBottom)
-                        {
-                            // Extract the link from the nearest <div> tag.
-                            var anchorLocators = await divLocator.Locator("a").AllAsync();
-                            if (anchorLocators.Count > 0)
-                            {
-                                specificAnchorHref = await anchorLocators[^1].GetAttributeAsync("href");
-                            }
-                        }
-                    }
-                }
-
+                //Check if the text is garbled, if so, return the garbled text
                 if (Regex.IsMatch(text, @":[\w]+(?:\s+[\w]+){0,2}:"))
                 {
                     res.Result = false;
-                    var errorMessage = $" \n{text} " + $"\nLink : {testLink}" + $"{specificAnchorHref}\n";
-                    errorMessages.Add(errorMessage);
+                    res.NumberOfOccurrences += 1;
+                    res.LocationsOfErrors.Add($"{res.NumberOfOccurrences}. " + text);
                 }
             }
-            res.ErrorMsg = string.Join("",errorMessages);
+            res.ErrorLink = testLink;
+            res.ErrorInfo = "The test link has garbled text";
 
             await browser.CloseAsync();
             return res;
