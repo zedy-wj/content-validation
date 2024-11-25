@@ -14,7 +14,6 @@ public class UnnecessarySymbolsValidation : IValidationNew
 
     public async Task<TResultNew> Validate(string testLink)
     {
-        var errorList = new List<string>();
         var valueSet = new HashSet<string>();
         var res = new TResultNew();
 
@@ -36,7 +35,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                 foreach (Match match in paragraphMatches)
                 {
                     valueSet.Add(match.Value);
-                    errorList.Add($"{errorList.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
+                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
             }
         }
@@ -63,7 +62,7 @@ public class UnnecessarySymbolsValidation : IValidationNew
                     value = ">";
                 }
                 valueSet.Add($"{value}");
-                errorList.Add($"{errorList.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value}");
+                res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value}");
             }
             index++;
         }
@@ -80,17 +79,16 @@ public class UnnecessarySymbolsValidation : IValidationNew
                 foreach (Match match in tildeMatches)
                 {
                     valueSet.Add(match.Value);
-                    errorList.Add($"{errorList.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
+                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
                 }
             }
         }
 
-        if (errorList.Count != 0){
+        if (res.LocationsOfErrors.Count != 0){
             res.Result = false;
             res.ErrorLink = testLink;
             res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",",valueSet)}";
-            res.NumberOfOccurrences = errorList.Count;
-            res.LocationsOfErrors.Add(string.Join("\n", errorList));
+            res.NumberOfOccurrences = res.LocationsOfErrors.Count;
         }
         
         await browser.CloseAsync();
