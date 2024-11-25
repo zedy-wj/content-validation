@@ -16,7 +16,7 @@ public class MissingTypeAnnotation : IValidationNew
     {
         var res = new TResultNew();
         List<string> errorList = new List<string>();
-
+        // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);

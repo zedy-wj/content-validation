@@ -15,7 +15,7 @@ public class ExtraLabelValidation : IValidationNew
         var res = new TResultNew();
         var errorList = new List<string>();
 
-        //Define a list (labelList) containing various HTML tags and entities.
+        // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
             "<br",
             "<h1",
@@ -44,7 +44,7 @@ public class ExtraLabelValidation : IValidationNew
             "&apos"
         };
 
-        //Create browser instance.
+        // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
