@@ -4,16 +4,6 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
-parameters:
-  - name: ServiceName
-    displayName: Service Name
-    type: string
-    default: 'App Configuration'
-  - name: PackageName
-    displayName: Package Name
-    type: string
-    default: 'azure-appconfiguration'
-
 variables:
   - name: DotNetSdkVersion  
     value: '8.0.x' 
@@ -63,9 +53,6 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Get test data source
-      env:
-        ServiceName: ${{ parameters.ServiceName }}
-        PackageName: ${{ parameters.PackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
