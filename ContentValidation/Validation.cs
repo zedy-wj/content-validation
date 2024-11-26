@@ -27,7 +27,7 @@ public class TResult
     Error Info: {ErrorInfo}.
     Number of Occurrences: {NumberOfOccurrences}." + ((LocationsOfErrors.Count == 0) ? "\n" : $@"
     Locations of Errors: 
-    {string.Join("\n\0\0\0\0", LocationsOfErrors)}
+    {string.Join("\n    ", LocationsOfErrors)}
 ");
     }
 }
