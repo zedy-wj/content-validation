@@ -23,11 +23,11 @@ public class TResult
 
     public string FormatErrorMessage(){
         return $@"
-Error Link: {ErrorLink}.
-Error Info: {ErrorInfo}.
-Number of Occurrences: {NumberOfOccurrences}." + ((LocationsOfErrors.Count == 0) ? "\n" : $@"
-Locations of Errors: 
-{string.Join("\n", LocationsOfErrors)}
+    Error Link: {ErrorLink}.
+    Error Info: {ErrorInfo}.
+    Number of Occurrences: {NumberOfOccurrences}." + ((LocationsOfErrors.Count == 0) ? "\n" : $@"
+    Locations of Errors: 
+    {string.Join("\n    ", LocationsOfErrors)}
 ");
     }
 }
