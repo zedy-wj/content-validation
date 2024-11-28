@@ -68,8 +68,14 @@ namespace DataSource
                 subPages.Add(pkgAndClassesPage);
                 List<string> subPackagesPages = GetSubPackagesPages(pkgAndClassesPage);
 
-                foreach (var subPackagePage in subPackagesPages) { 
-                    subPages.Add($"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + subPackagePage);
+                foreach (var subPage in subPackagesPages) { 
+                    string subPackagePage = $"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + subPage;
+                    subPages.Add(subPackagePage);
+                    List<string> subSubPackagesPages = GetSubPackagesPages(subPackagePage);
+
+                    foreach (var subSubPage in subSubPackagesPages) { 
+                        subPages.Add($"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + subSubPage);
+                    }
                 }
             }
 
@@ -100,7 +106,7 @@ namespace DataSource
         {
             string jsonString = JsonSerializer.Serialize(pages);
             Console.WriteLine(jsonString);
-            File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
+            File.WriteAllText("../../../../ContentValidation.Test/appsettings.json", jsonString);
         }
     }
 }
