@@ -5,8 +5,6 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - name: DotNetSdkVersion  
-    value: '8.0.x' 
   - name: ServiceName
     value: 'Search'
   - name: PackageName
