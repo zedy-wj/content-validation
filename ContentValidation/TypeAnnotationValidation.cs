@@ -106,13 +106,13 @@ public class TypeAnnotationValidation : IValidation
             string key = "";
             string paramsText = "";
 
-            if (!match.Success && !isClass)
-            {
-                Console.WriteLine("Ignore codeText : ");
-                Console.WriteLine(codeText);
-                Console.WriteLine("");
-                continue;
-            }
+            // if (!match.Success && !isClass)
+            // {
+            //     Console.WriteLine("Ignore codeText : ");
+            //     Console.WriteLine(codeText);
+            //     Console.WriteLine("");
+            //     continue;
+            // }
 
             if (!match.Success && isClass)
             {

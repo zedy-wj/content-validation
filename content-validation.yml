@@ -68,5 +68,4 @@ jobs:
       inputs:
         command: 'test'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
-        arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
