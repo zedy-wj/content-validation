@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace UtilityLibraries;
 
-public class MissingContentValidation: IValidation
+public class MissingContentValidation : IValidation
 {
     private IPlaywright _playwright;
 
@@ -13,63 +13,43 @@ public class MissingContentValidation: IValidation
 
     public async Task<TResult> Validate(string testLink)
     {
-        //Create a browser instance.
+
+        var res = new TResult();
+        var errorList = new List<string>();
+
+        // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
-        var res = new TResult();
 
-        //Fetch all <table> tags and <div> tags containing data-heading-level
-        var tableLocator = page.Locator("table");
-        var rows = await tableLocator.Locator("tr").AllAsync();
-        var headingDivs = await page.Locator("div.heading-wrapper[data-heading-level]").AllAsync();
-
-        //Fetch all <tr> tags in the table tag.
-        foreach (var row in rows)
+        // Fetch all <td>,<th> tags in the page.
+        var cellElements = await page.Locator("td,th").AllAsync();
+        foreach (var cell in cellElements)
         {
-            var cells = await row.Locator("td, th").AllAsync();
+            var cellText = (await cell.InnerTextAsync()).Trim();
 
-            //Loop through each <tr> tag and get the 'href' of the <div> tag closest to it.
-            foreach (var cell in cells)
+            if (string.IsNullOrEmpty(cellText))
             {
-                var textContent = await cell.TextContentAsync();
-
-                var tdBoundingBox = await cell.BoundingBoxAsync();
-                string specificAnchorHref = string.Empty;
-
-                // Check if the bounding box is valid.
-                if (tdBoundingBox != null && tdBoundingBox.Width > 0 && tdBoundingBox.Height > 0)
-                {
-                    double tdBottom = tdBoundingBox.Y + tdBoundingBox.Height;
-
-                    // Iterate through headingDivs and find the nearest <div> tag.
-                    foreach (var divLocator in headingDivs)
-                    {
-                        var divBoundingBox = await divLocator.BoundingBoxAsync();
-
-                        // Checks if the bounding box of the current <div> tag is valid and precedes the current <p> tag.
-                        if (divBoundingBox != null && divBoundingBox.Y + divBoundingBox.Height < tdBottom)
-                        {
-                            var anchorLocators = await divLocator.Locator("a").AllAsync();
-                            if (anchorLocators.Count > 0)
-                            {
-                                specificAnchorHref = await anchorLocators[^1].GetAttributeAsync("href");
-                            }
-                        }
-                    }
-                }
-
-                //Check if there is an empty data cell, if so, return the nearest link.
-                if (string.IsNullOrWhiteSpace(textContent))
-                {
-                    res.Result = false;
-                    res.NumberOfOccurrences += 1;
-                    res.LocationsOfErrors.Add($"{res.NumberOfOccurrences}. " + $" {testLink}+{specificAnchorHref}");
-                }
+                // Fetch the first <a> href before the current cell.
+                var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
+                var href = await aLocator.GetAttributeAsync("href") ?? "not found <a> href";
+                errorList.Add(href);
             }
         }
-        res.ErrorLink = testLink;
-        res.ErrorInfo = "Some cells in the table are missing content";
+
+        var formattedList = errorList
+            .GroupBy(item => item)
+            .Select((group,Index) => $"{Index + 1}. Appears {group.Count()} times , location : {testLink + group.Key}")
+            .ToList();
+
+        if (errorList.Count > 0)
+        {
+            res.Result = false;
+            res.ErrorLink = testLink;
+            res.ErrorInfo = "Some cells in the table are missing content";
+            res.NumberOfOccurrences = errorList.Count;
+            res.LocationsOfErrors = formattedList;
+        }
 
         await browser.CloseAsync();
 
