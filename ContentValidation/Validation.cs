@@ -3,7 +3,7 @@ public interface IValidation{
     Task<TResult> Validate(string testLink);
 }
 
-public class TResult
+public struct TResult
 {
     public bool Result { get; set; }
     public string? ErrorLink { get; set; }

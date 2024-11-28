@@ -4,6 +4,8 @@ using UtilityLibraries;
 
 namespace ContentValidation.Test
 {
+    [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class TestPageLabel
     {
         public static List<string> TestLinks { get; set; }
@@ -23,6 +25,8 @@ namespace ContentValidation.Test
 
             var res = await Validation.Validate(testLink);
 
+            playwright.Dispose();
+
             Assert.That(res.Result, res.FormatErrorMessage());
         }
 
@@ -35,6 +39,8 @@ namespace ContentValidation.Test
             IValidation Validation = new UnnecessarySymbolsValidation(playwright);
 
             var res = await Validation.Validate(testLink);
+
+            playwright.Dispose();
 
             Assert.That(res.Result, res.FormatErrorMessage());
         }

@@ -4,6 +4,8 @@ using UtilityLibraries;
 
 namespace ContentValidation.Test
 {
+    [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class TestPageAnnotation
     {
         public static List<string> TestLinks { get; set; }
@@ -22,6 +24,8 @@ namespace ContentValidation.Test
             IValidation Validation = new TypeAnnotationValidation(playwright);
 
             var res = await Validation.Validate(testLink);
+
+            playwright.Dispose();
 
             Assert.That(res.Result, res.FormatErrorMessage());
 
