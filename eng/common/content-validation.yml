@@ -1,12 +1,10 @@
 parameters:
+  - name: DotNetSdkVersion  
+    type: string
   - name: ServiceName
     type: string
   - name: PackageName
     type: string
-
-variables:
-  - name: DotNetSdkVersion  
-    value: '8.0.x' 
 
 jobs:
   - job: ContentValidation
@@ -15,7 +13,7 @@ jobs:
       displayName: 'Install .NET Core SDK'
       inputs:
         packageType: 'sdk'
-        version: $(DotNetSdkVersion)
+        version: ${{ parameters.DotNetSdkVersion }}
         installationPath: $(Agent.ToolsDirectory)/dotnet 
 
     - task: DotNetCoreCLI@2
