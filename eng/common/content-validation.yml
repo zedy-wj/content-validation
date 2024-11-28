@@ -1,8 +1,8 @@
-name: Run Content Validation Tool
-trigger: none
-
-pool:
-  vmImage: ubuntu-latest
+parameters:
+  - name: ServiceName
+    type: string
+  - name: PackageName
+    type: string
 
 variables:
   - name: DotNetSdkVersion  
@@ -53,6 +53,9 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Get test data source
+      env:
+        ServiceName: ${{ parameters.ServiceName }}
+        PackageName: ${{ parameters.PackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
@@ -68,4 +71,5 @@ jobs:
       inputs:
         command: 'test'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+        arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
