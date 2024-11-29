@@ -22,10 +22,11 @@ public struct TResult
     }
 
     public string FormatErrorMessage(){
-        return $@"{"\n\t"}Error Link: {ErrorLink}.
+        return $@"Error Report:
+{"\t"}Error Link: {ErrorLink}.
 {"\t"}Error Info: {ErrorInfo}.
 {"\t"}Number of Occurrences: {NumberOfOccurrences}." + ((LocationsOfErrors.Count == 0) ? "\n" : $@"
-{"\t"}Locations of Errors: 
+{"\t"}Locations of Errors:
 {"\t"}{string.Join("\n\t", LocationsOfErrors)}
 ");
     }
