@@ -22,8 +22,10 @@ public class MissingContentValidation : IValidation
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
 
-        // Fetch all <td>,<th> tags in the page.
+        // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
+
+        // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning
         foreach (var cell in cellElements)
         {
             var cellText = (await cell.InnerTextAsync()).Trim();
