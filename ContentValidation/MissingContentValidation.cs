@@ -32,14 +32,19 @@ public class MissingContentValidation : IValidation
             {
                 // Fetch the first <a> href before the current cell.
                 var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
-                var href = await aLocator.GetAttributeAsync("href") ?? "not found <a> href";
-                errorList.Add(href);
+                var href = await aLocator.GetAttributeAsync("href");
+                string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
+                if (href != null)
+                {
+                    anchorLink = testLink + href;
+                }
+                errorList.Add(anchorLink);
             }
         }
 
         var formattedList = errorList
             .GroupBy(item => item)
-            .Select((group,Index) => $"{Index + 1}. Appears {group.Count()} times , location : {testLink + group.Key}")
+            .Select((group,Index) => $"{Index + 1}. Appears {group.Count()} times , location : {group.Key}")
             .ToList();
 
         if (errorList.Count > 0)
