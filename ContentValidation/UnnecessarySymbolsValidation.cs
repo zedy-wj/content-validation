@@ -16,6 +16,7 @@ public class UnnecessarySymbolsValidation : IValidation
     {
         var valueSet = new HashSet<string>();
         var res = new TResult();
+        var errorList = new List<string>();
 
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
@@ -35,7 +36,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 foreach (Match match in paragraphMatches)
                 {
                     valueSet.Add(match.Value);
-                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
+                    errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
             }
         }
@@ -62,7 +63,7 @@ public class UnnecessarySymbolsValidation : IValidation
                     value = ">";
                 }
                 valueSet.Add($"{value}");
-                res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count + 1}. Table no.{index + 1} contains unnecessary symbol: {value}");
+                errorList.Add($"Table no.{index + 1} contains unnecessary symbol: {value}");
             }
             index++;
         }
@@ -79,18 +80,25 @@ public class UnnecessarySymbolsValidation : IValidation
                 foreach (Match match in tildeMatches)
                 {
                     valueSet.Add(match.Value);
-                    res.LocationsOfErrors.Add($"{res.LocationsOfErrors.Count+1}. Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
+                    errorList.Add($"Code block no.{i + 1} contains unnecessary symbol: {match.Value}");
                 }
             }
         }
 
-        if (res.LocationsOfErrors.Count != 0){
+        var formattedList = errorList
+            .GroupBy(item => item)
+            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , location : {group.Key}")
+            .ToList();
+
+        if (errorList.Count > 0)
+        {
             res.Result = false;
             res.ErrorLink = testLink;
-            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",",valueSet)}";
-            res.NumberOfOccurrences = res.LocationsOfErrors.Count;
+            res.NumberOfOccurrences = errorList.Count;
+            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",", valueSet)}";
+            res.LocationsOfErrors = formattedList;
         }
-        
+
         await browser.CloseAsync();
 
         return res;

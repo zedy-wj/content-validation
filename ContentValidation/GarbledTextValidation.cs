@@ -14,30 +14,37 @@ namespace UtilityLibraries
 
         public async Task<TResult> Validate(string testLink)
         {
+            var res = new TResult();
+            var errorList = new List<string>();
+
             //Create a browser instance.
             var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
             var page = await browser.NewPageAsync();
             await page.GotoAsync(testLink);
-            var res = new TResult();
 
-            // Fetch all <p> tags
-            var pLocators = await page.Locator("p").AllAsync();
+            var htmlText = await page.Locator("html").InnerTextAsync();
 
-            // Loop through each <p> tag.
-            foreach (var pLocator in pLocators)
+            string pattern = @":[\w]+(?:\s+[\w]+){0,2}:";
+            MatchCollection matches = Regex.Matches(htmlText, pattern);
+
+            foreach (Match match in matches)
             {
-                var text = await pLocator.TextContentAsync();
-
-                //Check if the text is garbled, if so, return the garbled text
-                if (Regex.IsMatch(text, @":[\w]+(?:\s+[\w]+){0,2}:"))
-                {
-                    res.Result = false;
-                    res.NumberOfOccurrences += 1;
-                    res.LocationsOfErrors.Add($"{res.NumberOfOccurrences}. " + text);
-                }
+                errorList.Add(match.Value);
             }
-            res.ErrorLink = testLink;
-            res.ErrorInfo = "The test link has garbled text";
+
+            var formattedList = errorList
+                .GroupBy(item => item)
+                .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , garbled text :   {group.Key}")
+                .ToList();
+
+            if (errorList.Count > 0)
+            {
+                res.Result = false;
+                res.ErrorLink = testLink;
+                res.NumberOfOccurrences = errorList.Count;
+                res.ErrorInfo = "The test link has garbled text";
+                res.LocationsOfErrors = formattedList;
+            }
 
             await browser.CloseAsync();
             return res;

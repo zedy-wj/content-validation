@@ -69,7 +69,7 @@ public class ExtraLabelValidation : IValidation
             if (count > 0)
             {
                 errorInfo += label;
-                errorList.Add($"{errorList.Count + 1}. {label} : {count} times");
+                errorList.Add($"{errorList.Count + 1}. Appears {count} times , label : {label} ");
             }
 
         }
