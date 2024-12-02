@@ -62,7 +62,8 @@ public class ExtraLabelValidation : IValidation
             int count = 0;
             while ((index = text.IndexOf(label, index)) != -1)
             {
-                if(text.IndexOf("<true", index) == 0){
+                if(text.IndexOf("<true", index) == index){
+                    index += 5;
                     continue;
                 }
                 count++;
