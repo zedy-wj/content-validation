@@ -31,7 +31,7 @@ public class UnnecessarySymbolsValidation : IValidation
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 var paragraph = paragraphs[i];
-                var paragraphMatches = Regex.Matches(paragraph, @"[\[\]<>&]|/{3}");
+                var paragraphMatches = Regex.Matches(paragraph, @"[\[\]<>&~]|/{3}");
 
                 foreach (Match match in paragraphMatches)
                 {
