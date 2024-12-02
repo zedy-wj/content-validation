@@ -54,11 +54,11 @@ public class UnnecessarySymbolsValidation : IValidation
 
         foreach (var tableContent in tableContents)
         {
-            var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>|~");
+            var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>");
             foreach (Match match in tagMatches)
             {
                 var value = match.Value;
-                if (!value.Equals("~"))
+                if (!value.Equals(""))
                 {
                     value = ">";
                 }
