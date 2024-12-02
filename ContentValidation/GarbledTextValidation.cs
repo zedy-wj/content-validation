@@ -29,6 +29,9 @@ namespace UtilityLibraries
 
             foreach (Match match in matches)
             {
+                if(match.Value == ":mm:" || match.Value == ":05:"){
+                    continue;
+                }
                 errorList.Add(match.Value);
             }
 
