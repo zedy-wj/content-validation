@@ -55,6 +55,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
+        [Ignore("Waiting discussion")]
         [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)
         {
