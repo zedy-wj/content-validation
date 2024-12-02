@@ -54,8 +54,9 @@ public class UnnecessarySymbolsValidation : IValidation
 
         foreach (var tableContent in tableContents)
         {
-            var tagMatches = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>");
-            foreach (Match match in tagMatches)
+            var tagMatches1 = Regex.Matches(tableContent, @"<\/\w+>\s*&gt;\s*<\/\w+>");
+            var tagMatches2 = Regex.Matches(tableContent, @"<(?!\/?p\b)[^>]*>.*?~.*?<\/[^>]+>");
+            foreach (Match match in tagMatches1)
             {
                 var value = match.Value;
                 if (!value.Equals(""))
@@ -65,6 +66,18 @@ public class UnnecessarySymbolsValidation : IValidation
                 valueSet.Add($"{value}");
                 errorList.Add($"Table no.{index + 1} contains unnecessary symbol: {value}");
             }
+
+            foreach (Match match in tagMatches2)
+            {
+                var value = match.Value;
+                if (!value.Equals(""))
+                {
+                    value = "~";
+                }
+                valueSet.Add($"{value}");
+                errorList.Add($"Table no.{index + 1} contains unnecessary symbol: {value}");
+            }
+
             index++;
         }
 

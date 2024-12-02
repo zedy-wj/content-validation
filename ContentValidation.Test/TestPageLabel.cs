@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using System.Text.Json;
 using UtilityLibraries;
+using static System.Net.WebRequestMethods;
 
 namespace ContentValidation.Test
 {
