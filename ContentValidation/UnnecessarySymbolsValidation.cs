@@ -8,7 +8,7 @@ public class UnnecessarySymbolsValidation : IValidation
     private IPlaywright _playwright;
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
-    { 
+    {
         _playwright = playwright;
     }
 
