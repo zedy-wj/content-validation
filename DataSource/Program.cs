@@ -21,9 +21,6 @@ namespace DataSource
             string? service = config["ServiceName"];
             string? package = config["PackageName"];
 
-            //test for use,48 links and 3 basic links   total links: 51
-            //string? package = "azure-cognitiveservices-search-websearch";
-
             // Fetch all need to be validated pages in a service/packages.
             List<string> pages = new List<string>();
 
