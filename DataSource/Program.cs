@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace DataSource
@@ -32,8 +31,8 @@ namespace DataSource
 
             pages.Add(apiRefDocPage);
 
-            //Get all the links in the package that need to be tested.
-            GetAllLinks(apiRefDocPage, package, pages);
+            //Get all the pages in the package that need to be tested.
+            GetAllPages(apiRefDocPage, package, pages);
 
             ExportData(pages);
 
@@ -56,16 +55,17 @@ namespace DataSource
             return $"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/{packageName?.ToLower().Replace("-",".")}?{PYTHON_SDK_API_URL_SUFFIX}";
         }
 
-        static void GetAllLinks(string apiRefDocPage, string? packageName, List<string> links)
+        static void GetAllPages(string apiRefDocPage, string? packageName, List<string> links)
         {
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(apiRefDocPage);
             var h1Node = doc.DocumentNode.SelectSingleNode("//h1")?.InnerText;
 
-            //The recursion terminates when there are no valid sublinks in the page or when all Package links have been visited.
+            //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
             if (!string.IsNullOrEmpty(h1Node) && h1Node.Contains("Package"))
             {
                 var aNodes = doc.DocumentNode.SelectNodes("//td/a");
+
                 if (aNodes != null)
                 {
                     foreach (var node in aNodes)
@@ -77,7 +77,7 @@ namespace DataSource
                             links.Add(href);
 
                             //Call GetAllLinks method recursively for each new link.
-                            GetAllLinks(href, packageName, links);
+                            GetAllPages(href, packageName, links);
                         }
                     }
                 }

@@ -13,7 +13,6 @@ public class MissingContentValidation : IValidation
 
     public async Task<TResult> Validate(string testLink)
     {
-
         var res = new TResult();
         var errorList = new List<string>();
 
@@ -25,7 +24,7 @@ public class MissingContentValidation : IValidation
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
 
-        // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning
+        // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning.
         foreach (var cell in cellElements)
         {
             var cellText = (await cell.InnerTextAsync()).Trim();
@@ -36,10 +35,12 @@ public class MissingContentValidation : IValidation
                 var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
                 var href = await aLocator.GetAttributeAsync("href");
                 string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
+
                 if (href != null)
                 {
                     anchorLink = testLink + href;
                 }
+                
                 errorList.Add(anchorLink);
             }
         }

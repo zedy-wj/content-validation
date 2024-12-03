@@ -5,7 +5,7 @@ namespace UtilityLibraries
 {
     public class GarbledTextValidation : IValidation
     {
-        private readonly IPlaywright _playwright;
+        private IPlaywright _playwright;
 
         public GarbledTextValidation(IPlaywright playwright)
         {
@@ -22,11 +22,13 @@ namespace UtilityLibraries
             var page = await browser.NewPageAsync();
             await page.GotoAsync(testLink);
 
+            // Get all text content of the current html.
             var htmlText = await page.Locator("html").InnerTextAsync();
 
             string pattern = @":[\w]+(?:\s+[\w]+){0,2}:";
             MatchCollection matches = Regex.Matches(htmlText, pattern);
 
+            // Add the results of regular matching to errorList in a loop.
             foreach (Match match in matches)
             {
                 if(match.Value == ":mm:" || match.Value == ":05:"){
@@ -45,11 +47,12 @@ namespace UtilityLibraries
                 res.Result = false;
                 res.ErrorLink = testLink;
                 res.NumberOfOccurrences = errorList.Count;
-                res.ErrorInfo = "The test link has garbled text";
+                res.ErrorInfo = "The test link has garbled text.";
                 res.LocationsOfErrors = formattedList;
             }
 
             await browser.CloseAsync();
+
             return res;
         }
     }
