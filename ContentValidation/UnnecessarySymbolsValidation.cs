@@ -26,6 +26,8 @@ public class UnnecessarySymbolsValidation : IValidation
         await page.GotoAsync(testLink);
         var paragraphs = await page.Locator("p").AllInnerTextsAsync();
 
+        string excludePattern = @"(=>|-<[^>]*>)";
+
         if (paragraphs != null)
         {
             for (int i = 0; i < paragraphs.Count; i++)
@@ -35,6 +37,10 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 foreach (Match match in paragraphMatches)
                 {
+                    if ((match.Value.Equals("<") || match.Value.Equals(">")) && Regex.IsMatch(paragraph, excludePattern))
+                    {
+                         continue;
+                    }
                     valueSet.Add(match.Value);
                     errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
