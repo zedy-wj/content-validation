@@ -32,8 +32,7 @@ namespace DataSource
 
             pages.Add(apiRefDocPage);
 
-            //List<string> subPages = GetAllSubPages(apiRefDocPage, package);
-
+            //Get all the links in the package that need to be tested.
             GetAllLinks(apiRefDocPage, package, pages);
 
             ExportData(pages);
@@ -63,6 +62,7 @@ namespace DataSource
             var doc = web.Load(apiRefDocPage);
             var h1Node = doc.DocumentNode.SelectSingleNode("//h1")?.InnerText;
 
+            //The recursion terminates when there are no valid sublinks in the page or when all Package links have been visited.
             if (!string.IsNullOrEmpty(h1Node) && h1Node.Contains("Package"))
             {
                 var aNodes = doc.DocumentNode.SelectNodes("//td/a");
@@ -76,58 +76,13 @@ namespace DataSource
                         {
                             links.Add(href);
 
+                            //Call GetAllLinks method recursively for each new link.
                             GetAllLinks(href, packageName, links);
                         }
                     }
                 }
             }
         }
-
-        //static List<string> GetAllSubPages(string apiRefDocPage, string? packageName)
-        //{
-        //    List<string> subPages = new List<string>();
-
-        //    List<string> pkgsAndClassesPages = GetPkgsAndClassesPages(apiRefDocPage);
-
-        //    foreach (var page in pkgsAndClassesPages)
-        //    {
-        //        string pkgAndClassesPage = $"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + page;
-        //        subPages.Add(pkgAndClassesPage);
-        //        List<string> subPackagesPages = GetSubPackagesPages(pkgAndClassesPage);
-
-        //        foreach (var subPage in subPackagesPages) { 
-        //            string subPackagePage = $"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + subPage;
-        //            subPages.Add(subPackagePage);
-        //            List<string> subSubPackagesPages = GetSubPackagesPages(subPackagePage);
-
-        //            foreach (var subSubPage in subSubPackagesPages) { 
-        //                subPages.Add($"{PYTHON_SDK_API_URL_PREFIX}/{packageName}/" + subSubPage);
-        //            }
-        //        }
-        //    }
-
-        //    return subPages;
-        //}
-        //static List<string> GetPkgsAndClassesPages(string apiRefDocPage)
-        //{
-        //    HtmlWeb web = new HtmlWeb();
-        //    var doc = web.Load(apiRefDocPage);
-        //    var aNodes = doc.DocumentNode.SelectNodes("//td/a");
-        //    return aNodes.Select(pages => pages.Attributes["href"].Value).ToList();
-        //}
-
-        //static List<string> GetSubPackagesPages(string subPage)
-        //{
-        //    HtmlWeb web = new HtmlWeb();
-        //    var doc = web.Load(subPage);
-        //    List<string> subPackagesPages = new List<string>();
-        //    var h1Node = doc.DocumentNode.SelectSingleNode("//h1").InnerText;
-        //    if (h1Node.Contains("Package")) {
-        //        var aNodes = doc.DocumentNode.SelectNodes("//td/a");
-        //        subPackagesPages.AddRange(aNodes.Select(pages => pages.Attributes["href"].Value).ToList());
-        //    }
-        //    return subPackagesPages;
-        //}
 
         static void ExportData(List<string> pages)
         {
