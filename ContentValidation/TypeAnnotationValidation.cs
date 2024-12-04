@@ -7,15 +7,16 @@ public class TypeAnnotationValidation : IValidation
 {
     private IPlaywright _playwright;
 
-
     public TypeAnnotationValidation(IPlaywright playwright)
     {
         _playwright = playwright;
     }
+
     public async Task<TResult> Validate(string testLink)
     {
         var res = new TResult();
         List<string> errorList = new List<string>();
+
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
@@ -85,6 +86,7 @@ public class TypeAnnotationValidation : IValidation
         Dictionary<string, List<string>> paramMap = new Dictionary<string, List<string>>();
 
         IReadOnlyList<ILocator>? HTMLElementList = null;
+
         if (isClass)
         {
             HTMLElementList = await page.Locator(".content > .wrap.has-inner-focus").AllAsync();
@@ -96,7 +98,6 @@ public class TypeAnnotationValidation : IValidation
 
         for (int i = 0; i < HTMLElementList.Count; i++)
         {
-
             var HTMLElement = HTMLElementList[i];
             var codeText = await HTMLElement.InnerTextAsync();
 
@@ -105,14 +106,6 @@ public class TypeAnnotationValidation : IValidation
 
             string key = "";
             string paramsText = "";
-
-            // if (!match.Success && !isClass)
-            // {
-            //     Console.WriteLine("Ignore codeText : ");
-            //     Console.WriteLine(codeText);
-            //     Console.WriteLine("");
-            //     continue;
-            // }
 
             if (!match.Success && isClass)
             {
@@ -171,7 +164,6 @@ public class TypeAnnotationValidation : IValidation
         return paramList;
     }
 
-
     List<string> ValidParamMap(Dictionary<string, List<string>> paramMap, bool isClass)
     {
 
@@ -192,6 +184,7 @@ public class TypeAnnotationValidation : IValidation
             // If a parameter is found to be missing a type annotation, add it to the errorList.
             string errorMessage = isClass ? "Class name:  " : "Method name: ";
             string errorParam = "";
+
             for (int i = 0; i < paramList.Count; i++)
             {
                 var text = paramList[i];
@@ -201,6 +194,7 @@ public class TypeAnnotationValidation : IValidation
                     errorParam += text + " ;    ";
                 }
             }
+
             if (errorParam.Length > 0)
             {
                 errorList.Add(errorMessage + key + ",    arguments:  " + errorParam);
@@ -209,6 +203,4 @@ public class TypeAnnotationValidation : IValidation
 
         return errorList;
     }
-
 }
-

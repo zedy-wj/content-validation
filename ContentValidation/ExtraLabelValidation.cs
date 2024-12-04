@@ -49,33 +49,37 @@ public class ExtraLabelValidation : IValidation
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
 
-        var text = await page.Locator("html").InnerTextAsync();
+        // Get all text content of the current html.
+        var htmlText = await page.Locator("html").InnerTextAsync();
 
-
-        // Iterate through labelList and check if the page content contains any of the tags. If any tags are found, add them to the errorList.
+        // Count the number of all errors on the current page.
         int sum = 0;
         string errorInfo = "Extra label found: ";
+
+        // Iterate through labelList and check if the page content contains any of the tags. If any tags are found, add them to the errorList.
         foreach (var label in labelList)
         {
-
             int index = 0;
+            // Count the number of all errors for the current label.
             int count = 0;
-            while ((index = text.IndexOf(label, index)) != -1)
+            while ((index = htmlText.IndexOf(label, index)) != -1)
             {
-                if(text.IndexOf("<true", index) == index){
-                    index += 5;
+                // Filter string "<true".
+                if(htmlText.IndexOf("<true", index) == index){
+                    index += "<true".Length;
                     continue;
                 }
+
                 count++;
                 sum++;
                 index += label.Length;
             }
+
             if (count > 0)
             {
                 errorInfo += label;
                 errorList.Add($"{errorList.Count + 1}. Appears {count} times , label : {label} ");
             }
-
         }
 
         if (sum > 0)
