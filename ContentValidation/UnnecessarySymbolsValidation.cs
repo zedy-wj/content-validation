@@ -26,7 +26,8 @@ public class UnnecessarySymbolsValidation : IValidation
         //Fetch all 'p' tags content to store in a list. Use regular expressions to find matching target symbols.
         var paragraphs = await page.Locator("p").AllInnerTextsAsync();
 
-        string excludePattern = @"(=>|-<[^>]*>)";
+        string excludePattern1 = @"(=>|-<[^>]*>)";
+        string excludePattern2 = @"\[.*?\]";
 
         if (paragraphs != null)
         {
@@ -37,11 +38,14 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 foreach (Match match in paragraphMatches)
                 {
-                    if ((match.Value.Equals("<") || match.Value.Equals(">")) && Regex.IsMatch(paragraph, excludePattern))
+                    if ((match.Value.Equals("<") || match.Value.Equals(">")) && Regex.IsMatch(paragraph, excludePattern1))
                     {
                          continue;
                     }
-
+                    if ((match.Value.Equals("[") || match.Value.Equals("]")) && Regex.IsMatch(paragraph, excludePattern2))
+                    {
+                        continue;
+                    }
                     valueSet.Add(match.Value);
                     errorList.Add($"Paragraph no.{i + 1} contains unnecessary symbol: {match.Value} in text: {paragraph}");
                 }
