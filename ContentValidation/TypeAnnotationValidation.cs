@@ -63,9 +63,9 @@ public class TypeAnnotationValidation : IValidation
         {
             return true;
         }
-        else if (text == "**kwargs" || text == "*args")
+        else if (text == "**kwargs" || text == "*args" || text == "**kw")
         {
-            return false;
+            return true;
         }
         else if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))
         {
@@ -89,6 +89,14 @@ public class TypeAnnotationValidation : IValidation
 
         if (isClass)
         {
+            // Check if the h1 text contains 'Enum'.
+            var h1Locator = page.Locator(".content h1:first-child");
+            var h1Text = await h1Locator.InnerTextAsync();
+            if (h1Text.Contains("Enum", StringComparison.OrdinalIgnoreCase))
+            {
+                return paramMap;
+            }
+
             HTMLElementList = await page.Locator(".content > .wrap.has-inner-focus").AllAsync();
         }
         else
@@ -106,11 +114,6 @@ public class TypeAnnotationValidation : IValidation
 
             string key = "";
             string paramsText = "";
-
-            if (!match.Success && isClass)
-            {
-                key = codeText;
-            }
 
             if (match.Success)
             {
@@ -174,12 +177,6 @@ public class TypeAnnotationValidation : IValidation
         {
             string key = item.Key;
             var paramList = item.Value;
-
-            // If the argument list for the class is empty, add it to the errorList.
-            if (isClass && paramList.Count == 0)
-            {
-                errorList.Add("Class name: " + key + ", the arguments of this class are empty.");
-            }
 
             // If a parameter is found to be missing a type annotation, add it to the errorList.
             string errorMessage = isClass ? "Class name:  " : "Method name: ";
