@@ -7,11 +7,35 @@ public class UnnecessarySymbolsValidation : IValidation
 {
     private IPlaywright _playwright;
 
-    public  HashSet<string> valueSet = new HashSet<string>();
+    public HashSet<string> valueSet = new HashSet<string>();
 
-    public  List<string> errorList = new List<string>();
+    public List<string> errorList = new List<string>();
 
-    public  TResult res = new TResult();
+    public TResult res = new TResult();
+
+    // Prefix list for checking if the content before the "[" is in the list.
+    public List<string> prefixList = new List<string> {
+                "List",
+                "Dict",
+                "Optional",
+                "Union",
+                "Tuple",
+                "Iterable",
+                "Iterator",
+                "Callable",
+                "Literal" ,
+                 "\"", ":", ":]", //e.g., and a user or group identifier in the format "[scope:][type]:[id]".
+            };
+
+    // Content list for checking if the content between "[ ]" is in the list.
+    public List<string> contentList = new List<string> {
+                "port",
+                "str,",
+                " str",
+                "...",  //e.g., then the retry will sleep for [0.0s, 0.2s, 0.4s, ...] 
+                "int,",
+                " int",
+            };
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
@@ -83,9 +107,6 @@ public class UnnecessarySymbolsValidation : IValidation
         // Excludes <, > used for comparison. e.g. a > b
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
 
-        // Excludes [ ] symbols but not if there are spaces in between. e.g. list[dict] [ada dsafdasf vcxzv]
-        string excludePattern2 = @"\[(?!.*\s).*?\]";
-
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
@@ -113,11 +134,11 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 if ((match.Value.Equals("[") || match.Value.Equals("]")))
                 {
-                    if (Regex.IsMatch(line, excludePattern2))
+                    if (line.Contains("<xref"))
                     {
                         continue;
                     }
-                    if (line.Contains("<xref"))
+                    if (IsBracketCorrect(line, match.Index))
                     {
                         continue;
                     }
@@ -127,6 +148,70 @@ public class UnnecessarySymbolsValidation : IValidation
                 errorList.Add($"Unnecessary symbol: {match.Value} in text: {line}");
             }
         }
+    }
+
+    private bool IsBracketCorrect(string input, int index)
+    {
+        if (input[index] == '[')
+        {
+            // Extract content between "[" and "]"
+            int startIndex = index + 1;
+            int endIndex = input.IndexOf("]", startIndex);
+            if (endIndex == -1)
+            {
+                // Don't have a closing bracket "]"
+                return false;
+            }
+            
+            string contentBetweenBrackets = input.Substring(startIndex, endIndex - startIndex);
+            if (contentList.Any(content => contentBetweenBrackets.Contains(content, StringComparison.OrdinalIgnoreCase)))
+            {
+                // Content between brackets is in the `contentList` list
+                return true;
+            }
+
+            // Check if the content before "[" is in the prefix list
+            foreach (string prefix in prefixList)
+            {
+                try
+                {
+                    string prefixStr = input.Substring(startIndex - prefix.Length - 1, prefix.Length);
+                    if (prefixStr.Equals(prefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Prefix is in the `prefixList` list
+                        return true;
+                    }
+                }
+                catch { }
+            }
+
+        }
+
+        if (input[index] == ']')
+        {
+            // Check if ] is closed
+            int count = 0;
+            for (int i = 0; i < index; i++)
+            {
+                if (input[i] == '[')
+                {
+                    count++;
+                }
+                if (input[i] == ']')
+                {
+                    count--;
+                }
+            }
+            if (count >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
     }
 
     private async Task<string> GetHtmlContent(IPage page)
