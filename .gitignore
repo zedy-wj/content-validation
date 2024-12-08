@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Local test data files
+*.xlsx
+test/
+
 # User-specific files
 *.rsuser
 *.suo

@@ -71,3 +71,10 @@ jobs:
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
         arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
+
+    - task: PublishPipelineArtifact@1
+      displayName: "Upload pipeline test data"
+      inputs:
+        targetPath: $(System.DefaultWorkingDirectory)/**/*.xlsx
+        artifactName: TestResults
+        publishLocation: "pipeline"

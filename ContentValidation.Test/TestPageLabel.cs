@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+using System.Collections.Concurrent;
 using System.Text.Json;
 using UtilityLibraries;
 
@@ -10,9 +11,20 @@ namespace ContentValidation.Test
     {
         public static List<string> TestLinks { get; set; }
 
+        public static ConcurrentQueue<TResult> TestExtraLabelResults = new ConcurrentQueue<TResult>();
+
+        public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
+
         static TestPageLabel()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+        }
+
+        [OneTimeTearDown]
+        public void SaveTestData()
+        {
+            ExcelHelper4Test.AddTestResult(TestExtraLabelResults);
+            ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults);
         }
 
         [Test]
@@ -24,6 +36,12 @@ namespace ContentValidation.Test
             IValidation Validation = new ExtraLabelValidation(playwright);
 
             var res = await Validation.Validate(testLink);
+
+            res.TestCase = "TestExtraLabel";
+            if (!res.Result)
+            {
+                TestExtraLabelResults.Enqueue(res);
+            }
 
             playwright.Dispose();
 
@@ -39,6 +57,12 @@ namespace ContentValidation.Test
             IValidation Validation = new UnnecessarySymbolsValidation(playwright);
 
             var res = await Validation.Validate(testLink);
+
+            res.TestCase = "TestUnnecessarySymbols";
+            if (!res.Result)
+            {
+                TestUnnecessarySymbolsResults.Enqueue(res);
+            }
 
             playwright.Dispose();
 

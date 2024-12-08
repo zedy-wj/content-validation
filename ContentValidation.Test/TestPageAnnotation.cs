@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using System.Text.Json;
 using UtilityLibraries;
+using System.Collections.Concurrent;
 
 namespace ContentValidation.Test
 {
@@ -10,9 +11,17 @@ namespace ContentValidation.Test
     {
         public static List<string> TestLinks { get; set; }
 
+        public static ConcurrentQueue<TResult> TestMissingTypeAnnotationResults = new ConcurrentQueue<TResult>();
+
         static TestPageAnnotation()
         {
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+        }
+
+        [OneTimeTearDown]
+        public void SaveTestData()
+        {
+            ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults);
         }
 
         [Test]
@@ -24,7 +33,12 @@ namespace ContentValidation.Test
             IValidation Validation = new TypeAnnotationValidation(playwright);
 
             var res = await Validation.Validate(testLink);
-
+            res.TestCase = "TestMissingTypeAnnotation";
+            if (!res.Result)
+            {
+                TestMissingTypeAnnotationResults.Enqueue(res);
+            }
+            
             playwright.Dispose();
 
             Assert.That(res.Result, res.FormatErrorMessage());
