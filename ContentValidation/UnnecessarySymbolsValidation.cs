@@ -35,6 +35,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 "...",  //e.g., then the retry will sleep for [0.0s, 0.2s, 0.4s, ...] 
                 "int,",
                 " int",
+                " or "
             };
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
@@ -50,15 +51,14 @@ public class UnnecessarySymbolsValidation : IValidation
         var page = await browser.NewPageAsync();
         await page.GotoAsync(testLink);
 
-
-        //Fetch all text content to store in a list. Use regular expressions to find matching unnecessary symbols.
-        string htmlContent = await GetHtmlContent(page);
-        ValidateHtmlContent(htmlContent);
-
+        // This method needs to be called before "GetHtmlContent()" because "GetHtmlContent()" will delete the code element.
         //Fetch all 'code' content to store in a list. Use regular expressions to find matching unnecessary symbols.
         var codeBlocks = await page.Locator("code").AllInnerTextsAsync();
         ValidateCodeContent(codeBlocks);
 
+        //Fetch all text content to store in a list. Use regular expressions to find matching unnecessary symbols.
+        string htmlContent = await GetHtmlContent(page);
+        ValidateHtmlContent(htmlContent);
 
 
         var formattedList = errorList
@@ -162,8 +162,9 @@ public class UnnecessarySymbolsValidation : IValidation
                 // Don't have a closing bracket "]"
                 return false;
             }
-            
+
             string contentBetweenBrackets = input.Substring(startIndex, endIndex - startIndex);
+
             if (contentList.Any(content => contentBetweenBrackets.Contains(content, StringComparison.OrdinalIgnoreCase)))
             {
                 // Content between brackets is in the `contentList` list
@@ -185,6 +186,11 @@ public class UnnecessarySymbolsValidation : IValidation
                 catch { }
             }
 
+            // Check if the content between brackets contains spaces
+            if (Regex.IsMatch(contentBetweenBrackets, @"^[A-Za-z]+$"))
+            {
+                return true;
+            }
         }
 
         if (input[index] == ']')
@@ -205,10 +211,6 @@ public class UnnecessarySymbolsValidation : IValidation
             if (count >= 0)
             {
                 return true;
-            }
-            else
-            {
-                return false;
             }
         }
         return false;
