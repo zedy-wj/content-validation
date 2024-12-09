@@ -186,7 +186,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 catch { }
             }
 
-            // Check if the content between brackets contains a space
+            // Check if the content between brackets contains spaces
             if (Regex.IsMatch(contentBetweenBrackets, @"^[A-Za-z]+$"))
             {
                 return true;
