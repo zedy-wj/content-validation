@@ -1,0 +1,920 @@
+Skip to main content
+Skip to in-page navigation
+Microsoft Learn Challenge
+Nov 23, 2024 – Jan 10, 2025
+Register now
+Dismiss alert
+Learn
+Discover
+Product documentation
+Development languages
+Topics
+Sign in
+Azure
+Products
+Architecture
+Develop
+Learn Azure
+Troubleshooting
+Resources
+Portal
+Free account
+Save
+SearchClient Class
+Reference
+Feedback
+A client to interact with an existing Azure search index.
+Inheritance
+azure.search.documents._headers_mixin.HeadersMixin 
+SearchClient
+Constructor
+Python
+Copy
+SearchClient(endpoint: str, index_name: str, credential: AzureKeyCredential | AsyncTokenCredential, **kwargs: Any)
+Parameters
+Expand table
+Name	Description
+endpoint
+Required
+	
+str
+The URL endpoint of an Azure search service
+index_name
+Required
+	
+str
+The name of the index to connect to
+credential
+Required
+	
+AzureKeyCredential or AsyncTokenCredential
+A credential to authorize search client requests
+Keyword-Only Parameters
+Expand table
+Name	Description
+api_version
+	
+str
+The Search API version to use for requests.
+audience
+	
+str
+sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered when using a shared key. If audience is not provided, the public cloud audience will be assumed.
+Examples
+Creating the SearchClient with an API key.
+Python
+Copy
+   from azure.core.credentials import AzureKeyCredential
+   from azure.search.documents.aio import SearchClient
+   service_endpoint = os.environ["AZURE_SEARCH_SERVICE_ENDPOINT"]
+   index_name = os.environ["AZURE_SEARCH_INDEX_NAME"]
+   key = os.environ["AZURE_SEARCH_API_KEY"]
+   search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(key))
+Methods
+Expand table
+autocomplete	
+Get search auto-completion results from the Azure search index.
+close	
+Close the session. :return: None :rtype: None
+delete_documents	
+Delete documents from the Azure search index
+Delete removes the specified document from the index. Any field you specify in a delete operation, other than the key field, will be ignored. If you want to remove an individual field from a document, use merge_documents instead and set the field explicitly to None.
+Delete operations are idempotent. That is, even if a document key does not exist in the index, attempting a delete operation with that key will result in a 200 status code.
+get_document	
+Retrieve a document from the Azure search index by its key.
+get_document_count	
+Return the number of documents in the Azure search index.
+index_documents	
+Specify a document operations to perform as a batch.
+:raises ~azure.search.documents.RequestEntityTooLargeError
+merge_documents	
+Merge documents in to existing documents in the Azure search index.
+Merge updates an existing document with the specified fields. If the document doesn't exist, the merge will fail. Any field you specify in a merge will replace the existing field in the document. This also applies to collections of primitive and complex types.
+merge_or_upload_documents	
+Merge documents in to existing documents in the Azure search index, or upload them if they do not yet exist.
+This action behaves like merge_documents if a document with the given key already exists in the index. If the document does not exist, it behaves like upload_documents with a new document.
+search	
+Search the Azure search index for documents.
+send_request	
+Runs a network request using the client's existing pipeline.
+suggest	
+Get search suggestion results from the Azure search index.
+upload_documents	
+Upload documents to the Azure search index.
+An upload action is similar to an "upsert" where the document will be inserted if it is new and updated/replaced if it exists. All fields are replaced in the update case.
+autocomplete
+Get search auto-completion results from the Azure search index.
+Python
+Copy
+async autocomplete(search_text: str, suggester_name: str, *, mode: str | AutocompleteMode | None = None, filter: str | None = None, use_fuzzy_matching: bool | None = None, highlight_post_tag: str | None = None, highlight_pre_tag: str | None = None, minimum_coverage: float | None = None, search_fields: List[str] | None = None, top: int | None = None, **kwargs) -> List[Dict]
+Parameters
+Expand table
+Name	Description
+search_text
+Required
+	
+str
+The search text on which to base autocomplete results.
+suggester_name
+Required
+	
+str
+The name of the suggester as specified in the suggesters collection that's part of the index definition.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[Dict]
+	
+List of auto-completion results.
+Examples
+Get a auto-completions.
+Python
+Copy
+   from azure.core.credentials import AzureKeyCredential
+   from azure.search.documents.aio import SearchClient
+   search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(key))
+   async with search_client:
+       results = await search_client.autocomplete(search_text="bo", suggester_name="sg")
+       print("Autocomplete suggestions for 'bo'")
+       for result in results:
+           print("    Completion: {}".format(result["text"]))
+close
+Close the session. :return: None :rtype: None
+Python
+Copy
+async close() -> None
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+delete_documents
+Delete documents from the Azure search index
+Delete removes the specified document from the index. Any field you specify in a delete operation, other than the key field, will be ignored. If you want to remove an individual field from a document, use merge_documents instead and set the field explicitly to None.
+Delete operations are idempotent. That is, even if a document key does not exist in the index, attempting a delete operation with that key will result in a 200 status code.
+Python
+Copy
+async delete_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]
+Parameters
+Expand table
+Name	Description
+documents
+Required
+	
+list[dict]
+A list of documents to delete.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[IndexingResult]
+	
+List of IndexingResult
+Examples
+Delete existing documents to an index
+Python
+Copy
+   result = await search_client.upload_documents(documents=[{"hotelId": "1000"}])
+   print("Delete new document succeeded: {}".format(result[0].succeeded))
+get_document
+Retrieve a document from the Azure search index by its key.
+Python
+Copy
+async get_document(key: str, selected_fields: List[str] | None = None, **kwargs: Any) -> Dict
+Parameters
+Expand table
+Name	Description
+key
+Required
+	
+str
+The primary key value for the document to retrieve
+selected_fields
+Required
+	
+list[str]
+an allow-list of fields to include in the results
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+dict
+	
+The document that matches the specified key
+Examples
+Get a specific document from the search index.
+Python
+Copy
+   from azure.core.credentials import AzureKeyCredential
+   from azure.search.documents.aio import SearchClient
+   search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(key))
+   async with search_client:
+       result = await search_client.get_document(key="23")
+       print("Details for hotel '23' are:")
+       print("        Name: {}".format(result["hotelName"]))
+       print("      Rating: {}".format(result["rating"]))
+       print("    Category: {}".format(result["category"]))
+get_document_count
+Return the number of documents in the Azure search index.
+Python
+Copy
+async get_document_count(**kwargs: Any) -> int
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+int
+	
+The count of documents in the index
+index_documents
+Specify a document operations to perform as a batch.
+:raises ~azure.search.documents.RequestEntityTooLargeError
+Python
+Copy
+async index_documents(batch: IndexDocumentsBatch, **kwargs: Any) -> List[IndexingResult]
+Parameters
+Expand table
+Name	Description
+batch
+Required
+	
+IndexDocumentsBatch
+A batch of document operations to perform.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[IndexingResult]
+	
+List of IndexingResult
+merge_documents
+Merge documents in to existing documents in the Azure search index.
+Merge updates an existing document with the specified fields. If the document doesn't exist, the merge will fail. Any field you specify in a merge will replace the existing field in the document. This also applies to collections of primitive and complex types.
+Python
+Copy
+async merge_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]
+Parameters
+Expand table
+Name	Description
+documents
+Required
+	
+list[dict]
+A list of documents to merge.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[IndexingResult]
+	
+List of IndexingResult
+Examples
+Merge fields into existing documents to an index
+Python
+Copy
+   result = await search_client.upload_documents(documents=[{"hotelId": "1000", "rating": 4.5}])
+   print("Merge into new document succeeded: {}".format(result[0].succeeded))
+merge_or_upload_documents
+Merge documents in to existing documents in the Azure search index, or upload them if they do not yet exist.
+This action behaves like merge_documents if a document with the given key already exists in the index. If the document does not exist, it behaves like upload_documents with a new document.
+Python
+Copy
+async merge_or_upload_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]
+Parameters
+Expand table
+Name	Description
+documents
+Required
+	
+list[dict]
+A list of documents to merge or upload.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[IndexingResult]
+	
+List of IndexingResult
+search
+Search the Azure search index for documents.
+Python
+Copy
+async search(search_text: str | None = None, *, include_total_count: bool | None = None, facets: List[str] | None = None, filter: str | None = None, highlight_fields: str | None = None, highlight_post_tag: str | None = None, highlight_pre_tag: str | None = None, minimum_coverage: float | None = None, order_by: List[str] | None = None, query_type: str | QueryType | None = None, scoring_parameters: List[str] | None = None, scoring_profile: str | None = None, semantic_query: str | None = None, search_fields: List[str] | None = None, search_mode: str | SearchMode | None = None, query_answer: str | QueryAnswerType | None = None, query_answer_count: int | None = None, query_answer_threshold: float | None = None, query_caption: str | QueryCaptionType | None = None, query_caption_highlight_enabled: bool | None = None, semantic_configuration_name: str | None = None, select: List[str] | None = None, skip: int | None = None, top: int | None = None, scoring_statistics: str | ScoringStatistics | None = None, session_id: str | None = None, vector_queries: List[VectorQuery] | None = None, vector_filter_mode: str | VectorFilterMode | None = None, semantic_error_mode: str | SemanticErrorMode | None = None, semantic_max_wait_in_milliseconds: int | None = None, **kwargs) -> AsyncSearchItemPaged[Dict]
+Parameters
+Expand table
+Name	Description
+search_text
+Required
+	
+str
+A full-text search query expression; Use "*" or omit this parameter to match all documents.
+Keyword-Only Parameters
+Expand table
+Name	Description
+include_total_count
+	
+bool
+A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true may have a performance impact. Note that the count returned is an approximation.
+facets
+	
+list[str]
+The list of facet expressions to apply to the search query. Each facet expression contains a field name, optionally followed by a comma-separated list of name:value pairs.
+filter
+	
+str
+The OData $filter expression to apply to the search query.
+highlight_fields
+	
+str
+The comma-separated list of field names to use for hit highlights. Only searchable fields can be used for hit highlighting.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. Default is .
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. Default is .
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by a search query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 100.
+order_by
+	
+list[str]
+The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to indicate ascending, and desc to indicate descending. The default is ascending order. Ties will be broken by the match scores of documents. If no OrderBy is specified, the default sort order is descending by document match score. There can be at most 32 $orderby clauses.
+query_type
+	
+str or QueryType
+A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the Lucene query syntax. Possible values include: 'simple', 'full', "semantic".
+scoring_parameters
+	
+list[str]
+The list of parameter values to be used in scoring functions (for example, referencePointParameter) using the format name-values. For example, if the scoring profile defines a function with a parameter called 'mylocation' the parameter string would be "mylocation–122.2,44.8" (without the quotes).
+scoring_profile
+	
+str
+The name of a scoring profile to evaluate match scores for matching documents in order to sort the results.
+semantic_query
+	
+str
+Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different queries between the base retrieval and ranking phase, and the L2 semantic phase.
+search_fields
+	
+list[str]
+The list of field names to which to scope the full-text search. When using fielded search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression take precedence over any field names listed in this parameter.
+search_mode
+	
+str or SearchMode
+A value that specifies whether any or all of the search terms must be matched in order to count the document as a match. Possible values include: 'any', 'all'.
+query_answer
+	
+str or QueryAnswerType
+This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from key passages in the highest ranked documents. Possible values include: "none", "extractive".
+query_answer_count
+	
+int
+This parameter is only valid if the query type is 'semantic' and query answer is 'extractive'. Configures the number of answers returned. Default count is 1.
+query_answer_threshold
+	
+float
+This parameter is only valid if the query type is 'semantic' and query answer is 'extractive'. Configures the number of confidence threshold. Default count is 0.7.
+query_caption
+	
+str or QueryCaptionType
+This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from key passages in the highest ranked documents. Defaults to 'None'. Possible values include: "none", "extractive".
+query_caption_highlight_enabled
+	
+bool
+This parameter is only valid if the query type is 'semantic' when query caption is set to 'extractive'. Determines whether highlighting is enabled. Defaults to 'true'.
+semantic_configuration_name
+	
+str
+The name of the semantic configuration that will be used when processing documents for queries of type semantic.
+select
+	
+list[str]
+The list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema are included.
+skip
+	
+int
+The number of search results to skip. This value cannot be greater than 100,000. If you need to scan documents in sequence, but cannot use $skip due to this limitation, consider using $orderby on a totally-ordered key and $filter with a range query instead.
+top
+	
+int
+The number of search results to retrieve. This can be used in conjunction with $skip to implement client-side paging of search results. If results are truncated due to server-side paging, the response will include a continuation token that can be used to issue another Search request for the next page of results.
+scoring_statistics
+	
+str or ScoringStatistics
+A value that specifies whether we want to calculate scoring statistics (such as document frequency) globally for more consistent scoring, or locally, for lower latency. The default is 'local'. Use 'global' to aggregate scoring statistics globally before scoring. Using global scoring statistics can increase latency of search queries. Possible values include: "local", "global".
+session_id
+	
+str
+A value to be used to create a sticky session, which can help getting more consistent results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the requests across replicas and adversely affect the performance of the search service. The value used as sessionId cannot start with a '_' character.
+semantic_error_mode
+	
+str or SemanticErrorMode
+Allows the user to choose whether a semantic call should fail completely (default / current behavior), or to return partial results. Known values are: "partial" and "fail".
+semantic_max_wait_in_milliseconds
+	
+int
+Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish processing before the request fails.
+vector_queries
+	
+list[VectorQuery]
+The query parameters for vector and hybrid search queries.
+vector_filter_mode
+	
+str or VectorFilterMode
+Determines whether or not filters are applied before or after the vector search is performed. Default is 'preFilter'. Known values are: "postFilter" and "preFilter".
+Returns
+Expand table
+Type	Description
+AsyncSearchItemPaged[dict]
+	
+List of search results.
+Examples
+Get search result facets.
+Python
+Copy
+   from azure.core.credentials import AzureKeyCredential
+   from azure.search.documents.aio import SearchClient
+   search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(key))
+   async with search_client:
+       results = await search_client.search(search_text="WiFi", facets=["category,count:3", "parkingIncluded"])
+       facets: Dict[str, List[str]] = cast(Dict[str, List[str]], await results.get_facets())
+       print("Catgory facet counts for hotels:")
+       for facet in facets["category"]:
+           print("    {}".format(facet))
+send_request
+Runs a network request using the client's existing pipeline.
+Python
+Copy
+async send_request(request: HttpRequest, *, stream: bool = False, **kwargs) -> AsyncHttpResponse
+Parameters
+Expand table
+Name	Description
+request
+Required
+	
+HttpRequest
+The network request you want to make.
+Keyword-Only Parameters
+Expand table
+Name	Description
+stream
+	
+bool
+Whether the response payload will be streamed. Defaults to False.
+Returns
+Expand table
+Type	Description
+AsyncHttpResponse
+	
+The response of your network call. Does not do error handling on your response.
+suggest
+Get search suggestion results from the Azure search index.
+Python
+Copy
+async suggest(search_text: str, suggester_name: str, *, filter: str | None = None, use_fuzzy_matching: bool | None = None, highlight_post_tag: str | None = None, highlight_pre_tag: str | None = None, minimum_coverage: float | None = None, order_by: List[str] | None = None, search_fields: List[str] | None = None, select: List[str] | None = None, top: int | None = None, **kwargs) -> List[Dict]
+Parameters
+Expand table
+Name	Description
+search_text
+Required
+	
+str
+Required. The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
+suggester_name
+Required
+	
+str
+Required. The name of the suggester as specified in the suggesters collection that's part of the index definition.
+Keyword-Only Parameters
+Expand table
+Name	Description
+filter
+	
+str
+An OData expression that filters the documents considered for suggestions.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the suggestions query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy suggestions queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting of suggestions is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting of suggestions is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by a suggestions query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+order_by
+	
+list[str]
+The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order is descending by document match score. There can be at most 32 $orderby clauses.
+search_fields
+	
+list[str]
+The list of field names to search for the specified search text. Target fields must be included in the specified suggester.
+select
+	
+list[str]
+The list of fields to retrieve. If unspecified, only the key field will be included in the results.
+top
+	
+int
+The number of suggestions to retrieve. The value must be a number between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[dict]
+	
+List of suggestion results.
+Examples
+Get search suggestions.
+Python
+Copy
+   from azure.core.credentials import AzureKeyCredential
+   from azure.search.documents.aio import SearchClient
+   search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(key))
+   async with search_client:
+       results = await search_client.suggest(search_text="coffee", suggester_name="sg")
+       print("Search suggestions for 'coffee'")
+       for result in results:
+           hotel = await search_client.get_document(key=result["hotelId"])
+           print("    Text: {} for Hotel: {}".format(repr(result["text"]), hotel["hotelName"]))
+upload_documents
+Upload documents to the Azure search index.
+An upload action is similar to an "upsert" where the document will be inserted if it is new and updated/replaced if it exists. All fields are replaced in the update case.
+Python
+Copy
+async upload_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]
+Parameters
+Expand table
+Name	Description
+documents
+Required
+	
+list[dict]
+A list of documents to upload.
+Keyword-Only Parameters
+Expand table
+Name	Description
+mode
+	
+str or AutocompleteMode
+Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'.
+filter
+	
+str
+An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
+use_fuzzy_matching
+	
+bool
+A value indicating whether to use fuzzy matching for the autocomplete query. Default is false. When set to true, the query will find terms even if there's a substituted or missing character in the search text. While this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries are slower and consume more resources.
+highlight_post_tag
+	
+str
+A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting is disabled.
+highlight_pre_tag
+	
+str
+A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting is disabled.
+minimum_coverage
+	
+float
+A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful for ensuring search availability even for services with only one replica. The default is 80.
+search_fields
+	
+list[str]
+The list of field names to consider when querying for auto-completed terms. Target fields must be included in the specified suggester.
+top
+	
+int
+The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
+Returns
+Expand table
+Type	Description
+list[IndexingResult]
+	
+List of IndexingResult
+Examples
+Upload new documents to an index
+Python
+Copy
+   DOCUMENT = {
+       "category": "Hotel",
+       "hotelId": "1000",
+       "rating": 4.0,
+       "rooms": [],
+       "hotelName": "Azure Inn",
+   }
+   result = await search_client.upload_documents(documents=[DOCUMENT])
+   print("Upload of new document succeeded: {}".format(result[0].succeeded))
+ Collaborate with us on GitHub
+The source for this content can be found on GitHub, where you can also create and review issues and pull requests. For more information, see our contributor guide.
+Azure SDK for Python feedback
+Azure SDK for Python is an open source project. Select a link to provide feedback:
+ Open a documentation issue
+ Provide product feedback
+In this article
+Constructor
+Parameters
+Keyword-Only Parameters
+Methods
+autocomplete
+close
+delete_documents
+get_document
+get_document_count
+index_documents
+merge_documents
+merge_or_upload_documents
+search
+send_request
+suggest
+upload_documents
+English (United States)
+Your Privacy Choices
+Theme
+Previous Versions
+Blog
+Contribute
+Privacy
+Terms of Use
+Trademarks
+© Microsoft 2024

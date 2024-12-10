@@ -25,17 +25,7 @@ namespace UtilityLibraries
             // Get all text content of the current html.
             var htmlText = await page.Locator("html").InnerTextAsync();
 
-            string pattern = @":[\w]+(?:\s+[\w]+){0,2}:";
-            MatchCollection matches = Regex.Matches(htmlText, pattern);
-
-            // Add the results of regular matching to errorList in a loop.
-            foreach (Match match in matches)
-            {
-                if(match.Value == ":mm:" || match.Value == ":05:"){
-                    continue;
-                }
-                errorList.Add(match.Value);
-            }
+            MatchGarbledText(errorList, htmlText);
 
             var formattedList = errorList
                 .GroupBy(item => item)
@@ -54,6 +44,24 @@ namespace UtilityLibraries
             await browser.CloseAsync();
 
             return res;
+        }
+
+        private void MatchGarbledText(List<string> errorList, string htmlText){
+            string pattern = @":[\w]+(?:\s+[\w]+){0,2}:";
+            MatchCollection matches = Regex.Matches(htmlText, pattern);
+            // Add the results of regular matching to errorList in a loop.
+            foreach (Match match in matches)
+            {
+                if(match.Value == ":mm:" || match.Value == ":05:"){
+                    continue;
+                }
+                errorList.Add(match.Value);
+            }
+        }
+        public bool ValidateRule(string htmlText){
+            var errorList = new List<string>();
+            MatchGarbledText(errorList, htmlText);
+            return errorList.Count > 0 ? false : true;
         }
     }
 }
