@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentValidation.Test", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSource", "DataSource\DataSource.csproj", "{0DEE0A9C-0856-439E-86E7-4E1BC763BC13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationRule.Test", "ValidationRule.Test\ValidationRule.Test.csproj", "{84BF7249-E884-4BBB-B025-3C6D348BA506}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +36,9 @@ Global
 		{0DEE0A9C-0856-439E-86E7-4E1BC763BC13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DEE0A9C-0856-439E-86E7-4E1BC763BC13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DEE0A9C-0856-439E-86E7-4E1BC763BC13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
