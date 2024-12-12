@@ -1,11 +1,13 @@
 namespace UtilityLibraries;
-public interface IValidation{
+public interface IValidation
+{
     Task<TResult> Validate(string testLink);
 }
 
 public struct TResult
 {
     public bool Result { get; set; }
+    public string? TestCase { get; set; }
     public string? ErrorLink { get; set; }
     public string? ErrorInfo { get; set; }
     public int NumberOfOccurrences { get; set; }
@@ -15,14 +17,17 @@ public struct TResult
     public TResult()
     {
         Result = true;
+        TestCase = "";
         ErrorLink = "";
         ErrorInfo = "";
         NumberOfOccurrences = 0;
         LocationsOfErrors = new List<string>();
     }
 
-    public string FormatErrorMessage(){
+    public string FormatErrorMessage()
+    {
         return $@"Error Report:
+{"\t"}Test Case: {TestCase}.
 {"\t"}Error Link: {ErrorLink}.
 {"\t"}Error Info: {ErrorInfo}.
 {"\t"}Number of Occurrences: {NumberOfOccurrences}." + ((LocationsOfErrors.Count == 0) ? "\n" : $@"
