@@ -1,0 +1,12 @@
+name: Run azure-cognitiveservices-speech package content validation
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - template: /eng/common/content-validation.yml
+    parameters:
+      ServiceName: 'Cognitive Services'
+      PackageName: 'azure-cognitiveservices-speech'
+      DotNetSdkVersion: '8.0.x' 
