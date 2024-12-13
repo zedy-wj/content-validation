@@ -74,6 +74,7 @@ jobs:
 
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
+      condition: failed()
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/**/*.xlsx
         artifactName: TestResults
