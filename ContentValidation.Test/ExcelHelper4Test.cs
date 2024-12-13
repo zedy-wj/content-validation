@@ -12,7 +12,7 @@ public class ExcelHelper4Test
     {
         // Define the file path for the Excel file
         string filePath = "TestData.xlsx";
-        string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+        string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../.."));
         ExcelHelper4Test.filePath = Path.Combine(rootDirectory, filePath);
         Console.WriteLine(ExcelHelper4Test.filePath);
 
