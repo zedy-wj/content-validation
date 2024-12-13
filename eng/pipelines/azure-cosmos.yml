@@ -1,0 +1,12 @@
+name: Run azure-cosmos package content validation
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - template: /eng/common/content-validation.yml
+    parameters:
+      ServiceName: 'Cosmos DB'
+      PackageName: 'azure-cosmos'
+      DotNetSdkVersion: '8.0.x' 
