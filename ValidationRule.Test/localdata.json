@@ -1,0 +1,27 @@
+[
+    {
+        "Type": "ExtraLabelValidation",
+        "Rules": [
+            {
+                "RuleName": "ExtraLabel",
+                "Count": 0,
+                "LocalPath": "../../../HTML/ExtraLabelValidation/ExtraLabel.html"
+            },
+            {
+                "RuleName": "Right",
+                "Count": 0,
+                "LocalPath": "../../../HTML/ExtraLabelValidation/Right.html"
+            }
+        ]
+    },
+    {
+        "Type": "Validation123421312",
+        "Rules": [
+            {
+                "RuleName": "sdfgsdf",
+                "Count": 2,
+                "LocalPath": "../../../HTML/test.html"
+            }
+        ]
+    }
+]

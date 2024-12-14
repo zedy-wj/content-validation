@@ -64,7 +64,7 @@ public class ExtraLabelValidation : IValidation
             int count = 0;
             while ((index = htmlText.IndexOf(label, index)) != -1)
             {
-                // Filter string "<true".
+                // Filter string "<true". from "<tr"
                 if(htmlText.IndexOf("<true", index) == index){
                     index += "<true".Length;
                     continue;
