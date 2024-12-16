@@ -1,4 +1,4 @@
-name: Run azure-ai-ml package content validation
+name: Run azure-keyvault-administration package content validation
 trigger: none
 
 pool:
@@ -7,6 +7,6 @@ pool:
 jobs:
   - template: /eng/common/content-validation.yml
     parameters:
-      ServiceName: 'Machine Learning'
-      PackageName: 'azure-ai-ml'
+      ServiceName: 'Key Vault'
+      PackageName: 'azure-keyvault-administration'
       DotNetSdkVersion: '8.0.x' 
