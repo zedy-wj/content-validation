@@ -10,40 +10,22 @@ variables:
   repoName: 'content-validation'
 
 steps:
-- task: PowerShell@2
+- task: Bash@3
   displayName: 'Create GitHub Issue'
   inputs:
     targetType: 'inline'
     script: |
-      # Set variables:
-      $pat = "$(github_token)"
-      $owner = "$(repoOwner)"
-      $repo = "$(repoName)"
-      $title = "New Issue from Azure DevOps Pipeline"
-      $body = "This issue was created automatically by an Azure DevOps Pipeline."
-      $labels = "bug, automation"
+      #!/bin/bash
+      set -e
 
-      # Configure API URL
-      $url = "https://api.github.com/repos/$owner/$repo/issues"
-      
-      # Create authentication header:
-      $base64Auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-oauth-basic: $pat"))
-      $headers = @{
-          "Authorization" = "Basic $base64Auth";
-          "Content-Type" = "application/json";
-      }
-      
-      # Create request body:
-      $json = @"
-      {
-          "title": "$title",
-          "body": "$body",
-          "labels": [$labels]
-      }
-      "@
-      
-      # Call GitHub API:
-      $response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $json -ContentType "application/json"
-      
-      # Output response:
-      Write-Output "Response: $($response | ConvertTo-Json -Depth 100)"
+      URL="https://api.github.com/repos/$(repoOwner)/$(repoName)/issues"
+      JSON='{
+        "title": "Issue created by Azure DevOps Pipeline",
+        "body": "This is the body of the issue created by Azure DevOps Pipeline.",
+        "labels": ["bug"]
+      }'
+
+      response=$(curl -s -X POST -H "Authorization: token $github_token" -H "Content-Type: application/json" -d "$JSON" "$URL")
+
+      echo "Response from GitHub API:"
+      echo "$response"
