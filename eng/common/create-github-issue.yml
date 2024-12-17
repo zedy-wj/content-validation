@@ -5,9 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  github_token: $(GITHUB_PAT)
-  repoOwner: 'zedy-wj'
-  repoName: 'content-validation'
+  GitHubPat: $(GITHUB_PAT)
+  RepoOwner: $(REPO_OWNER)
+  RepoName: $(REPO_NAME)
 
 steps:
 - task: Bash@3
@@ -18,14 +18,14 @@ steps:
       #!/bin/bash
       set -e
 
-      URL="https://api.github.com/repos/$(repoOwner)/$(repoName)/issues"
+      URL="https://api.github.com/repos/$(RepoOwner)/$(RepoName)/issues"
       JSON='{
         "title": "Issue created by Azure DevOps Pipeline",
         "body": "This is the body of the issue created by Azure DevOps Pipeline.",
         "labels": ["bug"]
       }'
 
-      response=$(curl -s -X POST -H "Authorization: token $(github_token)" -H "Content-Type: application/json" -d "$JSON" "$URL")
+      response=$(curl -s -X POST -H "Authorization: token $(GitHubPat)" -H "Content-Type: application/json" -d "$JSON" "$URL")
 
       echo "Response from GitHub API:"
       echo "$response"
