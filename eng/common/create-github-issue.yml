@@ -16,9 +16,9 @@ steps:
     targetType: 'inline'
     script: |
       # Set variables:
-      $pat = $(github_token)
-      $owner = $(repoOwner)
-      $repo = $(repoName)
+      $pat = "$(github_token)"
+      $owner = "$(repoOwner)"
+      $repo = "$(repoName)"
       $title = "New Issue from Azure DevOps Pipeline"
       $body = "This issue was created automatically by an Azure DevOps Pipeline."
       $labels = "bug, automation"
