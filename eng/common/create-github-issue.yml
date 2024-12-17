@@ -5,7 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: 'GitHubVariables'
+  github_token: $(GITHUB_PAT)
+  repoOwner: 'zedy-wj'
+  repoName: 'content-validation'
 
 steps:
 - task: PowerShell@2
@@ -14,9 +16,9 @@ steps:
     targetType: 'inline'
     script: |
       # Set variables:
-      $pat = "$(GITHUB_PAT)"
-      $owner = "$(GITHUB_OWNER)"
-      $repo = "$(GITHUB_REPO)"
+      $pat = $(github_token)
+      $owner = $(repoOwner)
+      $repo = $(repoName)
       $title = "New Issue from Azure DevOps Pipeline"
       $body = "This issue was created automatically by an Azure DevOps Pipeline."
       $labels = "bug, automation"
