@@ -10,7 +10,7 @@ REPO_NAME=$5
 ISSUE_TITLE="[$SERVICE_NAME - $PACKAGE_NAME] Content Validation Issue for learn microsoft website."
 
 # Querying whether issue exist
-QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+type:issue+state:open+title:$ISSUE_TITLE"
+QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=1"
 
 url_encode(){
   local encoded="${1// /%20}"
@@ -21,7 +21,9 @@ url_encode(){
 
 QUERY_URL=$(url_encode "$QUERY_URL")
 # Getting response
-response=$(curl -s -H "Authorization: token $GITHUB_PAT" "$QUERY_URL")
+response=$(curl -s \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: token $GITHUB_PAT" "$QUERY_URL")
 # Parsing the response
 item_count=$(echo "$response" | jq -r '.total_count')
 
