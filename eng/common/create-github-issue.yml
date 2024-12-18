@@ -4,6 +4,14 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
+parameters:
+  - name: ServiceName
+    type: string
+    default: 'Search'
+  - name: PackageName
+    type: string
+    default: 'azure-search-documents'
+
 variables:
   GitHubPat: $(GITHUB_PAT)
   RepoOwner: $(REPO_OWNER)
@@ -11,21 +19,20 @@ variables:
 
 steps:
 - task: Bash@3
-  displayName: 'Create GitHub Issue'
+  displayName: 'Set Script Executable'
   inputs:
     targetType: 'inline'
     script: |
-      #!/bin/bash
-      set -e
+      chmod +x $(Build.SourcesDirectory)/eng/common/create-github-issue.sh
 
-      URL="https://api.github.com/repos/$(RepoOwner)/$(RepoName)/issues"
-      JSON='{
-        "title": "Issue created by Azure DevOps Pipeline",
-        "body": "This is the body of the issue created by Azure DevOps Pipeline.",
-        "labels": ["bug"]
-      }'
-
-      response=$(curl -s -X POST -H "Authorization: token $(GitHubPat)" -H "Content-Type: application/json" -d "$JSON" "$URL")
-
-      echo "Response from GitHub API:"
-      echo "$response"
+- task: Bash@3
+  displayName: 'Create GitHub Issue'
+  inputs:
+    targetType: 'filePath'
+    filePath: '$(Build.SourcesDirectory)/eng/common/create-github-issue.sh'
+    arguments: >-
+      ${{ parameters.ServiceName }}
+      ${{ parameters.PackageName }}
+      $(GitHubPat)
+      $(RepoOwner)
+      $(RepoName)
