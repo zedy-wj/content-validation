@@ -32,12 +32,12 @@ namespace ExcelCompare
         static void Main(string[] args)
         {
             //pipelin result json file in this time
-            string originPath = "../../../new.json";
+            string originPath = "../../../../Reports/new.json";
             //pipleline result json file last time
-            string comparePath = "../../../old.json";
+            string comparePath = "../../../../Reports/old.json";
             //compare result 
-            string resultPathDff = "../../../ResultListDff.json";
-            string resultPathSame = "../../../ResultListSame.json";
+            string resultPathDff = "../../../../Reports/ResultListDff.json";
+            string resultPathSame = "../../../../Reports/ResultListSame.json";
 
             Console.WriteLine("Compare Started！");
             try
