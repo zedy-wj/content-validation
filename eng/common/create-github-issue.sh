@@ -8,7 +8,7 @@ GITHUB_PAT=$3
 REPO_OWNER=$4
 REPO_NAME=$5
 ISSUE_TITLE="[$SERVICE_NAME - $PACKAGE_NAME] Content Validation Issue for learn microsoft website."
-CHECK_PATH="/Reports"
+CHECK_PATH="../../Reports"
 SPECIFIC_FILE="$CHECK_PATH/ReportResults.txt"
 
 if [ -e "$SPECIFIC_FILE" ]; then
