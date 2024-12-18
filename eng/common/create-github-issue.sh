@@ -14,8 +14,8 @@ QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+ty
 
 url_encode(){
   local encoded="${1// /%20}"
-  encoded="${encoded//]/%5D}"
-  encoded="${encoded//[/%5B}"
+  encoded="${encoded//\[/%5B}"
+  encoded="${encoded//\]/%5D}"
   echo $encoded
 }
 
@@ -41,3 +41,4 @@ if [ "$item_count" -eq 0 ]; then
 
 else
   echo "Issue already exist."
+fi
