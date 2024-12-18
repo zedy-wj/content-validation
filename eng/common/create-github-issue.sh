@@ -8,6 +8,17 @@ GITHUB_PAT=$3
 REPO_OWNER=$4
 REPO_NAME=$5
 ISSUE_TITLE="[$SERVICE_NAME - $PACKAGE_NAME] Content Validation Issue for learn microsoft website."
+CHECK_PATH="/Reports"
+SPECIFIC_FILE="$CHECK_PATH/ReportResults.txt"
+
+if [ -e "$SPECIFIC_FILE" ]; then
+    echo "$SPECIFIC_FILE exists"
+    file_content=$(cat "$SPECIFIC_FILE")
+    echo "$file_content"
+else
+    echo "$SPECIFIC_FILE does not exist, have not new issues."
+    exit 0
+fi
 
 # Querying whether issue exist
 QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=1"
@@ -32,7 +43,7 @@ if [ "$item_count" -eq 0 ]; then
   URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/issues"
   JSON="{
     \"title\": \"$ISSUE_TITLE\",
-    \"body\": \"This is the body of the issue created by Azure DevOps Pipeline.\",
+    \"body\": \"$file_content\",
     \"labels\": [\"bug\"]
   }"
 
@@ -43,4 +54,5 @@ if [ "$item_count" -eq 0 ]; then
 
 else
   echo "Issue already exist."
+  echo "$response"
 fi
