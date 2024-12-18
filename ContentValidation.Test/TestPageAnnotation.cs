@@ -22,6 +22,7 @@ namespace ContentValidation.Test
         public void SaveTestData()
         {
             ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults);
+            JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults);
         }
 
         [Test]

@@ -38,6 +38,9 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestTableMissingContentResults);
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults);
+            JsonHelper4Test.AddTestResult(TestTableMissingContentResults);
+            JsonHelper4Test.AddTestResult(TestGarbledTextResults);
+            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults);
         }
 
 

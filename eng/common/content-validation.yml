@@ -76,6 +76,6 @@ jobs:
       displayName: "Upload pipeline test data"
       condition: failed()
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/**/*.xlsx
+        targetPath: $(System.DefaultWorkingDirectory)/Reports
         artifactName: TestResults
         publishLocation: "pipeline"

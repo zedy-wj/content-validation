@@ -25,6 +25,8 @@ namespace ContentValidation.Test
         {
             ExcelHelper4Test.AddTestResult(TestExtraLabelResults);
             ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults);
+            JsonHelper4Test.AddTestResult(TestExtraLabelResults);
+            JsonHelper4Test.AddTestResult(TestUnnecessarySymbolsResults);
         }
 
         [Test]
