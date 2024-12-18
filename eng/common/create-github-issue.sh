@@ -9,7 +9,7 @@ REPO_OWNER=$4
 REPO_NAME=$5
 ISSUE_TITLE="[$SERVICE_NAME - $PACKAGE_NAME] Content Validation Issue for learn microsoft website."
 
-REPO_ROOT="$(System.DefaultWorkingDirectory)"
+REPO_ROOT="$PWD"
 RELATIVE_PATH="Reports"
 SPECIFIC_FILE="$REPO_ROOT/$RELATIVE_PATH/ReportResults.txt"
 
