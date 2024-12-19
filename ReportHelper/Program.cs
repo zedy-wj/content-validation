@@ -9,27 +9,27 @@ namespace ReportHelper
         {
             // 获取数据
             //pipelin result json file in this time
-            string newDataPath = "../../../../Reports/ReportResults.json";
+            string newDataFileName = "ReportResults.json";
             //pipleline result json file last time
-            string oldDataPath = "../../../../Reports/OldReportResultsData.json";
+            string oldDataFileName = "OldReportResultsData.json";
 
             List<TResult4Json> newDataList = new List<TResult4Json>();
             List<TResult4Json> oldDataList = new List<TResult4Json>();
 
-            if (File.Exists(newDataPath))
+            if (File.Exists(newDataFileName))
             {
                 Console.WriteLine("有issue");
-                newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
+                newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataFileName)) ?? new List<TResult4Json>();
             }
             else
             {
                 Console.WriteLine("没有issue,newDataList使用空数据,showReportResults.xlsx文件中same和diff没有数据");
             }
 
-            if (File.Exists(oldDataPath))
+            if (File.Exists(oldDataFileName))
             {
                 Console.WriteLine("需要diff");
-                oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataPath)) ?? new List<TResult4Json>();
+                oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataFileName)) ?? new List<TResult4Json>();
             }
             else
             {
@@ -47,12 +47,12 @@ namespace ReportHelper
 
 
             // 保存数据
-            string sameDataPath = "../../../../Reports/SameReportResults.json";
-            string differentDataPath = "../../../../Reports/DifferentReportResults.json";
-            JsonHelper4Test.AddTestResult(sameList, sameDataPath);
-            JsonHelper4Test.AddTestResult(differentList, differentDataPath);
+            string sameDataFileName = "SameReportResults.json";
+            string differentDataFileName = "DifferentReportResults.json";
+            JsonHelper4Test.AddTestResult(sameList, sameDataFileName);
+            JsonHelper4Test.AddTestResult(differentList, differentDataFileName);
 
-            string excelFileName = "../../../../Reports/ShowReportResults.xlsx";
+            string excelFileName = "ShowReportResults.xlsx";
             string sameSheetName = "SameSheet";
             string differentSheetName = "DifferentSheet";
             ExcelHelper4Test.AddTestResult(sameList, excelFileName, sameSheetName);

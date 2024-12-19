@@ -11,7 +11,7 @@ namespace ReportHelper
         private static readonly object LockObj = new object();
 
         // Initialize the Excel file if it doesn't exist
-        public static void Init(string filePath, string sheetName)
+        public static string Init(string fileName, string sheetName)
         {
             // Define the root directory for the Excel file
             string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
@@ -20,15 +20,15 @@ namespace ReportHelper
                 Directory.CreateDirectory(rootDirectory);
             }
 
-            filePath = Path.Combine(rootDirectory, filePath);
+            string localFilePath = Path.Combine(rootDirectory, fileName);
 
             IWorkbook workbook;
 
             // Check if file exists
-            if (File.Exists(filePath))
+            if (File.Exists(localFilePath))
             {
                 // Load existing workbook
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite))
+                using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.ReadWrite))
                 {
                     workbook = WorkbookFactory.Create(fs);
                 }
@@ -58,19 +58,21 @@ namespace ReportHelper
             }
 
             // Save workbook
-            using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            using (var fs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
             {
                 workbook.Write(fs);
             }
 
             workbook.Close();
+
+            return localFilePath;
         }
-        public static void AddTestResult(ConcurrentQueue<TResult> testResults, string filePath, string sheetName)
+        public static void AddTestResult(ConcurrentQueue<TResult> testResults, string fileName, string sheetName)
         {
             lock (LockObj)
             {
-                Init(filePath, sheetName);
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite))
+                string localFilePath =  Init(fileName, sheetName);
+                using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.ReadWrite))
                 {
                     IWorkbook workbook = new XSSFWorkbook(fs);
                     ISheet sheet = workbook.GetSheet(sheetName);
@@ -118,7 +120,7 @@ namespace ReportHelper
                     }
 
                     // Save the updated workbook back to the file
-                    using (var outFs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    using (var outFs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
                     {
                         workbook.Write(outFs);
                         workbook.Close();
@@ -128,12 +130,12 @@ namespace ReportHelper
         }
 
 
-        public static void AddTestResult(List<TResult4Json> testResults, string filePath, string sheetName)
+        public static void AddTestResult(List<TResult4Json> testResults, string fileName, string sheetName)
         {
             lock (LockObj)
             {
-                Init(filePath, sheetName);
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite))
+                string localFilePath = Init(fileName, sheetName);
+                using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.ReadWrite))
                 {
                     IWorkbook workbook = new XSSFWorkbook(fs);
                     ISheet sheet = workbook.GetSheet(sheetName);
@@ -181,7 +183,7 @@ namespace ReportHelper
                     }
 
                     // Save the updated workbook back to the file
-                    using (var outFs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    using (var outFs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
                     {
                         workbook.Write(outFs);
                         workbook.Close();
@@ -198,7 +200,7 @@ namespace ReportHelper
         private static readonly object LockObj = new object();
 
         // Initialize the Json file if it doesn't exist
-        public static void Init(string filePath)
+        public static string Init(string filePath)
         {
 
             // Define the file path for the Excel file
@@ -207,25 +209,26 @@ namespace ReportHelper
             {
                 Directory.CreateDirectory(rootDirectory);
             }
-            filePath = Path.Combine(rootDirectory, filePath);
-
-
-            if (!File.Exists(filePath))
+            string localFilePath = Path.Combine(rootDirectory, filePath);
+            Console.WriteLine(localFilePath + "ssssssssssssssssssssssssssssssssss");
+            if (!File.Exists(localFilePath))
             {
                 var emptyList = new List<TResult4Json>();
                 string jsonString = JsonSerializer.Serialize(emptyList, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(filePath, jsonString);
+                File.WriteAllText(localFilePath, jsonString);
             }
+
+            return localFilePath;
 
         }
 
-        public static void AddTestResult(ConcurrentQueue<TResult> testResults, string filePath)
+        public static void AddTestResult(ConcurrentQueue<TResult> testResults, string fileName)
         {
 
             lock (LockObj)
             {
-                Init(filePath);
-                string jsonString = File.ReadAllText(filePath);
+                string localFilePath = Init(fileName);
+                string jsonString = File.ReadAllText(localFilePath);
                 List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString);
                 int count = jsonList.Count;
 
@@ -253,24 +256,23 @@ namespace ReportHelper
                     WriteIndented = true
                 };
 
-                File.WriteAllText(filePath, JsonSerializer.Serialize(jsonList, options));
+                File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
             }
         }
 
 
 
-        public static void AddTestResult(List<TResult4Json> testResults, string filePath)
+        public static void AddTestResult(List<TResult4Json> testResults, string fileName)
         {
             lock (LockObj)
             {
-                Init(filePath);
-                string jsonString = File.ReadAllText(filePath);
+               string localFilePath = Init(fileName);
+                string jsonString = File.ReadAllText(localFilePath);
                 List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString);
                 int count = jsonList.Count;
 
                 foreach (var res in testResults)
                 {
-
                     TResult4Json result = new TResult4Json
                     {
                         Number = ++count,
@@ -292,7 +294,7 @@ namespace ReportHelper
                     WriteIndented = true
                 };
 
-                File.WriteAllText(filePath, JsonSerializer.Serialize(jsonList, options));
+                File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
             }
         }
 
