@@ -40,6 +40,7 @@ steps:
     buildType: 'specific'
     project: 'content-validation-automation'
     pipeline: 'Azure App Configuration'
-    buildVersionToDownload: 'latest'
+    buildVersionToDownload: 'latestFromBranch'
+    branchName: 'wenjie-dev'
     artifactName: 'TestResults'
     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
