@@ -292,7 +292,6 @@ namespace ReportHelper
             }
         }
     }
-
     public class TResult4Json
     {
         [JsonPropertyName("NO.")]

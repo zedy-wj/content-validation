@@ -70,7 +70,6 @@ namespace ReportHelper
             List<string> differentLocationsList = new List<string>();
             if (newLocationsList == null && oldLocationsList == null) { return differentLocationsList; }
 
-            // 之前的if判断已经排除了两个都为null的情况
             if (oldLocationsList == null || newLocationsList == null) { return differentLocationsList; }
 
             foreach (var location in newLocationsList)
