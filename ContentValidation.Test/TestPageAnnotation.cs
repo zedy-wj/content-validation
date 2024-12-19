@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using System.Text.Json;
 using UtilityLibraries;
+using ReportHelper;
 using System.Collections.Concurrent;
 
 namespace ContentValidation.Test
@@ -21,8 +22,11 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults);
-            JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults);
+            string excelFilePath = ConstData.TotalIssuesExcelFileName;
+            string sheetName = "TotalIssues";
+            string jsonFilePath = ConstData.TotalIssuesJsonFileName;
+            ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, excelFilePath, sheetName);
+            JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, jsonFilePath);
         }
 
         [Test]
@@ -39,7 +43,7 @@ namespace ContentValidation.Test
             {
                 TestMissingTypeAnnotationResults.Enqueue(res);
             }
-            
+
             playwright.Dispose();
 
             Assert.That(res.Result, res.FormatErrorMessage());

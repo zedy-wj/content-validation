@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContentValidation\ContentValidation.csproj" />
+    <ProjectReference Include="..\ReportHelper\ReportHelper.csproj" />
   </ItemGroup>
 
 </Project>

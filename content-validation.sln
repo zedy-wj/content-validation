@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSource", "DataSource\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationRule.Test", "ValidationRule.Test\ValidationRule.Test.csproj", "{84BF7249-E884-4BBB-B025-3C6D348BA506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiffrentExcel", "DiffentExcel\DiffrentExcel.csproj", "{253F184B-41CA-4ECA-A225-14BAB4910872}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportHelper", "ReportHelper\ReportHelper.csproj", "{040FE259-3CCB-BFC4-5128-95397F5F13EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BF7249-E884-4BBB-B025-3C6D348BA506}.Release|Any CPU.Build.0 = Release|Any CPU
-		{253F184B-41CA-4ECA-A225-14BAB4910872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{253F184B-41CA-4ECA-A225-14BAB4910872}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{253F184B-41CA-4ECA-A225-14BAB4910872}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{253F184B-41CA-4ECA-A225-14BAB4910872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040FE259-3CCB-BFC4-5128-95397F5F13EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040FE259-3CCB-BFC4-5128-95397F5F13EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040FE259-3CCB-BFC4-5128-95397F5F13EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040FE259-3CCB-BFC4-5128-95397F5F13EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
