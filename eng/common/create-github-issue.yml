@@ -39,7 +39,8 @@ steps:
   inputs:
     buildType: 'specific'
     project: 'content-validation-automation'
-    pipeline: 'Azure App Configuration test'
+    pipeline: 'Azure App Configuration'
     buildVersionToDownload: 'latestFromBranch'
+    allowFailedBuilds: true
     artifactName: 'TestResults'
     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
