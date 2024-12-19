@@ -22,10 +22,10 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            string filePath = "ReportResults.xlsx";
-            string sheetName = "Sheet1";
-            string jsonFilePath = "ReportResults.json";
-            ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, filePath, sheetName);
+            string excelFilePath = ConstData.TotalIssuesExcelFileName;
+            string sheetName = "TotalIssues";
+            string jsonFilePath = ConstData.TotalIssuesJsonFileName;
+            ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, jsonFilePath);
         }
 

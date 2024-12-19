@@ -36,12 +36,12 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            string filePath = "ReportResults.xlsx";
-            string sheetName = "Sheet1";
-            string jsonFilePath = "ReportResults.json";
-            ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, filePath, sheetName);
-            ExcelHelper4Test.AddTestResult(TestGarbledTextResults, filePath, sheetName);
-            ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, filePath, sheetName);
+            string excelFilePath = ConstData.TotalIssuesExcelFileName;
+            string sheetName = "TotalIssues";
+            string jsonFilePath = ConstData.TotalIssuesJsonFileName;
+            ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestTableMissingContentResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestGarbledTextResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestDuplicateServiceResults,jsonFilePath);

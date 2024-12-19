@@ -14,8 +14,7 @@ namespace ReportHelper
         public static string Init(string fileName, string sheetName)
         {
             // Define the root directory for the Excel file
-            string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
-            if (!Directory.Exists(rootDirectory))
+            string rootDirectory = ConstData.ReportsDirectory;
             {
                 Directory.CreateDirectory(rootDirectory);
             }
@@ -71,7 +70,7 @@ namespace ReportHelper
         {
             lock (LockObj)
             {
-                string localFilePath =  Init(fileName, sheetName);
+                string localFilePath = Init(fileName, sheetName);
                 using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.ReadWrite))
                 {
                     IWorkbook workbook = new XSSFWorkbook(fs);
@@ -204,7 +203,7 @@ namespace ReportHelper
         {
 
             // Define the file path for the Excel file
-            string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
+            string rootDirectory = ConstData.ReportsDirectory;
             if (!Directory.Exists(rootDirectory))
             {
                 Directory.CreateDirectory(rootDirectory);
@@ -261,7 +260,7 @@ namespace ReportHelper
         {
             lock (LockObj)
             {
-               string localFilePath = Init(fileName);
+                string localFilePath = Init(fileName);
                 string jsonString = File.ReadAllText(localFilePath);
                 List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString);
                 int count = jsonList.Count;
@@ -304,4 +303,15 @@ namespace ReportHelper
         public object? AdditionalNotes { get; set; }
     }
 
+    public class ConstData
+    {
+        public static readonly string FormattedTime = DateTime.Now.ToString("yyyy_MMdd");
+        public static readonly string ReportsDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
+        public static readonly string TotalIssuesJsonFileName = $"TotalIssues{FormattedTime}.json";
+        public static readonly string DiffIssuesExcelFileName = $"DiffIssues{FormattedTime}.xlsx";
+        public static readonly string TotalIssuesExcelFileName = $"TotalIssues{FormattedTime}.xlsx";
+        public static readonly string DiffIssuesJsonFileName = $"DiffIssues{FormattedTime}.json";
+        public static readonly string LastPipelineDiffIssuesJsonFileName = "DiffReportResults.json";
+
+    }
 }

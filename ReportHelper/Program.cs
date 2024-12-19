@@ -7,11 +7,12 @@ namespace ReportHelper
         public static void Main(string[] args)
         {
 
-            string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
+            string rootDirectory = ConstData.ReportsDirectory;
+
             //pipelin result json file in this time
-            string newDataPath = Path.Combine(rootDirectory, "new.json");
+            string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
             //pipleline result json file last time
-            string oldDataPath = Path.Combine(rootDirectory, "old.json");
+            string oldDataPath = Path.Combine(rootDirectory, ConstData.LastPipelineDiffIssuesJsonFileName);
 
             List<TResult4Json> newDataList = new List<TResult4Json>();
             List<TResult4Json> oldDataList = new List<TResult4Json>();
@@ -30,12 +31,14 @@ namespace ReportHelper
             differentList = CompareLists(oldDataList, newDataList);
 
             // Save the different results to json and excel files
-            string differentDataFileName = "DifferentReportResults.json";
+            string differentDataFileName = ConstData.DiffIssuesJsonFileName;
             JsonHelper4Test.AddTestResult(differentList, differentDataFileName);
 
-            string excelFileName = "ShowReportResults.xlsx";
-            string differentSheetName = "DifferentSheet";
+            string excelFileName = ConstData.DiffIssuesExcelFileName;
+            string differentSheetName = "DiffSheet";
             ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
+
+
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
@@ -72,13 +75,19 @@ namespace ReportHelper
 
             if (oldLocationsList == null || newLocationsList == null) { return differentLocationsList; }
 
+            var processedOldLocationsList = oldLocationsList
+                    .Select(location => location.Contains(".") ? location.Substring(location.IndexOf(".") + 1) : location)
+                    .ToList();
+
+            int count = 0;
+
             foreach (var location in newLocationsList)
             {
                 string str = location.Contains(".") ? location.Substring(location.IndexOf(".") + 1) : location;
                 // If new location is not in old locations, they are different
-                if (!oldLocationsList.Contains(location))
+                if (!processedOldLocationsList.Contains(str))
                 {
-                    differentLocationsList.Add(location);
+                    differentLocationsList.Add($"{++count}.{str}");
                 }
             }
             return differentLocationsList;
