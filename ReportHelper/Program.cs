@@ -12,7 +12,7 @@ namespace ReportHelper
             //pipelin result json file in this time
             string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
             //pipleline result json file last time
-            string oldDataPath = Path.Combine(rootDirectory, ConstData.LastPipelineDiffIssuesJsonFileName);
+            string? oldDataPath = ConstData.LastPipelineDiffIssuesJsonFileName;
 
             List<TResult4Json> newDataList = new List<TResult4Json>();
             List<TResult4Json> oldDataList = new List<TResult4Json>();
@@ -21,7 +21,7 @@ namespace ReportHelper
             {
                 newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
             }
-            if (File.Exists(oldDataPath))
+            if (oldDataList != null && File.Exists(oldDataPath))
             {
                 oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataPath)) ?? new List<TResult4Json>();
             }
