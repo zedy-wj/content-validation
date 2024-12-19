@@ -40,6 +40,6 @@ steps:
     buildType: 'specific'
     project: 'content-validation-automation'
     pipeline: 'Azure App Configuration'
-    pipelineRun: 525
+    buildVersionToDownload: 'latest'
     artifactName: 'TestResults'
-    targetPath: '$(Pipeline.Workspace)/ArtifactFolder'
+    downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
