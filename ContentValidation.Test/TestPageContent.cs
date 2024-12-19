@@ -2,6 +2,7 @@ using Microsoft.Playwright;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using UtilityLibraries;
+using ReportHelper;
 
 namespace ContentValidation.Test
 {
@@ -35,9 +36,15 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            ExcelHelper4Test.AddTestResult(TestTableMissingContentResults);
-            ExcelHelper4Test.AddTestResult(TestGarbledTextResults);
-            ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults);
+            string excelFilePath = ConstData.TotalIssuesExcelFileName;
+            string sheetName = "TotalIssues";
+            string jsonFilePath = ConstData.TotalIssuesJsonFileName;
+            ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
+            JsonHelper4Test.AddTestResult(TestTableMissingContentResults,jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestGarbledTextResults,jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults,jsonFilePath);
         }
 
 

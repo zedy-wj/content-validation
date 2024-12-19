@@ -2,6 +2,7 @@ using Microsoft.Playwright;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using UtilityLibraries;
+using ReportHelper;
 
 namespace ContentValidation.Test
 {
@@ -23,8 +24,14 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            ExcelHelper4Test.AddTestResult(TestExtraLabelResults);
-            ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults);
+            string excelFilePath = ConstData.TotalIssuesExcelFileName;
+            string sheetName = "TotalIssues";
+            string jsonFilePath = ConstData.TotalIssuesJsonFileName;
+
+            ExcelHelper4Test.AddTestResult(TestExtraLabelResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, excelFilePath, sheetName);
+            JsonHelper4Test.AddTestResult(TestExtraLabelResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, jsonFilePath);
         }
 
         [Test]
