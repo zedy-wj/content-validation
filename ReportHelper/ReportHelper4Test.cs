@@ -210,7 +210,6 @@ namespace ReportHelper
                 Directory.CreateDirectory(rootDirectory);
             }
             string localFilePath = Path.Combine(rootDirectory, filePath);
-            Console.WriteLine(localFilePath + "ssssssssssssssssssssssssssssssssss");
             if (!File.Exists(localFilePath))
             {
                 var emptyList = new List<TResult4Json>();

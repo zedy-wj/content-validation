@@ -9,42 +9,39 @@ namespace ReportHelper
         {
             // 获取数据
             //pipelin result json file in this time
-            string newDataFileName = "ReportResults.json";
+            string rootDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
+
+            string newDataPath = Path.Combine(rootDirectory, "ReportResults.json");
             //pipleline result json file last time
-            string oldDataFileName = "OldReportResultsData.json";
+            string oldDataPath = Path.Combine(rootDirectory, "OldReportResultsData.json");
 
             List<TResult4Json> newDataList = new List<TResult4Json>();
             List<TResult4Json> oldDataList = new List<TResult4Json>();
 
-            if (File.Exists(newDataFileName))
+            if (File.Exists(newDataPath))
             {
                 Console.WriteLine("有issue");
-                newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataFileName)) ?? new List<TResult4Json>();
+                newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
             }
             else
             {
-                Console.WriteLine("没有issue,newDataList使用空数据,showReportResults.xlsx文件中same和diff没有数据");
+                Console.WriteLine("没有newDataList,newDataList使用空数据,showReportResults.xlsx文件中same和diff没有数据");
             }
 
-            if (File.Exists(oldDataFileName))
+            if (File.Exists(oldDataPath))
             {
                 Console.WriteLine("需要diff");
-                oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataFileName)) ?? new List<TResult4Json>();
+                oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataPath)) ?? new List<TResult4Json>();
             }
             else
             {
                 Console.WriteLine("没有oldDataList,第一次跑pipeline,使用空数据,showReportResults.xlsx文件中same没有数据,different有数据");
             }
 
-
-
-
-
             // 执行算法
             List<TResult4Json> differentList = new List<TResult4Json>();
             List<TResult4Json> sameList = new List<TResult4Json>();
             (sameList, differentList) = CompareLists(oldDataList, newDataList);
-
 
             // 保存数据
             string sameDataFileName = "SameReportResults.json";
@@ -57,9 +54,7 @@ namespace ReportHelper
             string differentSheetName = "DifferentSheet";
             ExcelHelper4Test.AddTestResult(sameList, excelFileName, sameSheetName);
             ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
-
         }
-
 
         public static (List<TResult4Json> sameList, List<TResult4Json> differentList) CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
@@ -99,8 +94,7 @@ namespace ReportHelper
 
             // 之前的if判断已经排除了两个都为null的情况
             if (oldLocationsList == null || newLocationsList == null) { return false; }
-            //  ???????????????????
-
+            // ??????????????
             if (oldLocationsList.Count < newLocationsList.Count) { return false; }
 
             foreach (var location in newLocationsList)
