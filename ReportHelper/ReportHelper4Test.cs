@@ -233,7 +233,6 @@ namespace ReportHelper
 
                 foreach (var res in testResults)
                 {
-
                     TResult4Json result = new TResult4Json
                     {
                         Number = ++count,
@@ -248,7 +247,6 @@ namespace ReportHelper
                     jsonList.Add(result);
                 }
 
-
                 var options = new JsonSerializerOptions
                 {
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -258,8 +256,6 @@ namespace ReportHelper
                 File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
             }
         }
-
-
 
         public static void AddTestResult(List<TResult4Json> testResults, string fileName)
         {
@@ -286,7 +282,6 @@ namespace ReportHelper
                     jsonList.Add(result);
                 }
 
-
                 var options = new JsonSerializerOptions
                 {
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -296,9 +291,6 @@ namespace ReportHelper
                 File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
             }
         }
-
-
-
     }
 
     public class TResult4Json
