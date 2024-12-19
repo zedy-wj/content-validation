@@ -42,6 +42,7 @@ steps:
     pipeline: 'Azure App Configuration'
     preferTriggeringPipeline: false
     buildVersionToDownload: 'latestFromBranch'
+    branchName: 'refs/heads/wenjie-dev'
     allowFailedBuilds: true
     artifactName: 'TestResults'
     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
