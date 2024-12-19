@@ -18,20 +18,27 @@ variables:
   RepoName: $(REPO_NAME)
 
 steps:
-- task: Bash@3
-  displayName: 'Set Script Executable'
-  inputs:
-    targetType: 'inline'
-    script: |
-      chmod +x $(Build.SourcesDirectory)/eng/common/create-github-issue.sh
+# - task: Bash@3
+#   displayName: 'Set Script Executable'
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       chmod +x $(Build.SourcesDirectory)/eng/common/create-github-issue.sh
 
-- task: Bash@3
-  displayName: 'Create GitHub Issue'
+# - task: Bash@3
+#   displayName: 'Create GitHub Issue'
+#   inputs:
+#     targetType: 'filePath'
+#     filePath: '$(Build.SourcesDirectory)/eng/common/create-github-issue.sh'
+#     arguments: >-
+#       ${{ parameters.PackageName }}
+#       $(GitHubPat)
+#       $(RepoOwner)
+#       $(RepoName)
+- task: DownloadPipelineArtifact@2
   inputs:
-    targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/eng/common/create-github-issue.sh'
-    arguments: >-
-      ${{ parameters.PackageName }}
-      $(GitHubPat)
-      $(RepoOwner)
-      $(RepoName)
+    buildType: 'specific'
+    pipeline: 'Azure App Configuration'
+    pipelineRun: 525
+    artifactName: 'TestResults'
+    targetPath: '$(Pipeline.Workspace)/ArtifactFolder'
