@@ -40,6 +40,7 @@ steps:
     buildType: 'specific'
     project: 'content-validation-automation'
     pipeline: 'Azure App Configuration'
+    preferTriggeringPipeline: false
     buildVersionToDownload: 'latestFromBranch'
     allowFailedBuilds: true
     artifactName: 'TestResults'
