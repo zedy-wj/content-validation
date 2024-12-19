@@ -31,7 +31,6 @@ steps:
     targetType: 'filePath'
     filePath: '$(Build.SourcesDirectory)/eng/common/create-github-issue.sh'
     arguments: >-
-      ${{ parameters.ServiceName }}
       ${{ parameters.PackageName }}
       $(GitHubPat)
       $(RepoOwner)
