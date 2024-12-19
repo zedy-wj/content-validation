@@ -18,21 +18,7 @@ namespace ContentValidation.Test
 
         static TestPageLabel()
         {
-            // TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
-
-            TestLinks = new List<string>{
-                    "https://learn.microsoft.com/en-us/python/api/overview/azure/search?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/overview/azure/search-documents-readme?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.aio?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.aio.asyncsearchitempaged?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.aio.searchclient?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.aio.searchindexingbufferedsender?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.aio?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.aio.searchindexclient?view=azure-python",
-    "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.aio.searchindexerclient?view=azure-python",
-            };
+            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [OneTimeTearDown]
