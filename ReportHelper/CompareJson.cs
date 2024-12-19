@@ -31,7 +31,7 @@ namespace ExcelCompare
     {
         static void Main(string[] args)
         {
-            //pipelin result json file in this time
+            // pipelin result json file in this time
             string originPath = "../../../../Reports/new.json";
             //pipleline result json file last time
             string comparePath = "../../../../Reports/old.json";
@@ -134,9 +134,10 @@ namespace ExcelCompare
                         });
                     }
                 }
-                Console.WriteLine("Compare Finished！");
-                Console.Write(differences.Count);
-                Console.Write(sames.Count);
+
+
+
+
 
                 File.WriteAllText(resultPathSame, JsonConvert.SerializeObject(sames, Formatting.Indented));
                 Console.WriteLine($"Sames file has been saved in {resultPathSame}");
@@ -155,6 +156,11 @@ namespace ExcelCompare
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
+     
+     
+     
+     
+     
         private static string ExtractRelevantPart(string input)
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
@@ -211,7 +217,7 @@ namespace ExcelCompare
         static void WriteDataToSheet(ISheet sheet, List<ErrorData> dataList)
         {
             // Excel Header
-            IRow headerRow = sheet.CreateRow(0);
+            IRow headerRow = sheet.CreateRow(0); 
             headerRow.CreateCell(0).SetCellValue("NO.");
             headerRow.CreateCell(1).SetCellValue("Error Info");
             headerRow.CreateCell(2).SetCellValue("Number of occurrences");
