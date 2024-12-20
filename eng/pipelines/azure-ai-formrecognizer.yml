@@ -1,6 +1,9 @@
 name: Run azure-ai-formrecognizer package content validation
 trigger: none
 
+variables:
+- group: GitHubVariables
+
 pool:
   vmImage: ubuntu-latest
 
@@ -10,3 +13,6 @@ jobs:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-ai-formrecognizer'
       DotNetSdkVersion: '8.0.x' 
+      GitHubPat: $(GITHUB_PAT)
+      GitHubOwner: $(GITHUB_OWNER)
+      GitHubRepo: $(GITHUB_REPO)

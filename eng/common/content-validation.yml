@@ -5,6 +5,12 @@ parameters:
     type: string
   - name: PackageName
     type: string
+  - name: GitHubPat
+    type: string
+  - name: GitHubOwner
+    type: string
+  - name: GitHubRepo
+    type: string
 
 jobs:
   - job: ContentValidation
@@ -100,23 +106,23 @@ jobs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
 
-    # - task: Bash@3
-    #   displayName: 'Set Script Executable'
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
+    - task: Bash@3
+      displayName: 'Set Script Executable'
+      inputs:
+        targetType: 'inline'
+        script: |
+          chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
 
-    # - task: Bash@3
-    #   displayName: 'Create GitHub Issue'
-    #   inputs:
-    #     targetType: 'filePath'
-    #     filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
-    #     arguments: >-
-    #       ${{ parameters.PackageName }}
-    #       $(GitHubPat)
-    #       $(RepoOwner)
-    #       $(RepoName)
+    - task: Bash@3
+      displayName: 'Create GitHub Issue'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
+        arguments: >-
+          ${{ parameters.PackageName }}
+          ${{ parameters.GitHubPat }}
+          ${{ parameters.GitHubOwner }}
+          ${{ parameters.GitHubRepo }}
 
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
@@ -124,12 +130,4 @@ jobs:
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/Reports
         artifactName: TestResults
-        publishLocation: "pipeline"
-
-    - task: PublishPipelineArtifact@1
-      displayName: "Upload pipeline test data testing1"
-      condition: failed()
-      inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/Artifacts
-        artifactName: TestResultsTesting1
         publishLocation: "pipeline"
