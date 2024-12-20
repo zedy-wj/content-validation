@@ -22,7 +22,7 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          $owner = "$({{ parameters.GitHubOwner }})"
+          $owner = "${{ parameters.GitHubOwner }}"
           Write-Host "The owner is: $owner" 
 
     # - task: UseDotNet@2
