@@ -24,8 +24,6 @@ fi
 # Querying whether issue exist
 QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=1"
 
-echo "Origin URL: $QUERY_URL"
-
 url_encode(){
   local encoded="${1// /%20}"
   encoded="${encoded//\[/%5B}"
@@ -35,20 +33,18 @@ url_encode(){
 
 QUERY_URL=$(url_encode "$QUERY_URL")
 
-echo "Encoded URL: $QUERY_URL"
-
 # Getting response
 response=$(curl -s \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token $GITHUB_PAT" "$QUERY_URL")
 
-echo "$response"
 # Parsing the response
 item_count=$(echo "$response" | jq -r '.total_count')
 
-echo "item count: $item_count"
-
-if [ $item_count -eq 0 ]; then
+if [ -z "$item_count" ]; then
+  echo "$response"
+  exit 1
+elif [ $item_count -eq 0 ]; then
   # Opening new issue
   create_new_issue="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/issues"
   json="{
@@ -61,7 +57,6 @@ if [ $item_count -eq 0 ]; then
 
   echo "Response from GitHub API:"
   echo "$response"
-
 else
   echo "Issue already exist. Adding new comment to track new issues."
   issue_number=$(echo "$response" | jq -r '.items[0].number')
@@ -73,4 +68,5 @@ else
     -d "{
       \"body\": \"$file_content\"
     }")
+  echo "$response"
 fi
