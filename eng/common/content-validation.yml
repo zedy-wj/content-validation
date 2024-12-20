@@ -72,10 +72,63 @@ jobs:
         arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
 
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'specific'
+        project: 'content-validation-automation'
+        pipeline: 'Azure App Configuration'
+        preferTriggeringPipeline: false
+        buildVersionToDownload: 'latestFromBranch'
+        branchName: 'refs/heads/wenjie-dev'
+        allowFailedBuilds: true
+        artifactName: 'TestResults'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+
+    # call diff project
+    - task: DotNetCoreCLI@2
+      displayName: Build report helper project
+      condition: failed()
+      inputs:
+        command: 'build'
+        projects: 'ReportHelper/ReportHelper.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Resolve data by report helper
+      condition: failed()
+      inputs:
+        command: 'run'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
+
+    # - task: Bash@3
+    #   displayName: 'Set Script Executable'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
+
+    # - task: Bash@3
+    #   displayName: 'Create GitHub Issue'
+    #   inputs:
+    #     targetType: 'filePath'
+    #     filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
+    #     arguments: >-
+    #       ${{ parameters.PackageName }}
+    #       $(GitHubPat)
+    #       $(RepoOwner)
+    #       $(RepoName)
+
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       condition: failed()
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/Reports
         artifactName: TestResults
+        publishLocation: "pipeline"
+
+    - task: PublishPipelineArtifact@1
+      displayName: "Upload pipeline test data testing1"
+      condition: failed()
+      inputs:
+        targetPath: $(System.DefaultWorkingDirectory)/Artifacts
+        artifactName: TestResultsTesting1
         publishLocation: "pipeline"
