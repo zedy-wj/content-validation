@@ -7,10 +7,13 @@ parameters:
     type: string
   - name: GitHubPat
     type: string
+    default: ''
   - name: GitHubOwner
     type: string
+    default: ''
   - name: GitHubRepo
     type: string
+    default: ''
 
 jobs:
   - job: ContentValidation
