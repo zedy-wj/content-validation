@@ -73,6 +73,7 @@ jobs:
         testRunTitle: 'Content Validation Testing Start'
 
     - task: DownloadPipelineArtifact@2
+      condition: failed()
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
