@@ -5,6 +5,8 @@ parameters:
     type: string
   - name: PackageName
     type: string
+  - name: Pipeline
+    type: string
   - name: GitHubPat
     type: string
     default: ''
@@ -14,6 +16,7 @@ parameters:
   - name: GitHubRepo
     type: string
     default: ''
+
 
 jobs:
   - job: ContentValidation
@@ -86,10 +89,10 @@ jobs:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Azure App Configuration'
+        pipeline: ${{ parameters.Pipeline }}
         preferTriggeringPipeline: false
         buildVersionToDownload: 'latestFromBranch'
-        branchName: 'refs/heads/wenjie-dev'
+        branchName: 'refs/heads/main'
         allowFailedBuilds: true
         artifactName: 'TestResults'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
