@@ -20,6 +20,8 @@ parameters:
 
 jobs:
   - job: ContentValidation
+    pool:
+      vmImage: ubuntu-latest
     steps:
     - task: UseDotNet@2
       displayName: 'Install .NET Core SDK'

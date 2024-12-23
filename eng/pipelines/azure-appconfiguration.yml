@@ -8,10 +8,6 @@ parameters:
   matrixConfig:
     - { name: AppConfiguration, ServiceName: 'App Configuration', PackageName: 'azure-appconfiguration' }
     - { name: KeyVault, ServiceName: 'Key Vault', PackageName: 'azure-keyvault-keys' }      
-      
-
-pool:
-  vmImage: ubuntu-latest
 
 jobs:
 - ${{ each config in parameters.matrixConfig }}:
