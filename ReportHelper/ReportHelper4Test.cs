@@ -341,7 +341,7 @@ public class GithubHelper
         {
             var item = list[i];
 
-            result += $"{i + 1}.\n\n";
+            result += $"{i + 1}.\n";
 
             result += $"**ErrorInfo**: {item.ErrorInfo}\n";
             result += $"**ErrorLink**: {item.ErrorLink}\n";
@@ -364,9 +364,10 @@ public class GithubHelper
                 result += $"**Note**: {item.Note}\n";
             }
 
+            result += $"\n";
         }
 
-        result += $"\n\n";
+        
 
         result = result.Replace("\n", "\\n");
         return result;
