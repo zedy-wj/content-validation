@@ -5,12 +5,16 @@ extends:
   template: /eng/common/content-validation.yml
 
 parameters:
-  matrixConfig:
-    - { name: AppConfiguration, ServiceName: 'App Configuration', PackageName: 'azure-appconfiguration' }
-    - { name: KeyVault, ServiceName: 'Key Vault', PackageName: 'azure-keyvault-keys' }      
+- name: matrix
+  type: object
+  default:
+    - ServiceName: 'App Configuration'
+      PackageName: 'azure-appconfiguration'
+    - ServiceName: 'Key Vault'
+      PackageName: 'azure-keyvault-keys'   
 
 jobs:
-- ${{ each config in parameters.matrixConfig }}:
+- ${{ each config in parameters.matrix }}:
   - template: /eng/common/content-validation.yml
     parameters:
       ServiceName: ${{ config.ServiceName }}
