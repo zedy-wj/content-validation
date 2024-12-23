@@ -1,6 +1,9 @@
 name: Run azure-appconfiguration package content validation
 trigger: none
 
+variables:
+- group: GitHubVariables
+
 pool:
   vmImage: ubuntu-latest
 
@@ -9,4 +12,8 @@ jobs:
     parameters:
       ServiceName: 'App Configuration'
       PackageName: 'azure-appconfiguration'
-      DotNetSdkVersion: '8.0.x' 
+      DotNetSdkVersion: '8.0.x'
+      Pipeline: 'Azure App Configuration'
+      GitHubPat: $(GITHUB_PAT)
+      GitHubOwner: $(GITHUB_OWNER)
+      GitHubRepo: $(GITHUB_REPO)
