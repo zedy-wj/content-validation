@@ -1,17 +1,14 @@
 name: Run azure-appconfiguration package content validation
 trigger: none
 
-extends:
-  template: /eng/common/content-validation.yml
-
 parameters:
 - name: matrix
   type: object
   default:
-    - ServiceName: 'App Configuration'
-      PackageName: 'azure-appconfiguration'
-    - ServiceName: 'Key Vault'
-      PackageName: 'azure-keyvault-keys'   
+  - ServiceName: 'App Configuration'
+    PackageName: 'azure-appconfiguration'
+  - ServiceName: 'Key Vault'
+    PackageName: 'azure-keyvault-keys'   
 
 jobs:
 - ${{ each config in parameters.matrix }}:
