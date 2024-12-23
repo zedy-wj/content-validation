@@ -9,7 +9,7 @@ namespace ReportHelper
 
             string rootDirectory = ConstData.ReportsDirectory;
 
-            //pipelin result json file in this time
+            //pipelin result json file in this time  
             string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
             //pipleline result json file last time
             string? oldDataPath = ConstData.LastPipelineDiffIssuesJsonFileName;
@@ -30,15 +30,20 @@ namespace ReportHelper
             List<TResult4Json> differentList = new List<TResult4Json>();
             differentList = CompareLists(oldDataList, newDataList);
 
-            // Save the different results to json and excel files
-            string differentDataFileName = ConstData.DiffIssuesJsonFileName;
-            JsonHelper4Test.AddTestResult(differentList, differentDataFileName);
+            if (differentList.Count != 0)
+            {
+                // Save the different results to json and excel files
+                string differentDataFileName = ConstData.DiffIssuesJsonFileName;
+                JsonHelper4Test.AddTestResult(differentList, differentDataFileName);
 
-            string excelFileName = ConstData.DiffIssuesExcelFileName;
-            string differentSheetName = "DiffSheet";
-            ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
+                string excelFileName = ConstData.DiffIssuesExcelFileName;
+                string differentSheetName = "DiffSheet";
+                ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
 
-
+                // github issues
+                string githubBodyOrComment = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
+                File.WriteAllText(ConstData.GithubTxtFileName, githubBodyOrComment);
+            }
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
