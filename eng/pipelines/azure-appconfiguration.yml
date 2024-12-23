@@ -1,17 +1,24 @@
 name: Run azure-appconfiguration package content validation
 trigger: none
 
-variables:
-- group: GitHubVariables
+extends:
+  template: /eng/common/content-validation.yml
+
+parameters:
+  matrixConfig:
+    - { name: AppConfiguration, ServiceName: 'App Configuration', PackageName: 'azure-appconfiguration' }
+    - { name: KeyVault, ServiceName: 'Key Vault', PackageName: 'azure-keyvault-keys' }      
+      
 
 pool:
   vmImage: ubuntu-latest
 
 jobs:
+- ${{ each config in parameters.matrixConfig }}:
   - template: /eng/common/content-validation.yml
     parameters:
-      ServiceName: 'App Configuration'
-      PackageName: 'azure-appconfiguration'
+      ServiceName: ${{ config.ServiceName }}
+      PackageName: ${{ config.PackageName }}
       DotNetSdkVersion: '8.0.x'
       Pipeline: 'Azure App Configuration'
       GitHubPat: $(GITHUB_PAT)

@@ -84,18 +84,18 @@ jobs:
         arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
 
-    - task: DownloadPipelineArtifact@2
-      condition: failed()
-      inputs:
-        buildType: 'specific'
-        project: 'content-validation-automation'
-        pipeline: ${{ parameters.Pipeline }}
-        preferTriggeringPipeline: false
-        buildVersionToDownload: 'latestFromBranch'
-        branchName: 'refs/heads/main'
-        allowFailedBuilds: true
-        artifactName: 'TestResults'
-        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+    # - task: DownloadPipelineArtifact@2
+    #   condition: failed()
+    #   inputs:
+    #     buildType: 'specific'
+    #     project: 'content-validation-automation'
+    #     pipeline: ${{ parameters.Pipeline }}
+    #     preferTriggeringPipeline: false
+    #     buildVersionToDownload: 'latestFromBranch'
+    #     branchName: 'refs/heads/main'
+    #     allowFailedBuilds: true
+    #     artifactName: 'TestResults'
+    #     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project
@@ -111,25 +111,25 @@ jobs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
 
-    - task: Bash@3
-      displayName: 'Set Script Executable'
-      condition: failed()
-      inputs:
-        targetType: 'inline'
-        script: |
-          chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
+    # - task: Bash@3
+    #   displayName: 'Set Script Executable'
+    #   condition: failed()
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
 
-    - task: Bash@3
-      displayName: 'Create GitHub Issue'
-      condition: failed()
-      inputs:
-        targetType: 'filePath'
-        filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
-        arguments: >-
-          ${{ parameters.PackageName }}
-          ${{ parameters.GitHubPat }}
-          ${{ parameters.GitHubOwner }}
-          ${{ parameters.GitHubRepo }}
+    # - task: Bash@3
+    #   displayName: 'Create GitHub Issue'
+    #   condition: failed()
+    #   inputs:
+    #     targetType: 'filePath'
+    #     filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
+    #     arguments: >-
+    #       ${{ parameters.PackageName }}
+    #       ${{ parameters.GitHubPat }}
+    #       ${{ parameters.GitHubOwner }}
+    #       ${{ parameters.GitHubRepo }}
 
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
