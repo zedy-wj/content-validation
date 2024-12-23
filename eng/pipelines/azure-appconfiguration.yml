@@ -7,10 +7,10 @@ parameters:
   default:
   - ServiceName: 'App Configuration'
     PackageName: 'azure-appconfiguration'
-    jobDisplayName: 'App-Configuration-Validation'
+    jobDisplayName: 'App_Configuration_Validation'
   - ServiceName: 'Key Vault'
     PackageName: 'azure-keyvault-keys'
-    jobDisplayName: 'Key-Vault-Validation'
+    jobDisplayName: 'Key_Vault_Validation'
 
 jobs:
 - ${{ each config in parameters.matrix }}:
