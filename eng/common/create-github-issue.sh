@@ -9,7 +9,7 @@ REPO_NAME=$4
 ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website."
 
 REPO_ROOT="$PWD"
-RELATIVE_PATH="Reports"
+RELATIVE_PATH="eng"
 SPECIFIC_FILE="$REPO_ROOT/$RELATIVE_PATH/ReportResults.txt"
 
 if [ -f "$SPECIFIC_FILE" ]; then
