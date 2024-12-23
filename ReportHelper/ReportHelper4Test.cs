@@ -348,8 +348,7 @@ public class GithubHelper
             var item = list[i];
 
             result += $"{i + 1}.\n";
-            // tom:需要添加这个吗？？？？？？？
-            result += $"**TestCase**: {item.TestCase}\n";
+
             result += $"**ErrorInfo**: {item.ErrorInfo}\n";
             result += $"**ErrorLink**: {item.ErrorLink}\n";
 
@@ -388,8 +387,7 @@ public class GithubHelper
                 if (group.Count() > 3)
                 {
                     var first = group.First();
-                    // UnnecessarySymbols (tom:这里是错误还是类型)
-                    first.Note = $"{first.TestCase} test have {group.Count() - 1} issues, currently only one is shown here. For more details, please click on the excel download link below to view.";
+                    first.Note = $"{first.TestCase?.Substring(4)} test have {group.Count()} issues, currently only one is shown here. For more details, please click on the excel download link below to view.";
                     return [first];
                 }
                 else
@@ -398,11 +396,6 @@ public class GithubHelper
                 }
             })
             .ToList();
-
-        // for (int i = 0; i < deduplicateList.Count; i++)
-        // {
-        //     deduplicateList[i].Number = i + 1;
-        // }
 
         return deduplicateList;
     }
