@@ -1,25 +1,29 @@
 parameters:
-  - name: DotNetSdkVersion  
-    type: string
-  - name: ServiceName
-    type: string
-  - name: PackageName
-    type: string
-  - name: Pipeline
-    type: string
-  - name: GitHubPat
-    type: string
-    default: ''
-  - name: GitHubOwner
-    type: string
-    default: ''
-  - name: GitHubRepo
-    type: string
-    default: ''
+- name: DotNetSdkVersion  
+  type: string
+- name: ServiceName
+  type: string
+- name: PackageName
+  type: string
+- name: Pipeline
+  type: string
+- name: GitHubPat
+  type: string
+  default: ''
+- name: GitHubOwner
+  type: string
+  default: ''
+- name: GitHubRepo
+  type: string
+  default: ''
+- name: jobDisplayName
+  type: string
+  default: ''
 
 
 jobs:
-  - job: ContentValidation
+  - job: ${{ parameters.jobDisplayName }}
+    displayName: ${{ parameters.jobDisplayName }}
     pool:
       vmImage: ubuntu-latest
     steps:

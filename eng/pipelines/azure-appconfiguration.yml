@@ -7,8 +7,10 @@ parameters:
   default:
   - ServiceName: 'App Configuration'
     PackageName: 'azure-appconfiguration'
+    jobDisplayName: 'App Configuration Validation'
   - ServiceName: 'Key Vault'
-    PackageName: 'azure-keyvault-keys'   
+    PackageName: 'azure-keyvault-keys'
+    jobDisplayName: 'Key Vault Validation'
 
 jobs:
 - ${{ each config in parameters.matrix }}:
@@ -16,6 +18,7 @@ jobs:
     parameters:
       ServiceName: ${{ config.ServiceName }}
       PackageName: ${{ config.PackageName }}
+      jobDisplayName: ${{ config.jobDisplayName }}
       DotNetSdkVersion: '8.0.x'
       Pipeline: 'Azure App Configuration'
       GitHubPat: $(GITHUB_PAT)
