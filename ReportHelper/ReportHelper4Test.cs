@@ -330,14 +330,8 @@ public class ConstData
 
 }
 
-
-
-
-
 public class GithubHelper
 {
-
-    
     public static string FormatToMarkdown(List<TResult4Json> list)
     {
 
@@ -347,7 +341,7 @@ public class GithubHelper
         {
             var item = list[i];
 
-            result += $"{i + 1}.\n";
+            result += $"{i + 1}.\n\n";
 
             result += $"**ErrorInfo**: {item.ErrorInfo}\n";
             result += $"**ErrorLink**: {item.ErrorLink}\n";
@@ -372,7 +366,7 @@ public class GithubHelper
 
         }
 
-        // result += $"\n\n**Link**: \nPipeline test result excel download link: {link}.";
+        result += $"\n\n";
 
         result = result.Replace("\n", "\\n");
         return result;
