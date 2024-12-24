@@ -1,2 +1,25 @@
 name: Run switched packages content validation
 trigger: none
+
+parameters:
+- name: packages
+  displayName: |
+      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'
+  type: string
+  default: 'all'
+
+jobs:
+- ${{ each packageName in split(parameters.packages, ',') }}:
+  - ${{ if ne(parameters.packages, 'all') }}:
+    - template: /eng/pipelines/${{ packageName }}.yml
+      parameters:
+        GitHubPat: $(GITHUB_PAT)
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
+
+- ${{ if eq(parameters.packages, 'all') }}:
+  - template: /eng/pipelines/run-all-packages.yml
+    parameters:
+      GitHubPat: $(GITHUB_PAT)
+      GitHubOwner: $(GITHUB_OWNER)
+      GitHubRepo: $(GITHUB_REPO)

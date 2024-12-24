@@ -8,15 +8,14 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
+- name: packages
+  type: string
+  default: 'azure-appconfiguration, azure-keyvault-keys'
 
 jobs:
-  - template: /eng/common/content-validation.yml
+- ${{ each packageName in split(parameters.packages, ',') }}:
+  - template: /eng/pipelines/${{ packageName }}.yml
     parameters:
-      ServiceName: 'App Configuration'
-      PackageName: 'azure-appconfiguration'
-      jobDisplayName: 'App_Configuration_Validation'
-      DotNetSdkVersion: '8.0.x'
-      Pipeline: 'Azure App Configuration'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
       GitHubRepo: ${{ parameters.GitHubRepo }}
