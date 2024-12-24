@@ -14,7 +14,7 @@ parameters:
 
 jobs:
 - ${{ each config in parameters.matrix }}:
-  - template: /eng/common/${{ config.PackageName }}.yml
+  - template: /eng/pipelines/${{ config.PackageName }}.yml
     parameters:
       GitHubPat: $(GITHUB_PAT)
       GitHubOwner: $(GITHUB_OWNER)
