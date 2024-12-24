@@ -1,4 +1,7 @@
 ﻿using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ReportHelper
 {
@@ -6,29 +9,71 @@ namespace ReportHelper
     {
         public static void Main(string[] args)
         {
+            using IHost host = Host.CreateApplicationBuilder(args).Build();
+
+            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+
+            string? HostPackageName = config["PackageName"];
 
             string rootDirectory = ConstData.ReportsDirectory;
+            
+            //Results of the last data summary data (maintenance data)
+            string allPackagePath = ConstData.LastPipelineAllPackageJsonFilePath;
+            List<TPackage4Json> allPackageList = new List<TPackage4Json>();
 
-            //pipelin result json file in this time  
+            //Data results for the aim package
+            List<TResult4Json> oldDataList = new List<TResult4Json>(); 
+
+            //Results of this time.
             string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
-            //pipleline result json file last time
-            string? oldDataPath = ConstData.LastPipelineDiffIssuesJsonFileName;
-
             List<TResult4Json> newDataList = new List<TResult4Json>();
-            List<TResult4Json> oldDataList = new List<TResult4Json>();
 
             if (File.Exists(newDataPath))
             {
                 newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
             }
-            if (oldDataList != null && File.Exists(oldDataPath))
+
+            //Flag to judge if it is the first execution
+            bool hasThisPackage = false;
+
+            if (allPackagePath != null && File.Exists(allPackagePath))  
             {
-                oldDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(oldDataPath)) ?? new List<TResult4Json>();
+                allPackageList = JsonSerializer.Deserialize<List<TPackage4Json>>(File.ReadAllText(allPackagePath)) ?? new List<TPackage4Json>();
+                // Finding the target package
+                foreach (var package in allPackageList)
+                {
+                    if (package.PackageName == HostPackageName)
+                    {
+                        hasThisPackage = true;
+                        oldDataList = package.ResultList ?? new List<TResult4Json>();
+                        continue;
+                    }
+                }
             }
 
             // Compare the two lists
             List<TResult4Json> differentList = new List<TResult4Json>();
             differentList = CompareLists(oldDataList, newDataList);
+
+            // Saving information to the maintenance table
+            if (!hasThisPackage)
+            {
+                allPackageList.Add(new TPackage4Json
+                {
+                    PackageName = HostPackageName,
+                    ResultList = newDataList
+                });
+            }
+            else
+            {
+                foreach (var package in allPackageList)
+                {
+                    if (package.PackageName == HostPackageName)
+                    {
+                        package.ResultList = newDataList;
+                    }
+                }
+            }
 
             if (differentList.Count != 0)
             {
@@ -44,6 +89,7 @@ namespace ReportHelper
                 string githubBodyOrComment = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
                 File.WriteAllText(ConstData.GithubTxtFileName, githubBodyOrComment);
             }
+            File.WriteAllText(ConstData.TotalJsonFileName, JsonSerializer.Serialize(allPackageList));
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
