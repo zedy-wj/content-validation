@@ -3,13 +3,16 @@ trigger: none
 
 parameters:
 - name: packages
+  displayName: |
+      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'
   type: string
-  default: 'azure-appconfiguration,azure-keyvault-keys'
+  default: 'all'
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:
-  - template: /eng/pipelines/${{ packageName }}.yml
-    parameters:
-      GitHubPat: $(GITHUB_PAT)
-      GitHubOwner: $(GITHUB_OWNER)
-      GitHubRepo: $(GITHUB_REPO)
+  - ${{ if ne(parameters.packages, 'all') }}:
+    - template: /eng/pipelines/${{ packageName }}.yml
+      parameters:
+        GitHubPat: $(GITHUB_PAT)
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
