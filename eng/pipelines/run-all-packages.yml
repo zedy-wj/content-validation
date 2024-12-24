@@ -1,0 +1,21 @@
+parameters:
+- name: GitHubPat
+  type: string
+  default: ''
+- name: GitHubOwner
+  type: string
+  default: ''
+- name: GitHubRepo
+  type: string
+  default: ''
+- name: packages
+  type: string
+  default: 'azure-appconfiguration, azure-keyvault-keys'
+
+jobs:
+- ${{ each packageName in split(parameters.packages, ',') }}:
+  - template: /eng/pipelines/${{ packageName }}.yml
+    parameters:
+      GitHubPat: ${{ parameters.GitHubPat }}
+      GitHubOwner: ${{ parameters.GitHubOwner }}
+      GitHubRepo: ${{ parameters.GitHubRepo }}
