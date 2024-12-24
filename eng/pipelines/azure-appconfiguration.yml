@@ -17,6 +17,6 @@ jobs:
       jobDisplayName: 'App_Configuration_Validation'
       DotNetSdkVersion: '8.0.x'
       Pipeline: 'Azure App Configuration'
-      GitHubPat: ${{ GitHubPat }}
-      GitHubOwner: ${{ GitHubOwner }}
-      GitHubRepo: ${{ GitHubRepo }}
+      GitHubPat: ${{ parameters.GitHubPat }}
+      GitHubOwner: ${{ parameters.GitHubOwner }}
+      GitHubRepo: ${{ parameters.GitHubRepo }}

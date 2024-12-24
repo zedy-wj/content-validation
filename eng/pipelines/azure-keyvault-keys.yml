@@ -17,6 +17,6 @@ jobs:
       jobDisplayName: 'Key_Vault_Validation'
       DotNetSdkVersion: '8.0.x'
       Pipeline: 'Azure KeyVault Keys'
-      GitHubPat: ${{ GitHubPat }}
-      GitHubOwner: ${{ GitHubOwner }}
-      GitHubRepo: ${{ GitHubRepo }}
+      GitHubPat: ${{ parameters.GitHubPat }}
+      GitHubOwner: ${{ parameters.GitHubOwner }}
+      GitHubRepo: ${{ parameters.GitHubRepo }}
