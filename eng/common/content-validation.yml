@@ -142,5 +142,5 @@ jobs:
       condition: failed()
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/Reports
-        artifactName: Reports/Packages/${{ parameters.PackageName }}
+        artifactName: Reports.Packages.${{ parameters.PackageName }}
         publishLocation: "pipeline"
