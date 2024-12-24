@@ -1,8 +1,8 @@
+using MathNet.Numerics.Interpolation;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Concurrent;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using UtilityLibraries;
 namespace ReportHelper;
 public class ExcelHelper4Test
@@ -289,45 +289,41 @@ public class JsonHelper4Test
             File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
         }
     }
-}
-public class TResult4Json
-{
-    [JsonPropertyName("NO.")]
-    public int? Number { get; set; }
-    public string? ErrorInfo { get; set; }
-    public int? NumberOfOccurrences { get; set; }
-    public List<string>? LocationsOfErrors { get; set; }
-    public string? ErrorLink { get; set; }
-    public string? TestCase { get; set; }
-    public object? AdditionalNotes { get; set; }
-    public string? Note { get; set; }
-}
-
-public class ConstData
-{
-    public static readonly string FormattedTime = DateTime.Now.ToString("yyyy_MMdd");
-    public static readonly string ReportsDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Reports"));
-    public static readonly string TotalIssuesJsonFileName = $"TotalIssues{FormattedTime}.json";
-    public static readonly string DiffIssuesExcelFileName = $"DiffIssues{FormattedTime}.xlsx";
-    public static readonly string TotalIssuesExcelFileName = $"TotalIssues{FormattedTime}.xlsx";
-    public static readonly string DiffIssuesJsonFileName = $"DiffIssues{FormattedTime}.json";
-
-    public static readonly string GithubTxtFileName = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,@"../../../../eng/GitHubBodyOrComment.txt")); 
-    public static readonly string? LastPipelineDiffIssuesJsonFileName = GetArtifactsDiffIssuesJsonFile();
-
-    static string? GetArtifactsDiffIssuesJsonFile()
+    /// <summary>
+    /// New method to add test results to the json file(maintain totalTable)
+    /// </summary>
+    /// <param name="testResults"></param>
+    /// <param name="fileName"></param>
+    public static void AddTestResult(List<TPackage4Json> testResults, string fileName)
     {
-        string ArtifactsDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../Artifacts"));
-        if (string.IsNullOrEmpty(ArtifactsDirectory) || !Directory.Exists(ArtifactsDirectory))
+        lock (LockObj)
         {
-            return null;
+            string localFilePath = Init(fileName);
+            string jsonString = File.ReadAllText(localFilePath);
+            List<TPackage4Json> jsonList = JsonSerializer.Deserialize<List<TPackage4Json>>(jsonString);
+            int count = jsonList.Count;
+
+            foreach (var res in testResults)
+            {
+                TPackage4Json result = new TPackage4Json
+                {
+                    PackageName = res.PackageName,
+                    ResultList = res.ResultList,
+                    Note = res.Note
+                };
+
+                jsonList.Add(result);
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+
+            File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
         }
-
-        string[] files = Directory.GetFiles(ArtifactsDirectory, "DiffIssues*.json");
-
-        return files.Length > 0 ? files[0] : null;
     }
-
 }
 
 public class GithubHelper
