@@ -289,41 +289,6 @@ public class JsonHelper4Test
             File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
         }
     }
-    /// <summary>
-    /// New method to add test results to the json file(maintain totalTable)
-    /// </summary>
-    /// <param name="testResults"></param>
-    /// <param name="fileName"></param>
-    public static void AddTestResult(List<TPackage4Json> testResults, string fileName)
-    {
-        lock (LockObj)
-        {
-            string localFilePath = Init(fileName);
-            string jsonString = File.ReadAllText(localFilePath);
-            List<TPackage4Json> jsonList = JsonSerializer.Deserialize<List<TPackage4Json>>(jsonString);
-            int count = jsonList.Count;
-
-            foreach (var res in testResults)
-            {
-                TPackage4Json result = new TPackage4Json
-                {
-                    PackageName = res.PackageName,
-                    ResultList = res.ResultList,
-                    Note = res.Note
-                };
-
-                jsonList.Add(result);
-            }
-
-            var options = new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-
-            File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
-        }
-    }
 }
 
 public class GithubHelper
