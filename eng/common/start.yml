@@ -1,0 +1,21 @@
+name: Run switched packages content validation
+trigger: none
+
+parameters:
+- name: matrix
+  type: object
+  default:
+  - ServiceName: 'App Configuration'
+    PackageName: 'azure-appconfiguration'
+    jobDisplayName: 'App_Configuration_Validation'
+  - ServiceName: 'Key Vault'
+    PackageName: 'azure-keyvault-keys'
+    jobDisplayName: 'Key_Vault_Validation'
+
+jobs:
+- ${{ each config in parameters.matrix }}:
+  - template: /eng/common/${{ config.PackageName }}.yml
+    parameters:
+      GitHubPat: $(GITHUB_PAT)
+      GitHubOwner: $(GITHUB_OWNER)
+      GitHubRepo: $(GITHUB_REPO)

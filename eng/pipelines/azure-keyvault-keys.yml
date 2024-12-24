@@ -1,12 +1,22 @@
-name: Run azure-keyvault-keys package content validation
-trigger: none
-
-pool:
-  vmImage: ubuntu-latest
+parameters:
+- name: GitHubPat
+  type: string
+  default: ''
+- name: GitHubOwner
+  type: string
+  default: ''
+- name: GitHubRepo
+  type: string
+  default: ''
 
 jobs:
   - template: /eng/common/content-validation.yml
     parameters:
       ServiceName: 'Key Vault'
       PackageName: 'azure-keyvault-keys'
-      DotNetSdkVersion: '8.0.x' 
+      jobDisplayName: 'Key_Vault_Validation'
+      DotNetSdkVersion: '8.0.x'
+      Pipeline: 'Azure KeyVault Keys'
+      GitHubPat: ${{ GitHubPat }}
+      GitHubOwner: ${{ GitHubOwner }}
+      GitHubRepo: ${{ GitHubRepo }}
