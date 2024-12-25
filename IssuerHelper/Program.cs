@@ -9,7 +9,7 @@ namespace IssuerHelper
         {
             string totalSearchPattern = "AllPackagesIssues.json*";
             string packageASearchPattern = "TotalIssuesA*.json*";
-            string directoryPath = "../../../../ReportsTest";
+            string directoryPath = "../ReportsTest";
             string summaryTotalJson = ReadFileWithFuzzyMatch(directoryPath, totalSearchPattern);
             string packageATotalJson = ReadFileWithFuzzyMatch(directoryPath, packageASearchPattern);
             string updatedTotalJsonPath = $"{directoryPath}/final.json";
