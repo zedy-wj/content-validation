@@ -17,7 +17,7 @@ namespace IssuerHelper
 
             string? packages = config["PackageName"];
 
-            Console.WriteLine(packages);
+            Console.WriteLine("Running packages: " + packages);
 
             string[]? allPackages = ParseInputPackages(packages);
 
@@ -84,7 +84,7 @@ namespace IssuerHelper
                 }
                 else
                 {
-                    Console.WriteLine($"No file found matching the single package: {package} total issue.");
+                    Console.WriteLine($"No total issue file found matching the single package: {package}.");
                 }
             }
             File.WriteAllText(updatedTotalJsonPath, summaryTotalJson);

@@ -34,6 +34,12 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: Download The Current Artifact 
+      inputs:
+        buildType: 'current'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+
     - task: DotNetCoreCLI@2
       displayName: Build issuer helper project
       inputs:
@@ -42,6 +48,8 @@ stages:
 
     - task: DotNetCoreCLI@2
       displayName: Summary Total Issues of all packages
+      env:
+        PackageName: ${{ parameters.packages }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
@@ -49,6 +57,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/ReportsTest
+        targetPath: $(System.DefaultWorkingDirectory)/eng/final.json
         artifactName: history-issues-summary
         publishLocation: "pipeline"
