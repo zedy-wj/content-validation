@@ -8,8 +8,6 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
-- name: IsFirstRun
-  type: string
 
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
@@ -21,4 +19,3 @@ jobs:
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
       GitHubRepo: ${{ parameters.GitHubRepo }}
-      IsFirstRun: ${{ parameters.IsFirstRun }}

@@ -17,8 +17,6 @@ parameters:
 - name: jobDisplayName
   type: string
   default: ''
-- name: IsFirstRun
-  type: string
 
 jobs:
   - job: ${{ parameters.jobDisplayName }}
