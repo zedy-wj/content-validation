@@ -20,9 +20,6 @@ parameters:
 - name: IsFirstRun
   type: string
 
-variables:
-  isFirstRun: ${{ parameters.IsFirstRun }}
-
 jobs:
   - job: ${{ parameters.jobDisplayName }}
     displayName: ${{ parameters.jobDisplayName }}
@@ -94,7 +91,7 @@ jobs:
 
     - task: DownloadPipelineArtifact@2
       displayName: Download The Last Artifact history-issues-summary
-      condition: and(succeeded(), ne(variables['isFirstRun'], 'true'))
+      condition: and(succeeded(), ne(parameters.IsFirstRun, 'true'))
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
