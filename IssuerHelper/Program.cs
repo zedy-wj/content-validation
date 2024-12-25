@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace IssuerHelper
@@ -7,69 +10,119 @@ namespace IssuerHelper
     {
         static void Main(string[] args)
         {
-            string totalSearchPattern = "AllPackagesIssues.json*";
-            string packageASearchPattern = "TotalIssuesA*.json*";
-            string directoryPath = "../ReportsTest";
-            string summaryTotalJson = ReadFileWithFuzzyMatch(directoryPath, totalSearchPattern);
-            string packageATotalJson = ReadFileWithFuzzyMatch(directoryPath, packageASearchPattern);
-            string updatedTotalJsonPath = $"{directoryPath}/final.json";
+            // Default Configuration
+            using IHost host = Host.CreateApplicationBuilder(args).Build();
 
-            if (!string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
-            {
-                JArray totalArray = JArray.Parse(summaryTotalJson);
-                JArray packageArray = JArray.Parse(packageATotalJson);
+            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-                bool packageAExists = false;
-                JObject packageAObj = null;
+            string? packages = config["PackageName"];
 
-                foreach (JObject totalItem in totalArray)
-                {
-                    if (totalItem["PackageName"]?.ToString() == "packageA")
-                    {
-                        packageAExists = true;
-                        packageAObj = totalItem;
-                        break;
-                    }
-                }
+            Console.WriteLine(packages);
+
+            string[]? allPackages = ParseInputPackages(packages);
+
+            string totalSearchPattern = "AllPackagesIssues.json";
+            string totalIssueSummaryPath = "../Artifacts/totalIssues";
+            
+            string reportPath = "../eng";
+            string updatedTotalJsonPath = $"{reportPath}/final.json";
+            string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, totalSearchPattern);
+
+            foreach(var package in allPackages){
+                string packageFilePath = $"../Artifacts/{package}";
+                string packageASearchPattern = "TotalIssues*.json";
+                string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageASearchPattern);
                 
-                if (packageAExists)
+                if (!string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
-                    packageAObj["ResultList"] = packageArray;
+                    JArray totalArray = JArray.Parse(summaryTotalJson);
+                    JArray packageArray = JArray.Parse(packageATotalJson);
+
+                    bool packageAExists = false;
+                    JObject packageAObj = null;
+
+                    foreach (JObject totalItem in totalArray)
+                    {
+                        if (totalItem["PackageName"]?.ToString() == package)
+                        {
+                            packageAExists = true;
+                            packageAObj = totalItem;
+                            break;
+                        }
+                    }
+                    
+                    if (packageAExists)
+                    {
+                        packageAObj["ResultList"] = packageArray;
+                    }
+                    else
+                    {
+                        JObject newPackageA = new JObject
+                        {
+                            { "PackageName", package },
+                            { "ResultList", packageArray },
+                            { "Note", null }
+                        };
+                        totalArray.Add(newPackageA);
+                    }
+
+                    summaryTotalJson = totalArray.ToString(Formatting.Indented);
                 }
-                else
+                else if(string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
+                    string totalJsonContent = "[]";
+                    JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
+                    JArray packageArray = JArray.Parse(packageATotalJson);
                     JObject newPackageA = new JObject
                     {
-                        { "PackageName", "packageA" },
+                        { "PackageName", package },
                         { "ResultList", packageArray },
                         { "Note", null }
                     };
-                    totalArray.Add(newPackageA);
+                    totalArray?.Add(newPackageA);
+                    summaryTotalJson = totalArray?.ToString(Formatting.Indented);
                 }
-
-                string updatedTotalJson = totalArray.ToString(Formatting.Indented);
-                File.WriteAllText(updatedTotalJsonPath, updatedTotalJson);
+                else
+                {
+                    Console.WriteLine($"No file found matching the single package: {package} total issue.");
+                }
             }
-            else if(string.IsNullOrEmpty(summaryTotalJson))
-            {
-                Console.WriteLine("No file found matching the summary total issue.");
-            }
-            else
-            {
-                Console.WriteLine("No file found matching the single package total issue.");
-            }
+            File.WriteAllText(updatedTotalJsonPath, summaryTotalJson);
         }
 
         static string ReadFileWithFuzzyMatch(string directory, string searchPattern){
-            string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
+            if(Directory.Exists(directory)){
+                string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
 
-            if (matchingFiles.Length == 0)
-            {
-                Console.WriteLine("The current work path is: " + Directory.GetCurrentDirectory());
+                if (matchingFiles.Length == 0)
+                {
+                    return string.Empty;
+                }
+                return File.ReadAllText(matchingFiles[0]);
+            }
+            else{
                 return string.Empty;
             }
+        }
 
-            return File.ReadAllText(matchingFiles[0]);
+        static string[]? ParseInputPackages(string? packages){
+            if(packages.Equals("all")){
+                string packagesFilePath = "ConfigureAllPackages.json";
+                string content = File.ReadAllText(packagesFilePath);
+                JArray jsonArray = JArray.Parse(content);
+                JObject jsonObject = (JObject)jsonArray[0];
+
+                JArray packagesArray = (JArray)jsonObject["packages"];
+                string[] parsedPackages = new string[packagesArray.Count];
+                for (int i = 0; i < packagesArray.Count; i++)
+                {
+                    parsedPackages[i] = (string)packagesArray[i];
+                }
+                return parsedPackages;
+            }
+            else{
+                return packages?.Replace(" ","").Split(",");
+            }
         }
     }
 }
