@@ -23,3 +23,15 @@ jobs:
       GitHubPat: $(GITHUB_PAT)
       GitHubOwner: $(GITHUB_OWNER)
       GitHubRepo: $(GITHUB_REPO)
+
+  - job: Maintain_Total_Issues_List
+    displayName: ${{ parameters.jobDisplayName }}
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: PublishPipelineArtifact@1
+      displayName: "Upload pipeline test data"
+      inputs:
+        targetPath: $(System.DefaultWorkingDirectory)/Reports
+        artifactName: HistoryToTalIssuesSummary
+        publishLocation: "pipeline"
