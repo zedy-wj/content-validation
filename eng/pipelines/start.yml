@@ -13,14 +13,14 @@ stages:
   jobs:
   - ${{ each packageName in split(parameters.packages, ',') }}:
     - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/packages/${{ packageName }}.yml
+      - template: /eng/pipelines/package/${{ packageName }}.yml
         parameters:
           GitHubPat: $(GITHUB_PAT)
           GitHubOwner: $(GITHUB_OWNER)
           GitHubRepo: $(GITHUB_REPO)
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/packages/run-all-packages.yml
+    - template: /eng/pipelines/package/run-all-packages.yml
       parameters:
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
