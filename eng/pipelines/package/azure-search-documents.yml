@@ -1,6 +1,3 @@
-name: Run azure-search-documents package content validation
-trigger: none
-
 parameters:
 - name: GitHubPat
   type: string

@@ -1,6 +1,3 @@
-name: Run azure-keyvault-keys package content validation
-trigger: none
-
 parameters:
 - name: GitHubPat
   type: string
