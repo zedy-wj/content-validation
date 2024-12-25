@@ -25,7 +25,7 @@ jobs:
       GitHubRepo: $(GITHUB_REPO)
 
   - job: Maintain_Total_Issues_List
-    displayName: ${{ parameters.jobDisplayName }}
+    displayName: Maintain_Total_Issues_List
     pool:
       vmImage: ubuntu-latest
     steps:
