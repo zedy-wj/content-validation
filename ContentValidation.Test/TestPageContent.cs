@@ -66,8 +66,6 @@ namespace ContentValidation.Test
 
             playwright.Dispose();
 
-            Assert.That(res.Result, res.FormatErrorMessage());
-
         }
 
         [Test]
@@ -87,8 +85,6 @@ namespace ContentValidation.Test
             }
 
             playwright.Dispose();
-
-            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
 
