@@ -27,7 +27,7 @@ stages:
         GitHubRepo: $(GITHUB_REPO)
 
 - stage: Maintain_Total_Issues_List
-  dependsOn: DynamicJobs
+  dependsOn: ContentValidationTesting
   jobs:
   - job: Maintain_Total_Issues_List
     displayName: Maintain_Total_Issues_List
