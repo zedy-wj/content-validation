@@ -40,7 +40,9 @@ stages:
         buildType: 'specific'
         project: 'content-validation-automation'
         pipeline: 'Content Validation Pipeline'
-        buildVersionToDownload: 'latest'
+        buildVersionToDownload: 'latestFromBranch'
+        allowPartiallySucceededBuilds: true
+        allowFailedBuilds: true
         branchName: 'refs/heads/wenjie-dev2'
         artifactName: 'history-issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
@@ -69,6 +71,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/eng/final.json
+        targetPath: $(System.DefaultWorkingDirectory)/eng/SummaryTotalIssues.json
         artifactName: history-issues-summary
         publishLocation: "pipeline"

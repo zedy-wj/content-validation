@@ -21,11 +21,11 @@ namespace IssuerHelper
 
             string[]? allPackages = ParseInputPackages(packages);
 
-            string totalSearchPattern = "AllPackagesIssues.json";
+            string totalSearchPattern = "SummaryTotalIssues.json";
             string totalIssueSummaryPath = "../Artifacts/history-issues-summary";
             
             string reportPath = "../eng";
-            string updatedTotalJsonPath = $"{reportPath}/final.json";
+            string updatedTotalJsonPath = $"{reportPath}/{totalSearchPattern}";
             string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, totalSearchPattern);
 
             foreach(var package in allPackages){
