@@ -22,7 +22,7 @@ namespace IssuerHelper
             string[]? allPackages = ParseInputPackages(packages);
 
             string totalSearchPattern = "AllPackagesIssues.json";
-            string totalIssueSummaryPath = "../Artifacts/totalIssues";
+            string totalIssueSummaryPath = "../Artifacts/history-issues-summary";
             
             string reportPath = "../eng";
             string updatedTotalJsonPath = $"{reportPath}/final.json";

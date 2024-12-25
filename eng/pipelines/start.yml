@@ -35,6 +35,18 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: DownloadPipelineArtifact@2
+      displayName: Download The Last Artifact history-issues-summary
+      inputs:
+        buildType: 'specific'
+        project: 'content-validation-automation'
+        pipeline: 'Content Validation Pipeline'
+        buildVersionToDownload: 'latest'
+        branchName: 'refs/heads/wenjie-dev2'
+        artifactName: 'history-issues-summary'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+      continueOnError: true
+
+    - task: DownloadPipelineArtifact@2
       displayName: Download The Current Artifact 
       inputs:
         buildType: 'current'
