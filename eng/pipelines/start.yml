@@ -34,6 +34,18 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: DotNetCoreCLI@2
+      displayName: Build issuer helper project
+      inputs:
+        command: 'build'
+        projects: 'IssuerHelper/IssuerHelper.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Summary Total Issues of all packages
+      inputs:
+        command: 'run'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
+
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
