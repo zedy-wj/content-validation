@@ -38,5 +38,5 @@ stages:
       displayName: "Upload pipeline test data"
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/ReportsTest
-        artifactName: HistoryToTalIssuesSummary
+        artifactName: history-issues-summary
         publishLocation: "pipeline"

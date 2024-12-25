@@ -105,14 +105,12 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project
-      condition: failed()
       inputs:
         command: 'build'
         projects: 'ReportHelper/ReportHelper.csproj'
 
     - task: DotNetCoreCLI@2
       displayName: Resolve data by report helper
-      condition: failed()
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
@@ -139,7 +137,6 @@ jobs:
 
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
-      condition: failed()
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/Reports
         artifactName: ${{ parameters.PackageName }}
