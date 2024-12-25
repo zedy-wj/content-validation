@@ -55,25 +55,6 @@ namespace ReportHelper
             List<TResult4Json> differentList = new List<TResult4Json>();
             differentList = CompareLists(oldDataList, newDataList);
 
-            // Saving information to the maintenance table
-            if (!hasThisPackage)
-            {
-                allPackageList.Add(new TPackage4Json
-                {
-                    PackageName = HostPackageName,
-                    ResultList = newDataList
-                });
-            }
-            else
-            {
-                foreach (var package in allPackageList)
-                {
-                    if (package.PackageName == HostPackageName)
-                    {
-                        package.ResultList = newDataList;
-                    }
-                }
-            }
 
             if (differentList.Count != 0)
             {
@@ -89,7 +70,6 @@ namespace ReportHelper
                 string githubBodyOrComment = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
                 File.WriteAllText(ConstData.GithubTxtFileName, githubBodyOrComment);
             }
-            File.WriteAllText(ConstData.TotalJsonFileName, JsonSerializer.Serialize(allPackageList));
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
