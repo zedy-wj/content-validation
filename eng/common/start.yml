@@ -8,22 +8,27 @@ parameters:
   type: string
   default: 'all'
 
-jobs:
-- ${{ each packageName in split(parameters.packages, ',') }}:
-  - ${{ if ne(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/${{ packageName }}.yml
+stages:
+- stage: ContentValidationTesting
+  jobs:
+  - ${{ each packageName in split(parameters.packages, ',') }}:
+    - ${{ if ne(parameters.packages, 'all') }}:
+      - template: /eng/pipelines/${{ packageName }}.yml
+        parameters:
+          GitHubPat: $(GITHUB_PAT)
+          GitHubOwner: $(GITHUB_OWNER)
+          GitHubRepo: $(GITHUB_REPO)
+
+  - ${{ if eq(parameters.packages, 'all') }}:
+    - template: /eng/pipelines/run-all-packages.yml
       parameters:
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
 
-- ${{ if eq(parameters.packages, 'all') }}:
-  - template: /eng/pipelines/run-all-packages.yml
-    parameters:
-      GitHubPat: $(GITHUB_PAT)
-      GitHubOwner: $(GITHUB_OWNER)
-      GitHubRepo: $(GITHUB_REPO)
-
+- stage: Maintain_Total_Issues_List
+  dependsOn: DynamicJobs
+  jobs:
   - job: Maintain_Total_Issues_List
     displayName: Maintain_Total_Issues_List
     pool:
@@ -32,6 +37,6 @@ jobs:
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/Reports
+        targetPath: $(System.DefaultWorkingDirectory)/ReportsTest
         artifactName: HistoryToTalIssuesSummary
         publishLocation: "pipeline"
