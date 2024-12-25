@@ -91,7 +91,6 @@ jobs:
 
     - task: DownloadPipelineArtifact@2
       displayName: Download The Last Artifact history-issues-summary
-      condition: and(succeeded(), ne(parameters.IsFirstRun, 'true'))
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
@@ -100,6 +99,7 @@ jobs:
         branchName: 'refs/heads/main'
         artifactName: 'history-issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+      continueOnError: true
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project
