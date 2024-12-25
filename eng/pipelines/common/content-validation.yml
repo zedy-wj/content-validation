@@ -5,8 +5,6 @@ parameters:
   type: string
 - name: PackageName
   type: string
-- name: Pipeline
-  type: string
 - name: GitHubPat
   type: string
   default: ''
