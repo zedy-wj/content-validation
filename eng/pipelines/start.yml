@@ -7,6 +7,11 @@ parameters:
       Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'
   type: string
   default: 'all'
+- name: isFirstRun
+  displayName: |
+      If it is the first run of this pipeline, set this param as true. It's a condition of whether download the last pipeline artifacts. Default is: 'false'
+  type: string
+  default: 'false'
 
 stages:
 - stage: ContentValidationTesting
@@ -18,6 +23,7 @@ stages:
           GitHubPat: $(GITHUB_PAT)
           GitHubOwner: $(GITHUB_OWNER)
           GitHubRepo: $(GITHUB_REPO)
+          IsFirstRun: ${{ parameters.isFirstRun }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/package/run-all-packages.yml
@@ -25,8 +31,9 @@ stages:
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
+        IsFirstRun: ${{ parameters.isFirstRun }}
 
-- stage: Maintain_Total_Issues_List
+- stage: TotalIssuesSummary
   dependsOn: ContentValidationTesting
   jobs:
   - job: Maintain_Total_Issues_List

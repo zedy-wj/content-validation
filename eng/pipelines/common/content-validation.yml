@@ -17,7 +17,8 @@ parameters:
 - name: jobDisplayName
   type: string
   default: ''
-
+- name: IsFirstRun
+  type: boolean
 
 jobs:
   - job: ${{ parameters.jobDisplayName }}
@@ -88,18 +89,17 @@ jobs:
         arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
 
-    # - task: DownloadPipelineArtifact@2
-    #   condition: failed()
-    #   inputs:
-    #     buildType: 'specific'
-    #     project: 'content-validation-automation'
-    #     pipeline: ${{ parameters.Pipeline }}
-    #     preferTriggeringPipeline: false
-    #     buildVersionToDownload: 'latestFromBranch'
-    #     branchName: 'refs/heads/main'
-    #     allowFailedBuilds: true
-    #     artifactName: 'TestResults'
-    #     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+    - task: DownloadPipelineArtifact@2
+      displayName: Download The Last Artifact history-issues-summary
+      condition: and(succeeded(), ne(parameters.IsFirstRun, 'true'))
+      inputs:
+        buildType: 'specific'
+        project: 'content-validation-automation'
+        pipeline: 'Content Validation Pipeline'
+        buildVersionToDownload: 'latest'
+        branchName: 'refs/heads/main'
+        artifactName: 'history-issues-summary'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project
