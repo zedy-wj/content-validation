@@ -35,7 +35,6 @@ namespace IssuerHelper
                 
                 if (!string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
-                    Console.WriteLine("111111111111111111111111111111111111");
                     JArray totalArray = JArray.Parse(summaryTotalJson);
                     JArray packageArray = JArray.Parse(packageATotalJson);
 
@@ -71,7 +70,6 @@ namespace IssuerHelper
                 }
                 else if(string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
-                    Console.WriteLine("22222222222222222222222222222222");
                     string totalJsonContent = "[]";
                     JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
                     JArray packageArray = JArray.Parse(packageATotalJson);

@@ -93,7 +93,9 @@ jobs:
         buildType: 'specific'
         project: 'content-validation-automation'
         pipeline: 'Content Validation Pipeline'
-        buildVersionToDownload: 'latest'
+        buildVersionToDownload: 'latestFromBranch'
+        allowPartiallySucceededBuilds: true
+        allowFailedBuilds: true
         branchName: 'refs/heads/main'
         artifactName: 'history-issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
@@ -107,6 +109,8 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Resolve data by report helper
+      env:
+        PackageName: ${{ parameters.PackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'

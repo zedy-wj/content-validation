@@ -43,7 +43,7 @@ stages:
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
-        branchName: 'refs/heads/wenjie-dev2'
+        branchName: 'refs/heads/main'
         artifactName: 'history-issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
       continueOnError: true
