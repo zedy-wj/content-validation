@@ -1,4 +1,3 @@
-using MathNet.Numerics.Interpolation;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Concurrent;
