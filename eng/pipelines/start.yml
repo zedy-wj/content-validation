@@ -74,3 +74,20 @@ stages:
         targetPath: $(System.DefaultWorkingDirectory)/eng/SummaryTotalIssues.json
         artifactName: history-issues-summary
         publishLocation: "pipeline"
+
+    - task: Bash@3
+      displayName: 'Set Script Executable'
+      inputs:
+        targetType: 'inline'
+        script: |
+          chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh
+
+    - task: Bash@3
+      displayName: 'Push commit about current pipeline status'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh'
+        arguments: >-
+          $(GITHUB_PAT)
+          $(GITHUB_OWNER)
+          $(GITHUB_REPO)
