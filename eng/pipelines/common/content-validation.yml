@@ -109,7 +109,6 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Resolve data by report helper
-      condition: failed()
       env:
         PackageName: ${{ parameters.PackageName }}
       inputs:
