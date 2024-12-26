@@ -18,7 +18,6 @@ parameters:
   type: string
   default: ''
 
-
 jobs:
   - job: ${{ parameters.jobDisplayName }}
     displayName: ${{ parameters.jobDisplayName }}
@@ -88,18 +87,19 @@ jobs:
         arguments: '-e BROWSER=chromium'
         testRunTitle: 'Content Validation Testing Start'
 
-    # - task: DownloadPipelineArtifact@2
-    #   condition: failed()
-    #   inputs:
-    #     buildType: 'specific'
-    #     project: 'content-validation-automation'
-    #     pipeline: ${{ parameters.Pipeline }}
-    #     preferTriggeringPipeline: false
-    #     buildVersionToDownload: 'latestFromBranch'
-    #     branchName: 'refs/heads/main'
-    #     allowFailedBuilds: true
-    #     artifactName: 'TestResults'
-    #     downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+    - task: DownloadPipelineArtifact@2
+      displayName: Download The Last Artifact history-issues-summary
+      inputs:
+        buildType: 'specific'
+        project: 'content-validation-automation'
+        pipeline: 'Content Validation Pipeline'
+        buildVersionToDownload: 'latestFromBranch'
+        allowPartiallySucceededBuilds: true
+        allowFailedBuilds: true
+        branchName: 'refs/heads/main'
+        artifactName: 'history-issues-summary'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+      continueOnError: true
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project
@@ -109,6 +109,8 @@ jobs:
 
     - task: DotNetCoreCLI@2
       displayName: Resolve data by report helper
+      env:
+        PackageName: ${{ parameters.PackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
