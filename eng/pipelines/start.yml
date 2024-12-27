@@ -71,7 +71,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/eng/SummaryTotalIssues.json
+        targetPath: $(System.DefaultWorkingDirectory)/Reports
         artifactName: history-issues-summary
         publishLocation: "pipeline"
 

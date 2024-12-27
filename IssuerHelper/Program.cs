@@ -19,18 +19,91 @@ namespace IssuerHelper
 
             Console.WriteLine("Running packages: " + packages);
 
+            // Parse all packages in this pipeline run
             string[]? allPackages = ParseInputPackages(packages);
 
-            string totalSearchPattern = "SummaryTotalIssues.json";
+            // Create the upload folder
+            string reportPath = "../Reports";
+            CreateArtifactsFolder(reportPath);
+
+            string summarySearchPattern = "SummaryTotalIssues.json";
+            string packageATotalSearchPattern = "TotalIssues*.json";
+            string packageADiffSearchPattern = "DiffIssues*.json";
             string totalIssueSummaryPath = "../Artifacts";
             
-            string reportPath = "../eng";
-            string updatedTotalJsonPath = $"{reportPath}/{totalSearchPattern}";
-            string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, totalSearchPattern);
+            string updatedSummaryJsonPath = $"{reportPath}/{summarySearchPattern}";
+            string updatedTotalJsonPath = $"{reportPath}/CurrentPipelineTotalIssues.json";
+            string updatedDiffJsonPath = $"{reportPath}/CurrentPipelineDiffIssues.json";
+
+            string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, summarySearchPattern);
+
+            // UploadSummaryIssuesArtifact(allPackages, summaryTotalJson, updatedSummaryJsonPath, packageATotalSearchPattern);
+
+            // UploadCurrentPipelineTotalIssuesArtifact(allPackages, packageATotalSearchPattern, updatedTotalJsonPath);
+
+            // UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
+
+            GenerateMarkDownFile(allPackages);
+        }
+
+        static string ReadFileWithFuzzyMatch(string directory, string searchPattern){
+            if(Directory.Exists(directory)){
+                string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
+
+                if (matchingFiles.Length == 0)
+                {
+                    return string.Empty;
+                }
+                return File.ReadAllText(matchingFiles[0]);
+            }
+            else{
+                return string.Empty;
+            }
+        }
+
+        static string[]? ParseInputPackages(string? packages){
+            if(packages.Equals("all")){
+                string packagesFilePath = "ConfigureAllPackages.json";
+                string content = File.ReadAllText(packagesFilePath);
+                JArray jsonArray = JArray.Parse(content);
+                JObject jsonObject = (JObject)jsonArray[0];
+
+                JArray packagesArray = (JArray)jsonObject["packages"];
+                string[] parsedPackages = new string[packagesArray.Count];
+                for (int i = 0; i < packagesArray.Count; i++)
+                {
+                    parsedPackages[i] = (string)packagesArray[i];
+                }
+                return parsedPackages;
+            }
+            else{
+                return packages?.Replace(" ","").Split(",");
+            }
+        }
+
+        static void CreateArtifactsFolder(string folder){
+            string folderPath = folder;
+
+            try
+            {
+                // Check the folder exist
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Catch the exception
+                Console.WriteLine("Occurrence error when creating folder Reports: " + ex.Message);
+            }
+        }
+
+        static void UploadSummaryIssuesArtifact(string[]? allPackages, string summaryTotalJson, string updatedSummaryJsonPath, string packageASearchPattern){
 
             foreach(var package in allPackages){
                 string packageFilePath = $"../Artifacts/{package}";
-                string packageASearchPattern = "TotalIssues*.json";
+                
                 string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageASearchPattern);
                 
                 if (!string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
@@ -87,41 +160,91 @@ namespace IssuerHelper
                     Console.WriteLine($"No total issue file found matching the single package: {package}.");
                 }
             }
-            File.WriteAllText(updatedTotalJsonPath, summaryTotalJson);
+            File.WriteAllText(updatedSummaryJsonPath, summaryTotalJson);
         }
 
-        static string ReadFileWithFuzzyMatch(string directory, string searchPattern){
-            if(Directory.Exists(directory)){
-                string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
+        static void UploadCurrentPipelineTotalIssuesArtifact(string[]? allPackages, string packageATotalSearchPattern, string updatedTotalJsonPath){
+            string totalJsonContent = "[]";
+            JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
 
-                if (matchingFiles.Length == 0)
+            foreach(var package in allPackages){
+                string packageFilePath = $"../Artifacts/{package}";
+                
+                string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageATotalSearchPattern);
+
+                if(!string.IsNullOrEmpty(packageATotalJson))
                 {
-                    return string.Empty;
+                    JArray packageArray = JArray.Parse(packageATotalJson);
+                    JObject newPackageA = new JObject
+                    {
+                        { "PackageName", package },
+                        { "ResultList", packageArray },
+                        { "Note", null }
+                    };
+                    totalArray?.Add(newPackageA);
+                    totalJsonContent = totalArray?.ToString(Formatting.Indented);
                 }
-                return File.ReadAllText(matchingFiles[0]);
+                else
+                {
+                    Console.WriteLine($"Package: {package} in this pipeline is pass.");
+                }
             }
-            else{
-                return string.Empty;
-            }
+            File.WriteAllText(updatedTotalJsonPath, totalJsonContent);
         }
 
-        static string[]? ParseInputPackages(string? packages){
-            if(packages.Equals("all")){
-                string packagesFilePath = "ConfigureAllPackages.json";
-                string content = File.ReadAllText(packagesFilePath);
-                JArray jsonArray = JArray.Parse(content);
-                JObject jsonObject = (JObject)jsonArray[0];
+        static void UploadCurrentPipelineDiffIssuesArtifact(string[]? allPackages, string packageADiffSearchPattern, string updatedDiffJsonPath){
+            string diffJsonContent = "[]";
+            JArray? totalArray = JsonConvert.DeserializeObject<JArray>(diffJsonContent);
 
-                JArray packagesArray = (JArray)jsonObject["packages"];
-                string[] parsedPackages = new string[packagesArray.Count];
-                for (int i = 0; i < packagesArray.Count; i++)
+            foreach(var package in allPackages){
+                string packageFilePath = $"../Artifacts/{package}";
+                
+                string packageADiffJson = ReadFileWithFuzzyMatch(packageFilePath, packageADiffSearchPattern);
+
+                if(!string.IsNullOrEmpty(packageADiffJson))
                 {
-                    parsedPackages[i] = (string)packagesArray[i];
+                    JArray packageArray = JArray.Parse(packageADiffJson);
+                    JObject newPackageA = new JObject
+                    {
+                        { "PackageName", package },
+                        { "ResultList", packageArray },
+                        { "Note", null }
+                    };
+                    totalArray?.Add(newPackageA);
+                    diffJsonContent = totalArray?.ToString(Formatting.Indented);
                 }
-                return parsedPackages;
+                else
+                {
+                    Console.WriteLine($"Package: {package} in this pipeline has no diff issues.");
+                }
             }
-            else{
-                return packages?.Replace(" ","").Split(",");
+            File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
+        }
+
+        static void GenerateMarkDownFile(string[] packages){
+            string markdownTable = $@"
+| id | package | status | issue link | created date of issue | update date of issue |
+|----|---------|--------|------------|-----------------------|----------------------|";
+            
+            int index = 1;
+            foreach(var package in packages){
+                markdownTable += $@"
+| {index} | {package} | PASS | IssueLink | 2024-12-27 | 2024-12-27 |";
+
+                index++;
+            }
+
+            DateTime now = DateTime.Now;
+            Console.WriteLine();
+            string filePath = $"../eng/scripts/pipline-result-{now.ToString("yyyy-MM-dd")}.md";
+    
+            try
+            {
+                File.WriteAllText(filePath, markdownTable);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Occurrence error when creating md file: {ex.Message}");
             }
         }
     }
