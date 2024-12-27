@@ -1,5 +1,7 @@
 #!/bin/bash
+set -e
 
+# Setting Variables
 GITHUB_PAT=$1
 REPO_OWNER=$2
 REPO_NAME=$3
@@ -10,13 +12,11 @@ CURRENT_DATE=$(date +"%Y-%m-%d")
 BRANCH="trigger-$CURRENT_DATE"
 GITHUB_TOKEN="${GITHUB_PAT}"
 VALIDATE_MD_CONTENT="
-| Header1 | Header2 | Header3 | Date_Time |
-|---------|---------|---------|---------|
-| Row1Col1| Row1Col2| Row1Col3| $CURRENT_DATE|
-| Row2Col1| Row2Col2| Row2Col3| $CURRENT_DATE|
-| Row3Col1| Row3Col2| Row3Col3| $CURRENT_DATE|
-| Row4Col1| Row4Col2| Row4Col3| $CURRENT_DATE|"
- 
+| id | package | status | issue link | created date of issue | update date of issue |
+|---------|---------|---------|---------|---------|---------|
+| 1 | PackageA: azure-appconfiguration | PASS | IssueLink | $CURRENT_DATE | $CURRENT_DATE |
+| 2 | PackageB: azure-keyvault-keys | FAIL | IssueLink | $CURRENT_DATE | $CURRENT_DATE |
+
 git clone "https://${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
 cd $CLONE_DIR
 git checkout -b $BRANCH
