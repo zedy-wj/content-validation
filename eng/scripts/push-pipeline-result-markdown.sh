@@ -15,6 +15,7 @@ VALIDATE_MD_CONTENT="
 |---------|---------|---------|---------|---------|---------|
 | 1 | PackageA: azure-appconfiguration | PASS | IssueLink | $CURRENT_DATE | $CURRENT_DATE |
 | 2 | PackageB: azure-keyvault-keys | FAIL | IssueLink | $CURRENT_DATE | $CURRENT_DATE |
+"
 
 git clone "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
 cd $CLONE_DIR
