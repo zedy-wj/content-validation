@@ -5,6 +5,8 @@ set -e
 GITHUB_PAT=$1
 REPO_OWNER=$2
 REPO_NAME=$3
+GIT_USER_NAME=$4
+GIT_USER_EMAIL=$5
 
 REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
 CLONE_DIR="./repo-clone"
@@ -20,6 +22,9 @@ VALIDATE_MD_CONTENT="
 git clone "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
 cd $CLONE_DIR
 git checkout -b $BRANCH
+git config --global user.email "${GIT_USER_EMAIL}"
+git config --global user.name "${GIT_USER_NAME}"
+
  
 FILE_NAME="pipline-result-${CURRENT_DATE}.md"
 

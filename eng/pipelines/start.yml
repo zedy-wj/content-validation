@@ -91,3 +91,5 @@ stages:
           $(GITHUB_PAT)
           $(GITHUB_OWNER)
           $(GITHUB_REPO)
+          $(GIT_USER_NAME)
+          $(GIT_USER_EMAIL)
