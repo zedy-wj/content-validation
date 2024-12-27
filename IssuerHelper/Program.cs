@@ -235,11 +235,12 @@ namespace IssuerHelper
             }
 
             DateTime now = DateTime.Now;
-            Console.WriteLine();
+            
             string filePath = $"../eng/scripts/pipline-result-{now.ToString("yyyy-MM-dd")}.md";
     
             try
             {
+                Console.WriteLine(filePath);
                 File.WriteAllText(filePath, markdownTable);
             }
             catch (Exception ex)
