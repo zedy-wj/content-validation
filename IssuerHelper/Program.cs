@@ -235,8 +235,8 @@ namespace IssuerHelper
             }
 
             DateTime now = DateTime.Now;
-            Console.WriteLine();
-            string filePath = $"../eng/scripts/pipline-result-{now.ToString("yyyy-MM-dd")}.md";
+            
+            string filePath = $"../pipeline-result-{now.ToString("yyyy-MM-dd")}.md";
     
             try
             {

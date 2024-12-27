@@ -12,12 +12,12 @@ REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
 CLONE_DIR="./repo-clone"
 CURRENT_DATE=$(date +"%Y-%m-%d")
 BRANCH="trigger-$CURRENT_DATE"
-FILE_NAME="pipline-result-$CURRENT_DATE.md"
+FILE_NAME="pipeline-result-$CURRENT_DATE.md"
 
 git clone "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
+cp $FILE_NAME $CLONE_DIR
 cd $CLONE_DIR
 git checkout -b $BRANCH
-cp ../$FILE_NAME .
 git config --global user.email "${GIT_USER_EMAIL}"
 git config --global user.name "${GIT_USER_NAME}"
 
