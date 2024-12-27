@@ -17,13 +17,13 @@ public class DuplicateServiceValidation : IValidation
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
         var res = new TResult();
         var set = new HashSet<string>();
         var errorList = new List<string>();
 
         //Get all service tags in the test page.
-        await page.GotoAsync(testLink);
         var aElements = await page.Locator("li.has-three-text-columns-list-items.is-unstyled a[data-linktype='relative-path']").AllAsync();
 
         //Check if there are duplicate services.
@@ -44,7 +44,7 @@ public class DuplicateServiceValidation : IValidation
 
         }
         res.ErrorInfo = "Have Duplicate Service: " + string.Join(",", errorList);
-        
+
         await browser.CloseAsync();
 
         return res;

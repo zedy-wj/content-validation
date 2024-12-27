@@ -49,7 +49,7 @@ public class UnnecessarySymbolsValidation : IValidation
         //Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
-        await page.GotoAsync(testLink);
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
         // This method needs to be called before "GetHtmlContent()" because "GetHtmlContent()" will delete the code element.
         //Fetch all 'code' content to store in a list. Use regular expressions to find matching unnecessary symbols.

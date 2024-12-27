@@ -47,7 +47,7 @@ public class ExtraLabelValidation : IValidation
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
-        await page.GotoAsync(testLink);
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
         // Get all text content of the current html.
         var htmlText = await page.Locator("html").InnerTextAsync();
@@ -65,7 +65,8 @@ public class ExtraLabelValidation : IValidation
             while ((index = htmlText.IndexOf(label, index)) != -1)
             {
                 // Filter string "<true".
-                if(htmlText.IndexOf("<true", index) == index){
+                if (htmlText.IndexOf("<true", index) == index)
+                {
                     index += "<true".Length;
                     continue;
                 }

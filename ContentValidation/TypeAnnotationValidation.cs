@@ -20,7 +20,7 @@ public class TypeAnnotationValidation : IValidation
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
-        await page.GotoAsync(testLink);
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
         // Get all the class and method parameters in the test page.
         Dictionary<string, List<string>>? pyClassParamMap = null;

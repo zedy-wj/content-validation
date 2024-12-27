@@ -19,7 +19,7 @@ public class MissingContentValidation : IValidation
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
-        await page.GotoAsync(testLink);
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -40,14 +40,14 @@ public class MissingContentValidation : IValidation
                 {
                     anchorLink = testLink + href;
                 }
-                
+
                 errorList.Add(anchorLink);
             }
         }
 
         var formattedList = errorList
             .GroupBy(item => item)
-            .Select((group,Index) => $"{Index + 1}. Appears {group.Count()} times , location : {group.Key}")
+            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , location : {group.Key}")
             .ToList();
 
         if (errorList.Count > 0)

@@ -20,7 +20,7 @@ namespace UtilityLibraries
             //Create a browser instance.
             var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
             var page = await browser.NewPageAsync();
-            await page.GotoAsync(testLink);
+            await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
 
             // Get all text content of the current html.
             var htmlText = await page.Locator("html").InnerTextAsync();
@@ -31,7 +31,8 @@ namespace UtilityLibraries
             // Add the results of regular matching to errorList in a loop.
             foreach (Match match in matches)
             {
-                if(match.Value == ":mm:" || match.Value == ":05:"){
+                if (match.Value == ":mm:" || match.Value == ":05:")
+                {
                     continue;
                 }
                 errorList.Add(match.Value);
