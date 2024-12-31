@@ -18,7 +18,7 @@ namespace ReportHelper
             string rootDirectory = ConstData.ReportsDirectory;
             
             //Results of the last data summary data (maintenance data)
-            string allPackagePath = ConstData.LastPipelineAllPackageJsonFilePath;
+            string allPackagePath = ConstData.LastPipelineAllPackageJsonFilePath!;
             List<TPackage4Json> allPackageList = new List<TPackage4Json>();
 
             //Data results for the aim package
@@ -33,9 +33,6 @@ namespace ReportHelper
                 newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
             }
 
-            //Flag to judge if it is the first execution
-            bool hasThisPackage = false;
-
             if (allPackagePath != null && File.Exists(allPackagePath))  
             {
                 allPackageList = JsonSerializer.Deserialize<List<TPackage4Json>>(File.ReadAllText(allPackagePath)) ?? new List<TPackage4Json>();
@@ -44,7 +41,6 @@ namespace ReportHelper
                 {
                     if (package.PackageName == HostPackageName)
                     {
-                        hasThisPackage = true;
                         oldDataList = package.ResultList ?? new List<TResult4Json>();
                         continue;
                     }
@@ -89,7 +85,7 @@ namespace ReportHelper
                     continue;
                 }
                 // new TResult is same , but locations of error is diffrent
-                List<string> differentLocationsList = CompareOfLocations(matchedOldItem.LocationsOfErrors, newItem.LocationsOfErrors);
+                List<string> differentLocationsList = CompareOfLocations(matchedOldItem.LocationsOfErrors!, newItem.LocationsOfErrors!);
                 if (differentLocationsList.Count > 0)
                 {
                     newItem.LocationsOfErrors = differentLocationsList;

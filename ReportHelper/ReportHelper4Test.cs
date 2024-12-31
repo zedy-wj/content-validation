@@ -225,7 +225,7 @@ public class JsonHelper4Test
         {
             string localFilePath = Init(fileName);
             string jsonString = File.ReadAllText(localFilePath);
-            List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString);
+            List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString)!;
             int count = jsonList.Count;
 
             foreach (var res in testResults)
@@ -260,7 +260,7 @@ public class JsonHelper4Test
         {
             string localFilePath = Init(fileName);
             string jsonString = File.ReadAllText(localFilePath);
-            List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString);
+            List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString)!;
             int count = jsonList.Count;
 
             foreach (var res in testResults)
