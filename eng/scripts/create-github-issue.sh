@@ -22,7 +22,7 @@ record_issue_status() {
 
   echo "$response" | jq -r "{
     \"status\": \"$status\",
-    \"url\": .items[0].url, 
+    \"url\": .items[0].html_url, 
     \"created_at\": .items[0].created_at, 
     \"updated_at\": .items[0].updated_at
   }" > $status_reports_path
@@ -77,7 +77,7 @@ elif [ $item_count -eq 0 ]; then
 
   echo "$response" | jq -r "{
     \"status\": \"Fail\",
-    \"url\": .url, 
+    \"url\": .html_url, 
     \"created_at\": .created_at, 
     \"updated_at\": .updated_at
   }" > $STATUS_REPORTS_PATH
