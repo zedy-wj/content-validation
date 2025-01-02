@@ -88,7 +88,7 @@ jobs:
         testRunTitle: 'Content Validation Testing Start'
 
     - task: DownloadPipelineArtifact@2
-      displayName: Download The Last Artifact history-issues-summary
+      displayName: Download The Last Artifact issues-summary
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
@@ -97,7 +97,7 @@ jobs:
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
         branchName: 'refs/heads/main'
-        artifactName: 'history-issues-summary'
+        artifactName: 'issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
       continueOnError: true
 
