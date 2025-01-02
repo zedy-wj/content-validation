@@ -26,7 +26,7 @@ namespace IssuerHelper
             string reportPath = "../Reports";
             CreateArtifactsFolder(reportPath);
 
-            string summarySearchPattern = "SummaryTotalIssues.json";
+            string summarySearchPattern = "HistorySummaryTotalIssues.json";
             string packageATotalSearchPattern = "TotalIssues*.json";
             string packageADiffSearchPattern = "DiffIssues*.json";
             string totalIssueSummaryPath = "../Artifacts";
@@ -228,9 +228,27 @@ namespace IssuerHelper
             
             int index = 1;
             foreach(var package in packages){
-                markdownTable += $@"
-| {index} | {package} | PASS | IssueLink | 2024-12-27 | 2024-12-27 |";
-
+                string packageFilePath = $"../Artifacts/{package}";
+                string IssueSearchPattern = "IssueStatusInfo.json";
+                string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
+                if(string.IsNullOrEmpty(packageIssueInfo)){
+                    markdownTable += $@"
+| {index} | {package} | PASS | / | / | / |";
+                }
+                else
+                {
+                    try
+                    {
+                        JObject issueObject = JObject.Parse(packageIssueInfo);
+            
+                        markdownTable += $@"
+| {index} | {package} | {issueObject["status"]?.ToString()} | {issueObject["url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error parsing JSON: " + ex.Message);
+                    }
+                }
                 index++;
             }
 
