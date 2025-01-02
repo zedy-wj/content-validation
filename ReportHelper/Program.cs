@@ -65,10 +65,16 @@ namespace ReportHelper
                 // github issues
                 string githubBodyOrCommentDiff = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
                 File.WriteAllText(ConstData.DiffGithubTxtFileName, githubBodyOrCommentDiff);
+            }
 
-                string githubBodyOrCommentTotal = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(oldDataList));
+            if (newDataList.Count != 0)
+            {
+                string githubBodyOrCommentTotal = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(newDataList));
+                // test
+                Console.WriteLine(githubBodyOrCommentTotal);
                 File.WriteAllText(ConstData.TotalGithubTxtFileName, githubBodyOrCommentTotal);
             }
+
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {
