@@ -16,13 +16,13 @@ namespace ReportHelper
             string? HostPackageName = config["PackageName"];
 
             string rootDirectory = ConstData.ReportsDirectory;
-            
+
             //Results of the last data summary data (maintenance data)
             string allPackagePath = ConstData.LastPipelineAllPackageJsonFilePath!;
             List<TPackage4Json> allPackageList = new List<TPackage4Json>();
 
             //Data results for the aim package
-            List<TResult4Json> oldDataList = new List<TResult4Json>(); 
+            List<TResult4Json> oldDataList = new List<TResult4Json>();
 
             //Results of this time.
             string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
@@ -33,7 +33,7 @@ namespace ReportHelper
                 newDataList = JsonSerializer.Deserialize<List<TResult4Json>>(File.ReadAllText(newDataPath)) ?? new List<TResult4Json>();
             }
 
-            if (allPackagePath != null && File.Exists(allPackagePath))  
+            if (allPackagePath != null && File.Exists(allPackagePath))
             {
                 allPackageList = JsonSerializer.Deserialize<List<TPackage4Json>>(File.ReadAllText(allPackagePath)) ?? new List<TPackage4Json>();
                 // Finding the target package
@@ -63,8 +63,11 @@ namespace ReportHelper
                 ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
 
                 // github issues
-                string githubBodyOrComment = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
-                File.WriteAllText(ConstData.GithubTxtFileName, githubBodyOrComment);
+                string githubBodyOrCommentDiff = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
+                File.WriteAllText(ConstData.DiffGithubTxtFileName, githubBodyOrCommentDiff);
+
+                string githubBodyOrCommentTotal = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(oldDataList));
+                File.WriteAllText(ConstData.TotalGithubTxtFileName, githubBodyOrCommentTotal);
             }
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
