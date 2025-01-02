@@ -72,7 +72,7 @@ stages:
       displayName: "Upload pipeline test data"
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/Reports
-        artifactName: history-issues-summary
+        artifactName: issues-summary
         publishLocation: "pipeline"
 
     - task: Bash@3

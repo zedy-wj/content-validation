@@ -115,25 +115,23 @@ jobs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
 
-    # - task: Bash@3
-    #   displayName: 'Set Script Executable'
-    #   condition: failed()
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       chmod +x $(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh
+    - task: Bash@3
+      displayName: 'Set Script Executable'
+      inputs:
+        targetType: 'inline'
+        script: |
+          chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/create-github-issue.sh
 
-    # - task: Bash@3
-    #   displayName: 'Create GitHub Issue'
-    #   condition: failed()
-    #   inputs:
-    #     targetType: 'filePath'
-    #     filePath: '$(System.DefaultWorkingDirectory)/eng/common/create-github-issue.sh'
-    #     arguments: >-
-    #       ${{ parameters.PackageName }}
-    #       ${{ parameters.GitHubPat }}
-    #       ${{ parameters.GitHubOwner }}
-    #       ${{ parameters.GitHubRepo }}
+    - task: Bash@3
+      displayName: 'Create GitHub Issue'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/create-github-issue.sh'
+        arguments: >-
+          ${{ parameters.PackageName }}
+          ${{ parameters.GitHubPat }}
+          ${{ parameters.GitHubOwner }}
+          ${{ parameters.GitHubRepo }}
 
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
