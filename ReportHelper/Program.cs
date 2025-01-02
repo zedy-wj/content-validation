@@ -70,8 +70,6 @@ namespace ReportHelper
             if (newDataList.Count != 0)
             {
                 string githubBodyOrCommentTotal = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(newDataList));
-                // test
-                Console.WriteLine(githubBodyOrCommentTotal);
                 File.WriteAllText(ConstData.TotalGithubTxtFileName, githubBodyOrCommentTotal);
             }
 
