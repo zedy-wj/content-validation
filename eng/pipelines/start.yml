@@ -44,7 +44,7 @@ stages:
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
         branchName: 'refs/heads/main'
-        artifactName: 'history-issues-summary'
+        artifactName: 'issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
       continueOnError: true
 
