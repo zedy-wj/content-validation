@@ -1,0 +1,29 @@
+[
+    {
+        "common":     
+        {
+            "link": "all",
+            "package": "all",
+            "rule": "ExtraLabelValidation",
+            "ignore":[
+                ":mm:",
+                ":ss:"
+            ]
+        },
+
+        "special": [        
+            {
+                "link":"",
+                "package":"",
+                "rule": "",
+                "ignore":""
+            },
+            {
+                "link":"",
+                "package":"",
+                "rule": "",
+                "ignore":""
+            }
+        ]
+    }
+]

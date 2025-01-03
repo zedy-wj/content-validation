@@ -6,27 +6,28 @@ PACKAGE_NAME=$1
 GITHUB_PAT=$2
 REPO_OWNER=$3
 REPO_NAME=$4
-ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website."
+ORG_NAME=$5
+PROJECT_NAME=$6
+RUN_ID=$7
+AZURE_DEVOPS_PAT=$8
 
+ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website."
 REPO_ROOT="$PWD"
 RELATIVE_PATH="eng"
 DIFF_ISSUE_FILE="$REPO_ROOT/$RELATIVE_PATH/GitHubBodyOrCommentDiff.txt"
 TOTAL_ISSUE_FILE="$REPO_ROOT/$RELATIVE_PATH/GitHubBodyOrCommentTotal.txt"
 STATUS_REPORTS_PATH="$REPO_ROOT/Reports/IssueStatusInfo.json"
+ARTIFACT_NAME=$PACKAGE_NAME
+API_VERSION="7.1-preview.5"
 
-# record issue status method
-record_issue_status() {
-  response=$1
-  status=$2
-  status_reports_path=$3
+AUTH_HEADER="-u :$AZURE_DEVOPS_PAT"
+URL="https://dev.azure.com/${ORG_NAME}/${PROJECT_NAME}/_apis/build/builds/${RUN_ID}/artifacts?artifactName=${ARTIFACT_NAME}&api-version=${API_VERSION}"
 
-  echo "$response" | jq -r "{
-    \"status\": \"$status\",
-    \"url\": .items[0].html_url, 
-    \"created_at\": .items[0].created_at, 
-    \"updated_at\": .items[0].updated_at
-  }" > $status_reports_path
-}
+# Send GET request
+ARTIFACT_INFO=$(curl -s -H "Accept: application/json" $AUTH_HEADER -X GET "$URL")
+download_url=$(echo "$ARTIFACT_INFO" | jq -r '.resource.downloadUrl')
+echo "Artifact download url: $download_url"
+
 
 # Querying whether issue exist
 QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=1"
@@ -57,6 +58,7 @@ elif [ $item_count -eq 0 ]; then
   if [ -f "$TOTAL_ISSUE_FILE" ]; then
       echo "$TOTAL_ISSUE_FILE exists"
       file_content=$(cat "$TOTAL_ISSUE_FILE")
+      file_content="$file_content\n\nDetails of issue download url: $download_url"
   else
       echo "$TOTAL_ISSUE_FILE does not exist, have not issues."
       exit 0
@@ -75,27 +77,19 @@ elif [ $item_count -eq 0 ]; then
   echo "Response from GitHub API:"
   echo "$response"
 
-  echo "$response" | jq -r "{
-    \"status\": \"Fail\",
-    \"url\": .html_url, 
-    \"created_at\": .created_at, 
-    \"updated_at\": .updated_at
-  }" > $STATUS_REPORTS_PATH
-
 else
 
   # Check whether the current pipeline have new issues of this package
   if [ -f "$DIFF_ISSUE_FILE" ]; then
       echo "$DIFF_ISSUE_FILE exists"
       file_content=$(cat "$DIFF_ISSUE_FILE")
+      file_content="$file_content\n\nDetails of issue download url: $download_url"
       echo "$file_content"
   elif [ -f "$TOTAL_ISSUE_FILE" ]; then
-      echo "$DIFF_ISSUE_FILE does not exist, have not new issues. But $TOTAL_ISSUE_FILE exist, recording the issue status."
-      record_issue_status "$response" "Fail" "$STATUS_REPORTS_PATH"
+      echo "$DIFF_ISSUE_FILE does not exist, have not new issues. But $TOTAL_ISSUE_FILE exist."
       exit 0
   else
       echo "$TOTAL_ISSUE_FILE does not exist, have not issues. Please remember close the issue manually in time!"
-      record_issue_status "$response" "Pass" "$STATUS_REPORTS_PATH"
       exit 0
   fi
 
@@ -110,11 +104,4 @@ else
       \"body\": \"$file_content\"
     }")
   echo "$response"
-
-  # Getting the latest response
-  response=$(curl -s \
-    -H "Accept: application/vnd.github.v3+json" \
-    -H "Authorization: token $GITHUB_PAT" "$QUERY_URL")
-
-  record_issue_status "$response" "Fail" "$STATUS_REPORTS_PATH"
 fi
