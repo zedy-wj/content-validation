@@ -15,6 +15,7 @@ stages:
     - ${{ if ne(parameters.packages, 'all') }}:
       - template: /eng/pipelines/package/${{ packageName }}.yml
         parameters:
+          AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
           GitHubOwner: $(GITHUB_OWNER)
           GitHubRepo: $(GITHUB_REPO)
@@ -22,6 +23,7 @@ stages:
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/package/run-all-packages.yml
       parameters:
+        AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)

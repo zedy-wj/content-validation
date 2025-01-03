@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -44,6 +45,7 @@ namespace IssuerHelper
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
 
             GenerateMarkDownFile(allPackages);
+
         }
 
         static string ReadFileWithFuzzyMatch(string directory, string searchPattern){
@@ -229,25 +231,22 @@ namespace IssuerHelper
             int index = 1;
             foreach(var package in packages){
                 string packageFilePath = $"../Artifacts/{package}";
-                string IssueSearchPattern = "IssueStatusInfo.json";
+                string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
-                if(string.IsNullOrEmpty(packageIssueInfo)){
+                var issueObject = GetIssueInfo(package);
+
+                if(string.IsNullOrEmpty(packageIssueInfo) && issueObject == null){
                     markdownTable += $@"
 | {index} | {package} | PASS | / | / | / |";
                 }
+                else if(string.IsNullOrEmpty(packageIssueInfo) && issueObject != null){
+                    markdownTable += $@"
+| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
+                }
                 else
                 {
-                    try
-                    {
-                        JObject issueObject = JObject.Parse(packageIssueInfo);
-            
-                        markdownTable += $@"
-| {index} | {package} | {issueObject["status"]?.ToString()} | {issueObject["url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error parsing JSON: " + ex.Message);
-                    }
+                    markdownTable += $@"
+| {index} | {package} | FAIL | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
                 }
                 index++;
             }
@@ -263,6 +262,47 @@ namespace IssuerHelper
             catch (Exception ex)
             {
                 Console.WriteLine($"Occurrence error when creating md file: {ex.Message}");
+            }
+        }
+
+        static JToken? GetIssueInfo(string package){
+            string owner = "zedy-wj";
+            string repo = "content-validation";
+            string issueTitle = $"{package} content validation issue for learn microsoft website.";
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyGitHubApp", "1.0"));
+                    HttpResponseMessage response = client.GetAsync(apiUrl).Result;
+                    response.EnsureSuccessStatusCode();
+    
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+                    JArray issues = JArray.Parse(responseBody);
+    
+                    var matchingIssue = issues.FirstOrDefault(i => (string)i["title"] == issueTitle);
+    
+                    if (matchingIssue != null)
+                    {
+                        Console.WriteLine($"Html url: {matchingIssue["html_url"]}");
+                        Console.WriteLine($"Created at: {matchingIssue["created_at"]}");
+                        Console.WriteLine($"Updated at: {matchingIssue["updated_at"]}");
+                        return matchingIssue;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No issue found with title: {issueTitle}");
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred:");
+                Console.WriteLine(ex.Message);
+                return null;
             }
         }
     }

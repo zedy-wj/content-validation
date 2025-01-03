@@ -14,6 +14,15 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
+- name: OrganizationName
+  type: string
+  default: 'Azure-dev-test'
+- name: ProjectName
+  type: string
+  default: 'content-validation-automation'
+- name: AzureDevOpsPat
+  type: string
+  default: ''
 - name: jobDisplayName
   type: string
   default: ''
@@ -115,6 +124,13 @@ jobs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
 
+    - task: PublishPipelineArtifact@1
+      displayName: "Upload pipeline test data"
+      inputs:
+        targetPath: $(System.DefaultWorkingDirectory)/Reports
+        artifactName: ${{ parameters.PackageName }}
+        publishLocation: "pipeline"
+
     - task: Bash@3
       displayName: 'Set Script Executable'
       inputs:
@@ -132,10 +148,7 @@ jobs:
           ${{ parameters.GitHubPat }}
           ${{ parameters.GitHubOwner }}
           ${{ parameters.GitHubRepo }}
-
-    - task: PublishPipelineArtifact@1
-      displayName: "Upload pipeline test data"
-      inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/Reports
-        artifactName: ${{ parameters.PackageName }}
-        publishLocation: "pipeline"
+          ${{ parameters.OrganizationName }}
+          ${{ parameters.ProjectName }}
+          $(Build.BuildId)
+          ${{ parameters.AzureDevOpsPat }}
