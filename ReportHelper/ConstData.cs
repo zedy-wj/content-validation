@@ -18,7 +18,7 @@ public class ConstData
             return null;
         }
 
-        string[] files = Directory.GetFiles(ArtifactsDirectory, "SummaryTotalIssues.json");
+        string[] files = Directory.GetFiles(ArtifactsDirectory, "HistorySummaryTotalIssues.json");
 
         return files.Length > 0 ? files[0] : null;
     }
