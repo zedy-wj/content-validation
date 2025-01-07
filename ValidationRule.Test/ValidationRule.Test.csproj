@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContentValidation\ContentValidation.csproj" />
+    <ProjectReference Include="..\ContentValidation.Test\ContentValidation.Test.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,33 @@
+[
+    {
+        "Type": "ExtraLabelValidation",
+        "Rules": [
+            {
+                "RuleName": "ExtraLabel4xref",
+                "LocalPath": "../../../HTML/ExtraLabelValidation/ExtraLabel4xref.html",
+                "expected": false
+            },
+            {
+                "RuleName": "RightAndIgnore",
+                "LocalPath": "../../../HTML/ExtraLabelValidation/RightAndIgnore.html",
+                "expected": true
+            }
+        ]
+    },
+    {
+        "Type": "TypeAnnotationValidation",
+        "Rules": [
+            {
+
+                "RuleName": "MissingTypeAnnotation",
+                "LocalPath": "../../../HTML/TypeAnnotationValidation/MissingTypeAnnotation.html",
+                "expected": false
+            },
+            {
+                "RuleName": "RightAndIgnore",
+                "LocalPath": "../../../HTML/TypeAnnotationValidation/RightAndIgnore.html",
+                "expected": true
+            }
+        ]
+    }
+]
