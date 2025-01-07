@@ -341,7 +341,8 @@ public class GithubHelper
                 if (group.Count() > 3)
                 {
                     var first = group.First();
-                    first.Note = $"{first.TestCase?.Substring(4)} test have {group.Count()} issues, currently only one is shown here. For more details, please click on the excel download link below to view.";
+                    string note = $"{first.ErrorInfo} - this type of issues appears {group.Count()} times, currently only one is shown here. For more details, please click on the excel download link below to view.";
+                    first.Note = note;
                     return [first];
                 }
                 else

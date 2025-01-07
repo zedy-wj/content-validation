@@ -71,7 +71,7 @@ public class UnnecessarySymbolsValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(",", valueSet)}";
+            res.ErrorInfo = $"Unnecessary symbols found: {string.Join(" ,", valueSet)}";
             res.LocationsOfErrors = formattedList;
         }
 
@@ -92,8 +92,9 @@ public class UnnecessarySymbolsValidation : IValidation
                 var matchCollections = Regex.Matches(line, includePattern);
                 foreach (Match match in matchCollections)
                 {
-                    valueSet.Add(match.Value);
-                    errorList.Add($"Unnecessary symbol: {match.Value} in code: {line}");
+                    string unnecessarySymbol = $"\"{match.Value}\""; ;
+                    valueSet.Add(unnecessarySymbol);
+                    errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: {line}");
                 }
             }
         }
@@ -144,8 +145,9 @@ public class UnnecessarySymbolsValidation : IValidation
                     }
                 }
 
-                valueSet.Add(match.Value);
-                errorList.Add($"Unnecessary symbol: {match.Value} in text: {line}");
+                string unnecessarySymbol = $"\"{match.Value}\""; ;
+                valueSet.Add(unnecessarySymbol);
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: {line}");
             }
         }
     }
