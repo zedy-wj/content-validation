@@ -251,22 +251,22 @@ namespace IssuerHelper
                 if(packageIssueInfo.Equals("Failed")){
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     markdownTable += $@"
-| {index} | {package} | Pipeline fail | / | / | / | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
+| {index} | {package} | Pipeline fail | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                     index++;
                     continue;
                 }
                 if(string.IsNullOrEmpty(packageIssueInfo) && issueObject == null){
                     markdownTable += $@"
-| {index} | {package} | PASS | / | / | / | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
+| {index} | {package} | PASS | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
                 else if(string.IsNullOrEmpty(packageIssueInfo) && issueObject != null){
                     markdownTable += $@"
-| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
+| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | Test fail | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
+| {index} | {package} | Test fail | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
                 index++;
             }
