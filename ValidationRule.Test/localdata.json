@@ -5,12 +5,12 @@
             {
                 "RuleName": "ExtraLabel4xref",
                 "LocalPath": "../../../HTML/ExtraLabelValidation/ExtraLabel4xref.html",
-                "expected": false
+                "Expected": false
             },
             {
                 "RuleName": "RightAndIgnore",
                 "LocalPath": "../../../HTML/ExtraLabelValidation/RightAndIgnore.html",
-                "expected": true
+                "Expected": true
             }
         ]
     },
@@ -21,12 +21,12 @@
 
                 "RuleName": "MissingTypeAnnotation",
                 "LocalPath": "../../../HTML/TypeAnnotationValidation/MissingTypeAnnotation.html",
-                "expected": false
+                "Expected": false
             },
             {
                 "RuleName": "RightAndIgnore",
                 "LocalPath": "../../../HTML/TypeAnnotationValidation/RightAndIgnore.html",
-                "expected": true
+                "Expected": true
             }
         ]
     }
