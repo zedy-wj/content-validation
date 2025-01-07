@@ -29,7 +29,7 @@ stages:
         GitHubRepo: $(GITHUB_REPO)
 
 - stage: TotalIssuesSummary
-  dependsOn: ContentValidationTesting
+  condition: always()
   jobs:
   - job: Maintain_Total_Issues_List
     displayName: Maintain_Total_Issues_List
@@ -44,7 +44,7 @@ stages:
         pipeline: 'Content Validation Pipeline'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
-        allowFailedBuilds: true
+        allowFailedBuilds: false
         branchName: 'refs/heads/main'
         artifactName: 'issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'

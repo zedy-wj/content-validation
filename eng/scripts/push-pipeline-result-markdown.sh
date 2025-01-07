@@ -10,19 +10,17 @@ GIT_USER_EMAIL=$5
 
 REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
 CLONE_DIR="./repo-clone"
-CURRENT_DATE=$(date +"%Y-%m-%d")
-BRANCH="trigger-$CURRENT_DATE"
-FILE_NAME="pipeline-result-$CURRENT_DATE.md"
+BRANCH="latest-pipeline-result"
+FILE_NAME="latest-pipeline-result.md"
 
 git clone "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
-cp $FILE_NAME $CLONE_DIR
 cd $CLONE_DIR
-git checkout -b $BRANCH
+git checkout $BRANCH
+git pull origin $BRANCH
+cp -f ../$FILE_NAME .
 git config --global user.email "${GIT_USER_EMAIL}"
 git config --global user.name "${GIT_USER_NAME}"
 
 git add $FILE_NAME
-git commit -m "Adding $FILE_NAME with a table"
-
-git remote set-url origin "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git"
+git commit -m "Updating the latest pipeline result"
 git push origin $BRANCH
