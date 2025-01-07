@@ -104,7 +104,7 @@ jobs:
         pipeline: 'Content Validation Pipeline'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
-        allowFailedBuilds: true
+        allowFailedBuilds: false
         branchName: 'refs/heads/main'
         artifactName: 'issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'

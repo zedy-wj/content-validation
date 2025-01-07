@@ -59,7 +59,7 @@ namespace IssuerHelper
                 return File.ReadAllText(matchingFiles[0]);
             }
             else{
-                return string.Empty;
+                return "Failed";
             }
         }
 
@@ -108,6 +108,10 @@ namespace IssuerHelper
                 
                 string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageASearchPattern);
                 
+                if(packageATotalJson.Equals("Failed")){
+                    Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
+                    continue;
+                }
                 if (!string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
                     JArray totalArray = JArray.Parse(summaryTotalJson);
@@ -174,6 +178,10 @@ namespace IssuerHelper
                 
                 string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageATotalSearchPattern);
 
+                if(packageATotalJson.Equals("Failed")){
+                    Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
+                    continue;
+                }
                 if(!string.IsNullOrEmpty(packageATotalJson))
                 {
                     JArray packageArray = JArray.Parse(packageATotalJson);
@@ -203,6 +211,10 @@ namespace IssuerHelper
                 
                 string packageADiffJson = ReadFileWithFuzzyMatch(packageFilePath, packageADiffSearchPattern);
 
+                if(packageADiffJson.Equals("Failed")){
+                    Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
+                    continue;
+                }
                 if(!string.IsNullOrEmpty(packageADiffJson))
                 {
                     JArray packageArray = JArray.Parse(packageADiffJson);
@@ -217,7 +229,7 @@ namespace IssuerHelper
                 }
                 else
                 {
-                    Console.WriteLine($"Package: {package} in this pipeline has no diff issues.");
+                    Console.WriteLine($"Package: {package} in this pipeline has no diff issues or failed in pipeline.");
                 }
             }
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
@@ -225,35 +237,41 @@ namespace IssuerHelper
 
         static void GenerateMarkDownFile(string[] packages){
             string markdownTable = $@"
-| id | package | status | issue link | created date of issue | update date of issue |
-|----|---------|--------|------------|-----------------------|----------------------|";
+| id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
+|----|---------|--------|------------|-----------------------|----------------------| ---------------------|";
             
             int index = 1;
+            DateTime now = DateTime.Now;
             foreach(var package in packages){
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
                 var issueObject = GetIssueInfo(package);
 
+                if(packageIssueInfo.Equals("Failed")){
+                    Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
+                    markdownTable += $@"
+| {index} | {package} | Pipeline fail | / | / | / | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
+                    index++;
+                    continue;
+                }
                 if(string.IsNullOrEmpty(packageIssueInfo) && issueObject == null){
                     markdownTable += $@"
-| {index} | {package} | PASS | / | / | / |";
+| {index} | {package} | PASS | / | / | / | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
                 }
                 else if(string.IsNullOrEmpty(packageIssueInfo) && issueObject != null){
                     markdownTable += $@"
-| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
+| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
                 }
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | FAIL | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} |";
+| {index} | {package} | Test fail | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("yyyy-MM-dd HH:mm:ss")} |";
                 }
                 index++;
             }
-
-            DateTime now = DateTime.Now;
             
-            string filePath = $"../pipeline-result-{now.ToString("yyyy-MM-dd")}.md";
+            string filePath = $"../latest-pipeline-result.md";
     
             try
             {
