@@ -26,7 +26,27 @@
                 "Usage":"prefix"
             },
             {
-                "IgnoreText": "optional",
+                "IgnoreText": "Union",
+                "Usage":"prefix"
+            },
+            {
+                "IgnoreText": "Literal",
+                "Usage":"prefix"
+            },
+            {
+                "IgnoreText": "Callable",
+                "Usage":"prefix"
+            },
+            {
+                "IgnoreText": "Tuple",
+                "Usage":"prefix"
+            },
+            {
+                "IgnoreText": "Awaitable",
+                "Usage":"prefix"
+            },
+            {
+                "IgnoreText": "Optional",
                 "Usage":"prefix"
             },
             {
@@ -57,15 +77,19 @@
                 "Usage":"content"
             },
             {
-                "IgnoreText": " int,",
+                "IgnoreText": "int,",
                 "Usage":"content"
             },
             {
-                "IgnoreText": ",int",
+                "IgnoreText": " int",
                 "Usage":"content"
             },
             {
                 "IgnoreText": " or ",
+                "Usage":"content"
+            },
+            {
+                "IgnoreText": "None",
                 "Usage":"content"
             },
             {

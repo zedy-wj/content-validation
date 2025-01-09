@@ -14,10 +14,10 @@ public class UnnecessarySymbolsValidation : IValidation
     public TResult res = new TResult();
 
     // Prefix list for checking if the content before the "[" is in the list.
-    public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "Prefix");
+    public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
 
     // Content list for checking if the content between "[ ]" is in the list.
-    public List<IgnoreItem>  contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
+    public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
@@ -91,11 +91,12 @@ public class UnnecessarySymbolsValidation : IValidation
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
-       for(int index = 0; index < lines.Length; index++)
+        for (int index = 0; index < lines.Length; index++)
         {
             string line = lines[index];
 
             var matchCollections = Regex.Matches(line, includePattern);
+
             foreach (Match match in matchCollections)
             {
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
@@ -125,7 +126,7 @@ public class UnnecessarySymbolsValidation : IValidation
                     {
                         continue;
                     }
-                    if (IsBracketCorrect(line ,match.Index))
+                    if (IsBracketCorrect(line, match.Index))
                     {
                         continue;
                     }
