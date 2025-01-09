@@ -16,14 +16,12 @@ public class IgnoreDataObject
 public class IgnoreItem
 
 {
-        public List<string> Link { get; set; }
         public required string IgnoreText { get; set; }
         public string? Usage { get; set; }
 
-        public IgnoreItem(List<string> link, string ignore, string usage)
+        public IgnoreItem(string ignoreText, string usage)
         {
-            Link = link;
-            IgnoreText = ignore;
+            IgnoreText = ignoreText;
             Usage = usage;
         }
 }
