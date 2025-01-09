@@ -1,7 +1,6 @@
 ﻿using Microsoft.Playwright;
-using UtilityLibraries;
 
-namespace ContentValidation;
+namespace UtilityLibraries;
 
 public class DuplicateServiceValidation : IValidation
 {

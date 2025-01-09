@@ -1,25 +1,25 @@
 using System.Text.Json;
 
-public class LocalDataItem
+public class LocalHTMLDataItem
 {
     public required string Type { get; set; }
-    public required List<Rule> Rules { get; set; }
+    public required List<HTMLRule> Rules { get; set; }
 
-    public LocalDataItem(string type, List<Rule> rules)
+    public LocalHTMLDataItem(string type, List<HTMLRule> rules)
     {
         Type = type;
         Rules = rules;
     }
 }
 
-public class Rule
+public class HTMLRule
 {
     public required string RuleName { get; set; }
     public required string LocalPath { get; set; }
     public required bool Expected { get; set; }
     public string? FileUri { get; set; }
 
-    public Rule(string ruleName, bool expected, string localPath)
+    public HTMLRule(string ruleName, bool expected, string localPath)
     {
         RuleName = ruleName;
         Expected = expected;
@@ -30,11 +30,11 @@ public class Rule
 }
 public class LocalData
 {
-    public static List<LocalDataItem> Items { get; set; }
+    public static List<LocalHTMLDataItem> Items { get; set; }
 
     static LocalData()
     {
-        string filePath = "../../../localdata.json";
+        string filePath = "../../../LocalHtmlData.json";
 
         if (!File.Exists(filePath))
         {
@@ -43,7 +43,7 @@ public class LocalData
 
         string jsonContent = File.ReadAllText(filePath);
 
-        Items = JsonSerializer.Deserialize<List<LocalDataItem>>(jsonContent) ?? new List<LocalDataItem>();
+        Items = JsonSerializer.Deserialize<List<LocalHTMLDataItem>>(jsonContent) ?? new List<LocalHTMLDataItem>();
 
     }
 }

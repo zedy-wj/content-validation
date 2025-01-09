@@ -14,29 +14,10 @@ public class UnnecessarySymbolsValidation : IValidation
     public TResult res = new TResult();
 
     // Prefix list for checking if the content before the "[" is in the list.
-    public List<string> prefixList = new List<string> {
-                "List",
-                "Dict",
-                "Optional",
-                "Union",
-                "Tuple",
-                "Iterable",
-                "Iterator",
-                "Callable",
-                "Literal" ,
-                 "\"", ":", ":]", //e.g., and a user or group identifier in the format "[scope:][type]:[id]".
-            };
+    public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "Prefix");
 
     // Content list for checking if the content between "[ ]" is in the list.
-    public List<string> contentList = new List<string> {
-                "port",
-                "str,",
-                " str",
-                "...",  //e.g., then the retry will sleep for [0.0s, 0.2s, 0.4s, ...] 
-                "int,",
-                " int",
-                " or "
-            };
+    public List<IgnoreItem>  contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
@@ -102,16 +83,18 @@ public class UnnecessarySymbolsValidation : IValidation
 
     private void ValidateHtmlContent(string htmlContent)
     {
-        // Includes [ ] < > & ~ /// symbols
+        // Usage: Find the text that include [ , ], < , >, &, ~, and /// symbols.
         string includePattern = @"[\[\]<>&~]|/{3}";
 
-        // Excludes <, > used for comparison. e.g. a > b
+        // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
-        foreach (string line in lines)
+       for(int index = 0; index < lines.Length; index++)
         {
+            string line = lines[index];
+
             var matchCollections = Regex.Matches(line, includePattern);
             foreach (Match match in matchCollections)
             {
@@ -121,11 +104,14 @@ public class UnnecessarySymbolsValidation : IValidation
                     {
                         continue;
                     }
+                    // Usage: When the text contains <xref, this case will be categorized as an error of ExtraLabelValidation.
                     if (line.Contains("<xref"))
                     {
                         continue;
                     }
-                    // Excludes => and -< -> symbols
+                    // Usage: When the text contains symbols => , -< , ->, exclude cases where they are used in a comparative context (e.g., a > b).
+                    // Example: HTMLText - A list of stemming rules in the following format: "word => stem", for example: "ran => run".
+                    // Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.stemmeroverridetokenfilter?view=azure-python#keyword-only-parameters
                     int i = match.Index - 1;
                     if (i >= 0 && (line[i] == '=' || line[i] == '-'))
                     {
@@ -133,13 +119,13 @@ public class UnnecessarySymbolsValidation : IValidation
                     }
                 }
 
-                if ((match.Value.Equals("[") || match.Value.Equals("]")))
+                if (match.Value.Equals("[") || match.Value.Equals("]"))
                 {
                     if (line.Contains("<xref"))
                     {
                         continue;
                     }
-                    if (IsBracketCorrect(line, match.Index))
+                    if (IsBracketCorrect(line ,match.Index))
                     {
                         continue;
                     }
@@ -167,21 +153,21 @@ public class UnnecessarySymbolsValidation : IValidation
 
             string contentBetweenBrackets = input.Substring(startIndex, endIndex - startIndex);
 
-            if (contentList.Any(content => contentBetweenBrackets.Contains(content, StringComparison.OrdinalIgnoreCase)))
+            if (contentList.Any(content => contentBetweenBrackets.Contains(content.IgnoreText, StringComparison.OrdinalIgnoreCase)))
             {
                 // Content between brackets is in the `contentList` list
                 return true;
             }
 
             // Check if the content before "[" is in the prefix list
-            foreach (string prefix in prefixList)
+            foreach (var ignoreItem in prefixList)
             {
+                string prefix = ignoreItem.IgnoreText;
                 try
                 {
                     string prefixStr = input.Substring(startIndex - prefix.Length - 1, prefix.Length);
                     if (prefixStr.Equals(prefix, StringComparison.OrdinalIgnoreCase))
                     {
-                        // Prefix is in the `prefixList` list
                         return true;
                     }
                 }
@@ -214,6 +200,7 @@ public class UnnecessarySymbolsValidation : IValidation
             {
                 return true;
             }
+
         }
         return false;
     }
