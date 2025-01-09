@@ -43,10 +43,6 @@
                 "Usage":"prefix"
             },
             {
-                "IgnoreText": ":]",
-                "Usage":"prefix"
-            },
-            {
                 "IgnoreText": "port",
                 "Usage":"content",
                 "Description": "Example: [:port:]" 
