@@ -53,32 +53,25 @@ public class TypeAnnotationValidation : IValidation
         return res;
     }
 
+
+    // If the parameter is "*" ,"/","**kwargs","*args","**kw", it indicates that no type annotation is required.
+    // If the parameter follows the format a=b (e.g., param1=null), it means a default value has been assigned to the parameter.
+    // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
     bool IsCorrectTypeAnnotation(string text)
     {
-        if (text == "*")
+        if (text == "*" || text == "/" || text == "**kwargs" || text == "*args" || text == "**kw")
         {
             return true;
         }
-        if (text == "/")
+        if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))
         {
             return true;
         }
-        else if (text == "**kwargs" || text == "*args" || text == "**kw")
+        if (text.Contains(":"))
         {
             return true;
         }
-        else if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))
-        {
-            return true;
-        }
-        else if (text.Contains(":"))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     async Task<Dictionary<string, List<string>>> GetParamMap(IPage page, bool isClass)
@@ -109,6 +102,7 @@ public class TypeAnnotationValidation : IValidation
             var HTMLElement = HTMLElementList[i];
             var codeText = await HTMLElement.InnerTextAsync();
 
+            // Usage: This regex is used to extract a key and its parameters from strings in the format "key(params)". Example: For the codeText - "fn(param1: int, param2: str)", it extracts "fn" as the key and "param1: int, param2: str" as the parameters.
             var regex = new Regex(@"(?<key>.+?)\((?<params>.+?)\)");
             var match = regex.Match(codeText);
 

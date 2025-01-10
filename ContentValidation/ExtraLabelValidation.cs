@@ -15,25 +15,14 @@ public class ExtraLabelValidation : IValidation
         var res = new TResult();
         var errorList = new List<string>();
 
+        var ignoreList = IgnoreData.GetIgnoreList("ExtraLabelValidation");
+
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
             "<br",
-            "<h1",
-            "<h2",
-            "<h3",
-            "<h4",
-            "<h5",
-            "<h6",
-            "<em",
             "<span",
             "<div",
-            "<ul",
-            "<ol",
-            "<li",
             "<table",
-            "<tr",
-            "<td",
-            "<th",
             "<img",
             "<code",
             "<xref",
@@ -64,11 +53,13 @@ public class ExtraLabelValidation : IValidation
             int count = 0;
             while ((index = htmlText.IndexOf(label, index)) != -1)
             {
-                // Filter string "<true".
-                if (htmlText.IndexOf("<true", index) == index)
+                foreach (var ignoreItem in ignoreList)
                 {
-                    index += "<true".Length;
-                    continue;
+                    if (htmlText.IndexOf(ignoreItem.IgnoreText, index) == index)
+                    {
+                        index += ignoreItem.IgnoreText.Length;
+                        continue;
+                    }
                 }
 
                 count++;
