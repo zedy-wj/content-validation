@@ -4,6 +4,7 @@ trigger: none
 parameters:
 - name: DotNetSdkVersion  
   type: string
+  default: '8.0.x'
 
 pool:
   vmImage: ubuntu-latest
