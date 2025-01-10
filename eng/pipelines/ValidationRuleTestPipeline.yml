@@ -25,6 +25,12 @@ steps:
     arguments: tool-manifest
 
 - task: DotNetCoreCLI@2
+  displayName: Build ContentValidation project and library
+  inputs:
+    command: 'build'
+    projects: 'ContentValidation/ContentValidation.csproj'
+
+- task: DotNetCoreCLI@2
   displayName: Install Playwright CLI
   inputs:
     command: custom
