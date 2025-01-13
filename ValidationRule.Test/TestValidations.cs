@@ -29,8 +29,8 @@ public class TestValidations
 
             var res = await validation.Validate(rule.FileUri!);
 
-            string logMessage = @$"{testItem.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
-            Console.WriteLine(logMessage);
+            // string logMessage = @$"{testItem.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+            // Console.WriteLine(logMessage);
 
             string errorMessage = @$"
             =====================================

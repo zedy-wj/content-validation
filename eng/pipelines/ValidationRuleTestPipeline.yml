@@ -32,10 +32,10 @@ steps:
     arguments: install Microsoft.Playwright.CLI
 
 - task: DotNetCoreCLI@2
-  displayName: Build ContentValidation project and library
+  displayName: Build all projects and libraries
   inputs:
     command: 'build'
-    projects: 'ContentValidation/ContentValidation.csproj'
+    projects: 'content-validation.sln'
 
 - task: DotNetCoreCLI@2
   displayName: Run Playwright Install
