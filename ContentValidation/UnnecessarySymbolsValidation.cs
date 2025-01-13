@@ -14,10 +14,12 @@ public class UnnecessarySymbolsValidation : IValidation
     public TResult res = new TResult();
 
     // Prefix list for checking if the content before the "[" is in the list.
-    public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
+    // public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
+    public List<IgnoreItem> prefixList = new List<IgnoreItem>();
 
     // Content list for checking if the content between "[ ]" is in the list.
-    public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
+    // public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
+    public List<IgnoreItem> contentList = new List<IgnoreItem>();
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
