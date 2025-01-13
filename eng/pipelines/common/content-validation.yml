@@ -91,7 +91,7 @@ jobs:
     - task: DotNetCoreCLI@2
       displayName: Run test case
       inputs:
-        command: 'test --filter ContentValidation.Test.TestPageLabel.TestUnnecessarySymbols'
+        command: 'test'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
         arguments: '-e BROWSER=chromium --filter ContentValidation.Test.TestPageLabel.TestUnnecessarySymbols'
         testRunTitle: 'Content Validation Testing Start'
