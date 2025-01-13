@@ -98,6 +98,26 @@
                 "Description": "Example: sleep for [0.0s, 0.2s, 0.4s, ...] "
             }
         ]
+    },
+    {
+        "Rule": "GarbledTextValidation",
+        "IgnoreList": [
+            {
+                "IgnoreText": ":mm:",
+                "Usage":"",
+                "Description": "specified in the format 'hh:mm:ss', ':mm:' , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.indexingparametersconfiguration?view=azure-python"
+            },
+            {
+                "IgnoreText": ":05:",
+                "Usage":"",
+                "Description": "specified in the format 'hh:mm:ss'.Default value: 00:05:00, '05' , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.indexingparametersconfiguration?view=azure-python"
+            },
+            {
+                "IgnoreText": ":10:",
+                "Usage":"",
+                "Description": "Date: Fri, 19 May 2023 17:10:33 GMT, ':10:' , Link: https://learn.microsoft.com/en-us/python/api/overview/azure/storage?view=azure-python"
+            }
+        ]
     }
 
 ]

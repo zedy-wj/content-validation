@@ -7,6 +7,8 @@ namespace UtilityLibraries
     {
         private IPlaywright _playwright;
 
+        public List<IgnoreItem> ignoreList = IgnoreData.GetIgnoreList("GarbledTextValidation", "");
+
         public GarbledTextValidation(IPlaywright playwright)
         {
             _playwright = playwright;
@@ -31,11 +33,14 @@ namespace UtilityLibraries
             // Add the results of regular matching to errorList in a loop.
             foreach (Match match in matches)
             {
-                if (match.Value == ":mm:" || match.Value == ":05:")
+                //Judge if an element is in the ignoreList.
+                bool shouldIgnore = ignoreList.Any(item => string.Equals(item.IgnoreText, match.Value, StringComparison.OrdinalIgnoreCase));
+
+                //If it is not an ignore element, it means that it is garbled text.
+                if (!shouldIgnore)
                 {
-                    continue;
+                    errorList.Add(match.Value);
                 }
-                errorList.Add(match.Value);
             }
 
             var formattedList = errorList
