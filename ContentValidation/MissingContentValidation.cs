@@ -29,6 +29,9 @@ public class MissingContentValidation : IValidation
         {
             var cellText = (await cell.InnerTextAsync()).Trim();
 
+            // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
+            // Example: The Description column of the Parameter table is Empty.
+            // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
             if (string.IsNullOrEmpty(cellText))
             {
                 // Fetch the first <a> href before the current cell.
