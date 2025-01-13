@@ -27,6 +27,9 @@ namespace UtilityLibraries
             // Get all text content of the current html.
             var htmlText = await page.Locator("html").InnerTextAsync();
 
+            // Usage: This regular expression is used to extract the garbled characters in the format of ":ivar:request_id:/:param cert_file:/:param str proxy_addr:" from the text.
+            // Example: Initializer for X509 Certificate :param cert_file: The file path to contents of the certificate (or certificate chain)used to authenticate the device.
+            // Link: https://learn.microsoft.com/en-us/python/api/azure-iot-device/azure.iot.device?view=azure-python
             string pattern = @":[\w]+(?:\s+[\w]+){0,2}:";
             MatchCollection matches = Regex.Matches(htmlText, pattern);
 
