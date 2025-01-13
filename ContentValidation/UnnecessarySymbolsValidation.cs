@@ -14,12 +14,10 @@ public class UnnecessarySymbolsValidation : IValidation
     public TResult res = new TResult();
 
     // Prefix list for checking if the content before the "[" is in the list.
-    // public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
-    public List<IgnoreItem> prefixList = new List<IgnoreItem>();
+    public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
 
     // Content list for checking if the content between "[ ]" is in the list.
-    // public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
-    public List<IgnoreItem> contentList = new List<IgnoreItem>();
+    public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
@@ -136,7 +134,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 string unnecessarySymbol = $"\"{match.Value}\""; ;
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: {line}");
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");
             }
         }
     }

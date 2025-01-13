@@ -19,35 +19,43 @@
             },
             {
                 "IgnoreText": "list",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: list[RecognizedForm] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
             },
             {
                 "IgnoreText": "dict",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: dict[str, str] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.documentmodeladministrationclient?view=azure-python"
             },
             {
                 "IgnoreText": "Union",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Union[str, int] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formtrainingclient?view=azure-python"
             },
             {
                 "IgnoreText": "Literal",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Literal[\"High\", \"Low\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
             },
             {
                 "IgnoreText": "Callable",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Callable[[Dict[str, str], Dict[str, Any]], None] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
             },
             {
                 "IgnoreText": "Tuple",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Tuple[Any] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
             },
             {
                 "IgnoreText": "Awaitable",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Awaitable[None] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
             },
             {
                 "IgnoreText": "Optional",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: Optional[int] , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.blobclient?view=azure-python"
             },
             {
                 "IgnoreText": "\"",
@@ -56,16 +64,18 @@
             },
             {
                 "IgnoreText": ":",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: \"[scope:][type]:[id]\" , If the prefix is ':' / ':' / ':]' ..., the symbol [ is considered meaningful."
             },
             {
                 "IgnoreText": ":]",
-                "Usage":"prefix"
+                "Usage":"prefix",
+                "Description": "Example: \"[scope:][type]:[id]\" , If the prefix is ':' / ':' / ':]' ..., the symbol [ is considered meaningful."
             },
             {
                 "IgnoreText": "port",
                 "Usage":"content",
-                "Description": "Example: [:port:]" 
+                "Description": "Example:{protocol}://{fully-qualified-domain-name}[:{port#}] , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.corsoptions?view=azure-python" 
             },
             {
                 "IgnoreText": " str",
@@ -74,28 +84,38 @@
             },
             {
                 "IgnoreText": "str,",
-                "Usage":"content"
+                "Usage":"content",
+                "Description": "Example: Union[bytes, str, Iterable[AnyStr] , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.containerclient?view=azure-python "
             },
             {
                 "IgnoreText": "int,",
-                "Usage":"content"
+                "Usage":"content",
+                "Description": "Example: Callable[[int, int], None] , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.blobclient?view=azure-python"
             },
             {
                 "IgnoreText": " int",
-                "Usage":"content"
+                "Usage":"content",
+                "Description": "Example: Callable[[int, int], None] , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.blobclient?view=azure-python"
             },
             {
                 "IgnoreText": " or ",
-                "Usage":"content"
+                "Usage":"content",
+                "Description": "Example: List[KeyOperation or str] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-keys/azure.keyvault.keys.keyclient?view=azure-python"
             },
             {
                 "IgnoreText": "None",
-                "Usage":"content"
+                "Usage":"content",
+                "Description": "Example: Optional[Callable[[str], None]], Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob?view=azure-python"
             },
             {
                 "IgnoreText": "...",
                 "Usage":"content",
                 "Description": "Example: sleep for [0.0s, 0.2s, 0.4s, ...] "
+            },
+            {
+                "IgnoreText": "0.0",
+                "Usage":"content",
+                "Description": "Example:  Value is between [0.0, 1.0], Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.formword?view=azure-python "
             }
         ]
     },
