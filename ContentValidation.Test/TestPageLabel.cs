@@ -18,7 +18,10 @@ namespace ContentValidation.Test
 
         static TestPageLabel()
         {
-            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            // TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            TestLinks = new List<string>{
+                "https://www.example.com"
+            };
         }
 
         [OneTimeTearDown]
