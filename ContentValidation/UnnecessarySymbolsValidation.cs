@@ -134,7 +134,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 string unnecessarySymbol = $"\"{match.Value}\""; ;
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: {line}");
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");
             }
         }
     }
