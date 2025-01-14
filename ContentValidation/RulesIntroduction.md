@@ -2,7 +2,7 @@
 
 ## ExtraLabelValidation
 
-1. This rule is to detect whether there are front-end tags in the page that are not parsed correctly.
+1. This rule detects whether there are front-end tags in the page that are not parsed correctly.
 
 2. Core code: 
 ```CSharp
@@ -38,18 +38,17 @@
 ```
 
 3. Error sample:
-Image:
-![alt text](image-ExtraLabelValidation.png)
-Text : 
+- Text : 
 `Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br />``<br /> If this is set to true for Windows based pools, WindowsConfiguration.enableAutomaticUpdates cannot be set to true.`
-Link: https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.batch.models.automaticosupgradepolicy?view=azure-python#keyword-only-parameters
+- Link: https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.batch.models.automaticosupgradepolicy?view=azure-python#keyword-only-parameters
 
-
+- Image:
+![alt text](image-ExtraLabelValidation.png)
 
 
 ## TypeAnnotationValidation
 
-1. Check each class and method parameter for correct type annotations and record any missing or incorrect ones.
+1.This rule checks each class and method parameter for correct type annotations and record any missing or incorrect ones.
 
 2. Core code: 
 ```CSharp
@@ -75,18 +74,18 @@ Link: https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.b
 ```
 
 3. Error sample:
-Image:
-![alt text](image-TypeAnnotationValidation.png)
-Text : 
-`ShareProtocols(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
-Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.shareprotocols?view=azure-python#constructor
 
+- Text : 
+`ShareProtocols(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+- Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.shareprotocols?view=azure-python#constructor
+- Image:
+![alt text](image-TypeAnnotationValidation.png)
 
 
 
 ## UnnecessarySymbolsValidation
 
-1. Detect whether there are unnecessary symbols in page content.
+1.This rule detects whether there are unnecessary symbols in page content.
 
 2. Core code: 
 ```CSharp
@@ -153,16 +152,16 @@ Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azur
 ```
 
 3. Error sample:
-Image:
-![alt text](image-UnnecessarySymbolsValidation.png)
-Text : 
-`Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
-Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.services?view=azure-python#keyword-only-parameters
 
+- Text : 
+`Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
+- Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.services?view=azure-python#keyword-only-parameters
+- Image:
+![alt text](image-UnnecessarySymbolsValidation.png)
 
 ## MissingContentValidation
 
-1. Check if there is the blank table.
+1. This rule checks if there is the blank table.
 
 2. Core code: 
 ```CSharp
@@ -198,67 +197,16 @@ Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azur
 ```
 
 3. Error sample:
-Image:
+
+- Link: https://learn.microsoft.com/en-us/python/api/azure-appconfiguration/azure.appconfiguration.aio.azureappconfigurationclient?view=azure-python#parameters
+- Image:
 ![alt text](image-MissingContentValidation.png)
-Text : 
-`Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
-Link: https://learn.microsoft.com/en-us/python/api/azure-appconfiguration/azure.appconfiguration.aio.azureappconfigurationclient?view=azure-python#parameters
-
-
-
-
-
-## GarbledTextValidation
-
-1. Check whether there is garbled text.
-
-2. Core code: 
-```CSharp
-
-        // Fetch all th and td tags in the test page.
-        var cellElements = await page.Locator("td,th").AllAsync();
-
-        // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning.
-        foreach (var cell in cellElements)
-        {
-            var cellText = (await cell.InnerTextAsync()).Trim();
-
-            // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
-            // Example: The Description column of the Parameter table is Empty.
-            // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
-            if (string.IsNullOrEmpty(cellText))
-            {
-                // Fetch the first <a> href before the current cell.
-                var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
-                var href = await aLocator.GetAttributeAsync("href");
-                string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
-
-                if (href != null)
-                {
-                    anchorLink = testLink + href;
-                }
-
-                errorList.Add(anchorLink);
-            }
-        }
-
-
-```
-
-3. Error sample:
-Image:
-![alt text](image-GarbledTextValidation.png)
-Text : 
-`Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
-Link: https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python
-
-
 
 
 
 ## DuplicateServiceValidation
 
-1. Check whether there is garbled text.
+1. This rule checks whether there is garbled text.
 
 2. Core code: 
 ```CSharp
@@ -294,8 +242,9 @@ Link: https://learn.microsoft.com/en-us/python/api/azure-communication-identity/
 ```
 
 3. Error sample:
-Image:
+
+- Text : 
+`Close the :class: ~azure.communication.identity.aio.CommunicationIdentityClient session.`
+- Link: https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#methods
+- Image:
 ![alt text](image-GarbledTextValidation.png)
-Text : 
-`Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
-Link: https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python
