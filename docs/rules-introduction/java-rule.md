@@ -132,7 +132,9 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
     `public Mono> createBlobContainerIfNotExistsWithResponse(String containerName, BlobContainerCreateOptions options)`
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchindexingbufferedsender?view=azure-java-stable
+
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.blobserviceasyncclient?view=azure-java-stable
+
   - Image:
     ![alt text](./image/image-UnnecessarySymbolsValidation001.png)
     ![alt text](./image/image-UnnecessarySymbolsValidation002.png)
