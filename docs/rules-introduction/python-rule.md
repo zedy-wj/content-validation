@@ -25,8 +25,8 @@ This rule detects whether there are front-end tags in the page that are not pars
     `Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br />``<br /> If this is set to true for Windows based pools, WindowsConfiguration.enableAutomaticUpdates cannot be set to true.`
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.batch.models.automaticosupgradepolicy?view=azure-python#keyword-only-parameters
-    - Image:
-    <img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:500px;">
+    - Image:  
+    &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
 - **Code Snippet:** 
 ```csharp 
@@ -75,8 +75,8 @@ This rule checks each class and method parameter for correct type annotations an
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.shareprotocols?view=azure-python#constructor
 
-     - Image:
-    <img src="./image/image-TypeAnnotationValidation.png" alt="TypeAnnotationValidation" style="width:500px;">
+     - Image:  
+    &nbsp;<img src="./image/image-TypeAnnotationValidation.png" alt="TypeAnnotationValidation" style="width:700px;">
 
 - **Code Snippet:**
 ```csharp 
@@ -115,8 +115,8 @@ This rule detects whether there are unnecessary symbols in page content.
     `Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.services?view=azure-python#keyword-only-parameters
-    - Image:
-    <img src="./image/image-UnnecessarySymbolsValidation.png" alt="UnnecessarySymbolsValidation" style="width:500px;">
+    - Image:  
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation.png" alt="UnnecessarySymbolsValidation" style="width:700px;">
 
 - **Code Snippet:** 
 ```csharp 
@@ -192,8 +192,8 @@ This rule checks if there is the blank table.
 
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-appconfiguration/azure.appconfiguration.aio.azureappconfigurationclient?view=azure-python#parameters
-    - Image:
-    <img src="./image/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:500px;">
+    - Image:  
+    &nbsp;<img src="./image/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px;">
 
 - **Code Snippet:** 
 ```csharp 
@@ -244,8 +244,8 @@ This rule checks whether there is garbled text.
     `Close the :class: ~azure.communication.identity.aio.CommunicationIdentityClient session.`
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#methods
-    - Image:
-    <img src="./image/image-GarbledTextValidation.png" alt="GarbledTextValidation" style="width:500px;">
+    - Image:  
+    &nbsp;<img src="./image/image-GarbledTextValidation.png" alt="GarbledTextValidation" style="width:700px;">
 
 - **Code Snippet:** 
 ```csharp 
@@ -292,8 +292,8 @@ This rule checks whether there is duplicate service.
 
     - Link: 
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
-    - Image:
-    <img src="./image/image-DuplicateServiceValidation.png" alt="DuplicateServiceValidation" style="width:500px;">
+    - Image:  
+    &nbsp;<img src="./image/image-DuplicateServiceValidation.png" alt="DuplicateServiceValidation" style="width:700px;">
 
 
 - **Code Snippet:** 
