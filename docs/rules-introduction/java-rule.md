@@ -1,39 +1,48 @@
 # Tool Rules Introduction For Python
 
 ## Overview
+
 This document introduces 6 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python) to complete automated text validation.
 
 ## Validation Rules
+
 - [ExtraLabelValidation](#1-extralabelvalidation)
 - [TypeAnnotationValidation](#2-typeannotationvalidation)
 - [UnnecessarySymbolsValidation](#3-unnecessarysymbolsvalidation)
 - [MissingContentValidation](#4-missingcontentvalidation)
 - [GarbledTextValidation](#5-garbledtextvalidation)
 - [DuplicateServiceValidation](#6-duplicateservicevalidation)
+
 ### 1. ExtraLabelValidation
 
 - **Goal:**
-This rule detects whether there are front-end tags in the page that are not parsed correctly.
+  This rule detects whether there are front-end tags in the page that are not parsed correctly.
 
-- **Extra Labels:** 
-    - `<xref`
-    - `<br`
-    - `<code`
-    - `&gt`
+- **Extra Labels:**
 
+  - `/p>`
+  - `<xref`
+  - `<br`
+  - `<code`
+  - `&gt`
 
 - **Example:**
-    - Extra Label: `<br />`
-    - Text Content: 
-    `Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br />``<br /> If this is set to true for Windows based pools, WindowsConfiguration.enableAutomaticUpdates cannot be set to true.`
-    - Link: 
-    https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.batch.models.automaticosupgradepolicy?view=azure-python#keyword-only-parameters
 
-- **Code Snippet:** 
-```csharp 
+  - Extra Label: `/p>`
+  - Text Content:
+    `The Azure AI Search service provides:/p> `
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
+  - image:
+    ![alt text](./image/image-ExtraLabelValidation.png)
+
+- **Code Snippet:**
+
+```csharp
 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
+            "/p>",
             "<br",
             "<span",
             "<div",
@@ -62,22 +71,24 @@ This rule detects whether there are front-end tags in the page that are not pars
         }
 ```
 
-
-
 ### 2. TypeAnnotationValidation
 
 - **Goal:**
-This rule checks each class and method parameter for correct type annotations and record any missing or incorrect ones.
+  This rule checks each class and method parameter for correct type annotations and record any missing or incorrect ones.
+- **Notes:**
+  In Java content,currently there is no such problem, example for python
 
 - **Example:**
-    - Missing Type Annotations: `value`
-    - Text Content:
+
+  - Missing Type Annotations: `value`
+  - Text Content:
     `ShareProtocols(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
-    - Link: 
+  - Link:
     https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.shareprotocols?view=azure-python#constructor
 
 - **Code Snippet:**
-```csharp 
+
+```csharp
     // If the parameter is "*" ,"/","**kwargs","*args","**kw", it indicates that no type annotation is required.
     // If the parameter follows the format a=b (e.g., param1=null), it means a default value has been assigned to the parameter.
     // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
@@ -99,29 +110,36 @@ This rule checks each class and method parameter for correct type annotations an
     }
 ```
 
-
 ### 3. UnnecessarySymbolsValidation
-- **Goal:**
-This rule detects whether there are unnecessary symbols in page content.
 
-- **Unnecessary Symbols:** 
-    - `<`
-    - `>`
-    - `~`
-    - `[`
-    - `]`
-    - `///`
+- **Goal:**
+  This rule detects whether there are unnecessary symbols in page content.
+
+- **Unnecessary Symbols:**
+
+  - `<`
+  - `>`
+  - `~`
+  - `[`
+  - `]`
+  - `///`
 
 - **Example:**
-    - Unnecessary Symbols: `~`
-    - Text Content: 
-    `Access for the ~azure.storage.blob.BlobServiceClient. Default is False.`
-    - Link: 
-    https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.services?view=azure-python#keyword-only-parameters
 
+  - Unnecessary Symbols: `>`
+  - Text Content:
+    `public void addActions(Collection> actions)`
+    `public Mono> createBlobContainerIfNotExistsWithResponse(String containerName, BlobContainerCreateOptions options)`
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchindexingbufferedsender?view=azure-java-stable
+    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.blobserviceasyncclient?view=azure-java-stable
+  - Image:
+    ![alt text](./image/image-UnnecessarySymbolsValidation001.png)
+    ![alt text](./image/image-UnnecessarySymbolsValidation002.png)
 
-- **Code Snippet:** 
-```csharp 
+- **Code Snippet:**
+
+```csharp
 
     private void ValidateHtmlContent(string htmlContent)
     {
@@ -184,22 +202,21 @@ This rule detects whether there are unnecessary symbols in page content.
 
 ```
 
-
 ### 4. MissingContentValidation
 
 - **Goal:**
-This rule checks if there is the blank table.
+  This rule checks if there is the blank table.
 
 - **Example:**
 
-    - Link: 
-    https://learn.microsoft.com/en-us/python/api/azure-appconfiguration/azure.appconfiguration.aio.azureappconfigurationclient?view=azure-python#parameters
-    - Image:
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.schema.referencetableinfo?view=azure-java-stable#constructor-summary
+  - Image:
     ![alt text](./image/image-MissingContentValidation.png)
 
+- **Code Snippet:**
 
-- **Code Snippet:** 
-```csharp 
+```csharp
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -230,27 +247,29 @@ This rule checks if there is the blank table.
 
 
 ```
-
-
 
 ### 5. GarbledTextValidation
 
 - **Goal:**
-This rule checks whether there is garbled text.
+  This rule checks whether there is garbled text.
 
-- **Garbled Text:** 
-    - `:xxxx:`
+- **Notes:**
+  In Java content,currently there is no such problem, example for python
+- **Garbled Text:**
+
+  - `:xxxx:`
 
 - **Example:**
-    - Garbled Text: `:class:`
-    - Text Content: 
+
+  - Garbled Text: `:class:`
+  - Text Content:
     `Close the :class: ~azure.communication.identity.aio.CommunicationIdentityClient session.`
-    - Link: 
+  - Link:
     https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#methods
 
+- **Code Snippet:**
 
-- **Code Snippet:** 
-```csharp 
+```csharp
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -282,24 +301,23 @@ This rule checks whether there is garbled text.
 
 ```
 
-
-
-
 ### 6. DuplicateServiceValidation
 
 - **Goal:**
-This rule checks whether there is duplicate service.
+  This rule checks whether there is duplicate service.
+- **Notes:**
+  In Java content,currently there is no such problem, example for python
 
 - **Example:**
 
-    - Link: 
+  - Link:
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
-    - Image:
+  - Image:
     ![alt text](./image/image-DuplicateService.png)
 
+- **Code Snippet:**
 
-- **Code Snippet:** 
-```csharp 
+```csharp
 
         //Get all service tags in the test page.
         var aElements = await page.Locator("li.has-three-text-columns-list-items.is-unstyled a[data-linktype='relative-path']").AllAsync();
@@ -325,3 +343,89 @@ This rule checks whether there is duplicate service.
 
 ```
 
+### 7. InterfaceValidation
+
+- **Goal:**
+  Check that the interface is formatted correctly
+
+- **Example:**
+
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable#classes
+  - Image:
+    ![alt text](./image/new-image-InterfaceValidation.png)
+
+- **Code Snippet:**
+
+```csharp
+
+    //check format
+    //......
+    //checked
+
+```
+
+### 8. TextValidation
+
+- **Goal:**
+  Check that the text is formatted correctly
+
+- **Example:**
+
+  - Text Error: `/**` & `-`
+
+  - Text Content:
+    `/** Creates of finds a KeyVaultRoleScope from its string representation.`
+    `- If the deserialized XML object was missing any required properties.`
+  - Link:
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
+    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
+  - Image:
+    ![alt text](./image/new-image-TextValidation001.png)
+    ![alt text](./image/new-image-TextValidation002.png)
+
+- **Code Snippet:**
+
+```csharp
+
+    //check format
+    //......
+    //checked
+
+```
+
+### 9. OthersValidation
+
+- **Goal:**
+  Other details
+
+- **Example:**
+
+  - Text Error:
+    `Incorrect indentation`
+    `Missing symbols`
+    `Incorrect formatting`
+
+  - Text Content:
+
+  - Link:
+
+    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
+    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+    https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
+
+  - Image:
+    ![alt text](./image/other001.png)
+    ![alt text](./image/other002.png)
+    ![alt text](./image/other003.png)
+
+- **Code Snippet:**
+
+```csharp
+
+    //check format
+    //......
+    //checked
+
+```

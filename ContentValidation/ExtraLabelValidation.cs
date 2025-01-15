@@ -19,6 +19,7 @@ public class ExtraLabelValidation : IValidation
 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
+            "/P>",
             "<br",
             "<span",
             "<div",
