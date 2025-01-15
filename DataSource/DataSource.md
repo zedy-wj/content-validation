@@ -18,7 +18,7 @@ dotnet build
 
 ### How To Get PackageName
 
-- **Such as** : - loganalytics/client - mixedreality-authentication-readme
+- **Such as** : `loganalytics/client` `mixedreality-authentication-readme`
 - **Image:**
   ![alt text](image.png)
 - **Description:**
