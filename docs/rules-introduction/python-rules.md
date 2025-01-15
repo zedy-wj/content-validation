@@ -28,7 +28,7 @@ This rule detects whether there are front-end tags in the page that are not pars
     - Image:  
     &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
-- **Code Snippet:** 
+- **Code Snippet:**
 ```csharp 
 
         // Define a list (labelList) containing various HTML tags and entities.
