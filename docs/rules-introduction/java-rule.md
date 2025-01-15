@@ -1,8 +1,8 @@
-# Tool Rules Introduction For Python
+# Tool Rules Introduction For Java
 
 ## Overview
 
-This document introduces 6 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python) to complete automated text validation.
+This document introduces 6 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable) to complete automated text validation.
 
 ## Validation Rules
 
@@ -315,6 +315,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
   - Image:
+
     ![alt text](./image/image-DuplicateService.png)
 
 - **Code Snippet:**
@@ -355,6 +356,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable#classes
   - Image:
+
     ![alt text](./image/new-image-InterfaceValidation.png)
 
 - **Code Snippet:**
@@ -379,7 +381,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
   - Text Content:
     `/** Creates of finds a KeyVaultRoleScope from its string representation.`
     `- If the deserialized XML object was missing any required properties.`
-  - Link:
+
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
 
@@ -422,6 +424,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
 
   - Image:
+
     ![alt text](./image/other001.png)
     ![alt text](./image/other002.png)
     ![alt text](./image/other003.png)
