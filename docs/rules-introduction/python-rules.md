@@ -29,7 +29,7 @@ This rule detects whether there are front-end tags in the page that are not pars
     &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
 - **Code Snippet:**
-```csharp 
+  ```csharp 
 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
@@ -59,7 +59,7 @@ This rule detects whether there are front-end tags in the page that are not pars
 
             ...
         }
-```
+  ```
 
 
 
@@ -79,7 +79,7 @@ This rule checks each class and method parameter for correct type annotations an
     &nbsp;<img src="./image/image-TypeAnnotationValidation.png" alt="TypeAnnotationValidation" style="width:700px;">
 
 - **Code Snippet:**
-```csharp 
+  ```csharp 
     // If the parameter is "*" ,"/","**kwargs","*args","**kw", it indicates that no type annotation is required.
     // If the parameter follows the format a=b (e.g., param1=null), it means a default value has been assigned to the parameter.
     // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
@@ -99,7 +99,7 @@ This rule checks each class and method parameter for correct type annotations an
         }
         return false;
     }
-```
+  ```
 
 
 ### 3. UnnecessarySymbolsValidation
@@ -119,7 +119,7 @@ This rule detects whether there are unnecessary symbols in page content.
     &nbsp;<img src="./image/image-UnnecessarySymbolsValidation.png" alt="UnnecessarySymbolsValidation" style="width:700px;">
 
 - **Code Snippet:** 
-```csharp 
+  ```csharp 
 
     private void ValidateHtmlContent(string htmlContent)
     {
@@ -180,7 +180,7 @@ This rule detects whether there are unnecessary symbols in page content.
     }
 
 
-```
+  ```
 
 
 ### 4. MissingContentValidation
@@ -196,7 +196,7 @@ This rule checks if there is the blank table.
     &nbsp;<img src="./image/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px;">
 
 - **Code Snippet:** 
-```csharp 
+  ```csharp 
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -226,7 +226,7 @@ This rule checks if there is the blank table.
         }
 
 
-```
+  ```
 
 
 
@@ -250,7 +250,7 @@ This rule checks whether there is garbled text.
     &nbsp;<img src="./image/image-GarbledTextValidation.png" alt="GarbledTextValidation" style="width:700px;">
 
 - **Code Snippet:** 
-```csharp 
+  ```csharp 
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -280,7 +280,7 @@ This rule checks whether there is garbled text.
         }
 
 
-```
+  ```
 
 
 
@@ -299,7 +299,7 @@ This rule checks whether there is duplicate service.
 
 
 - **Code Snippet:** 
-```csharp 
+  ```csharp 
 
         //Get all service tags in the test page.
         var aElements = await page.Locator("li.has-three-text-columns-list-items.is-unstyled a[data-linktype='relative-path']").AllAsync();
@@ -323,5 +323,5 @@ This rule checks whether there is duplicate service.
         }
 
 
-```
+  ```
 
