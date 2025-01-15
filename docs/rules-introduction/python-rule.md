@@ -29,8 +29,7 @@ This rule detects whether there are front-end tags in the page that are not pars
     &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;display: block; margin: 20 auto;">
 
 - **Code Snippet:** 
-```csharp 
-
+  ```csharp 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
             "<br",
@@ -59,7 +58,7 @@ This rule detects whether there are front-end tags in the page that are not pars
 
             ...
         }
-```
+  ```
 
 
 
