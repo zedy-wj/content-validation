@@ -382,7 +382,9 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
+
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
+
   - Image:
     ![alt text](./image/new-image-TextValidation001.png)
     ![alt text](./image/new-image-TextValidation002.png)
@@ -414,7 +416,9 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
 
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
+
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+
     https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
 
   - Image:
