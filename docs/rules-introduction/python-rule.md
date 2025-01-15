@@ -237,6 +237,8 @@ This rule checks whether there is garbled text.
 
 - **Garbled Text:** 
     - `:xxxx:`
+    - `:xxxx xxxx:`
+    - `:xxxx xxxx xxxx:`
 
 - **Example:**
     - Garbled Text: `:class:`
