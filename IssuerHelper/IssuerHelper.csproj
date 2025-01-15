@@ -17,4 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.2.24473.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReportHelper\ReportHelper.csproj" />
+  </ItemGroup>
 </Project>

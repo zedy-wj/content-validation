@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReportHelper;
 
 namespace IssuerHelper
 {
@@ -39,7 +40,7 @@ namespace IssuerHelper
             string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, summarySearchPattern);
 
             UploadSummaryIssuesArtifact(allPackages, summaryTotalJson, updatedSummaryJsonPath, packageATotalSearchPattern);
-
+            
             UploadCurrentPipelineTotalIssuesArtifact(allPackages, packageATotalSearchPattern, updatedTotalJsonPath);
 
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
@@ -323,5 +324,18 @@ namespace IssuerHelper
                 return null;
             }
         }
+
+
+        static void GenerateAllPackageExcelFile(string inputJsonPath, string outputExcelPath)
+        {
+           List<TPackage4Json> allPackageList = JsonConvert.DeserializeObject<List<TPackage4Json>>(File.ReadAllText(inputJsonPath)) ?? new List<TPackage4Json>();
+           
+           for (int i = 0; i < allPackageList.Count; i++)
+           {
+              
+           }
+        }
+
+
     }
 }
