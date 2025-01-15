@@ -2,16 +2,18 @@
 
 ## Overview
 
-This document introduces 6 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable) to complete automated text validation.
+This document introduces 8 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable) to complete automated content validation.
 
 ## Validation Rules
 
 - [ExtraLabelValidation](#1-extralabelvalidation)
-- [TypeAnnotationValidation](#2-typeannotationvalidation)
-- [UnnecessarySymbolsValidation](#3-unnecessarysymbolsvalidation)
-- [MissingContentValidation](#4-missingcontentvalidation)
-- [GarbledTextValidation](#5-garbledtextvalidation)
-- [DuplicateServiceValidation](#6-duplicateservicevalidation)
+- [UnnecessarySymbolsValidation](#2-unnecessarysymbolsvalidation)
+- [MissingContentValidation](#3-missingcontentvalidation)
+- [GarbledTextValidation](#4-garbledtextvalidation)
+- [DuplicateServiceValidation](#5-duplicateservicevalidation)
+- [InterfaceValidation](#6-interfacevalidation)
+- [TextValidation](#7-textvalidation)
+- [OthersValidation](#8-othersvalidation)
 
 ### 1. ExtraLabelValidation
 
@@ -20,11 +22,8 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 - **Extra Labels:**
 
-  - `/p>`
-  - `<xref`
-  - `<br`
-  - `<code`
-  - `&gt`
+  - `/p>` `<br` `<span` `<div` `<table` `<img` `...`
+    **Notes:** In Java content, the error is `/p>`.
 
 - **Example:**
 
@@ -33,7 +32,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
     `The Azure AI Search service provides:/p> `
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
-  - image:
+  - Image:
     ![alt text](./image/image-ExtraLabelValidation.png)
 
 - **Code Snippet:**
@@ -48,8 +47,6 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
             "<div",
             "<table",
             "<img",
-            "<code",
-            "<xref",
             ...
         };
 
@@ -71,58 +68,15 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
         }
 ```
 
-### 2. TypeAnnotationValidation
-
-- **Goal:**
-  This rule checks each class and method parameter for correct type annotations and record any missing or incorrect ones.
-- **Notes:**
-  In Java content,currently there is no such problem, example for python
-
-- **Example:**
-
-  - Missing Type Annotations: `value`
-  - Text Content:
-    `ShareProtocols(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
-  - Link:
-    https://learn.microsoft.com/en-us/python/api/azure-storage-file-share/azure.storage.fileshare.shareprotocols?view=azure-python#constructor
-
-- **Code Snippet:**
-
-```csharp
-    // If the parameter is "*" ,"/","**kwargs","*args","**kw", it indicates that no type annotation is required.
-    // If the parameter follows the format a=b (e.g., param1=null), it means a default value has been assigned to the parameter.
-    // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
-    bool IsCorrectTypeAnnotation(string text)
-    {
-        if (text == "*" || text == "/" || text == "**kwargs" || text == "*args" || text == "**kw")
-        {
-            return true;
-        }
-        if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))
-        {
-            return true;
-        }
-        if (text.Contains(":"))
-        {
-            return true;
-        }
-        return false;
-    }
-```
-
-### 3. UnnecessarySymbolsValidation
+### 2. UnnecessarySymbolsValidation
 
 - **Goal:**
   This rule detects whether there are unnecessary symbols in page content.
 
 - **Unnecessary Symbols:**
 
-  - `<`
-  - `>`
-  - `~`
-  - `[`
-  - `]`
-  - `///`
+  - `<` `>` `~` `[` `]` `///`
+    **Notes:** In Java content, the error is `>`.
 
 - **Example:**
 
@@ -204,7 +158,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 4. MissingContentValidation
+### 3. MissingContentValidation
 
 - **Goal:**
   This rule checks if there is the blank table.
@@ -250,7 +204,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 5. GarbledTextValidation
+### 4. GarbledTextValidation
 
 - **Goal:**
   This rule checks whether there is garbled text.
@@ -268,6 +222,8 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
     `Close the :class: ~azure.communication.identity.aio.CommunicationIdentityClient session.`
   - Link:
     https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#methods
+  - Image:
+    ![alt text](./image/image-GarbledTextValidation.png)
 
 - **Code Snippet:**
 
@@ -303,7 +259,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 6. DuplicateServiceValidation
+### 5. DuplicateServiceValidation
 
 - **Goal:**
   This rule checks whether there is duplicate service.
@@ -346,7 +302,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 7. InterfaceValidation
+### 6. InterfaceValidation
 
 - **Goal:**
   Check that the interface is formatted correctly
@@ -369,7 +325,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 8. TextValidation
+### 7. TextValidation
 
 - **Goal:**
   Check that the text is formatted correctly
@@ -401,7 +357,7 @@ This document introduces 6 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 9. OthersValidation
+### 8. OthersValidation
 
 - **Goal:**
   Other details
