@@ -26,7 +26,7 @@ This rule detects whether there are front-end tags in the page that are not pars
     - Link: 
     https://learn.microsoft.com/en-us/python/api/azure-mgmt-batch/azure.mgmt.batch.models.automaticosupgradepolicy?view=azure-python#keyword-only-parameters
     - Image:  
-    &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;display: block; margin: 20 auto;">
+    <img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;display: block; margin: 20 auto;">
 
 - **Code Snippet:** 
 ```csharp 
