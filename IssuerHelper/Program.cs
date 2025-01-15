@@ -32,7 +32,7 @@ namespace IssuerHelper
             string packageATotalSearchPattern = "TotalIssues*.json";
             string packageADiffSearchPattern = "DiffIssues*.json";
             string totalIssueSummaryPath = "../Artifacts";
-            
+
             string updatedSummaryJsonPath = $"{reportPath}/{summarySearchPattern}";
             string updatedTotalJsonPath = $"{reportPath}/CurrentPipelineTotalIssues.json";
             string updatedDiffJsonPath = $"{reportPath}/CurrentPipelineDiffIssues.json";
@@ -40,17 +40,22 @@ namespace IssuerHelper
             string summaryTotalJson = ReadFileWithFuzzyMatch(totalIssueSummaryPath, summarySearchPattern);
 
             UploadSummaryIssuesArtifact(allPackages, summaryTotalJson, updatedSummaryJsonPath, packageATotalSearchPattern);
-            
+            GenerateAllPackageExcelFile(updatedSummaryJsonPath);
+
             UploadCurrentPipelineTotalIssuesArtifact(allPackages, packageATotalSearchPattern, updatedTotalJsonPath);
+            GenerateAllPackageExcelFile(updatedTotalJsonPath);
 
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
-
+            GenerateAllPackageExcelFile(updatedDiffJsonPath);
+            
             GenerateMarkDownFile(allPackages);
 
         }
 
-        static string ReadFileWithFuzzyMatch(string directory, string searchPattern){
-            if(Directory.Exists(directory)){
+        static string ReadFileWithFuzzyMatch(string directory, string searchPattern)
+        {
+            if (Directory.Exists(directory))
+            {
                 string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
 
                 if (matchingFiles.Length == 0)
@@ -59,13 +64,16 @@ namespace IssuerHelper
                 }
                 return File.ReadAllText(matchingFiles[0]);
             }
-            else{
+            else
+            {
                 return "Failed";
             }
         }
 
-        static string[]? ParseInputPackages(string? packages){
-            if(packages.Equals("all")){
+        static string[]? ParseInputPackages(string? packages)
+        {
+            if (packages.Equals("all"))
+            {
                 string packagesFilePath = "ConfigureAllPackages.json";
                 string content = File.ReadAllText(packagesFilePath);
                 JArray jsonArray = JArray.Parse(content);
@@ -79,12 +87,14 @@ namespace IssuerHelper
                 }
                 return parsedPackages;
             }
-            else{
-                return packages?.Replace(" ","").Split(",");
+            else
+            {
+                return packages?.Replace(" ", "").Split(",");
             }
         }
 
-        static void CreateArtifactsFolder(string folder){
+        static void CreateArtifactsFolder(string folder)
+        {
             string folderPath = folder;
 
             try
@@ -102,14 +112,17 @@ namespace IssuerHelper
             }
         }
 
-        static void UploadSummaryIssuesArtifact(string[]? allPackages, string summaryTotalJson, string updatedSummaryJsonPath, string packageASearchPattern){
+        static void UploadSummaryIssuesArtifact(string[]? allPackages, string summaryTotalJson, string updatedSummaryJsonPath, string packageASearchPattern)
+        {
 
-            foreach(var package in allPackages){
+            foreach (var package in allPackages)
+            {
                 string packageFilePath = $"../Artifacts/{package}";
-                
+
                 string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageASearchPattern);
-                
-                if(packageATotalJson.Equals("Failed")){
+
+                if (packageATotalJson.Equals("Failed"))
+                {
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     continue;
                 }
@@ -130,7 +143,7 @@ namespace IssuerHelper
                             break;
                         }
                     }
-                    
+
                     if (packageAExists)
                     {
                         packageAObj["ResultList"] = packageArray;
@@ -148,7 +161,7 @@ namespace IssuerHelper
 
                     summaryTotalJson = totalArray.ToString(Formatting.Indented);
                 }
-                else if(string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
+                else if (string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
                     string totalJsonContent = "[]";
                     JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
@@ -170,20 +183,23 @@ namespace IssuerHelper
             File.WriteAllText(updatedSummaryJsonPath, summaryTotalJson);
         }
 
-        static void UploadCurrentPipelineTotalIssuesArtifact(string[]? allPackages, string packageATotalSearchPattern, string updatedTotalJsonPath){
+        static void UploadCurrentPipelineTotalIssuesArtifact(string[]? allPackages, string packageATotalSearchPattern, string updatedTotalJsonPath)
+        {
             string totalJsonContent = "[]";
             JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
 
-            foreach(var package in allPackages){
+            foreach (var package in allPackages)
+            {
                 string packageFilePath = $"../Artifacts/{package}";
-                
+
                 string packageATotalJson = ReadFileWithFuzzyMatch(packageFilePath, packageATotalSearchPattern);
 
-                if(packageATotalJson.Equals("Failed")){
+                if (packageATotalJson.Equals("Failed"))
+                {
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     continue;
                 }
-                if(!string.IsNullOrEmpty(packageATotalJson))
+                if (!string.IsNullOrEmpty(packageATotalJson))
                 {
                     JArray packageArray = JArray.Parse(packageATotalJson);
                     JObject newPackageA = new JObject
@@ -203,20 +219,23 @@ namespace IssuerHelper
             File.WriteAllText(updatedTotalJsonPath, totalJsonContent);
         }
 
-        static void UploadCurrentPipelineDiffIssuesArtifact(string[]? allPackages, string packageADiffSearchPattern, string updatedDiffJsonPath){
+        static void UploadCurrentPipelineDiffIssuesArtifact(string[]? allPackages, string packageADiffSearchPattern, string updatedDiffJsonPath)
+        {
             string diffJsonContent = "[]";
             JArray? totalArray = JsonConvert.DeserializeObject<JArray>(diffJsonContent);
 
-            foreach(var package in allPackages){
+            foreach (var package in allPackages)
+            {
                 string packageFilePath = $"../Artifacts/{package}";
-                
+
                 string packageADiffJson = ReadFileWithFuzzyMatch(packageFilePath, packageADiffSearchPattern);
 
-                if(packageADiffJson.Equals("Failed")){
+                if (packageADiffJson.Equals("Failed"))
+                {
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     continue;
                 }
-                if(!string.IsNullOrEmpty(packageADiffJson))
+                if (!string.IsNullOrEmpty(packageADiffJson))
                 {
                     JArray packageArray = JArray.Parse(packageADiffJson);
                     JObject newPackageA = new JObject
@@ -236,31 +255,36 @@ namespace IssuerHelper
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
         }
 
-        static void GenerateMarkDownFile(string[] packages){
+        static void GenerateMarkDownFile(string[] packages)
+        {
             string markdownTable = $@"
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------|";
-            
+
             int index = 1;
             DateTime now = DateTime.Now;
-            foreach(var package in packages){
+            foreach (var package in packages)
+            {
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
                 var issueObject = GetIssueInfo(package);
 
-                if(packageIssueInfo.Equals("Failed")){
+                if (packageIssueInfo.Equals("Failed"))
+                {
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     markdownTable += $@"
 | {index} | {package} | Pipeline fail | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                     index++;
                     continue;
                 }
-                if(string.IsNullOrEmpty(packageIssueInfo) && issueObject == null){
+                if (string.IsNullOrEmpty(packageIssueInfo) && issueObject == null)
+                {
                     markdownTable += $@"
 | {index} | {package} | PASS | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
-                else if(string.IsNullOrEmpty(packageIssueInfo) && issueObject != null){
+                else if (string.IsNullOrEmpty(packageIssueInfo) && issueObject != null)
+                {
                     markdownTable += $@"
 | {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
@@ -271,9 +295,9 @@ namespace IssuerHelper
                 }
                 index++;
             }
-            
+
             string filePath = $"../latest-pipeline-result.md";
-    
+
             try
             {
                 File.WriteAllText(filePath, markdownTable);
@@ -284,7 +308,8 @@ namespace IssuerHelper
             }
         }
 
-        static JToken? GetIssueInfo(string package){
+        static JToken? GetIssueInfo(string package)
+        {
             string owner = "zedy-wj";
             string repo = "content-validation";
             string issueTitle = $"{package} content validation issue for learn microsoft website.";
@@ -297,12 +322,12 @@ namespace IssuerHelper
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyGitHubApp", "1.0"));
                     HttpResponseMessage response = client.GetAsync(apiUrl).Result;
                     response.EnsureSuccessStatusCode();
-    
+
                     string responseBody = response.Content.ReadAsStringAsync().Result;
                     JArray issues = JArray.Parse(responseBody);
-    
+
                     var matchingIssue = issues.FirstOrDefault(i => (string)i["title"] == issueTitle);
-    
+
                     if (matchingIssue != null)
                     {
                         Console.WriteLine($"Html url: {matchingIssue["html_url"]}");
@@ -326,16 +351,19 @@ namespace IssuerHelper
         }
 
 
-        static void GenerateAllPackageExcelFile(string inputJsonPath, string outputExcelPath)
+        static void GenerateAllPackageExcelFile(string inputJsonPath)
         {
-           List<TPackage4Json> allPackageList = JsonConvert.DeserializeObject<List<TPackage4Json>>(File.ReadAllText(inputJsonPath)) ?? new List<TPackage4Json>();
-           
-           for (int i = 0; i < allPackageList.Count; i++)
-           {
-              
-           }
-        }
+            List<TPackage4Json> allPackageList = JsonConvert.DeserializeObject<List<TPackage4Json>>(File.ReadAllText(inputJsonPath)) ?? new List<TPackage4Json>();
+            string outputExcelPath =  Path.ChangeExtension(inputJsonPath, ".xlsx");
 
+            for (int i = 0; i < allPackageList.Count; i++)
+            {
+                if (allPackageList[i].ResultList != null || allPackageList[i].ResultList != null)
+                {
+                    ReportHelper.ExcelHelper4Test.AddTestResult(allPackageList[i].ResultList!, outputExcelPath, allPackageList[i].PackageName!);
+                }
+            }
+        }
 
     }
 }
