@@ -63,9 +63,9 @@ You can filter out some unexpected errors by configuring the `ignore.json` file.
     }
 ]
 ```
->In the above example, three types of rules are introduced to filter out content during content validation.
->- "Rule" - One of the validation rules, where your filter condition needs to be added.
->- "IgnoreList" - This is an array of objects in json, each object contains:
->   - "IgnoreText" - The content that actually needs to be filtered out.
->   - "Usage" - This is an optional option, usually used when there are two or more filtering logics in a rule. In UnnecessarySymbolsValidation, "prefix" means that all content prefixed with IgnoreText will be filtered, and "content" means that all content containing IgnoreText will be filtered.
->   - "Description": It is not used in rules code, but only used as a comment in JSON.
+>Notes: In the above example, three types of rules are introduced to filter out content during content validation.
+>- "**Rule**" - One of the validation rules, where your filter condition needs to be added.
+>- "**IgnoreList**" - This is an array of objects in json, each object contains:
+>   - "**IgnoreText**" - The content that actually needs to be filtered out.
+>   - "**Usage**" - This is an optional option, usually used when there are two or more filtering logics in a rule. In UnnecessarySymbolsValidation, "prefix" means that all content prefixed with IgnoreText will be filtered, and "content" means that all content containing IgnoreText will be filtered.
+>   - "**Description**": It is not used in rules code, but only used as a comment in JSON.
