@@ -14,16 +14,13 @@ namespace DataSource
         public static async Task Main(string[] args)
         {
             // Default Configuration
-            // using IHost host = Host.CreateApplicationBuilder(args).Build();
+            using IHost host = Host.CreateApplicationBuilder(args).Build();
 
-            // IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            // string? langues = config["Langues"];
-            // string? service = config["ServiceName"];
-            // string? packagename = config["PackageName"];
-            string? langues = "python";
-            string? service = "Cognitive Services";
-            string? packagename = "azure-ai-formrecognizer";
+            string? langues = config["Langues"];
+            string? service = config["ServiceName"];
+            string? packagename = config["PackageName"];
 
             List<string> allpages = new List<string>();
 
@@ -36,13 +33,9 @@ namespace DataSource
                 await JavaTools.Run(packagename, allpages);
             }
 
-            foreach (var page in allpages)
-            {
-                Console.WriteLine(page);
-            }
-            // PublicTools.ExportData(allpages);
+            PublicTools.ExportData(allpages);
 
-            // host.RunAsync();
+            host.RunAsync();
         }
     }
 }
