@@ -9,11 +9,9 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 - [ExtraLabelValidation](#1-extralabelvalidation)
 - [UnnecessarySymbolsValidation](#2-unnecessarysymbolsvalidation)
 - [MissingContentValidation](#3-missingcontentvalidation)
-- [GarbledTextValidation](#4-garbledtextvalidation)
-- [DuplicateServiceValidation](#5-duplicateservicevalidation)
-- [InterfaceValidation](#6-interfacevalidation)
-- [TextValidation](#7-textvalidation)
-- [OthersValidation](#8-othersvalidation)
+- [DuplicateServiceValidation](#4-duplicateservicevalidation)
+- [InconsistentTextFormatValidation](#5-inconsistenttextformatvalidation)
+- [CodeFormatValidation](#6-codeformatvalidation)
 
 ### 1. ExtraLabelValidation
 
@@ -158,6 +156,49 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
+- **Example:**
+
+  - Text Error: `/**` & `-`
+
+  - Text Content:
+    `/** Creates of finds a KeyVaultRoleScope from its string representation.`
+    `- If the deserialized XML object was missing any required properties.`
+
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
+
+    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
+
+  - Image:
+    ![alt text](./image/new-image-TextValidation001.png)
+    ![alt text](./image/new-image-TextValidation002.png)
+
+- **Code Snippet:**
+
+```csharp
+
+    //Todo
+
+```
+
+- **Example:**
+- Link:
+
+  https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+
+  https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
+
+  - Image:
+
+    ![alt text](./image/other002.png)
+    ![alt text](./image/other003.png)
+
+```csharp
+
+    //Todo
+
+```
+
 ### 3. MissingContentValidation
 
 - **Goal:**
@@ -204,62 +245,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 4. GarbledTextValidation
-
-- **Goal:**
-  This rule checks whether there is garbled text.
-  > Notes:In Java content,currently there is no such problem, example for python
-- **Garbled Text:**
-
-- `:xxxx:`
-- `:xxxx xxxx:`
-- `:xxxx xxxx xxxx:`
-
-- **Example:**
-
-  - Garbled Text: `:class:`
-  - Text Content:
-    `Close the :class: ~azure.communication.identity.aio.CommunicationIdentityClient session.`
-  - Link:
-    https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#methods
-  - Image:
-    ![alt text](./image/image-GarbledTextValidation.png)
-
-- **Code Snippet:**
-
-```csharp
-
-        // Fetch all th and td tags in the test page.
-        var cellElements = await page.Locator("td,th").AllAsync();
-
-        // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning.
-        foreach (var cell in cellElements)
-        {
-            var cellText = (await cell.InnerTextAsync()).Trim();
-
-            // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
-            // Example: The Description column of the Parameter table is Empty.
-            // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
-            if (string.IsNullOrEmpty(cellText))
-            {
-                // Fetch the first <a> href before the current cell.
-                var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
-                var href = await aLocator.GetAttributeAsync("href");
-                string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
-
-                if (href != null)
-                {
-                    anchorLink = testLink + href;
-                }
-
-                errorList.Add(anchorLink);
-            }
-        }
-
-
-```
-
-### 5. DuplicateServiceValidation
+### 4. DuplicateServiceValidation
 
 - **Goal:**
   This rule checks whether there is duplicate service.
@@ -302,10 +288,10 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-### 6. InterfaceValidation
+### 5. InconsistentTextFormatValidation
 
 - **Goal:**
-  Check that the interface is formatted correctly
+  Check that the inconsistent text is formatted correctly
 
 - **Example:**
 
@@ -319,78 +305,29 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 ```csharp
 
-    //check format
-    //......
-    //checked
+    //Todo
 
 ```
 
-### 7. TextValidation
+### 6. CodeFormatValidation
 
 - **Goal:**
-  Check that the text is formatted correctly
+  Check if the code format is right.
 
 - **Example:**
-
-  - Text Error: `/**` & `-`
-
-  - Text Content:
-    `/** Creates of finds a KeyVaultRoleScope from its string representation.`
-    `- If the deserialized XML object was missing any required properties.`
-
-  - Link:
-    https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
-
-    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
-
-  - Image:
-    ![alt text](./image/new-image-TextValidation001.png)
-    ![alt text](./image/new-image-TextValidation002.png)
-
-- **Code Snippet:**
-
-```csharp
-
-    //check format
-    //......
-    //checked
-
-```
-
-### 8. OthersValidation
-
-- **Goal:**
-  Other details
-
-- **Example:**
-
-  - Text Error:
-    `Incorrect indentation`
-    `Missing symbols`
-    `Incorrect formatting`
-
-  - Text Content:
 
   - Link:
 
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
 
-    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
-
-    https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
-
   - Image:
 
     ![alt text](./image/other001.png)
-    ![alt text](./image/other002.png)
-    ![alt text](./image/other003.png)
 
 - **Code Snippet:**
 
 ```csharp
 
-    //check format
-    //......
-    //checked
+    //Todo
 
 ```
