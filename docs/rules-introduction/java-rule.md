@@ -127,7 +127,6 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     `other -`
 
   - Link:
-
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
 
     https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
