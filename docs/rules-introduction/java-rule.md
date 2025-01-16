@@ -162,6 +162,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
   - Text Error: `/**` & `-`
 
   - Text Content:
+
     `/** Creates of finds a KeyVaultRoleScope from its string representation.`
 
     `- If the deserialized XML object was missing any required properties.`
