@@ -32,6 +32,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
   - Image:
 
+    &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
+
 - **Code Snippet:**
 
 ```csharp
