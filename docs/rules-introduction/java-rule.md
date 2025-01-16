@@ -32,7 +32,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
   - Image:
 
-    &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
+    &nbsp;<img src="./image/image-ExtraLabelValidation001.png" alt="ExtraLabelValidation001" style="width:700px;">
 
 - **Code Snippet:**
 
@@ -113,8 +113,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Image:
 
-    &nbsp;<img src="./image/new-image-TextValidation001.png" alt="TextValidation001" style="width:700px;">
-    &nbsp;<img src="./image/new-image-TextValidation002.png" alt="TextValidation002" style="width:700px;">
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation003.png" alt="UnnecessarySymbolsValidation003" style="width:700px;">
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation004.png" alt="UnnecessarySymbolsValidation004" style="width:700px;">
 
 - **Example3:**
 
@@ -126,8 +126,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Image:
 
-    &nbsp;<img src="./image/other002.png" alt="other002" style="width:500px;">
-    &nbsp;<img src="./image/other003.png" alt="other003" style="width:700px;">
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation005.png" alt="UnnecessarySymbolsValidation005" style="width:500px;">
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation006.png" alt="UnnecessarySymbolsValidation006" style="width:700px;">
 
 - **Code Snippet:**
 
@@ -322,7 +322,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Image:
 
-    &nbsp;<img src="./image/CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
+    &nbsp;<img src="./image/image-CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
 
 - **Code Snippet:**
 
