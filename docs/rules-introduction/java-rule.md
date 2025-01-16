@@ -31,7 +31,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
   - Image:
-    ![alt text](./image/image-ExtraLabelValidation.png)
+
+    &nbsp;<img src="./image/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
 - **Code Snippet:**
 
@@ -76,7 +77,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
   - `<` `>` `~` `[` `]` `///`
     > Notes: Tes unnecessary symbol currently detected is `>`.
 
-- **Example:**
+- **Example1:**
 
   - Unnecessary Symbols: `>`
   - Text Content:
@@ -92,8 +93,40 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Image:
 
-    ![alt text](./image/image-UnnecessarySymbolsValidation001.png)
-    ![alt text](./image/image-UnnecessarySymbolsValidation002.png)
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">
+    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
+
+- **Example2:**
+
+  - Text Error: `/**` & `-`
+
+  - Text Content:
+
+    `/** Creates of finds a KeyVaultRoleScope from its string representation.`
+
+    `- If the deserialized XML object was missing any required properties.`
+
+  - Link:
+    https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
+
+    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
+
+  - Image:
+
+    &nbsp;<img src="./image/new-image-TextValidation001.png" alt="TextValidation001" style="width:700px;">
+    &nbsp;<img src="./image/new-image-TextValidation002.png" alt="TextValidation002" style="width:700px;">
+
+- **Example:**
+- Link:
+
+  https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+
+  https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
+
+  - Image:
+
+    &nbsp;<img src="./image/other002.png" alt="other002" style="width:600px;">
+    &nbsp;<img src="./image/other003.png" alt="other003" style="width:700px;">
 
 - **Code Snippet:**
 
@@ -106,6 +139,10 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
         // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
+
+        // Todo
+        // Need to develop and design filtering specific rules for java content.
+        // Currently in the design phase
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
@@ -160,52 +197,6 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 ```
 
-- **Example:**
-
-  - Text Error: `/**` & `-`
-
-  - Text Content:
-
-    `/** Creates of finds a KeyVaultRoleScope from its string representation.`
-
-    `- If the deserialized XML object was missing any required properties.`
-
-  - Link:
-    https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
-
-    https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
-
-  - Image:
-
-    ![alt text](./image/new-image-TextValidation001.png)
-    ![alt text](./image/new-image-TextValidation002.png)
-
-- **Code Snippet:**
-
-```csharp
-
-    //Todo
-
-```
-
-- **Example:**
-- Link:
-
-  https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
-
-  https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
-
-  - Image:
-
-    ![alt text](./image/other002.png)
-    ![alt text](./image/other003.png)
-
-```csharp
-
-    //Todo
-
-```
-
 ### 3. MissingContentValidation
 
 - **Goal:**
@@ -217,7 +208,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.schema.referencetableinfo?view=azure-java-stable#constructor-summary
   - Image:
 
-    ![alt text](./image/image-MissingContentValidation.png)
+    &nbsp;<img src="./image/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px">
 
 - **Code Snippet:**
 
@@ -266,7 +257,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
   - Image:
 
-    ![alt text](./image/image-DuplicateService.png)
+    &nbsp;<img src="./image/image-DuplicateService.png" alt="DuplicateService" style="width:700px">
 
 - **Code Snippet:**
 
@@ -307,7 +298,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable#classes
   - Image:
 
-    ![alt text](./image/new-image-InterfaceValidation.png)
+    &nbsp;<img src="./image/image-InconsistentTextFormatValidation.png" alt="InconsistentTextFormatValidation" style="width:400px">
 
 - **Code Snippet:**
 
@@ -330,7 +321,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Image:
 
-    ![alt text](./image/other001.png)
+    &nbsp;<img src="./image/CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
 
 - **Code Snippet:**
 
