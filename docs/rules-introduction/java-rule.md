@@ -88,6 +88,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.blobserviceasyncclient?view=azure-java-stable
 
   - Image:
+
     ![alt text](./image/image-UnnecessarySymbolsValidation001.png)
     ![alt text](./image/image-UnnecessarySymbolsValidation002.png)
 
@@ -170,6 +171,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
 
   - Image:
+
     ![alt text](./image/new-image-TextValidation001.png)
     ![alt text](./image/new-image-TextValidation002.png)
 
@@ -209,6 +211,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.schema.referencetableinfo?view=azure-java-stable#constructor-summary
   - Image:
+
     ![alt text](./image/image-MissingContentValidation.png)
 
 - **Code Snippet:**
