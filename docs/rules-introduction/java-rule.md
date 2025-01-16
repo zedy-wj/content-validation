@@ -80,8 +80,11 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
   - Unnecessary Symbols: `>`
   - Text Content:
+
     `public void addActions(Collection> actions)`
+
     `public Mono> createBlobContainerIfNotExistsWithResponse(String containerName, BlobContainerCreateOptions options)`
+
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchindexingbufferedsender?view=azure-java-stable
 
