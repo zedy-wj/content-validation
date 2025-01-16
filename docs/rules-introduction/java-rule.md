@@ -211,7 +211,9 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
   > Notes:In Java content,currently there is no such problem, example for python
 - **Garbled Text:**
 
-  - `:xxxx:`
+- `:xxxx:`
+- `:xxxx xxxx:`
+- `:xxxx xxxx xxxx:`
 
 - **Example:**
 
