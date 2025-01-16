@@ -54,7 +54,6 @@ namespace PublicTool
         {
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(apiRefDocPage);
-            var h1Node = doc.DocumentNode.SelectSingleNode("//h1")?.InnerText;
 
             //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
             if (IsTrue(apiRefDocPage))
