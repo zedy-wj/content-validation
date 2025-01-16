@@ -118,6 +118,14 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 - **Example3:**
 
+  - Text Error: `"` & `-`
+
+  - Text Content:
+
+    `Get search index with "searchIndex.`
+
+    `other -`
+
   - Link:
 
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
@@ -143,7 +151,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
         // Todo
         // Need to develop and design filtering specific rules for java content.
-        // Currently in the design phase
+        // Example1 has been realized
+        // Example2 & Example3 Currently in the design phase
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
