@@ -116,16 +116,17 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     &nbsp;<img src="./image/new-image-TextValidation001.png" alt="TextValidation001" style="width:700px;">
     &nbsp;<img src="./image/new-image-TextValidation002.png" alt="TextValidation002" style="width:700px;">
 
-- **Example:**
-- Link:
+- **Example3:**
 
-  https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+  - Link:
 
-  https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
+    https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
+
+    https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
 
   - Image:
 
-    &nbsp;<img src="./image/other002.png" alt="other002" style="width:600px;">
+    &nbsp;<img src="./image/other002.png" alt="other002" style="width:500px;">
     &nbsp;<img src="./image/other003.png" alt="other003" style="width:700px;">
 
 - **Code Snippet:**
