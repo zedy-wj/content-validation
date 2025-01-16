@@ -21,7 +21,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 - **Extra Labels:**
 
   - `/p>` `<br` `<span` `<div` `<table` `<img` `...`
-    > Notes: The Extra labels currently detected is `/p>`.
+    > Note: The Extra labels currently detected is `/p>`.
 
 - **Example:**
 
@@ -75,7 +75,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 - **Unnecessary Symbols:**
 
   - `<` `>` `~` `[` `]` `///`
-    > Notes: Tes unnecessary symbol currently detected is `>`.
+    > Note: Tes unnecessary symbol currently detected is `>`.
 
 - **Example1:**
 
@@ -259,7 +259,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 - **Goal:**
   This rule checks whether there is duplicate service.
 
-  > Notes:In Java content,currently there is no such problem, example for python
+  > Note:In Java content,currently there is no such problem, example for python
 
 - **Example:**
 
