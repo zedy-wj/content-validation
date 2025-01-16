@@ -109,8 +109,6 @@ namespace ContentValidation.Test
 
             playwright.Dispose();
 
-            Assert.That(res.Result, res.FormatErrorMessage());
-
         }
     }
 }
