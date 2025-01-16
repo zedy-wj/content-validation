@@ -35,6 +35,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
+        [Category("GeneralTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestExtraLabel(string testLink)
         {
@@ -54,6 +55,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
+        [Category("GeneralTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestUnnecessarySymbols(string testLink)
         {
