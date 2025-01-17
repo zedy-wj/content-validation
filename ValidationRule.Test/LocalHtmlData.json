@@ -5,7 +5,8 @@
             {
                 "RuleName": "ExtraLabel4xref",
                 "LocalPath": "../../../HTML/ExtraLabelValidation/ExtraLabel4xref.html",
-                "Expected": false
+                "Expected": false,
+                "Description" : "Example: <xref:azure.core.paging.AsyncItemPaged> , Link: https://learn.microsoft.com/en-us/python/api/azure-appconfiguration/azure.appconfiguration.aio.azureappconfigurationclient?view=azure-python"
             },
             {
                 "RuleName": "RightAndIgnore",
@@ -21,7 +22,8 @@
 
                 "RuleName": "MissingTypeAnnotation",
                 "LocalPath": "../../../HTML/TypeAnnotationValidation/MissingTypeAnnotation.html",
-                "Expected": false
+                "Expected": false,
+                "Description" : "Example: GetAuthorizationHeader(cosmos_client_connection, verb, path...) , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.auth?view=azure-python#azure-cosmos-auth-getauthorizationheader"
             },
             {
                 "RuleName": "RightAndIgnore",
@@ -37,7 +39,8 @@
 
                 "RuleName": "GarbledText",
                 "LocalPath": "../../../HTML/GarbledTextValidation/GarbledText.html",
-                "Expected": false
+                "Expected": false,
+                "Description" : "Example: Close the :class: , Link : https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#azure-communication-identity-aio-communicationidentityclient-close"
             },
             {
                 "RuleName": "RightAndIgnore",
@@ -53,11 +56,29 @@
 
                 "RuleName": "MissingContent",
                 "LocalPath": "../../../HTML/MissingContentValidation/MissingContent.html",
-                "Expected": false
+                "Expected": false,
+                "Description" : "Link : https://learn.microsoft.com/en-us/python/api/azure-communication-identity/azure.communication.identity.aio.communicationidentityclient?view=azure-python#azure-communication-identity-aio-communicationidentityclient-close"
             },
             {
                 "RuleName": "RightAndIgnore",
                 "LocalPath": "../../../HTML/MissingContentValidation/RightAndIgnore.html",
+                "Expected": true
+            }
+        ]
+    },
+    {
+        "Type": "DuplicateServiceValidation",
+        "Rules": [
+            {
+
+                "RuleName": "DuplicateService",
+                "LocalPath": "../../../HTML/DuplicateServiceValidation/DuplicateService.html",
+                "Expected": false,
+                "Description" : "Link : https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python"
+            },
+            {
+                "RuleName": "RightAndIgnore",
+                "LocalPath": "../../../HTML/DuplicateServiceValidation/RightAndIgnore.html",
                 "Expected": true
             }
         ]

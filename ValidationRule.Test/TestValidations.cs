@@ -7,43 +7,232 @@ namespace ValidationRule.Test;
 [Parallelizable(ParallelScope.All)]
 public class TestValidations
 {
-    public static List<LocalHTMLDataItem> TestItems { get; set; }
-    public static List<Rule4TestCaseSource> RuleList { get; set; }
+    public static List<HTMLRule> HTMLRulesForExtraLabelValidation = new List<HTMLRule>();
+    public static List<HTMLRule> HTMLRulesForGarbledTextValidation = new List<HTMLRule>();
+    public static List<HTMLRule> HTMLRulesForUnnecessarySymbolsValidation = new List<HTMLRule>();
+    public static List<HTMLRule> HTMLRulesForTypeAnnotationValidation = new List<HTMLRule>();
+    public static List<HTMLRule> HTMLRulesForMissingContentValidation = new List<HTMLRule>();
+    public static List<HTMLRule> HTMLRulesForDuplicateServiceValidation = new List<HTMLRule>();
 
     static TestValidations()
     {
-        TestItems = LocalData.Items;
-        RuleList = TestItems.SelectMany(TestItems => TestItems.Rules.Select(rule => new Rule4TestCaseSource
+        foreach (var item in LocalData.Items)
         {
-            Type = TestItems.Type,
-            RuleName = rule.RuleName,
-            LocalPath = rule.LocalPath,
-            Expected = rule.Expected,
-            FileUri = rule.FileUri
-        })).ToList();
+            switch (item.Type)
+            {
+                case "ExtraLabelValidation":
+                    HTMLRulesForExtraLabelValidation.AddRange(item.Rules);
+                    break;
+                case "GarbledTextValidation":
+                    HTMLRulesForGarbledTextValidation.AddRange(item.Rules);
+                    break;
+                case "UnnecessarySymbolsValidation":
+                    HTMLRulesForUnnecessarySymbolsValidation.AddRange(item.Rules);
+                    break;
+                case "TypeAnnotationValidation":
+                    HTMLRulesForTypeAnnotationValidation.AddRange(item.Rules);
+                    break;
+                case "MissingContentValidation":
+                    HTMLRulesForMissingContentValidation.AddRange(item.Rules);
+                    break;
+                case "DuplicateServiceValidation":
+                    HTMLRulesForDuplicateServiceValidation.AddRange(item.Rules);
+                    break;
+            }
+        }
     }
 
+    // [Test]
+    // [TestCaseSource(nameof(RuleList))]
+    // public async Task TestAllValidations(Rule4TestCaseSource rule)
+    // {
+    //     var playwright = await Playwright.CreateAsync();
+
+    //     IValidation validation = ValidationFactory.CreateValidation(rule.Type, playwright);
+
+    //     var res = await validation.Validate(rule.FileUri!);
+
+    //     string logMessage = @$"{rule.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+    //     Console.WriteLine(logMessage);
+
+    //     string errorMessage = @$"
+    //         =====================================
+    //             Validation-Type : {rule.Type} 
+    //                 Validation-Rule : {rule.RuleName}
+    //                 failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+    //         =====================================
+    //             ";
+
+
+    //     Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+    //     playwright.Dispose();
+    // }
+
     [Test]
-    [TestCaseSource(nameof(RuleList))]
-    public async Task TestAllValidations(Rule4TestCaseSource rule)
+    [TestCaseSource(nameof(HTMLRulesForExtraLabelValidation))]   
+    public async Task TestExtraLabelValidationRules(HTMLRule rule)
     {
         var playwright = await Playwright.CreateAsync();
 
-        IValidation validation = ValidationFactory.CreateValidation(rule.Type, playwright);
+        string Type = "ExtraLabelValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
 
         var res = await validation.Validate(rule.FileUri!);
 
-        string logMessage = @$"{rule.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
         Console.WriteLine(logMessage);
 
         string errorMessage = @$"
             =====================================
-                Validation-Type : {rule.Type} 
+                Validation-Type : {Type} 
                     Validation-Rule : {rule.RuleName}
                     failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
             =====================================
                 ";
 
+
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+        playwright.Dispose();
+    }
+
+    [Test]
+    [TestCaseSource(nameof(HTMLRulesForGarbledTextValidation))]
+    public async Task TestGarbledTextValidationRules(HTMLRule rule)
+    {
+        var playwright = await Playwright.CreateAsync();
+
+        string Type = "GarbledTextValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
+
+        var res = await validation.Validate(rule.FileUri!);
+
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
+
+        string errorMessage = @$"
+            =====================================
+                Validation-Type : {Type} 
+                    Validation-Rule : {rule.RuleName}
+                    failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+            =====================================
+                ";
+
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+        playwright.Dispose();
+    }
+
+    [Test]
+    [TestCaseSource(nameof(HTMLRulesForUnnecessarySymbolsValidation))]
+    public async Task TestUnnecessarySymbolsValidationRules(HTMLRule rule)
+    {
+        var playwright = await Playwright.CreateAsync();
+
+        string Type = "UnnecessarySymbolsValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
+
+        var res = await validation.Validate(rule.FileUri!);
+
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
+
+        string errorMessage = @$"
+            =====================================
+                Validation-Type : {Type} 
+                    Validation-Rule : {rule.RuleName}
+                    failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+            =====================================
+                ";
+
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+        playwright.Dispose();
+    }
+
+    [Test]
+    [TestCaseSource(nameof(HTMLRulesForTypeAnnotationValidation))]
+    public async Task TestTypeAnnotationValidationRules(HTMLRule rule)
+    {
+        var playwright = await Playwright.CreateAsync();
+
+        string Type = "TypeAnnotationValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
+
+        var res = await validation.Validate(rule.FileUri!);
+
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
+
+        string errorMessage = @$"
+            =====================================
+                Validation-Type : {Type} 
+                    Validation-Rule : {rule.RuleName}
+                    failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+            =====================================
+                ";
+
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+        playwright.Dispose();
+    }
+
+
+    [Test]
+    [TestCaseSource(nameof(HTMLRulesForMissingContentValidation))]
+    public async Task TestMissingContentValidationRules(HTMLRule rule)
+    {
+        var playwright = await Playwright.CreateAsync();
+
+        string Type = "MissingContentValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
+
+        var res = await validation.Validate(rule.FileUri!);
+
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
+
+        string errorMessage = @$"
+            =====================================
+                Validation-Type : {Type} 
+                    Validation-Rule : {rule.RuleName}
+                    failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+            =====================================
+                ";
+
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
+
+        playwright.Dispose();
+    }
+
+    [Test]
+    [TestCaseSource(nameof(HTMLRulesForDuplicateServiceValidation))]
+    public async Task TestDuplicateServiceValidationRules(HTMLRule rule)
+    {
+        var playwright = await Playwright.CreateAsync();
+
+        string Type = "DuplicateServiceValidation";
+
+        IValidation validation = ValidationFactory.CreateValidation(Type, playwright);
+
+        var res = await validation.Validate(rule.FileUri!);
+
+        string logMessage = @$"{Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
+
+        string errorMessage = @$"
+            =====================================
+                Validation-Type : {Type} 
+                    Validation-Rule : {rule.RuleName}
+                    failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
+            =====================================
+                ";
 
         Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
 
@@ -68,13 +257,4 @@ public static class ValidationFactory
             _ => throw new ArgumentException($"Unknown validation type: {validationType}")
         };
     }
-}
-
-public class Rule4TestCaseSource
-{
-    public required string Type { get; set; }
-    public required string RuleName { get; set; }
-    public required string LocalPath { get; set; }
-    public required bool Expected { get; set; }
-    public string? FileUri { get; set; }
 }
