@@ -30,7 +30,8 @@ public class ExtraLabelValidation : IValidation
             "&lt",
             "&gt",
             "&quot",
-            "&apos"
+            "&apos",
+            "/p>",
         };
 
         // Create a browser instance.
