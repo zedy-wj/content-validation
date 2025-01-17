@@ -93,7 +93,7 @@ jobs:
       inputs:
         command: 'test'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
-        arguments: '-e BROWSER=chromium'
+        arguments: '-e BROWSER=chromium --filter Category=GeneralTest'
         testRunTitle: 'Content Validation Testing Start'
 
     - task: DownloadPipelineArtifact@2

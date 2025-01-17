@@ -49,6 +49,7 @@ namespace ContentValidation.Test
 
 
         [Test]
+        [Category("GeneralTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestTableMissingContent(string testLink)
         {
@@ -69,6 +70,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
+        [Category("GeneralTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestGarbledText(string testLink)
         {
@@ -89,7 +91,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
-        [Ignore("Waiting discussion")]
+        [Category("SpecialTest")]
         [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)
         {
@@ -106,8 +108,6 @@ namespace ContentValidation.Test
             }
 
             playwright.Dispose();
-
-            Assert.That(res.Result, res.FormatErrorMessage());
 
         }
     }

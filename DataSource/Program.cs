@@ -35,8 +35,6 @@ namespace DataSource
             GetAllPages(apiRefDocPage, package, pages);
 
             ExportData(pages);
-
-            host.RunAsync();
         }
 
         static string GetServiceHomePage(string? serviceName)
@@ -87,7 +85,7 @@ namespace DataSource
         static void ExportData(List<string> pages)
         {
             string jsonString = JsonSerializer.Serialize(pages);
-            // Console.WriteLine(jsonString);
+            Console.WriteLine(jsonString);
             File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
         }
     }
