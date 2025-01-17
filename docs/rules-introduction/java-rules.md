@@ -31,7 +31,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
     `The Azure AI Search service provides:/p> `
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
-  - Image:
+  - Image:  
     &nbsp;<img src="./image/java-sdk/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
 - **Code Snippet:**
@@ -89,7 +89,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.blobserviceasyncclient?view=azure-java-stable
 
-  - Image:
+  - Image:  
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">  
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
 
@@ -108,7 +108,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
 
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation003.png" alt="UnnecessarySymbolsValidation003" style="width:700px;">  
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation004.png" alt="UnnecessarySymbolsValidation004" style="width:700px;">
@@ -128,7 +128,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
     https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
 
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation005.png" alt="UnnecessarySymbolsValidation005" style="width:700px;">
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation006.png" alt="UnnecessarySymbolsValidation006" style="width:700px;">
@@ -212,7 +212,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.schema.referencetableinfo?view=azure-java-stable#constructor-summary
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/java-sdk/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px">
 
@@ -261,7 +261,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   - Link:
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/python-sdk/image-DuplicateServiceValidation.png" alt="DuplicateServiceValidation" style="width:700px">
 
@@ -302,7 +302,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable#classes
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/java-sdk/image-InconsistentTextFormatValidation.png" alt="InconsistentTextFormatValidation" style="width:700px">
 
@@ -323,7 +323,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   - Link: https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
 
-  - Image:
+  - Image:  
 
     &nbsp;<img src="./image/java-sdk/image-CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
 
