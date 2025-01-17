@@ -42,32 +42,6 @@ public class TestValidations
         }
     }
 
-    // [Test]
-    // [TestCaseSource(nameof(RuleList))]
-    // public async Task TestAllValidations(Rule4TestCaseSource rule)
-    // {
-    //     var playwright = await Playwright.CreateAsync();
-
-    //     IValidation validation = ValidationFactory.CreateValidation(rule.Type, playwright);
-
-    //     var res = await validation.Validate(rule.FileUri!);
-
-    //     string logMessage = @$"{rule.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
-    //     Console.WriteLine(logMessage);
-
-    //     string errorMessage = @$"
-    //         =====================================
-    //             Validation-Type : {rule.Type} 
-    //                 Validation-Rule : {rule.RuleName}
-    //                 failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
-    //         =====================================
-    //             ";
-
-
-    //     Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
-
-    //     playwright.Dispose();
-    // }
 
     [Test]
     [TestCaseSource(nameof(HTMLRulesForExtraLabelValidation))]   
