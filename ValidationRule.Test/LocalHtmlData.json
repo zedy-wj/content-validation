@@ -29,5 +29,37 @@
                 "Expected": true
             }
         ]
+    },
+    {
+        "Type": "GarbledTextValidation",
+        "Rules": [
+            {
+
+                "RuleName": "GarbledText",
+                "LocalPath": "../../../HTML/GarbledTextValidation/GarbledText.html",
+                "Expected": false
+            },
+            {
+                "RuleName": "RightAndIgnore",
+                "LocalPath": "../../../HTML/GarbledTextValidation/RightAndIgnore.html",
+                "Expected": true
+            }
+        ]
+    },
+    {
+        "Type": "MissingContentValidation",
+        "Rules": [
+            {
+
+                "RuleName": "MissingContent",
+                "LocalPath": "../../../HTML/MissingContentValidation/MissingContent.html",
+                "Expected": false
+            },
+            {
+                "RuleName": "RightAndIgnore",
+                "LocalPath": "../../../HTML/MissingContentValidation/RightAndIgnore.html",
+                "Expected": true
+            }
+        ]
     }
 ]

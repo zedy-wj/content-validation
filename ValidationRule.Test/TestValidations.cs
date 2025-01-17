@@ -8,42 +8,44 @@ namespace ValidationRule.Test;
 public class TestValidations
 {
     public static List<LocalHTMLDataItem> TestItems { get; set; }
+    public static List<Rule4TestCaseSource> RuleList { get; set; }
 
     static TestValidations()
     {
         TestItems = LocalData.Items;
+        RuleList = TestItems.SelectMany(TestItems => TestItems.Rules.Select(rule => new Rule4TestCaseSource
+        {
+            Type = TestItems.Type,
+            RuleName = rule.RuleName,
+            LocalPath = rule.LocalPath,
+            Expected = rule.Expected,
+            FileUri = rule.FileUri
+        })).ToList();
     }
 
-
-
     [Test]
-    [TestCaseSource(nameof(TestItems))]
-    public async Task TestAllValidations(LocalHTMLDataItem testItem)
+    [TestCaseSource(nameof(RuleList))]
+    public async Task TestAllValidations(Rule4TestCaseSource rule)
     {
         var playwright = await Playwright.CreateAsync();
 
-        IValidation validation = ValidationFactory.CreateValidation(testItem.Type, playwright);
+        IValidation validation = ValidationFactory.CreateValidation(rule.Type, playwright);
 
-        foreach (var rule in testItem.Rules)
-        {
+        var res = await validation.Validate(rule.FileUri!);
 
-            var res = await validation.Validate(rule.FileUri!);
+        string logMessage = @$"{rule.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
+        Console.WriteLine(logMessage);
 
-            // string logMessage = @$"{testItem.Type} - {rule.RuleName} :  {(res.Result == rule.Expected ? "Passed" : "Failed")}";
-            // Console.WriteLine(logMessage);
-
-            string errorMessage = @$"
+        string errorMessage = @$"
             =====================================
-                Validation-Type : {testItem.Type} 
+                Validation-Type : {rule.Type} 
                     Validation-Rule : {rule.RuleName}
                     failed for the file : {(rule.FileUri?.LastIndexOf("HTML") >= 0 ? rule.FileUri.Substring(rule.FileUri.LastIndexOf("HTML")) : rule.FileUri)}
             =====================================
                 ";
 
 
-            Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
-
-        }
+        Assert.That(res.Result, Is.EqualTo(rule.Expected), errorMessage);
 
         playwright.Dispose();
     }
@@ -66,4 +68,13 @@ public static class ValidationFactory
             _ => throw new ArgumentException($"Unknown validation type: {validationType}")
         };
     }
+}
+
+public class Rule4TestCaseSource
+{
+    public required string Type { get; set; }
+    public required string RuleName { get; set; }
+    public required string LocalPath { get; set; }
+    public required bool Expected { get; set; }
+    public string? FileUri { get; set; }
 }
