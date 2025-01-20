@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document introduces 8 rules designed for Python Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable) to complete automated content validation.
+This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable) to complete automated content validation.
 
 ## Validation Rules
 
@@ -12,6 +12,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 - [DuplicateServiceValidation](#4-duplicateservicevalidation)
 - [InconsistentTextFormatValidation](#5-inconsistenttextformatvalidation)
 - [CodeFormatValidation](#6-codeformatvalidation)
+  > Note: Compared to Python rules, `InconsistentTextFormatValidation` and `CodeFormatValidation` exist only in Java rules, while `GarbledTextValidation` and `TypeAnnotationValidation` do not exist in Java rules.
 
 ### 1. ExtraLabelValidation
 
@@ -20,7 +21,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 - **Extra Labels:**
 
-  - `/p>` `<br` `<span` `<div` `<table` `<img` `...`
+  - `<br` , `<span` , `<div` , `<table` , `<img`, `<code`, `<xref`, `&amp;`, `&lt`, `&gt`, `&quot`, `&apos`, `/p>`.
     > Note: The Extra labels currently detected is `/p>`.
 
 - **Example:**
@@ -30,13 +31,12 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     `The Azure AI Search service provides:/p> `
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents?view=azure-java-stable
-  - Image:
-
-    &nbsp;<img src="./image/image-ExtraLabelValidation001.png" alt="ExtraLabelValidation001" style="width:700px;">
+  - Image:  
+    &nbsp;<img src="./image/java-sdk/image-ExtraLabelValidation.png" alt="ExtraLabelValidation" style="width:700px;">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
@@ -65,7 +65,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
             ...
         }
-```
+  ```
 
 ### 2. UnnecessarySymbolsValidation
 
@@ -74,8 +74,8 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 - **Unnecessary Symbols:**
 
-  - `<` `>` `~` `[` `]` `///`
-    > Note: Tes unnecessary symbol currently detected is `>`.
+  - `<` , `>` , `~` , `[` , `]` , `///`.
+    > Note: Tes unnecessary symbol currently detected is `>` , `/**` , `-`
 
 - **Example1:**
 
@@ -86,19 +86,18 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
     `public Mono> createBlobContainerIfNotExistsWithResponse(String containerName, BlobContainerCreateOptions options)`
 
-  - Link:
+  - Link:  
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchindexingbufferedsender?view=azure-java-stable
 
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.blobserviceasyncclient?view=azure-java-stable
 
-  - Image:
+  - Image:  
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">  
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
 
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
+- **Example2(TODO):**
 
-- **Example2:**
-
-  - Text Error: `/**` & `-`
+  - Unnecessary Symbols: `/**` , `-`
 
   - Text Content:
 
@@ -106,19 +105,19 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
     `- If the deserialized XML object was missing any required properties.`
 
-  - Link:
+  - Link:  
     https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration.models.keyvaultrolescope?view=azure-java-stable#method-summary
 
     https://learn.microsoft.com/en-us/java/api/com.azure.storage.blob.models.blobcontaineritem?view=azure-java-stable#method-details
 
   - Image:
 
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation003.png" alt="UnnecessarySymbolsValidation003" style="width:700px;">
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation004.png" alt="UnnecessarySymbolsValidation004" style="width:700px;">
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation003.png" alt="UnnecessarySymbolsValidation003" style="width:700px;">  
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation004.png" alt="UnnecessarySymbolsValidation004" style="width:700px;">
 
-- **Example3:**
+- **Example3(TODO):**
 
-  - Text Error: `"` & `-`
+  - Unnecessary Symbols: `"` , `-`
 
   - Text Content:
 
@@ -126,19 +125,19 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
     `other -`
 
-  - Link:
+  - Link:  
     https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.indexes.searchindexasyncclient?view=azure-java-stable#method-details
 
     https://learn.microsoft.com/en-us/java/api/com.azure.messaging.servicebus.administration.models.sqlrulefilter?view=azure-java-stable#method-details
 
   - Image:
 
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation005.png" alt="UnnecessarySymbolsValidation005" style="width:500px;">
-    &nbsp;<img src="./image/image-UnnecessarySymbolsValidation006.png" alt="UnnecessarySymbolsValidation006" style="width:700px;">
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation005.png" alt="UnnecessarySymbolsValidation005" style="width:700px;">
+    &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation006.png" alt="UnnecessarySymbolsValidation006" style="width:700px;">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
     private void ValidateHtmlContent(string htmlContent)
     {
@@ -204,7 +203,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     }
 
 
-```
+  ```
 
 ### 3. MissingContentValidation
 
@@ -217,11 +216,11 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.schema.referencetableinfo?view=azure-java-stable#constructor-summary
   - Image:
 
-    &nbsp;<img src="./image/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px">
+    &nbsp;<img src="./image/java-sdk/image-MissingContentValidation.png" alt="MissingContentValidation" style="width:700px">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
@@ -251,14 +250,14 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
         }
 
 
-```
+  ```
 
 ### 4. DuplicateServiceValidation
 
 - **Goal:**
   This rule checks whether there is duplicate service.
 
-  > Note:In Java content,currently there is no such problem, example for python
+  > Note: In [Java doc](https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable), currently there is no such issue. The example from [Python doc](https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python) .
 
 - **Example:**
 
@@ -266,11 +265,11 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python
   - Image:
 
-    &nbsp;<img src="./image/image-DuplicateService.png" alt="DuplicateService" style="width:700px">
+    &nbsp;<img src="./image/python-sdk/image-DuplicateServiceValidation.png" alt="DuplicateServiceValidation" style="width:700px">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
         //Get all service tags in the test page.
         var aElements = await page.Locator("li.has-three-text-columns-list-items.is-unstyled a[data-linktype='relative-path']").AllAsync();
@@ -294,7 +293,7 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
         }
 
 
-```
+  ```
 
 ### 5. InconsistentTextFormatValidation
 
@@ -307,15 +306,15 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
     https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable#classes
   - Image:
 
-    &nbsp;<img src="./image/image-InconsistentTextFormatValidation.png" alt="InconsistentTextFormatValidation" style="width:400px">
+    &nbsp;<img src="./image/java-sdk/image-InconsistentTextFormatValidation.png" alt="InconsistentTextFormatValidation" style="width:700px">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
     //Todo
 
-```
+  ```
 
 ### 6. CodeFormatValidation
 
@@ -324,16 +323,16 @@ This document introduces 8 rules designed for Python Data SDK on [Microsoft Lear
 
 - **Example:**
 
-  - Link:https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
+  - Link: https://learn.microsoft.com/en-us/java/api/com.azure.search.documents.searchclientbuilder?view=azure-java-stable
 
   - Image:
 
-    &nbsp;<img src="./image/image-CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
+    &nbsp;<img src="./image/java-sdk/image-CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
 
 - **Code Snippet:**
 
-```csharp
+  ```csharp
 
     //Todo
 
-```
+  ```
