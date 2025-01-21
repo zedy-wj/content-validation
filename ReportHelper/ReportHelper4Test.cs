@@ -373,8 +373,22 @@ public class pipelineStatusHelper
             {
                 Directory.CreateDirectory(rootDirectory);
             }
-            string localFilePath = ConstData.EngDirectory + "/PipelineFailedStatus.txt";
-            File.WriteAllText(localFilePath, description);
+
+            string filePath = Path.Combine(rootDirectory, "PipelineFailedStatus.txt");
+
+            if (File.Exists(filePath))
+            {
+                string fileContent = File.ReadAllText(filePath);
+                if (fileContent.Contains(description))
+                {
+                    return;
+                }
+
+                File.AppendAllText(filePath, description);
+            }else
+            {
+                File.WriteAllText(filePath, description);
+            }
         }
     }
 }
