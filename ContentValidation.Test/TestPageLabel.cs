@@ -24,6 +24,7 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
+
             string excelFilePath = ConstData.TotalIssuesExcelFileName;
             string sheetName = "TotalIssues";
             string jsonFilePath = ConstData.TotalIssuesJsonFileName;
@@ -40,18 +41,27 @@ namespace ContentValidation.Test
         public async Task TestExtraLabel(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
-
             IValidation Validation = new ExtraLabelValidation(playwright);
 
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestExtraLabel";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestExtraLabelResults.Enqueue(res);
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestExtraLabel";
+                if (!res.Result)
+                {
+                    TestExtraLabelResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : ExtraLabelValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
+
         }
 
         [Test]
@@ -60,19 +70,32 @@ namespace ContentValidation.Test
         public async Task TestUnnecessarySymbols(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
-
-            IValidation Validation = new UnnecessarySymbolsValidation(playwright);
-
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestUnnecessarySymbols";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestUnnecessarySymbolsResults.Enqueue(res);
+
+                IValidation Validation = new UnnecessarySymbolsValidation(playwright);
+
+                res = await Validation.Validate(testLink);
+
+                res.TestCase = "TestUnnecessarySymbols";
+                if (!res.Result)
+                {
+                    TestUnnecessarySymbolsResults.Enqueue(res);
+                }
+
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : UnnecessarySymbolsValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
+
         }
     }
 }
+
 

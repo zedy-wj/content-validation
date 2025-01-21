@@ -42,9 +42,9 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
-            JsonHelper4Test.AddTestResult(TestTableMissingContentResults,jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestGarbledTextResults,jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults,jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestTableMissingContentResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestGarbledTextResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults, jsonFilePath);
         }
 
 
@@ -53,18 +53,27 @@ namespace ContentValidation.Test
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestTableMissingContent(string testLink)
         {
-            var playwright = await Playwright.CreateAsync();
 
+            var playwright = await Playwright.CreateAsync();
             IValidation Validation = new MissingContentValidation(playwright);
 
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestTableMissingContent";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestTableMissingContentResults.Enqueue(res);
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestTableMissingContent";
+                if (!res.Result)
+                {
+                    TestTableMissingContentResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : MissingContentValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
 
         }
@@ -75,17 +84,25 @@ namespace ContentValidation.Test
         public async Task TestGarbledText(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
-
             IValidation Validation = new GarbledTextValidation(playwright);
 
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestGarbledText";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestGarbledTextResults.Enqueue(res);
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestGarbledText";
+                if (!res.Result)
+                {
+                    TestGarbledTextResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : GarbledTextValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
 
         }
@@ -95,18 +112,27 @@ namespace ContentValidation.Test
         [TestCaseSource(nameof(DuplicateTestLink))]
         public async Task TestDuplicateService(string testLink)
         {
-            var playwright = await Playwright.CreateAsync();
 
+            var playwright = await Playwright.CreateAsync();
             IValidation Validation = new DuplicateServiceValidation(playwright);
 
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestDuplicateService";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestDuplicateServiceResults.Enqueue(res);
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestDuplicateService";
+                if (!res.Result)
+                {
+                    TestDuplicateServiceResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : DuplicateServiceValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
 
         }
