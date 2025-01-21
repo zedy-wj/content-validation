@@ -40,7 +40,7 @@ namespace ContentValidation.Test
             var res = new TResult();
             try
             {
-                res = await Validation.Validate(testLink);
+                res = await Validation.Validate("testLink");
                 res.TestCase = "TestMissingTypeAnnotation";
                 if (!res.Result)
                 {

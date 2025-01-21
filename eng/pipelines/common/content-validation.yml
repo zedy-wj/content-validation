@@ -95,6 +95,24 @@ jobs:
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
         arguments: '-e BROWSER=chromium --filter Category=GeneralTest'
         testRunTitle: 'Content Validation Testing Start'
+      continueOnError: true
+
+    - task: Bash@3
+      displayName: Check the status of test case
+      inputs:
+        targetType: 'inline'
+        script: |
+          #!/bin/bash
+          FILE_PATH="/eng/PipelineFailedStatus.txt"
+ 
+          if [ ! -f "$FILE_PATH" ]; then
+            echo "No exception was caught during the test case execution. Please check the test case running results."
+            exit 0
+          else
+            echo "An exception was caught during the test case execution, interrupting subsequent execution. Printing contents and exiting abnormally."
+            cat "$FILE_PATH"
+            exit 1
+          fi
 
     - task: DownloadPipelineArtifact@2
       displayName: Download The Last Artifact issues-summary

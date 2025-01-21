@@ -55,6 +55,7 @@ jobs:
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
         arguments: '-e BROWSER=chromium --filter Category=SpecialTest'
         testRunTitle: 'Content Validation Testing Start'
+      continueOnError: true
 
     # - task: DownloadPipelineArtifact@2
     #   displayName: Download The Last Artifact issues-summary
