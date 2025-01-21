@@ -1,4 +1,4 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------|
-| 1 | azure-appconfiguration | Pipeline fail | / | / | / | 1/21/2025 2:54:21 AM |
+| 1 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/133 | 01/07/2025 08:14:34 | 01/15/2025 08:46:54 | 1/21/2025 3:18:59 AM |
