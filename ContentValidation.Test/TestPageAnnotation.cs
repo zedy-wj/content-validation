@@ -35,18 +35,26 @@ namespace ContentValidation.Test
         public async Task TestMissingTypeAnnotation(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
-
             IValidation Validation = new TypeAnnotationValidation(playwright);
 
-            var res = await Validation.Validate(testLink);
-            res.TestCase = "TestMissingTypeAnnotation";
-            if (!res.Result)
+            var res = new TResult();
+            try
             {
-                TestMissingTypeAnnotationResults.Enqueue(res);
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestMissingTypeAnnotation";
+                if (!res.Result)
+                {
+                    TestMissingTypeAnnotationResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : TypeAnnotationValidation");
+                throw;
             }
 
+            Assert.That(res.Result, res.FormatErrorMessage());
             playwright.Dispose();
-
         }
     }
 }

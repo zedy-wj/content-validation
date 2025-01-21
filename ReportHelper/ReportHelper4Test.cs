@@ -78,7 +78,7 @@ public class ExcelHelper4Test
                 ICellStyle cellStyle = workbook.CreateCellStyle();
                 cellStyle.WrapText = true;
 
-                // Create a cell style for hyperlinks
+                // Create a cell style for hyperlinks 
                 ICellStyle hlinkStyle = workbook.CreateCellStyle();
                 IFont hlinkFont = workbook.CreateFont();
                 hlinkFont.Underline = FontUnderlineType.Single;
@@ -107,7 +107,13 @@ public class ExcelHelper4Test
                     cell4.CellStyle = hlinkStyle;
 
                     row.CreateCell(5).SetCellValue(res.TestCase);
-                    row.CreateCell(6).SetCellValue(res.AdditionalNotes?.ToString());
+
+                    // Add a "python-rules.md" hyperlink to the notes column
+                    row.CreateCell(6).SetCellValue("python-rules.md");
+                    IHyperlink noteLink = workbook.GetCreationHelper().CreateHyperlink(HyperlinkType.Url);
+                    noteLink.Address = "https://github.com/zedy-wj/content-validation/blob/main/docs/rules-introduction/python-rules.md";
+                    row.GetCell(6).Hyperlink = noteLink;
+                    row.GetCell(6).CellStyle = hlinkStyle;
                 }
 
                 // Automatically adjust column widths to fit content
@@ -356,3 +362,19 @@ public class GithubHelper
     }
 }
 
+public class pipelineStatusHelper
+{
+    private static readonly object LockObj = new object();
+    public static void SavePipelineFailedStatus(string description)
+    {
+        lock (LockObj)
+        {
+            string rootDirectory = ConstData.EngDirectory;
+            {
+                Directory.CreateDirectory(rootDirectory);
+            }
+            string localFilePath = ConstData.EngDirectory + "/PipelineFailedStatus.txt";
+            File.WriteAllText(localFilePath, description);
+        }
+    }
+}
