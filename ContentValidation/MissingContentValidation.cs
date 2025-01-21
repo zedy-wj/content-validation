@@ -48,9 +48,6 @@ public class MissingContentValidation : IValidation
             }
         }
 
-
-        throw new Exception("Test failed===================================");
-
         var formattedList = errorList
             .GroupBy(item => item)
             .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , location : {group.Key}")
