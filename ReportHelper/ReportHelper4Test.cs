@@ -384,10 +384,11 @@ public class pipelineStatusHelper
                     return;
                 }
 
-                File.AppendAllText(filePath, description);
-            }else
+                File.AppendAllText(filePath, description + "\n");
+            }
+            else
             {
-                File.WriteAllText(filePath, description);
+                File.WriteAllText(filePath, description + "\n");
             }
         }
     }
