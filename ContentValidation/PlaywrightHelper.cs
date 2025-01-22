@@ -7,11 +7,12 @@ public static class PlaywrightHelper
         {
             try
             {
-                await page.GotoAsync(url);
-                return page; 
+                await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.Load, Timeout = 30000 });
+                return page;
             }
-            catch 
+            catch
             {
+                Console.WriteLine($"Navigating to {url} (attempt {i + 1}/{retryCount})");
                 if (i == retryCount - 1)
                 {
                     throw;
