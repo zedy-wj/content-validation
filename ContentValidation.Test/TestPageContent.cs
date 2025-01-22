@@ -19,10 +19,11 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestDuplicateServiceResults = new ConcurrentQueue<TResult>();
 
-
+        public static IPlaywright? playwright = null;
 
         static TestPageContent()
         {
+            playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
 
             //This list is for testing duplicate services.
@@ -36,6 +37,7 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
+            playwright?.Dispose();
             string excelFilePath = ConstData.TotalIssuesExcelFileName;
             string sheetName = "TotalIssues";
             string jsonFilePath = ConstData.TotalIssuesJsonFileName;
@@ -54,7 +56,7 @@ namespace ContentValidation.Test
         public async Task TestTableMissingContent(string testLink)
         {
 
-            var playwright = await Playwright.CreateAsync();
+
             IValidation Validation = new MissingContentValidation(playwright);
 
             var res = new TResult();
@@ -74,7 +76,7 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-            playwright.Dispose();
+
 
         }
 
@@ -83,7 +85,7 @@ namespace ContentValidation.Test
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestGarbledText(string testLink)
         {
-            var playwright = await Playwright.CreateAsync();
+
             IValidation Validation = new GarbledTextValidation(playwright);
 
             var res = new TResult();
@@ -103,7 +105,7 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-            playwright.Dispose();
+
 
         }
 
@@ -113,7 +115,7 @@ namespace ContentValidation.Test
         public async Task TestDuplicateService(string testLink)
         {
 
-            var playwright = await Playwright.CreateAsync();
+
             IValidation Validation = new DuplicateServiceValidation(playwright);
 
             var res = new TResult();
@@ -133,7 +135,7 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-            playwright.Dispose();
+
 
         }
     }

@@ -16,14 +16,18 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
 
+        public static IPlaywright? playwright = null;
+
         static TestPageLabel()
         {
+            playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [OneTimeTearDown]
         public void SaveTestData()
         {
+            playwright?.Dispose();
 
             string excelFilePath = ConstData.TotalIssuesExcelFileName;
             string sheetName = "TotalIssues";
@@ -40,7 +44,7 @@ namespace ContentValidation.Test
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestExtraLabel(string testLink)
         {
-            var playwright = await Playwright.CreateAsync();
+
             IValidation Validation = new ExtraLabelValidation(playwright);
 
             var res = new TResult();
@@ -60,7 +64,7 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-            playwright.Dispose();
+
 
         }
 
@@ -69,7 +73,7 @@ namespace ContentValidation.Test
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestUnnecessarySymbols(string testLink)
         {
-            var playwright = await Playwright.CreateAsync();
+
             var res = new TResult();
             try
             {
@@ -92,7 +96,7 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-            playwright.Dispose();
+
 
         }
     }
