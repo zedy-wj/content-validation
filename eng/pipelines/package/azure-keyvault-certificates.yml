@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Key Vault'
       PackageName: 'azure-keyvault-certificates'
-      jobDisplayName: 'AZURE-KEYVAULT-CERTIFICATES'
+      jobDisplayName: 'AZURE_KEYVAULT_CERTIFICATES'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

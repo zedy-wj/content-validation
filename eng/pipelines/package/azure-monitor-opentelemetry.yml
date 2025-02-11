@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Monitor'
       PackageName: 'azure-monitor-opentelemetry'
-      jobDisplayName: 'AZURE-MONITOR-OPENTELEMETRY'
+      jobDisplayName: 'AZURE_MONITOR_OPENTELEMETRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

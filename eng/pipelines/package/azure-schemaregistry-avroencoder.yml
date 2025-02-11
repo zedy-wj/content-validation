@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Schema Registry'
       PackageName: 'azure-schemaregistry-avroencoder'
-      jobDisplayName: 'AZURE-SCHEMAREGISTRY-AVROENCODER '
+      jobDisplayName: 'AZURE_SCHEMAREGISTRY_AVROENCODER '
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

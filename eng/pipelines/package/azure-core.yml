@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Web PubSub'
       PackageName: 'azure-core'
-      jobDisplayName: 'AZURE-CORE'
+      jobDisplayName: 'AZURE_CORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

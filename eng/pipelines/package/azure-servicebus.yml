@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Service Bus'
       PackageName: 'azure-servicebus'
-      jobDisplayName: 'AZURE-SERVICEBUS'
+      jobDisplayName: 'AZURE_SERVICEBUS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

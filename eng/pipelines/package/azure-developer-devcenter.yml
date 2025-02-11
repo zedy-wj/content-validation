@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Dev Center'
       PackageName: 'azure-developer-devcenter'
-      jobDisplayName: 'AZURE-DEVELOPER-DEVCENTER'
+      jobDisplayName: 'AZURE_DEVELOPER_DEVCENTER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

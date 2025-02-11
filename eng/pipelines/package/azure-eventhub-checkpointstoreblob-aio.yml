@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Event Hubs'
       PackageName: 'azure-eventhub-checkpointstoreblob-aio'
-      jobDisplayName: 'AZURE-EVENTHUB-CHECKPOINTSTOREBLOB-AIO'
+      jobDisplayName: 'AZURE_EVENTHUB_CHECKPOINTSTOREBLOB_AIO'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

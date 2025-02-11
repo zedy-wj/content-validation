@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Communication'
       PackageName: 'azure-communication-jobrouter'
-      jobDisplayName: 'AZURE-COMMUNICATION-JOBROUTER'
+      jobDisplayName: 'AZURE_COMMUNICATION_JOBROUTER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

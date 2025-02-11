@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Search'
       PackageName: 'azure-search-documents'
-      jobDisplayName: 'AZURE-SEARCH-DOCUMENTS'
+      jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

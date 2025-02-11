@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-ai-translation-document'
-      jobDisplayName: 'AZURE-AI-TRANSLATION-DOCUMENT'
+      jobDisplayName: 'AZURE_AI_TRANSLATION_DOCUMENT'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

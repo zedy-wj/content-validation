@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Storage'
       PackageName: 'azure-storage-file-datalake'
-      jobDisplayName: 'AZURE-STORAGE-FILE-DATALAKE'
+      jobDisplayName: 'AZURE_STORAGE_FILE_DATALAKE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

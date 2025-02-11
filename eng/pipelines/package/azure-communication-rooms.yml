@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Communication'
       PackageName: 'azure-communication-rooms'
-      jobDisplayName: 'AZURE-COMMUNICATION-ROOMS'
+      jobDisplayName: 'AZURE_COMMUNICATION_ROOMS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

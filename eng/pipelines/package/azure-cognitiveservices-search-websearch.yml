@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Web PubSub'
       PackageName: 'azure-cognitiveservices-search-websearch'
-      jobDisplayName: 'AZURE-COGNITIVESERVICES-SEARCH-WEBSEARCH '
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_WEBSEARCH '
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

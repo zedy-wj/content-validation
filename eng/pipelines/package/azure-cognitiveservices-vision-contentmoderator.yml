@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-cognitiveservices-vision-contentmoderator'
-      jobDisplayName: 'AZURE-COGNITIVESERVICES-VISION-CONTENTMODERATOR'
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_VISION_CONTENTMODERATOR'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

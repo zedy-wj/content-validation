@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Schema Registry'
       PackageName: 'azure-schemaregistry'
-      jobDisplayName: 'AZURE-SCHEMAREGISTRY'
+      jobDisplayName: 'AZURE_SCHEMAREGISTRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

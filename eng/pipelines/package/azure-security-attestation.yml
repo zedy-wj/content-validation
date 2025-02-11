@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Attestation'
       PackageName: 'azure-security-attestation'
-      jobDisplayName: 'AZURE-SECURITY-ATTESTATION'
+      jobDisplayName: 'AZURE_SECURITY_ATTESTATION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

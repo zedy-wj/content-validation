@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Communication'
       PackageName: 'azure-communication-sms'
-      jobDisplayName: 'AZURE-COMMUNICATION-SMS'
+      jobDisplayName: 'AZURE_COMMUNICATION_SMS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

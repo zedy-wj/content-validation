@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Communication'
       PackageName: 'azure-communication-chat'
-      jobDisplayName: 'AZURE-COMMUNICATION-CHAT'
+      jobDisplayName: 'AZURE_COMMUNICATION_CHAT'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Storage'
       PackageName: 'azure-storage-blob'
-      jobDisplayName: 'AZURE-STORAGE-BLOB'
+      jobDisplayName: 'AZURE_STORAGE_BLOB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

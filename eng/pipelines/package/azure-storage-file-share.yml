@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Storage'
       PackageName: 'azure-storage-file-share'
-      jobDisplayName: 'AZURE-STORAGE-FILE-SHARE'
+      jobDisplayName: 'AZURE_STORAGE_FILE_SHARE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Identity'
       PackageName: 'azure-identity'
-      jobDisplayName: 'AZURE-IDENTITY  '
+      jobDisplayName: 'AZURE_IDENTITY  '
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

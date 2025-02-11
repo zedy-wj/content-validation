@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-cognitiveservices-language-spellcheck'
-      jobDisplayName: 'AZURE-COGNITIVESERVICES-LANGUAGE-SPELLCHECK'
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_LANGUAGE_SPELLCHECK'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'App Configuration'
       PackageName: 'azure-appconfiguration-provider'
-      jobDisplayName: 'AZURE-APPCONFIGURATION-PROVIDER'
+      jobDisplayName: 'AZURE_APPCONFIGURATION_PROVIDER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

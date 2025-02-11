@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Container Registry'
       PackageName: 'azure-containerregistry'
-      jobDisplayName: 'AZURE-CONTAINERREGISTRY'
+      jobDisplayName: 'AZURE_CONTAINERREGISTRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

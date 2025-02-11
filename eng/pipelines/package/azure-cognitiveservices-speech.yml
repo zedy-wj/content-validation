@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-cognitiveservices-speech'
-      jobDisplayName: 'AZURE-COGNITIVESERVICES-SPEECH'
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_SPEECH'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

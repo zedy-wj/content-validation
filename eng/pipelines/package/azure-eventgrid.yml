@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Event Grid'
       PackageName: 'azure-eventgrid'
-      jobDisplayName: 'AZURE-EVENTGRID'
+      jobDisplayName: 'AZURE_EVENTGRID'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

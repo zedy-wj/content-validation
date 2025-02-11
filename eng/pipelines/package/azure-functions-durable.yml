@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Functions'
       PackageName: 'azure-functions-durable'
-      jobDisplayName: 'AZURE-FUNCTIONS-DURABLE'
+      jobDisplayName: 'AZURE_FUNCTIONS_DURABLE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-ai-contentsafety'
-      jobDisplayName: 'AZURE-AI-CONTENTSAFETY'
+      jobDisplayName: 'AZURE_AI_CONTENTSAFETY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

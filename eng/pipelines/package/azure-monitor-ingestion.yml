@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Monitor'
       PackageName: 'azure-monitor-ingestion'
-      jobDisplayName: 'AZURE-MONITOR-INGESTION'
+      jobDisplayName: 'AZURE_MONITOR_INGESTION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

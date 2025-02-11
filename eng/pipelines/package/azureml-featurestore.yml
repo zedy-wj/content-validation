@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Machine Learning'
       PackageName: 'azureml-featurestore'
-      jobDisplayName: 'AZUREML-FEATURESTORE'
+      jobDisplayName: 'AZUREML_FEATURESTORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

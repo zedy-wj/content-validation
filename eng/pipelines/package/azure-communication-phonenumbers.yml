@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Communication'
       PackageName: 'azure-communication-phonenumbers'
-      jobDisplayName: 'AZURE-COMMUNICATION-PHONENUMBERS'
+      jobDisplayName: 'AZURE_COMMUNICATION_PHONENUMBERS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

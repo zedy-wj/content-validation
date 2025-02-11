@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'IoT'
       PackageName: 'azure-iot-hub'
-      jobDisplayName: 'AZURE-IOT-HUB'
+      jobDisplayName: 'AZURE_IOT_HUB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

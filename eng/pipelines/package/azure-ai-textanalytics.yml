@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-ai-textanalytics'
-      jobDisplayName: 'AZURE-AI-TEXTANALYTICS'
+      jobDisplayName: 'AZURE_AI_TEXTANALYTICS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

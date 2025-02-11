@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-healthinsights-radiologyinsights'
-      jobDisplayName: 'AZURE-HEALTHINSIGHTS-RADIOLOGYINSIGHTS'
+      jobDisplayName: 'AZURE_HEALTHINSIGHTS_RADIOLOGYINSIGHTS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

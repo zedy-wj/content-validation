@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'News Search'
       PackageName: 'azure-cognitiveservices-search-newssearch'
-      jobDisplayName: 'AZURE-COGNITIVESERVICES-SEARCH-NEWSSEARCH'
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_NEWSSEARCH'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

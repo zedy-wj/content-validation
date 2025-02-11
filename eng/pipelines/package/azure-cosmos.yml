@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cosmos DB'
       PackageName: 'azure-cosmos'
-      jobDisplayName: 'AZURE-COSMOS'
+      jobDisplayName: 'AZURE_COSMOS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

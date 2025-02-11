@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Load Testing'
       PackageName: 'azure-developer-loadtesting'
-      jobDisplayName: 'AZURE-DEVELOPER-LOADTESTING'
+      jobDisplayName: 'AZURE_DEVELOPER_LOADTESTING'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
