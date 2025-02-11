@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Entity Search'
       PackageName: 'azure-cognitiveservices-search-entitysearch'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_ENTITYSEARCH '
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_ENTITYSEARCH'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

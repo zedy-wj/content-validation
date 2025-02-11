@@ -18,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Image Search'
       PackageName: 'azure-cognitiveservices-search-imagesearch'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_IMAGESEARCH  '
+      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_IMAGESEARCH'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
