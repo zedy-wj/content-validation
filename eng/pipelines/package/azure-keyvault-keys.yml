@@ -1,3 +1,4 @@
+
 parameters:
 - name: AzureDevOpsPat
   type: string
@@ -17,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Key Vault'
       PackageName: 'azure-keyvault-keys'
-      jobDisplayName: 'AZURE_KEYVAULT_KEYS'
+      jobDisplayName: 'AZURE-KEYVAULT-KEYS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

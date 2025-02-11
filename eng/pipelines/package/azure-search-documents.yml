@@ -1,3 +1,4 @@
+
 parameters:
 - name: AzureDevOpsPat
   type: string
@@ -17,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Search'
       PackageName: 'azure-search-documents'
-      jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'
+      jobDisplayName: 'AZURE-SEARCH-DOCUMENTS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

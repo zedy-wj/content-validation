@@ -16,9 +16,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Key Vault'
-      PackageName: 'azure-keyvault-secrets'
-      jobDisplayName: 'AZURE-KEYVAULT-SECRETS'
+      ServiceName: 'Service Fabric'
+      PackageName: 'azure-servicefabric'
+      jobDisplayName: 'AZURE-SERVICEFABRIC'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

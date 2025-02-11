@@ -1,3 +1,4 @@
+
 parameters:
 - name: AzureDevOpsPat
   type: string
@@ -17,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Storage'
       PackageName: 'azure-storage-blob'
-      jobDisplayName: 'AZURE_STORAGE_BLOB'
+      jobDisplayName: 'AZURE-STORAGE-BLOB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

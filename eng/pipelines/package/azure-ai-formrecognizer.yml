@@ -1,3 +1,4 @@
+
 parameters:
 - name: AzureDevOpsPat
   type: string
@@ -17,7 +18,7 @@ jobs:
     parameters:
       ServiceName: 'Cognitive Services'
       PackageName: 'azure-ai-formrecognizer'
-      jobDisplayName: 'AZURE_AI_FORMRECOGNIZER'
+      jobDisplayName: 'AZURE-AI-FORMRECOGNIZER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

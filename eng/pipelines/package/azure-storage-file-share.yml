@@ -16,9 +16,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Key Vault'
-      PackageName: 'azure-keyvault-secrets'
-      jobDisplayName: 'AZURE-KEYVAULT-SECRETS'
+      ServiceName: 'Storage'
+      PackageName: 'azure-storage-file-share'
+      jobDisplayName: 'AZURE-STORAGE-FILE-SHARE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
