@@ -58,7 +58,7 @@ elif [ $item_count -eq 0 ]; then
   if [ -f "$TOTAL_ISSUE_FILE" ]; then
       echo "$TOTAL_ISSUE_FILE exists"
       file_content=$(cat "$TOTAL_ISSUE_FILE")
-      file_content="$file_content\n\nDetails of issue download url: $download_url"
+      # file_content="$file_content\n\nDetails of issue download url: $download_url"
   else
       echo "$TOTAL_ISSUE_FILE does not exist, have not issues."
       exit 0

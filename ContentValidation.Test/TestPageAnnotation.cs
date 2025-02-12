@@ -14,7 +14,7 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestMissingTypeAnnotationResults = new ConcurrentQueue<TResult>();
 
-        public static IPlaywright? playwright = null;
+        public static IPlaywright playwright;
         static TestPageAnnotation()
         {
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
@@ -24,7 +24,7 @@ namespace ContentValidation.Test
         [OneTimeTearDown]
         public void SaveTestData()
         {
-            playwright?.Dispose();
+            playwright.Dispose();
             string excelFilePath = ConstData.TotalIssuesExcelFileName;
             string sheetName = "TotalIssues";
             string jsonFilePath = ConstData.TotalIssuesJsonFileName;
@@ -41,6 +41,7 @@ namespace ContentValidation.Test
             IValidation Validation = new TypeAnnotationValidation(playwright);
 
             var res = new TResult();
+            
             try
             {
                 res = await Validation.Validate(testLink);
@@ -57,7 +58,6 @@ namespace ContentValidation.Test
             }
 
             Assert.That(res.Result, res.FormatErrorMessage());
-
         }
     }
 }

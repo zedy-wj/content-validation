@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ReportHelper;
 
 namespace IssuerHelper
 {
@@ -17,12 +16,12 @@ namespace IssuerHelper
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? packages = config["PackageName"];
+            string packages = config["PackageName"] ?? "all";
 
             Console.WriteLine("Running packages: " + packages);
 
             // Parse all packages in this pipeline run
-            string[]? allPackages = ParseInputPackages(packages);
+            string[] allPackages = ParseInputPackages(packages);
 
             // Create the upload folder
             string reportPath = "../Reports";
@@ -70,7 +69,7 @@ namespace IssuerHelper
             }
         }
 
-        static string[]? ParseInputPackages(string? packages)
+        static string[] ParseInputPackages(string packages)
         {
             if (packages.Equals("all"))
             {
@@ -79,17 +78,17 @@ namespace IssuerHelper
                 JArray jsonArray = JArray.Parse(content);
                 JObject jsonObject = (JObject)jsonArray[0];
 
-                JArray packagesArray = (JArray)jsonObject["packages"];
+                JArray packagesArray = (JArray)jsonObject["packages"]!;
                 string[] parsedPackages = new string[packagesArray.Count];
                 for (int i = 0; i < packagesArray.Count; i++)
                 {
-                    parsedPackages[i] = (string)packagesArray[i];
+                    parsedPackages[i] = (string)packagesArray[i]!;
                 }
                 return parsedPackages;
             }
             else
             {
-                return packages?.Replace(" ", "").Split(",");
+                return packages.Replace(" ", "").Split(",");
             }
         }
 
@@ -112,7 +111,7 @@ namespace IssuerHelper
             }
         }
 
-        static void UploadSummaryIssuesArtifact(string[]? allPackages, string summaryTotalJson, string updatedSummaryJsonPath, string packageASearchPattern)
+        static void UploadSummaryIssuesArtifact(string[] allPackages, string summaryTotalJson, string updatedSummaryJsonPath, string packageASearchPattern)
         {
 
             foreach (var package in allPackages)
@@ -132,7 +131,7 @@ namespace IssuerHelper
                     JArray packageArray = JArray.Parse(packageATotalJson);
 
                     bool packageAExists = false;
-                    JObject packageAObj = null;
+                    JObject? packageAObj = null;
 
                     foreach (JObject totalItem in totalArray)
                     {
@@ -146,7 +145,7 @@ namespace IssuerHelper
 
                     if (packageAExists)
                     {
-                        packageAObj["ResultList"] = packageArray;
+                        packageAObj!["ResultList"] = packageArray;
                     }
                     else
                     {
@@ -164,7 +163,7 @@ namespace IssuerHelper
                 else if (string.IsNullOrEmpty(summaryTotalJson) && !string.IsNullOrEmpty(packageATotalJson))
                 {
                     string totalJsonContent = "[]";
-                    JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
+                    JArray totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent)!;
                     JArray packageArray = JArray.Parse(packageATotalJson);
                     JObject newPackageA = new JObject
                     {
@@ -172,8 +171,8 @@ namespace IssuerHelper
                         { "ResultList", packageArray },
                         { "Note", null }
                     };
-                    totalArray?.Add(newPackageA);
-                    summaryTotalJson = totalArray?.ToString(Formatting.Indented);
+                    totalArray.Add(newPackageA);
+                    summaryTotalJson = totalArray.ToString(Formatting.Indented);
                 }
                 else
                 {
@@ -183,10 +182,10 @@ namespace IssuerHelper
             File.WriteAllText(updatedSummaryJsonPath, summaryTotalJson);
         }
 
-        static void UploadCurrentPipelineTotalIssuesArtifact(string[]? allPackages, string packageATotalSearchPattern, string updatedTotalJsonPath)
+        static void UploadCurrentPipelineTotalIssuesArtifact(string[] allPackages, string packageATotalSearchPattern, string updatedTotalJsonPath)
         {
             string totalJsonContent = "[]";
-            JArray? totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent);
+            JArray totalArray = JsonConvert.DeserializeObject<JArray>(totalJsonContent)!;
 
             foreach (var package in allPackages)
             {
@@ -208,8 +207,8 @@ namespace IssuerHelper
                         { "ResultList", packageArray },
                         { "Note", null }
                     };
-                    totalArray?.Add(newPackageA);
-                    totalJsonContent = totalArray?.ToString(Formatting.Indented);
+                    totalArray.Add(newPackageA);
+                    totalJsonContent = totalArray.ToString(Formatting.Indented);
                 }
                 else
                 {
@@ -219,10 +218,10 @@ namespace IssuerHelper
             File.WriteAllText(updatedTotalJsonPath, totalJsonContent);
         }
 
-        static void UploadCurrentPipelineDiffIssuesArtifact(string[]? allPackages, string packageADiffSearchPattern, string updatedDiffJsonPath)
+        static void UploadCurrentPipelineDiffIssuesArtifact(string[] allPackages, string packageADiffSearchPattern, string updatedDiffJsonPath)
         {
             string diffJsonContent = "[]";
-            JArray? totalArray = JsonConvert.DeserializeObject<JArray>(diffJsonContent);
+            JArray totalArray = JsonConvert.DeserializeObject<JArray>(diffJsonContent)!;
 
             foreach (var package in allPackages)
             {
@@ -244,8 +243,8 @@ namespace IssuerHelper
                         { "ResultList", packageArray },
                         { "Note", null }
                     };
-                    totalArray?.Add(newPackageA);
-                    diffJsonContent = totalArray?.ToString(Formatting.Indented);
+                    totalArray.Add(newPackageA);
+                    diffJsonContent = totalArray.ToString(Formatting.Indented);
                 }
                 else
                 {
@@ -291,7 +290,7 @@ namespace IssuerHelper
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | Test fail | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
+| {index} | {package} | Test fail | {issueObject?["html_url"]?.ToString()} | {issueObject?["created_at"]?.ToObject<DateTime>()} | {issueObject?["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
                 }
                 index++;
             }
@@ -326,7 +325,7 @@ namespace IssuerHelper
                     string responseBody = response.Content.ReadAsStringAsync().Result;
                     JArray issues = JArray.Parse(responseBody);
 
-                    var matchingIssue = issues.FirstOrDefault(i => (string)i["title"] == issueTitle);
+                    var matchingIssue = issues.FirstOrDefault(i => (string?)i["title"] == issueTitle);
 
                     if (matchingIssue != null)
                     {
