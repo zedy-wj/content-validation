@@ -16,9 +16,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Cognitive Services'
-      PackageName: 'azure-ai-textanalytics'
-      jobDisplayName: 'AZURE_AI_TEXTANALYTICS'
+      ServiceName: 'Event Hubs'
+      PackageName: 'azure-eventhub-checkpointstoreblob'
+      jobDisplayName: 'AZURE_EVENTHUB_CHECKPOINTSTOREBLOB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

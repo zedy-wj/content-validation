@@ -16,9 +16,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Cognitive Services'
-      PackageName: 'azure-ai-textanalytics'
-      jobDisplayName: 'AZURE_AI_TEXTANALYTICS'
+      ServiceName: 'Load Testing'
+      PackageName: 'azure-developer-loadtesting'
+      jobDisplayName: 'AZURE_DEVELOPER_LOADTESTING'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

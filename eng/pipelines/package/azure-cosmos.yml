@@ -1,3 +1,4 @@
+
 parameters:
 - name: AzureDevOpsPat
   type: string
@@ -11,6 +12,7 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
+
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
