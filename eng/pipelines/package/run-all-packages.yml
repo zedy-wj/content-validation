@@ -13,7 +13,7 @@ parameters:
   default: ''
 - name: packages
   type: string
-  default: 'com.azure.storage.blob.models, com.azure.storage.blob.options, com.azure.storage.blob.sas, com.azure.storage.blob.specialized, com.azure.storage.blob'
+  default: 'storage-blob-batch-readme, storage-blob-cryptography-readme, storage-blob-readme, storage-file-datalake-readme, storage-file-share-readme, storage-queue-readme'
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:

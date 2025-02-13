@@ -15,8 +15,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      PackageName: 'com.azure.storage.blob'
-      jobDisplayName: 'STORAGE_BLOB_005'
+      # ServiceName: 'Cognitive Services'
+      PackageName: 'storage-file-share-readme'
+      jobDisplayName: 'STORAGE_FILE_SHARE_README'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
