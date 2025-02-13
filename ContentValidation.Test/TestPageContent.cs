@@ -15,8 +15,6 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestTableMissingContentResults = new ConcurrentQueue<TResult>();
 
-        public static ConcurrentQueue<TResult> TestGarbledTextResults = new ConcurrentQueue<TResult>();
-
         public static ConcurrentQueue<TResult> TestDuplicateServiceResults = new ConcurrentQueue<TResult>();
 
         public static ConcurrentQueue<TResult> TestInconsistentTextFormatResults = new ConcurrentQueue<TResult>();
@@ -42,11 +40,9 @@ namespace ContentValidation.Test
             string sheetName = "TotalIssues";
             string jsonFilePath = ConstData.TotalIssuesJsonFileName;
             ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
-            ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestInconsistentTextFormatResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestTableMissingContentResults,jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestGarbledTextResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestDuplicateServiceResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath);
         }
@@ -74,31 +70,11 @@ namespace ContentValidation.Test
 
         [Test]
         [TestCaseSource(nameof(TestLinks))]
-        public async Task TestGarbledText(string testLink)
-        {
-            var playwright = await Playwright.CreateAsync();
-
-            IValidation Validation = new GarbledTextValidation(playwright);
-
-            var res = await Validation.Validate(testLink);
-
-            res.TestCase = "TestGarbledText";
-            if (!res.Result)
-            {
-                TestGarbledTextResults.Enqueue(res);
-            }
-
-            playwright.Dispose();
-
-        }
-
-        [Test]
-        [TestCaseSource(nameof(TestLinks))]
         public async Task TestInconsistentTextFormat(string testLink)
         {
             var playwright = await Playwright.CreateAsync();
 
-            IValidation Validation = new GarbledTextValidation(playwright);
+            IValidation Validation = new InconsistentTextFormatValidation(playwright);
 
             var res = await Validation.Validate(testLink);
 
