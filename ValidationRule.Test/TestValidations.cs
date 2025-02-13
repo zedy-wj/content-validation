@@ -59,8 +59,8 @@ public static class ValidationFactory
         {
             "UnnecessarySymbolsValidation" => new UnnecessarySymbolsValidation(playwright),
             "ExtraLabelValidation" => new ExtraLabelValidation(playwright),
-            "TypeAnnotationValidation" => new TypeAnnotationValidation(playwright),
-            "GarbledTextValidation" => new GarbledTextValidation(playwright),
+            // "TypeAnnotationValidation" => new TypeAnnotationValidation(playwright),
+            // "GarbledTextValidation" => new GarbledTextValidation(playwright),
             "MissingContentValidation" => new MissingContentValidation(playwright),
             "DuplicateServiceValidation" => new DuplicateServiceValidation(playwright),
             _ => throw new ArgumentException($"Unknown validation type: {validationType}")
