@@ -17,8 +17,8 @@ jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
       ServiceName: 'IoT'
-      PackageName: 'azure-iot-hub'
-      jobDisplayName: 'AZURE_IOT_HUB'
+      PackageName: 'azure-ai-ml'
+      jobDisplayName: 'AZURE_AI_ML'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -34,7 +34,14 @@ namespace DataSource
             //Get all the pages in the package that need to be tested.
             GetAllPages(apiRefDocPage, package, pages);
 
-            ExportData(pages);
+            Console.WriteLine("Total pages to be validated: " + pages.Count);
+
+            foreach (var page in pages)
+            {
+                Console.WriteLine(page);
+            }
+            
+            // ExportData(pages);
         }
 
         static string GetServiceHomePage(string? serviceName)

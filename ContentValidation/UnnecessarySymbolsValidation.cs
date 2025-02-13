@@ -121,7 +121,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 }
 
                 if (match.Value.Equals("[") || match.Value.Equals("]"))
-                {
+                { 
                     if (line.Contains("<xref"))
                     {
                         continue;
