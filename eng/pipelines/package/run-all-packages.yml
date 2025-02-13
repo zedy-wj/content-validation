@@ -13,7 +13,7 @@ parameters:
   default: ''
 - name: packages
   type: string
-  default: 'azure-ai-formrecognizer, azure-ai-textanalytics, azure-appconfiguration, azure-cosmos, azure-storage-blob, azure-keyvault-administration, azure-keyvault-certificates, azure-keyvault-keys, azure-keyvault-secrets, azure-search-documents'
+  default: ''
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:
