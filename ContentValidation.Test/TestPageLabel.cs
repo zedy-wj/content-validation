@@ -17,7 +17,7 @@ namespace ContentValidation.Test
         public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
 
         static TestPageLabel()
-        {
+        {       
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
