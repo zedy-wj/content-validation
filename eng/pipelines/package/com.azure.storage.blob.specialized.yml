@@ -11,14 +11,13 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
-- name: packages
-  type: string
-  default: 'com.azure.storage.blob.models, com.azure.storage.blob.options, com.azure.storage.blob.sas, com.azure.storage.blob.specialized, com.azure.storage.blob'
 
 jobs:
-- ${{ each packageName in split(parameters.packages, ',') }}:
-  - template: /eng/pipelines/package/${{ packageName }}.yml
+  - template: /eng/pipelines/common/content-validation.yml
     parameters:
+      PackageName: 'com.azure.storage.blob.specialized'
+      jobDisplayName: 'STORAGE_BLOB_004'
+      DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
       GitHubRepo: ${{ parameters.GitHubRepo }}
