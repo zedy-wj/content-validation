@@ -84,7 +84,8 @@ public class UnnecessarySymbolsValidation : IValidation
     private void ValidateHtmlContent(string htmlContent)
     {
         // Usage: Find the text that include [ , ], < , >, &, ~, and /// symbols.
-        string includePattern = @"[\[\]<>&~]|/{3}";
+        // string includePattern = @"[\[\]<>&~]|/{3}";
+        string includePattern = @"([\[\]<>&~]|/{3}|?:[a-zA-Z]+>\s|/?\*\*.*$|""\w+\.)";
 
         // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";

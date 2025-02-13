@@ -19,6 +19,8 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestDuplicateServiceResults = new ConcurrentQueue<TResult>();
 
+        public static ConcurrentQueue<TResult> TestInconsistentTextFormatResults = new ConcurrentQueue<TResult>();
+
 
 
         static TestPageContent()
@@ -42,9 +44,11 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestInconsistentTextFormatResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestTableMissingContentResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestGarbledTextResults,jsonFilePath);
             JsonHelper4Test.AddTestResult(TestDuplicateServiceResults,jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath);
         }
 
 
@@ -82,6 +86,26 @@ namespace ContentValidation.Test
             if (!res.Result)
             {
                 TestGarbledTextResults.Enqueue(res);
+            }
+
+            playwright.Dispose();
+
+        }
+
+        [Test]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestInconsistentTextFormat(string testLink)
+        {
+            var playwright = await Playwright.CreateAsync();
+
+            IValidation Validation = new GarbledTextValidation(playwright);
+
+            var res = await Validation.Validate(testLink);
+
+            res.TestCase = "TestInconsistentTextFormat";
+            if (!res.Result)
+            {
+                TestInconsistentTextFormatResults.Enqueue(res);
             }
 
             playwright.Dispose();
