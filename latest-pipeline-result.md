@@ -1,5 +1,13 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------|
-| 1 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/133 | 01/07/2025 08:14:34 | 02/12/2025 09:26:03 | 2/12/2025 10:03:43 AM |
-| 2 | azure-keyvault-keys | Test fail | https://github.com/zedy-wj/content-validation/issues/137 | 01/07/2025 08:58:04 | 02/12/2025 09:33:54 | 2/12/2025 10:03:43 AM |
+| 1 | azure-ai-formrecognizer | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 2 | azure-ai-textanalytics | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 3 | azure-appconfiguration | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 4 | azure-cosmos | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 5 | azure-storage-blob | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 6 | azure-keyvault-administration | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 7 | azure-keyvault-certificates | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 8 | azure-keyvault-keys | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 9 | azure-keyvault-secrets | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
+| 10 | azure-search-documents | Pipeline fail | / | / | / | 2/14/2025 6:30:57 AM |
