@@ -124,7 +124,7 @@ jobs:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Content Validation For Python'
+        pipeline: 'Content Validation For Java'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: false
