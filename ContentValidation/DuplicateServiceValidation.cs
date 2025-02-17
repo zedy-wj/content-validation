@@ -8,7 +8,7 @@ public class DuplicateServiceValidation : IValidation
 
     public DuplicateServiceValidation(IPlaywright playwright)
     {
-        _playwright = playwright;
+        _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
     }
 
     public async Task<TResult> Validate(string testLink)

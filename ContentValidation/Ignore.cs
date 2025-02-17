@@ -14,7 +14,6 @@ public class IgnoreDataObject
 
 
 public class IgnoreItem
-
 {
         public required string IgnoreText { get; set; }
         public string? Usage { get; set; }

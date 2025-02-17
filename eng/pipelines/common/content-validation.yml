@@ -89,6 +89,12 @@ jobs:
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
 
     - task: DotNetCoreCLI@2
+      displayName: Restore project dependencies
+      inputs:
+        command: 'restore'
+        projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
+
+    - task: DotNetCoreCLI@2
       displayName: Run test case
       inputs:
         command: 'test'
@@ -119,7 +125,7 @@ jobs:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Content Validation Pipeline'
+        pipeline: 'Content Validation For Python'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: false

@@ -16,7 +16,7 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
 
-        public static IPlaywright? playwright = null;
+        public static IPlaywright playwright;
 
         static TestPageLabel()
         {

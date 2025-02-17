@@ -19,7 +19,7 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestDuplicateServiceResults = new ConcurrentQueue<TResult>();
 
-        public static IPlaywright? playwright = null;
+        public static IPlaywright playwright;
 
         static TestPageContent()
         {

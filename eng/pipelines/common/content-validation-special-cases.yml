@@ -62,7 +62,7 @@ jobs:
     #   inputs:
     #     buildType: 'specific'
     #     project: 'content-validation-automation'
-    #     pipeline: 'Content Validation Pipeline'
+    #     pipeline: 'Content Validation For Python'
     #     buildVersionToDownload: 'latestFromBranch'
     #     allowPartiallySucceededBuilds: true
     #     allowFailedBuilds: false

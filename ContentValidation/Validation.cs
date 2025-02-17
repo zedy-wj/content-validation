@@ -1,4 +1,5 @@
 namespace UtilityLibraries;
+
 public interface IValidation
 {
     Task<TResult> Validate(string testLink);
@@ -36,4 +37,3 @@ public struct TResult
 ");
     }
 }
-
