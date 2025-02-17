@@ -1,8 +1,6 @@
 parameters:
 - name: DotNetSdkVersion  
   type: string
-- name: ServiceName
-  type: string
 - name: PackageName
   type: string
 - name: GitHubPat
