@@ -16,9 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Search'
-      PackageName: 'azure-search-documents'
-      jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'
+      PackageName: 'storage-file-datalake-readme'
+      jobDisplayName: 'STORAGE_FILE_DATALAKE_README'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
