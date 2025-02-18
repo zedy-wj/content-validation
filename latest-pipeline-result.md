@@ -1,13 +1,13 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------|
-| 1 | azure-ai-formrecognizer | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 2 | azure-ai-textanalytics | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 3 | azure-appconfiguration | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 4 | azure-cosmos | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 5 | azure-storage-blob | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 6 | azure-keyvault-administration | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 7 | azure-keyvault-certificates | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 8 | azure-keyvault-keys | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 9 | azure-keyvault-secrets | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
-| 10 | azure-search-documents | Pipeline fail | / | / | / | 2/17/2025 6:57:52 AM |
+| 1 | azure-ai-formrecognizer | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 2 | azure-ai-textanalytics | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 3 | azure-appconfiguration | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 4 | azure-cosmos | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 5 | azure-storage-blob | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 6 | azure-keyvault-administration | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 7 | azure-keyvault-certificates | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 8 | azure-keyvault-keys | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 9 | azure-keyvault-secrets | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
+| 10 | azure-search-documents | Test fail |  |  |  | 2/18/2025 3:55:40 PM |
