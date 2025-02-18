@@ -13,14 +13,12 @@ namespace DataSource
         static async Task Main(string[] args)
         {
             // Default Configuration
-            // using IHost host = Host.CreateApplicationBuilder(args).Build();
+            using IHost host = Host.CreateApplicationBuilder(args).Build();
 
-            // IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? package = "search-documents-readme";
-            string? language = "Javascript";
-            // string? package = config["PackageName"];
-            // string? language = config["Language"];
+            string? package = config["PackageName"];
+            string? language = config["Language"];
 
             string? overview_url = GetLanguagePageOverview(language);
 
@@ -30,14 +28,9 @@ namespace DataSource
 
             await GetAllChildPage(pages, allpages, pagelink);
 
-            foreach (var page in allpages)
-            {
-                Console.WriteLine(page);
-            }
-            Console.WriteLine(allpages.Count);
-            // ExportData(allpages);
+            ExportData(allpages);
 
-            // host.RunAsync();
+            host.RunAsync();
         }
 
         static string GetLanguagePageOverview(string? language)
@@ -85,7 +78,7 @@ namespace DataSource
                     pages.Add(href);
                 }
 
-                // await browser.CloseAsync();
+                await browser.CloseAsync();
 
                 // Recursively get all pages of the API reference document
                 foreach (var pa in pages)
@@ -106,12 +99,10 @@ namespace DataSource
             //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
             if (IsTrue(apiRefDocPage))
             {
-                // Console.WriteLine("今天天气不错，适合散步");
                 var aNodes = doc.DocumentNode.SelectNodes("//td/a | //td/span/a");
 
                 if (aNodes != null)
                 {
-                    // Console.WriteLine("今天天气不错，适合散步");
                     foreach (var node in aNodes)
                     {
                         string href = $"{baseUri}/" + node.Attributes["href"].Value;
@@ -154,7 +145,7 @@ namespace DataSource
 
             return false;
         }
-        
+
         static void ExportData(List<string> pages)
         {
             string jsonString = JsonSerializer.Serialize(pages);
