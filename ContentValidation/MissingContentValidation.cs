@@ -34,16 +34,69 @@ public class MissingContentValidation : IValidation
             // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
             if (string.IsNullOrEmpty(cellText))
             {
-                // Fetch the first <a> href before the current cell.
-                var aLocator = cell.Locator("xpath=//preceding::a[@class='anchor-link docon docon-link'][1]");
-                var href = await aLocator.GetAttributeAsync("href");
                 string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
+                var nearestHTagText = await cell.EvaluateAsync<string?>(@"element => {
+                    function findNearestHeading(startNode) {
+                        let currentNode = startNode;
+                        
+                        while (currentNode && currentNode.tagName !== 'BODY' && currentNode.tagName !== 'HTML') {
+                            // Check the sibling nodes and child nodes of the current node
+                            let sibling = currentNode.previousElementSibling;
+                            while (sibling) {
+                                // Check if the sibling node itself is an <h2> or <h3>
+                                if (['H2', 'H3'].includes(sibling.tagName)) {
+                                    return sibling.textContent || '';
+                                }
+                                
+                                // Recursively check the children of sibling nodes
+                                let childHeading = findNearestHeadingInChildren(sibling);
+                                if (childHeading) {
+                                    return childHeading;
+                                }
+                                
+                                sibling = sibling.previousElementSibling;
+                            }
+                            
+                            // If not found in the sibling node, continue traversing upwards
+                            currentNode = currentNode.parentElement;
+                        }
+                        
+                        return null; // If no matching <h> tags are found
+                    }
+                    
+                    function findNearestHeadingInChildren(node) {
+                        // Traverse the child nodes and recursively search for <h2> or <h3>
+                        for (let child of node.children) {
+                            if (['H2', 'H3'].includes(child.tagName)) {
+                                return child.textContent || '';
+                            }
+                            let grandChildHeading = findNearestHeadingInChildren(child);
+                            if (grandChildHeading) {
+                                return grandChildHeading;
+                            }
+                        }
+                        return null;
+                    }
+                    
+                    return findNearestHeading(element);
+                }");
 
-                if (href != null)
-                {
-                    anchorLink = testLink + href;
+                if (nearestHTagText != null) {
+                    nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
+                    var aLocators = page.Locator("#side-doc-outline a");
+                    var aElements = await aLocators.ElementHandlesAsync();
+
+                    foreach (var elementHandle in aElements)
+                    {
+                        if(await elementHandle.InnerTextAsync() == nearestHTagText)
+                        {
+                            var href = await elementHandle.GetAttributeAsync("href");
+                            if (href != null) {
+                                anchorLink = testLink + href;
+                            }
+                        }
+                    }
                 }
-
                 errorList.Add(anchorLink);
             }
         }
