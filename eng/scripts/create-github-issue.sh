@@ -9,7 +9,7 @@ REPO_NAME=$4
 ORG_NAME=$5
 PROJECT_NAME=$6
 RUN_ID=$7
-AZURE_DEVOPS_PAT=$8
+# AZURE_DEVOPS_PAT=$8
 
 ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website."
 REPO_ROOT="$PWD"
@@ -20,13 +20,13 @@ STATUS_REPORTS_PATH="$REPO_ROOT/Reports/IssueStatusInfo.json"
 ARTIFACT_NAME=$PACKAGE_NAME
 API_VERSION="7.1-preview.5"
 
-AUTH_HEADER="-u :$AZURE_DEVOPS_PAT"
-URL="https://dev.azure.com/${ORG_NAME}/${PROJECT_NAME}/_apis/build/builds/${RUN_ID}/artifacts?artifactName=${ARTIFACT_NAME}&api-version=${API_VERSION}"
+# AUTH_HEADER="-u :$AZURE_DEVOPS_PAT"
+# URL="https://dev.azure.com/${ORG_NAME}/${PROJECT_NAME}/_apis/build/builds/${RUN_ID}/artifacts?artifactName=${ARTIFACT_NAME}&api-version=${API_VERSION}"
 
-# Send GET request
-ARTIFACT_INFO=$(curl -s -H "Accept: application/json" $AUTH_HEADER -X GET "$URL")
-download_url=$(echo "$ARTIFACT_INFO" | jq -r '.resource.downloadUrl')
-echo "Artifact download url: $download_url"
+# # Send GET request
+# ARTIFACT_INFO=$(curl -s -H "Accept: application/json" $AUTH_HEADER -X GET "$URL")
+# download_url=$(echo "$ARTIFACT_INFO" | jq -r '.resource.downloadUrl')
+# echo "Artifact download url: $download_url"
 
 
 # Querying whether issue exist

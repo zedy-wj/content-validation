@@ -173,4 +173,3 @@ jobs:
           ${{ parameters.OrganizationName }}
           ${{ parameters.ProjectName }}
           $(Build.BuildId)
-          ${{ parameters.AzureDevOpsPat }}
