@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Container Registry'
-      PackageName: 'azure-containerregistry'
+      PackageName: 'containerregistry-readme'
       jobDisplayName: 'AZURE_CONTAINERREGISTRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

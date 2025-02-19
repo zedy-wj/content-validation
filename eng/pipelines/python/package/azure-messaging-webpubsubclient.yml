@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Web PubSub'
-      PackageName: 'azure-messaging-webpubsubclient'
+      PackageName: 'messaging-webpubsubclient-readme'
       jobDisplayName: 'AZURE_MESSAGING_WEBPUBSUBCLIENT'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

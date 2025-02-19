@@ -16,9 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Entity Search'
-      PackageName: 'azure-cognitiveservices-search-entitysearch'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_ENTITYSEARCH'
+      PackageName: 'uncategorizedpackages'
+      jobDisplayName: 'UNCATEGORIZEDPACKAGES'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Event Grid'
-      PackageName: 'azure-eventgrid'
+      PackageName: 'eventgrid-readme'
       jobDisplayName: 'AZURE_EVENTGRID'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

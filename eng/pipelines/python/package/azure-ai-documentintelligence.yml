@@ -17,8 +17,8 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
       ServiceName: 'Cognitive Services'
-      PackageName: 'azure-cognitiveservices-vision-customvision'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_VISION_CUSTOMVISION'
+      PackageName: 'ai-documentintelligence-readme'
+      jobDisplayName: 'AZURE_AI_DOCUMENTINTELLIGENCE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

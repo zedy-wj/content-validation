@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Communication'
-      PackageName: 'azure-communication-callautomation'
+      PackageName: 'communication-callautomation-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_CALLAUTOMATION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

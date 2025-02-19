@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Event Hubs'
-      PackageName: 'azure-eventhub-checkpointstoreblob-aio'
+      PackageName: 'eventhub-checkpointstoreblob-aio-readme'
       jobDisplayName: 'AZURE_EVENTHUB_CHECKPOINTSTOREBLOB_AIO'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Cognitive Services'
-      PackageName: 'azure-healthinsights-radiologyinsights'
+      PackageName: 'healthinsights-radiologyinsights-readme'
       jobDisplayName: 'AZURE_HEALTHINSIGHTS_RADIOLOGYINSIGHTS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Attestation'
-      PackageName: 'azure-security-attestation'
+      PackageName: 'security-attestation-readme'
       jobDisplayName: 'AZURE_SECURITY_ATTESTATION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

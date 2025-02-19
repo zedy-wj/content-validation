@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'IoT'
-      PackageName: 'azure-iot-deviceupdate'
+
+      PackageName: 'iot-deviceupdate-readme'
       jobDisplayName: 'AZURE_IOT_DEVICEUPDATE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

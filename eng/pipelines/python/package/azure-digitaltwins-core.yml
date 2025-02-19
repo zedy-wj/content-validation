@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'IoT'
-      PackageName: 'azure-digitaltwins-core'
+      PackageName: 'digitaltwins-core-readme'
       jobDisplayName: 'AZURE_DIGITALTWINS_CORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

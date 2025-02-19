@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Service Fabric'
-      PackageName: 'azure-servicefabric'
+      PackageName: 'servicefabric-readme'
       jobDisplayName: 'AZURE_SERVICEFABRIC'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

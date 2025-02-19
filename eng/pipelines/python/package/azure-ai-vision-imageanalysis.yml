@@ -16,9 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Cognitive Services'
-      PackageName: 'azure-cognitiveservices-speech'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SPEECH'
+      PackageName: 'ai-vision-imageanalysis-readme'
+      jobDisplayName: 'AZURE_AI_VISION_IMAGEANALYSIS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
