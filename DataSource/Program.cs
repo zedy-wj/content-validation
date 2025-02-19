@@ -40,8 +40,8 @@ namespace DataSource
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink)
         {
             // Launch a browser
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            var playwright = await Playwright.CreateAsync();
+            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = true
             });
