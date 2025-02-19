@@ -16,8 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Storage'
-      PackageName: 'azure-storage-file-datalake'
+      PackageName: 'storage-file-datalake-readme'
       jobDisplayName: 'AZURE_STORAGE_FILE_DATALAKE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
