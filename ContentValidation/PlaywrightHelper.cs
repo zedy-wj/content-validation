@@ -8,17 +8,26 @@ public static class PlaywrightHelper
             try
             {
                 await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.Load, Timeout = 30000 });
+
+                var response = await page.WaitForResponseAsync("**/*");
+
+                if (!response.Ok)
+                {
+                    throw new Exception($"Page could not be opened for URL: {page.Url}");
+                }
+
                 return page;
             }
-            catch
+            catch (TimeoutException)
             {
                 Console.WriteLine($"Navigating to {url} (attempt {i + 1}/{retryCount})");
-                if (i == retryCount - 1)
-                {
-                    throw;
-                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine($"An error occurred while navigating to {url}: {ex.Message}");
+                throw;
             }
         }
-        throw new InvalidOperationException("This code should not be executed.");
+        throw new InvalidOperationException("Something wrong in the rules.");
     }
 }
