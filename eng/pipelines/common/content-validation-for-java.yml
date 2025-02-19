@@ -14,7 +14,7 @@ parameters:
   default: ''
 - name: OrganizationName
   type: string
-  default: 'Azure-dev-test'
+  default: 'zedy-wj'
 - name: ProjectName
   type: string
   default: 'content-validation-automation'
@@ -69,15 +69,16 @@ jobs:
       displayName: Build get data source project
       inputs:
         command: 'build'
-        projects: 'JavaDataSource/JavaDataSource.csproj'
+        projects: 'DataSource/DataSource.csproj'
 
     - task: DotNetCoreCLI@2
       displayName: Get test data source
       env:
         PackageName: ${{ parameters.PackageName }}
+        Language: "Java"
       inputs:
         command: 'run'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/JavaDataSource'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
 
     - task: DotNetCoreCLI@2
       displayName: Build test project

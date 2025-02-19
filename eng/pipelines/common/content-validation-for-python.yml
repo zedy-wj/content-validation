@@ -1,8 +1,6 @@
 parameters:
 - name: DotNetSdkVersion  
   type: string
-- name: ServiceName
-  type: string
 - name: PackageName
   type: string
 - name: GitHubPat
@@ -16,7 +14,7 @@ parameters:
   default: ''
 - name: OrganizationName
   type: string
-  default: 'Azure-dev-test'
+  default: 'zedy-wj'
 - name: ProjectName
   type: string
   default: 'content-validation-automation'
@@ -76,8 +74,8 @@ jobs:
     - task: DotNetCoreCLI@2
       displayName: Get test data source
       env:
-        ServiceName: ${{ parameters.ServiceName }}
         PackageName: ${{ parameters.PackageName }}
+        Language: "Python"
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
