@@ -17,7 +17,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation.yml
     parameters:
       PackageName: 'search-documents-readme'
-      jobDisplayName: 'SEARCH_DOCUMENTS_README'
+      jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
