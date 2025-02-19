@@ -20,15 +20,15 @@ namespace DataSource
             string? package = config["PackageName"];
             string? language = config["Language"];
 
-            string? overview_url = GetLanguagePageOverview(language);
+            string? overviewUrl = GetLanguagePageOverview(language);
 
             List<string> pages = new List<string>();
-            List<string> allpages = new List<string>();
-            string pagelink = $"{overview_url}/{package}";
+            List<string> allPages = new List<string>();
+            string pagelink = $"{overviewUrl}/{package}";
 
-            await GetAllChildPage(pages, allpages, pagelink);
+            await GetAllChildPage(pages, allPages, pagelink);
 
-            ExportData(allpages);
+            ExportData(allPages);
 
             host.RunAsync();
         }
@@ -39,7 +39,7 @@ namespace DataSource
             return $"{SDK_API_URL_BASIC}/{language}/api/overview/azure/";
         }
 
-        static async Task GetAllChildPage(List<string> pages, List<string> allpages, string pagelink)
+        static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink)
         {
             // Launch a browser
             using var playwright = await Playwright.CreateAsync();
@@ -85,13 +85,13 @@ namespace DataSource
                 {
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
-                    allpages.Add(pa);
-                    GetAllPages(pa, baseUri, allpages);
+                    allPages.Add(pa);
+                    GetallPages(pa, baseUri, allPages);
                 }
             }
         }
 
-        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links)
+        static void GetallPages(string apiRefDocPage, string? baseUri, List<string> links)
         {
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(apiRefDocPage);
@@ -112,7 +112,7 @@ namespace DataSource
                             links.Add(href);
 
                             //Call GetAllLinks method recursively for each new link.
-                            GetAllPages(href, baseUri, links);
+                            GetallPages(href, baseUri, links);
                         }
                     }
                 }
