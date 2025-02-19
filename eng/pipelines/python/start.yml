@@ -1,10 +1,10 @@
-name: Run switched packages content validation for java
+name: Run switched packages content validation for python
 trigger: none
 
 parameters:
 - name: packages
   displayName: |
-      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'storage-blob-batch-readme, storage-blob-cryptography-readme'
+      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'
   type: string
   default: 'all'
 
@@ -13,7 +13,7 @@ stages:
   jobs:
   - ${{ each packageName in split(parameters.packages, ',') }}:
     - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/java/package/${{ packageName }}.yml
+      - template: /eng/pipelines/python/package/${{ packageName }}.yml
         parameters:
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
@@ -21,12 +21,16 @@ stages:
           GitHubRepo: $(GITHUB_REPO)
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/java/package/run-all-packages.yml
+    - template: /eng/pipelines/python/package/run-all-packages.yml
       parameters:
         AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
+  
+  - template: /eng/pipelines/common/content-validation-special-cases.yml
+    parameters:
+      DotNetSdkVersion: '8.0.x'
 
 
 - stage: TotalIssuesSummary
@@ -42,7 +46,7 @@ stages:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Content Validation For Java'
+        pipeline: 'Content Validation For Python'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: false
