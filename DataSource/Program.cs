@@ -30,7 +30,7 @@ namespace DataSource
 
             ExportData(allPages);
 
-            host.RunAsync();
+            await host.RunAsync();
         }
 
         static string GetLanguagePageOverview(string? language)
