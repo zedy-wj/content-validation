@@ -17,7 +17,7 @@ jobs:
     parameters:
       # ServiceName: 'Cognitive Services'
       PackageName: 'storage-blob-batch-readme'
-      jobDisplayName: 'STORAGE_BLOB_BATCH_README'
+      jobDisplayName: 'STORAGE_BLOB_BATCH'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -17,7 +17,7 @@ jobs:
     parameters:
       # ServiceName: 'Cognitive Services'
       PackageName: 'storage-blob-cryptography-readme'
-      jobDisplayName: 'STORAGE_BLOB_CRYPTOGRAPHY_README'
+      jobDisplayName: 'STORAGE_BLOB_CRYPTOGRAPHY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

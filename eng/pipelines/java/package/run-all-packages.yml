@@ -13,7 +13,7 @@ parameters:
   default: ''
 - name: packages
   type: string
-  default: 'storage-blob-batch-readme, storage-blob-cryptography-readme'
+  default: 'storage-blob-batch, storage-blob-cryptography'
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:
