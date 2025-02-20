@@ -18,7 +18,7 @@ parameters:
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:
-  - template: /eng/pipelines/package/${{ packageName }}.yml
+  - template: /eng/pipelines/python/package/${{ packageName }}.yml
     parameters:
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
