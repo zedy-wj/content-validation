@@ -64,7 +64,6 @@
             "azure-storage-file-share",
             "azure-storage-queue",
             "azureml-featurestore",
-            "run-all-packages",
             "uamqp",
             "uncategorizedpackages"
         ]
