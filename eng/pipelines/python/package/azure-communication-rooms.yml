@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'communication-rooms-readme'
+      PackageName: 'azure-communication-rooms'
+      ReadmeName: 'communication-rooms-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_ROOMS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

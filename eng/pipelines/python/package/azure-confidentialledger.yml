@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'confidentialledger-readme'
+      PackageName: 'azure-confidentialledger'
+      ReadmeName: 'confidentialledger-readme'
       jobDisplayName: 'AZURE_CONFIDENTIALLEDGER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

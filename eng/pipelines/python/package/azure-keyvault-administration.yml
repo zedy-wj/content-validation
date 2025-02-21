@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'keyvault-administration-readme'
+      PackageName: 'azure-keyvault-administration'
+      ReadmeName: 'keyvault-administration-readme'
       jobDisplayName: 'AZURE_KEYVAULT_ADMINISTRATION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'developer-devcenter-readme'
+      PackageName: 'azure-developer-devcenter'
+      ReadmeName: 'developer-devcenter-readme'
       jobDisplayName: 'AZURE_DEVELOPER_DEVCENTER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

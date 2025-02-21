@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'communication-sms-readme'
+      PackageName: 'azure-communication-sms'
+      ReadmeName: 'communication-sms-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_SMS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

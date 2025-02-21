@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'ai-formrecognizer-readme'
+      PackageName: 'azure-ai-formrecognizer'
+      ReadmeName: 'ai-formrecognizer-readme'
       jobDisplayName: 'AZURE_AI_FORMRECOGNIZER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

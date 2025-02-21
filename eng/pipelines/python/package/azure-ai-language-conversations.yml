@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'ai-language-conversations-readme'
+      PackageName: 'azure-ai-language-conversations'
+      ReadmeName: 'ai-language-conversations-readme'
       jobDisplayName: 'AZURE_AI_LANGUAGE_CONVERSATIONS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

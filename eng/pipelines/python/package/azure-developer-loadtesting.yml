@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'developer-loadtesting-readme'
+      PackageName: 'azure-developer-loadtesting'
+      ReadmeName: 'developer-loadtesting-readme'
       jobDisplayName: 'AZURE_DEVELOPER_LOADTESTING'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

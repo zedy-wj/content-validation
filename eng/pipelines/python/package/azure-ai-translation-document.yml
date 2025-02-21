@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'ai-translation-document-readme'
+      PackageName: 'azure-ai-translation-document'
+      ReadmeName: 'ai-translation-document-readme'
       jobDisplayName: 'AZURE_AI_TRANSLATION_DOCUMENT'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

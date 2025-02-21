@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'monitor-query-readme'
+      PackageName: 'azure-monitor-query'
+      ReadmeName: 'monitor-query-readme'
       jobDisplayName: 'AZURE_MONITOR_QUERY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

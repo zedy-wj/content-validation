@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'communication-identity-readme'
+      PackageName: 'azure-communication-identity'
+      ReadmeName: 'communication-identity-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_IDENTITY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

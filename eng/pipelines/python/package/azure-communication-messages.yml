@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'communication-messages-readme'
+      PackageName: 'azure-communication-messages'
+      ReadmeName: 'communication-messages-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_MESSAGES'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

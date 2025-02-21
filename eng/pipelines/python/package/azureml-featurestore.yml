@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Machine Learning'
       PackageName: 'azureml-featurestore'
+      ReadmeName: 'azureml-featurestore'
       jobDisplayName: 'AZUREML_FEATURESTORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

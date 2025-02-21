@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'cosmos-readme'
+      PackageName: 'azure-cosmos'
+      ReadmeName: 'cosmos-readme'
       jobDisplayName: 'AZURE_COSMOS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'digitaltwins-core-readme'
+      PackageName: 'azure-digitaltwins-core'
+      ReadmeName: 'digitaltwins-core-readme'
       jobDisplayName: 'AZURE_DIGITALTWINS_CORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
