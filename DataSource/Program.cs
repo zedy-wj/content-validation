@@ -29,8 +29,6 @@ namespace DataSource
             await GetAllChildPage(pages, allPages, pagelink);
 
             ExportData(allPages);
-
-            host.RunAsync();
         }
 
         static string GetLanguagePageOverview(string? language)
@@ -42,8 +40,8 @@ namespace DataSource
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink)
         {
             // Launch a browser
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            var playwright = await Playwright.CreateAsync();
+            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = true
             });
@@ -86,12 +84,12 @@ namespace DataSource
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
                     allPages.Add(pa);
-                    GetallPages(pa, baseUri, allPages);
+                    GetAllPages(pa, baseUri, allPages);
                 }
             }
         }
 
-        static void GetallPages(string apiRefDocPage, string? baseUri, List<string> links)
+        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links)
         {
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(apiRefDocPage);
@@ -112,7 +110,7 @@ namespace DataSource
                             links.Add(href);
 
                             //Call GetAllLinks method recursively for each new link.
-                            GetallPages(href, baseUri, links);
+                            GetAllPages(href, baseUri, links);
                         }
                     }
                 }
