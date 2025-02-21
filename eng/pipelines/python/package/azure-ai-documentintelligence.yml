@@ -16,7 +16,6 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Cognitive Services'
       PackageName: 'ai-documentintelligence-readme'
       jobDisplayName: 'AZURE_AI_DOCUMENTINTELLIGENCE'
       DotNetSdkVersion: '8.0.x'
