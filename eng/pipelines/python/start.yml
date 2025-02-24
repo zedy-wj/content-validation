@@ -8,6 +8,12 @@ parameters:
   type: string
   default: 'all'
 
+- name: branch
+  displayName: |
+      You can choose the review version of the page for testing, and you need to select the corresponding branch. Example: 'nickwalk/yaml-changes'
+  type: string
+  default: 'main'
+
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -19,6 +25,7 @@ stages:
           GitHubPat: $(GITHUB_PAT)
           GitHubOwner: $(GITHUB_OWNER)
           GitHubRepo: $(GITHUB_REPO)
+          Branch: ${{ parameters.Branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/python/package/run-all-packages.yml
@@ -27,6 +34,7 @@ stages:
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
+        Branch: ${{ parameters.Branch }}
   
   - template: /eng/pipelines/common/content-validation-special-cases.yml
     parameters:

@@ -26,6 +26,9 @@ parameters:
 - name: jobDisplayName
   type: string
   default: ''
+- name: Branch
+  type: string
+  default: 'main'
 
 jobs:
   - job: ${{ parameters.jobDisplayName }}
@@ -77,6 +80,7 @@ jobs:
       displayName: Get test data source
       env:
         ReadmeName: ${{ parameters.ReadmeName }}
+        Branch: ${{ parameters.Branch }}
         Language: "Python"
       inputs:
         command: 'run'
