@@ -14,11 +14,10 @@ parameters:
   default: ''
 
 jobs:
-  - template: /eng/pipelines/common/content-validation-for-python.yml
+  - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'News Search'
-      PackageName: 'azure-cognitiveservices-search-newssearch'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_NEWSSEARCH'
+      PackageName: 'security-keyvault-certificates-readme'
+      jobDisplayName: 'SECURITY_KEYVAULT_CERTIFICATES'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -14,11 +14,10 @@ parameters:
   default: ''
 
 jobs:
-  - template: /eng/pipelines/common/content-validation-for-python.yml
+  - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Cognitive Services'
-      PackageName: 'azure-cognitiveservices-language-spellcheck'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_LANGUAGE_SPELLCHECK'
+      PackageName: 'security-confidentialledger-readme'
+      jobDisplayName: 'SECURITY_CONFIDENTIALLEDGER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

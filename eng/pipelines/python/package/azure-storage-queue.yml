@@ -16,7 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'storage-queue-readme'
+      PackageName: 'azure-storage-queue'
+      ReadmeName: 'storage-queue-readme'
       jobDisplayName: 'AZURE_STORAGE_QUEUE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Monitor'
       PackageName: 'azure-monitor-opentelemetry'
+      ReadmeName: 'monitor-opentelemetry-readme'
       jobDisplayName: 'AZURE_MONITOR_OPENTELEMETRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

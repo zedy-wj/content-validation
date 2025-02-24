@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Schema Registry'
       PackageName: 'azure-schemaregistry'
+      ReadmeName: 'schemaregistry-readme'
       jobDisplayName: 'AZURE_SCHEMAREGISTRY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

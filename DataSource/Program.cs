@@ -17,9 +17,9 @@ namespace DataSource
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? package = config["PackageName"];
+            string? package = config["ReadmeName"];
             string? language = config["Language"];
-
+            
             string? overviewUrl = GetLanguagePageOverview(language);
 
             List<string> pages = new List<string>();

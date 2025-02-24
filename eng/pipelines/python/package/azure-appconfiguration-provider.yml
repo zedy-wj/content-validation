@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'App Configuration'
       PackageName: 'azure-appconfiguration-provider'
+      ReadmeName: 'appconfiguration-provider-readme'
       jobDisplayName: 'AZURE_APPCONFIGURATION_PROVIDER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

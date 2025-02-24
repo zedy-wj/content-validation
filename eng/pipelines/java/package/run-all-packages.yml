@@ -13,7 +13,7 @@ parameters:
   default: ''
 - name: packages
   type: string
-  default: 'storage-blob-batch, storage-blob-cryptography'
+  default: 'data-appconfiguration, batch, ai-contentsafety, ai-documentintelligence, ai-formrecognizer, ai-textanalytics, ai-translation-document, ai-translation-text, ai-vision-imageanalysis, health-insights-radiologyinsights, communication-callautomation, communication-chat, communication-common, communication-email, communication-identity, communication-jobrouter, communication-messages, communication-phonenumbers, communication-rooms, communication-sms, security-confidentialledger, containers-containerregistry, cosmos, developer-devcenter, messaging-eventgrid, messaging-eventgrid-namespaces, messaging-eventhubs, messaging-eventhubs-checkpointstore-blob, functions-javalibrary, identity, identity-broker, digitaltwins-core, iot-deviceupdate, security-keyvault-administration, security-keyvault-certificates, security-keyvault-keys, security-keyvault-secrets, developer-loadtesting, mixedreality-authentication, mixedreality-remoterendering, monitor-ingestion, monitor-query, data-schemaregistry, data-schemaregistry-apacheavro, data-schemaregistry-jsonschema, search-documents, messaging-servicebus, storage-blob, storage-blob-batch, storage-blob-cryptography, storage-file-datalake, storage-file-share, storage-queue, data-tables, messaging-webpubsub, messaging-webpubsub-client'
 
 jobs:
 - ${{ each packageName in split(parameters.packages, ',') }}:

@@ -14,11 +14,10 @@ parameters:
   default: ''
 
 jobs:
-  - template: /eng/pipelines/common/content-validation-for-python.yml
+  - template: /eng/pipelines/common/content-validation.yml
     parameters:
-      ServiceName: 'Entity Search'
-      PackageName: 'azure-cognitiveservices-search-entitysearch'
-      jobDisplayName: 'AZURE_COGNITIVESERVICES_SEARCH_ENTITYSEARCH'
+      PackageName: 'iot-deviceupdate-readme'
+      jobDisplayName: 'IOT_DEVICEUPDATE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

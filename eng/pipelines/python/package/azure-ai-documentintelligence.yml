@@ -16,9 +16,9 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Web PubSub'
-      PackageName: 'azure-cosmosdb-table'
-      jobDisplayName: 'AZURE_COSMOSDB_TABLE'
+      PackageName: 'azure-ai-documentintelligence'
+      ReadmeName: 'ai-documentintelligence-readme'
+      jobDisplayName: 'AZURE_AI_DOCUMENTINTELLIGENCE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'IoT'
       PackageName: 'azure-iot-hub'
+      ReadmeName: 'iot/iothub'
       jobDisplayName: 'AZURE_IOT_HUB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

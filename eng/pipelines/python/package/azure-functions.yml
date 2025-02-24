@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Functions'
       PackageName: 'azure-functions'
+      ReadmeName: 'functions/functions'
       jobDisplayName: 'AZURE_FUNCTIONS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

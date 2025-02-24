@@ -16,8 +16,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      ServiceName: 'Machine Learning'
       PackageName: 'azure-ai-ml'
+      ReadmeName: 'ai-ml-readme'
       jobDisplayName: 'AZURE_AI_ML'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

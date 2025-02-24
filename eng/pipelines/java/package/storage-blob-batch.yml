@@ -15,7 +15,6 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
-      # ServiceName: 'Cognitive Services'
       PackageName: 'storage-blob-batch-readme'
       jobDisplayName: 'STORAGE_BLOB_BATCH'
       DotNetSdkVersion: '8.0.x'
