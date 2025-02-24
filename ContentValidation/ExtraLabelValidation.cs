@@ -19,6 +19,7 @@ public class ExtraLabelValidation : IValidation
 
         // Define a list (labelList) containing various HTML tags and entities.
         var labelList = new List<string> {
+            "/p>",
             "<br",
             "<span",
             "<div",
@@ -31,7 +32,6 @@ public class ExtraLabelValidation : IValidation
             "&gt",
             "&quot",
             "&apos",
-            "/p>",
         };
 
         // Create a browser instance.

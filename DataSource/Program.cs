@@ -59,8 +59,10 @@ namespace DataSource
                     break;
                 }
 
-                await page.GotoAsync(pagelink);
-
+                await page.GotoAsync(pagelink, new PageGotoOptions
+                {
+                    WaitUntil = WaitUntilState.NetworkIdle
+                });
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
                 

@@ -19,6 +19,8 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestDuplicateServiceResults = new ConcurrentQueue<TResult>();
 
+        public static ConcurrentQueue<TResult> TestInconsistentTextFormatResults = new ConcurrentQueue<TResult>();
+
         public static IPlaywright playwright;
 
         static TestPageContent()
@@ -44,9 +46,11 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestTableMissingContentResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestInconsistentTextFormatResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestTableMissingContentResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestGarbledTextResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestDuplicateServiceResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath);
         }
 
 
@@ -96,6 +100,36 @@ namespace ContentValidation.Test
                 if (!res.Result)
                 {
                     TestGarbledTextResults.Enqueue(res);
+                }
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : GarbledTextValidation");
+                throw;
+            }
+
+            Assert.That(res.Result, res.FormatErrorMessage());
+
+
+        }
+
+
+        [Test]
+        [Category("GeneralTest")]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestInconsistentTextFormat(string testLink)
+        {
+
+            IValidation Validation = new InconsistentTextFormatValidation(playwright);
+
+            var res = new TResult();
+            try
+            {
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestInconsistentTextFormat";
+                if (!res.Result)
+                {
+                    TestInconsistentTextFormatResults.Enqueue(res);
                 }
             }
             catch
