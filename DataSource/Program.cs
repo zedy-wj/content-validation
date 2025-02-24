@@ -10,6 +10,7 @@ namespace DataSource
     public class GetDataSource
     {
         private static readonly string SDK_API_URL_BASIC = "https://learn.microsoft.com/en-us/";
+        private static readonly string SDK_API_REVIEW_URL_BASIC = "https://review.learn.microsoft.com/en-us/";
         static async Task Main(string[] args)
         {
             // Default Configuration
@@ -19,22 +20,29 @@ namespace DataSource
 
             string? package = config["ReadmeName"];
             string? language = config["Language"];
+            string branch = config["Branch"]!;
             
-            string? overviewUrl = GetLanguagePageOverview(language);
+            string? overviewUrl = GetLanguagePageOverview(language, branch);
 
             List<string> pages = new List<string>();
             List<string> allPages = new List<string>();
-            string pagelink = $"{overviewUrl}/{package}";
+            string pagelink = $"{overviewUrl}/{package}?branch={branch}";
 
             await GetAllChildPage(pages, allPages, pagelink);
 
             ExportData(allPages);
         }
 
-        static string GetLanguagePageOverview(string? language)
+        static string GetLanguagePageOverview(string? language, string branch)
         {
             language = language?.ToLower();
-            return $"{SDK_API_URL_BASIC}/{language}/api/overview/azure/";
+            if(branch != "main")
+            {
+                return $"{SDK_API_URL_BASIC}/{language}/api/overview/azure/";
+            }
+            else{
+                return $"{SDK_API_REVIEW_URL_BASIC}/{language}/api/overview/azure/";
+            }
         }
 
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink)
@@ -43,7 +51,7 @@ namespace DataSource
             var playwright = await Playwright.CreateAsync();
             var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true
+                Headless = false
             });
 
             var page = await browser.NewPageAsync();
