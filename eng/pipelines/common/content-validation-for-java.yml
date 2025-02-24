@@ -3,6 +3,8 @@ parameters:
   type: string
 - name: PackageName
   type: string
+- name: ReadmeName
+  type: string
 - name: GitHubPat
   type: string
   default: ''
@@ -74,7 +76,7 @@ jobs:
     - task: DotNetCoreCLI@2
       displayName: Get test data source
       env:
-        PackageName: ${{ parameters.PackageName }}
+        ReadmeName: ${{ parameters.ReadmeName }}
         Language: "Java"
       inputs:
         command: 'run'
