@@ -31,7 +31,7 @@ namespace ContentValidation.Test
             //This list is for testing duplicate services.
             DuplicateTestLink = new List<string>
             {
-                "https://learn.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable"
+                "https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python"
             };
         }
 
