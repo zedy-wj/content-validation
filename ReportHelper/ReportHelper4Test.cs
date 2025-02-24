@@ -11,6 +11,10 @@ public class ExcelHelper4Test
     // Initialize the Excel file if it doesn't exist
     public static string Init(string fileName, string sheetName)
     {
+        if (sheetName.Length > 29)
+        {
+            sheetName = sheetName.Substring(0, 29);
+        }
         // Define the root directory for the Excel file
         string rootDirectory = ConstData.ReportsDirectory;
         {
@@ -66,6 +70,10 @@ public class ExcelHelper4Test
     }
     public static void AddTestResult(ConcurrentQueue<TResult> testResults, string fileName, string sheetName)
     {
+        if (sheetName.Length > 29)
+        {
+            sheetName = sheetName.Substring(0, 29);
+        }
         lock (LockObj)
         {
             string localFilePath = Init(fileName, sheetName);
@@ -135,6 +143,10 @@ public class ExcelHelper4Test
 
     public static void AddTestResult(List<TResult4Json> testResults, string fileName, string sheetName)
     {
+        if (sheetName.Length > 29)
+        {
+            sheetName = sheetName.Substring(0, 29);
+        }
         lock (LockObj)
         {
             string localFilePath = Init(fileName, sheetName);
