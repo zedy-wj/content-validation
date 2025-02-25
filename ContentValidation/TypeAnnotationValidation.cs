@@ -84,7 +84,18 @@ public class TypeAnnotationValidation : IValidation
         {
             // Check if the h1 text contains 'Enum'.
             var h1Locator = page.Locator(".content h1:first-of-type");
-            var h1Text = await h1Locator.InnerTextAsync();
+            var h1Text = "";
+
+            try
+            {
+                h1Text = await h1Locator.InnerTextAsync();
+            }
+            catch 
+            {
+                h1Locator = page.Locator(".content h1:first-child");
+                h1Text = await h1Locator.InnerTextAsync();
+            }
+            
             if (h1Text.Contains("Enum", StringComparison.OrdinalIgnoreCase))
             {
                 return paramMap;

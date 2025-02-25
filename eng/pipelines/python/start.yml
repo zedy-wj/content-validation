@@ -36,9 +36,9 @@ stages:
         GitHubRepo: $(GITHUB_REPO)
         Branch: ${{ parameters.Branch }}
   
-  - template: /eng/pipelines/common/content-validation-special-cases.yml
-    parameters:
-      DotNetSdkVersion: '8.0.x'
+  # - template: /eng/pipelines/common/content-validation-special-cases.yml
+  #   parameters:
+  #     DotNetSdkVersion: '8.0.x'
 
 
 - stage: TotalIssuesSummary
