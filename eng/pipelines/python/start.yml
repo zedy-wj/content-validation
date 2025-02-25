@@ -14,10 +14,6 @@ parameters:
   type: string
   default: 'main'
 
-variables:
-  pipelineRunLink: $[ format('https://dev.azure.com/{0}/{1}/_build/results?buildId={2}&view=results', variables['System.CollectionUri'].split('/')[4], variables['System.TeamProject'], variables['System.Build.BuildId']) ]
- 
-
 stages:
 - stage: ContentValidationTesting
   jobs:
