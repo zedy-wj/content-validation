@@ -78,11 +78,21 @@ stages:
         command: 'build'
         projects: 'IssuerHelper/IssuerHelper.csproj'
 
+    - script: |
+        organization=$(System.CollectionUri | awk -F'/' '{print $4}')
+        project=$(System.TeamProject)
+        buildId=$(System.Build.BuildId)  
+  
+        pipelineUrl="https://dev.azure.com/${organization}/${project}/_build/results?buildId=${buildId}"
+  
+        echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
+      displayName: Get the current pipeline url
+
     - task: DotNetCoreCLI@2
       displayName: Summary Total Issues of all packages
       env:
         PackageName: ${{ parameters.packages }}
-        PipelineRunLink: $(pipelineRunLink)
+        PipelineRunLink: $(pipelineUrl)
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
