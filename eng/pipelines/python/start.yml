@@ -75,7 +75,7 @@ stages:
         projects: 'IssuerHelper/IssuerHelper.csproj'
 
     - script: |
-        organization="test-organi"
+        organization=$(System.CollectionUri)
         project=$(System.TeamProject)
         buildId=$(Build.BuildId)
   
@@ -83,10 +83,6 @@ stages:
   
         echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
       displayName: Get the current pipeline url
-
-    - script: |
-        echo "The value of pipelineUrl is: $(pipelineUrl)"
-      displayName: 'Use variable set in previous task'
 
     - task: DotNetCoreCLI@2
       displayName: Summary Total Issues of all packages
