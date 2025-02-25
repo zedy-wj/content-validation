@@ -14,6 +14,10 @@ parameters:
   type: string
   default: 'main'
 
+variables:
+  pipelineRunLink: $[ format('https://dev.azure.com/{0}/{1}/_build/results?buildId={2}&view=results', variables['System.CollectionUri'].split('/')[4], variables['System.TeamProject'], variables['System.Build.BuildId']) ]
+ 
+
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -39,7 +43,6 @@ stages:
   # - template: /eng/pipelines/common/content-validation-special-cases.yml
   #   parameters:
   #     DotNetSdkVersion: '8.0.x'
-
 
 - stage: TotalIssuesSummary
   condition: always()
@@ -79,7 +82,7 @@ stages:
       displayName: Summary Total Issues of all packages
       env:
         PackageName: ${{ parameters.packages }}
-        PipelineRunLink: $[ format('https://dev.azure.com/{0}/{1}/_build/results?buildId={2}&view=results', variables['System.CollectionUri'].split('/')[4], variables['System.TeamProject'], variables['System.Build.BuildId']) ]
+        PipelineRunLink: $(pipelineRunLink)
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
