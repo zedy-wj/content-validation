@@ -313,19 +313,46 @@ namespace IssuerHelper
             string repo = "content-validation";
             string issueTitle = $"{package} content validation issue for learn microsoft website.";
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
+            JArray allIssues = new JArray();
 
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyGitHubApp", "1.0"));
-                    HttpResponseMessage response = client.GetAsync(apiUrl).Result;
-                    response.EnsureSuccessStatusCode();
+                    string? linkHeader = null;
 
-                    string responseBody = response.Content.ReadAsStringAsync().Result;
-                    JArray issues = JArray.Parse(responseBody);
+                    while(true)
+                    {
+                        HttpResponseMessage response = client.GetAsync(apiUrl).Result;
+                        response.EnsureSuccessStatusCode();
 
-                    var matchingIssue = issues.FirstOrDefault(i => (string?)i["title"] == issueTitle);
+                        string responseBody = response.Content.ReadAsStringAsync().Result;
+                        Console.WriteLine(responseBody);
+                        JArray issues = JArray.Parse(responseBody);
+                        allIssues.Merge(issues);
+
+                        if (response.Headers.Contains("Link"))
+                        {
+                            linkHeader = response.Headers.GetValues("Link").First();
+                            var links = linkHeader.Split(',').Select(l => l.TrimStart('<').TrimEnd('>')).ToList();
+                            var nextLink = links.FirstOrDefault(l => l.EndsWith("rel=\"next\""));
+                            if (nextLink != null)
+                            {
+                                apiUrl = nextLink.Split(';')[0].TrimStart('[').TrimEnd('>');
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    var matchingIssue = allIssues.FirstOrDefault(i => (string?)i["title"] == issueTitle);
 
                     if (matchingIssue != null)
                     {
