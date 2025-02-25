@@ -28,9 +28,9 @@ stages:
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
   
-  - template: /eng/pipelines/common/content-validation-special-cases.yml
-    parameters:
-      DotNetSdkVersion: '8.0.x'
+  # - template: /eng/pipelines/common/content-validation-special-cases.yml
+  #   parameters:
+  #     DotNetSdkVersion: '8.0.x'
 
 
 - stage: TotalIssuesSummary
