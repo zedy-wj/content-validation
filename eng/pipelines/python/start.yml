@@ -75,9 +75,9 @@ stages:
         projects: 'IssuerHelper/IssuerHelper.csproj'
 
     - script: |
-        organization=$(System.CollectionUri | awk -F'/' '{print $4}')
+        organization="test-organi"
         project=$(System.TeamProject)
-        buildId=$(System.Build.BuildId)  
+        buildId=$(Build.BuildId)
   
         pipelineUrl="https://dev.azure.com/${organization}/${project}/_build/results?buildId=${buildId}"
   
