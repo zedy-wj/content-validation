@@ -17,6 +17,7 @@ namespace IssuerHelper
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
             string packages = config["PackageName"] ?? "all";
+            string pipelineRunLink = config["PipelineRunLink"] ?? "all";
 
             Console.WriteLine("Running packages: " + packages);
 
@@ -47,7 +48,7 @@ namespace IssuerHelper
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
             GenerateAllPackageExcelFile(updatedDiffJsonPath);
             
-            GenerateMarkDownFile(allPackages);
+            GenerateMarkDownFile(allPackages, pipelineRunLink);
 
         }
 
@@ -254,11 +255,11 @@ namespace IssuerHelper
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
         }
 
-        static void GenerateMarkDownFile(string[] packages)
+        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink)
         {
             string markdownTable = $@"
-| id | package | status | issue link | created date of issue | update date of issue | run date of pipeline |
-|----|---------|--------|------------|-----------------------|----------------------| ---------------------|";
+| id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
+|----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |";
 
             int index = 1;
             DateTime now = DateTime.Now;
@@ -273,24 +274,24 @@ namespace IssuerHelper
                 {
                     Console.WriteLine($"The package {package} failed in pipeline run, please check it.");
                     markdownTable += $@"
-| {index} | {package} | Pipeline fail | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
+| {index} | {package} | Pipeline fail | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                     index++;
                     continue;
                 }
                 if (string.IsNullOrEmpty(packageIssueInfo) && issueObject == null)
                 {
                     markdownTable += $@"
-| {index} | {package} | PASS | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
+| {index} | {package} | PASS | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 else if (string.IsNullOrEmpty(packageIssueInfo) && issueObject != null)
                 {
                     markdownTable += $@"
-| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
+| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | Test fail | {issueObject?["html_url"]?.ToString()} | {issueObject?["created_at"]?.ToObject<DateTime>()} | {issueObject?["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} |";
+| {index} | {package} | Test fail | {issueObject?["html_url"]?.ToString()} | {issueObject?["created_at"]?.ToObject<DateTime>()} | {issueObject?["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 index++;
             }

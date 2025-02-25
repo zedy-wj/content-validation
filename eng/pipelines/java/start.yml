@@ -4,7 +4,7 @@ trigger: none
 parameters:
 - name: packages
   displayName: |
-      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'storage-blob-batch-readme, storage-blob-cryptography-readme'
+      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-ai-contentsafety, azure-ai-documentintelligence'
   type: string
   default: 'all'
 
