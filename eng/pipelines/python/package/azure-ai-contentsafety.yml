@@ -16,7 +16,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
-      PackageName: 'azure-ai-contentsafetye'
+      PackageName: 'azure-ai-contentsafety'
       ReadmeName: 'ai-contentsafety-readme'
       jobDisplayName: 'AZURE_AI_CONTENTSAFETY'
       DotNetSdkVersion: '8.0.x'

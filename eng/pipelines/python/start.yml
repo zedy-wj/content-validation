@@ -89,6 +89,7 @@ stages:
       env:
         PackageName: ${{ parameters.packages }}
         PipelineRunLink: $(pipelineUrl)
+        GitHubPat: $(GITHUB_PAT)
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'

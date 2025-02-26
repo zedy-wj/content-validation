@@ -17,7 +17,8 @@ namespace IssuerHelper
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
             string packages = config["PackageName"] ?? "all";
-            string pipelineRunLink = config["PipelineRunLink"] ?? "all";
+            string pipelineRunLink = config["PipelineRunLink"] ?? "";
+            string githubToken = config["GitHubPat"] ?? "";
 
             Console.WriteLine("Running packages: " + packages);
 
@@ -48,7 +49,7 @@ namespace IssuerHelper
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
             GenerateAllPackageExcelFile(updatedDiffJsonPath);
             
-            GenerateMarkDownFile(allPackages, pipelineRunLink);
+            GenerateMarkDownFile(allPackages, pipelineRunLink, githubToken);
 
         }
 
@@ -255,7 +256,7 @@ namespace IssuerHelper
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
         }
 
-        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink)
+        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink, string githubToken)
         {
             string markdownTable = $@"
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
@@ -268,7 +269,7 @@ namespace IssuerHelper
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
-                var issueObject = GetIssueInfo(package);
+                var issueObject = GetIssueInfo(package, githubToken);
 
                 if (packageIssueInfo.Equals("Failed"))
                 {
@@ -308,7 +309,7 @@ namespace IssuerHelper
             }
         }
 
-        static JToken? GetIssueInfo(string package)
+        static JToken? GetIssueInfo(string package, string githubToken)
         {
             string owner = "zedy-wj";
             string repo = "content-validation";
@@ -321,6 +322,7 @@ namespace IssuerHelper
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyGitHubApp", "1.0"));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", githubToken);
                     string? linkHeader = null;
 
                     while(true)
