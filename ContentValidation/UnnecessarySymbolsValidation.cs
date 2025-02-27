@@ -89,8 +89,9 @@ public class UnnecessarySymbolsValidation : IValidation
         // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
 
-        // New pattern to match the specified conditions.(e.g., Collection> actions , /** hello , **note:** , "word.)
-        string newPatternForJava = @"^(?:[a-zA-Z]+>\s|/?\*\*.*$|""\w+\.)";
+        // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
+        // string newPatternForJava = @"\""[^\""]*$|^\s*/?\*\*.*$";
+        string newPatternForJava = @"^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 

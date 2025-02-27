@@ -41,7 +41,7 @@ public class InvalidTagsValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = invalidTags.Count;
-            res.ErrorInfo = "Invalid tags found: " + string.Join(",", allTags);
+            res.ErrorInfo = "Invalid tags found: " + string.Join(",", invalidTags);
         }
 
         await browser.CloseAsync();
