@@ -90,8 +90,9 @@ public class UnnecessarySymbolsValidation : IValidation
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
 
         // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
+        string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
         // string newPatternForJava = @"\""[^\""]*$|^\s*/?\*\*.*$";
-        string newPatternForJava = @"^\s*/?\*\*.*$";
+        // string newPatternForJava = @"\s\""[a-zA-Z]+\.(?<!\"") | ^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
@@ -142,11 +143,13 @@ public class UnnecessarySymbolsValidation : IValidation
             }
 
             // Check the new patternForJava
-            if (Regex.IsMatch(line, newPatternForJava))
+            Match matchData = Regex.Match(line, newPatternForJava);
+            if (matchData.Success)
             {
-                string unnecessarySymbol = $"\"{line.Trim()}\"";
+                string matchedContent = matchData.Value;
+                string unnecessarySymbol = $"\"{matchedContent}\"";
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");      
             }
         }
     }
