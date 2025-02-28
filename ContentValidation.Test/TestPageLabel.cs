@@ -16,6 +16,8 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
 
+        public static ConcurrentQueue<TResult> TestInvalidTagsResults = new ConcurrentQueue<TResult>();
+
         public static IPlaywright playwright;
 
         static TestPageLabel()
@@ -35,8 +37,10 @@ namespace ContentValidation.Test
 
             ExcelHelper4Test.AddTestResult(TestExtraLabelResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestInvalidTagsResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestExtraLabelResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestInvalidTagsResults, jsonFilePath);
         }
 
         [Test]
@@ -99,7 +103,37 @@ namespace ContentValidation.Test
 
 
         }
+
+        [Test]
+        [Category("GeneralTest")]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestInvalidTags(string testLink)
+        {
+
+            var res = new TResult();
+            try
+            {
+
+                IValidation Validation = new InvalidTagsValidation(playwright);
+
+                res = await Validation.Validate(testLink);
+
+                res.TestCase = "TestInvalidTags";
+                if (!res.Result)
+                {
+                    TestInvalidTagsResults.Enqueue(res);
+                }
+
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : InvalidTagsValidation");
+                throw;
+            }
+
+            Assert.That(res.Result, res.FormatErrorMessage());
+
+
+        }
     }
 }
-
-

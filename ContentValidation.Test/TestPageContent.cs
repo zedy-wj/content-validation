@@ -134,7 +134,7 @@ namespace ContentValidation.Test
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : GarbledTextValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("code error : InconsistentTextFormatValidation");
                 throw;
             }
 
@@ -174,4 +174,3 @@ namespace ContentValidation.Test
         }
     }
 }
-

@@ -89,8 +89,10 @@ public class UnnecessarySymbolsValidation : IValidation
         // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
 
-        // New pattern to match the specified conditions.(e.g., Collection> actions , /** hello , **note:** , "word.)
-        string newPatternForJava = @"^(?:[a-zA-Z]+>\s|/?\*\*.*$|""\w+\.)";
+        // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
+        string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
+        // string newPatternForJava = @"\""[^\""]*$|^\s*/?\*\*.*$";
+        // string newPatternForJava = @"\s\""[a-zA-Z]+\.(?<!\"") | ^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
@@ -141,11 +143,13 @@ public class UnnecessarySymbolsValidation : IValidation
             }
 
             // Check the new patternForJava
-            if (Regex.IsMatch(line, newPatternForJava))
+            Match matchData = Regex.Match(line, newPatternForJava);
+            if (matchData.Success)
             {
-                string unnecessarySymbol = $"\"{line.Trim()}\"";
+                string matchedContent = matchData.Value;
+                string unnecessarySymbol = $"\"{matchedContent}\"";
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");      
             }
         }
     }
