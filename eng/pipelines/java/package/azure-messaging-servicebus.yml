@@ -18,7 +18,7 @@ jobs:
     parameters:
       PackageName: 'azure-messaging-servicebus'
       ReadmeName: 'messaging-servicebus-readme'
-      jobDisplayName: 'AZURE_MESSAGING_WEBPUBSUB_CLIENT'
+      jobDisplayName: 'AZURE_MESSAGING_WEBPUBSUB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
