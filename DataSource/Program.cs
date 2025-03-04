@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json;
 using Microsoft.Playwright;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace DataSource
 {
@@ -21,14 +22,16 @@ namespace DataSource
             string? package = config["ReadmeName"];
             string? language = config["Language"];
             string branch = config["Branch"]!;
+            string? cookieName = config["CookieName"];
+            string? cookieValue = config["CookieValue"];
             
             string? overviewUrl = GetLanguagePageOverview(language, branch);
 
             List<string> pages = new List<string>();
             List<string> allPages = new List<string>();
-            string pagelink = $"{overviewUrl}/{package}?branch={branch}";
+            string pagelink = $"{overviewUrl}{package}?branch={branch}";
 
-            await GetAllChildPage(pages, allPages, pagelink);
+            await GetAllChildPage(pages, allPages, pagelink, branch, cookieName, cookieValue);
 
             ExportData(allPages);
         }
@@ -38,14 +41,14 @@ namespace DataSource
             language = language?.ToLower();
             if(branch == "main")
             {
-                return $"{SDK_API_URL_BASIC}/{language}/api/overview/azure/";
+                return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
             }
             else{
-                return $"{SDK_API_REVIEW_URL_BASIC}/{language}/api/overview/azure/";
+                return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/";
             }
         }
 
-        static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink)
+        static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
         {
             // Launch a browser
             var playwright = await Playwright.CreateAsync();
@@ -53,8 +56,26 @@ namespace DataSource
             {
                 Headless = true
             });
+            
+            var context = await browser.NewContextAsync();
 
-            var page = await browser.NewPageAsync();
+            if(branch != "main"){
+                var cookie = new[]
+                {
+                    new Microsoft.Playwright.Cookie
+                    {
+                        Name = cookieName,
+                        Value = cookieVal,
+                        Domain = "review.learn.microsoft.com",
+                        Path = "/"
+                    }
+                };
+
+                await context.AddCookiesAsync(cookie);
+            }
+
+            var page = await context.NewPageAsync();
+
             IReadOnlyList<ILocator> links = new List<ILocator>();
 
             // Retry 5 times to get the child pages if cannot get pagelinks.
@@ -83,6 +104,11 @@ namespace DataSource
                 foreach (var link in links)
                 {
                     var href = await link.GetAttributeAsync("href");
+                    // TODO
+                    // if(branch != "main")
+                    // {
+                    //     href = href + "&branch=" + branch;
+                    // }
                     pages.Add(href);
                 }
 
@@ -103,6 +129,28 @@ namespace DataSource
         {
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(apiRefDocPage);
+
+            // TODO
+            // var handler = new HttpClientHandler
+            // {
+            //     CookieContainer = new CookieContainer()
+            // };
+    
+            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
+            // {
+            //     Domain = "review.learn.microsoft.com",
+            // };
+            // handler.CookieContainer.Add(cookie);
+
+            // var httpClient = new HttpClient(handler);
+            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            // var response = httpClient.GetAsync(apiRefDocPage).Result;
+            // response.EnsureSuccessStatusCode();
+
+            // var htmlContent = response.Content.ReadAsStringAsync().Result;
+
+            // var doc = new HtmlDocument();
+            // doc.LoadHtml(htmlContent);
 
             //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
             if (IsTrue(apiRefDocPage))
@@ -131,6 +179,29 @@ namespace DataSource
         {
             var web = new HtmlWeb();
             var doc = web.Load(link);
+
+            //TODO
+            // var handler = new HttpClientHandler
+            // {
+            //     CookieContainer = new CookieContainer()
+            // };
+    
+            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
+            // {
+            //     Domain = "review.learn.microsoft.com",
+            // };
+            // handler.CookieContainer.Add(cookie);
+
+            // var httpClient = new HttpClient(handler);
+            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            // var response = httpClient.GetAsync(link).Result;
+            // response.EnsureSuccessStatusCode();
+
+            // var htmlContent = response.Content.ReadAsStringAsync().Result;
+
+            // var doc = new HtmlDocument();
+            // doc.LoadHtml(htmlContent);
+
             var checks = new[]
             {
                 new { XPath = "//h1", Content = "Package" },
@@ -156,7 +227,11 @@ namespace DataSource
 
         static void ExportData(List<string> pages)
         {
-            string jsonString = JsonSerializer.Serialize(pages);
+            string jsonString = JsonConvert.SerializeObject(pages, new JsonSerializerSettings
+            {
+                StringEscapeHandling = StringEscapeHandling.Default
+            });
+
             Console.WriteLine(jsonString);
             File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
         }
