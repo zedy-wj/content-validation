@@ -91,8 +91,6 @@ public class UnnecessarySymbolsValidation : IValidation
 
         // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
         string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
-        // string newPatternForJava = @"\""[^\""]*$|^\s*/?\*\*.*$";
-        // string newPatternForJava = @"\s\""[a-zA-Z]+\.(?<!\"") | ^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
