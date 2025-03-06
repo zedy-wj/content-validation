@@ -24,7 +24,7 @@ namespace DataSource
             string branch = config["Branch"]!;
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
-            
+
             string? overviewUrl = GetLanguagePageOverview(language, branch);
 
             List<string> pages = new List<string>();
@@ -36,16 +36,15 @@ namespace DataSource
             ExportData(allPages);
         }
 
-        static string GetLanguagePageOverview(string? language, string branch)
+        static string GetLanguagePageOverview(string? language, string branch = "")
         {
             language = language?.ToLower();
-            if(branch == "main")
+            if (branch != "")
             {
-                return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
-            }
-            else{
                 return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/";
+
             }
+            return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
         }
 
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
@@ -56,10 +55,11 @@ namespace DataSource
             {
                 Headless = true
             });
-            
+
             var context = await browser.NewContextAsync();
 
-            if(branch != "main"){
+            if (branch != "main")
+            {
                 var cookie = new[]
                 {
                     new Microsoft.Playwright.Cookie
@@ -94,7 +94,7 @@ namespace DataSource
                 });
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
-                
+
                 i++;
             }
 
@@ -104,11 +104,9 @@ namespace DataSource
                 foreach (var link in links)
                 {
                     var href = await link.GetAttributeAsync("href");
-                    // TODO
-                    // if(branch != "main")
-                    // {
-                    //     href = href + "&branch=" + branch;
-                    // }
+
+                    href = href + "&branch=" + branch;
+
                     pages.Add(href);
                 }
 
@@ -120,40 +118,36 @@ namespace DataSource
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
                     allPages.Add(pa);
-                    GetAllPages(pa, baseUri, allPages);
+                    GetAllPages(pa, baseUri, allPages, branch, cookieName, cookieVal);
                 }
             }
         }
 
-        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links)
+        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string branch, string cookieName, string cookieVal)
         {
-            HtmlWeb web = new HtmlWeb();
-            var doc = web.Load(apiRefDocPage);
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = new CookieContainer()
+            };
 
-            // TODO
-            // var handler = new HttpClientHandler
-            // {
-            //     CookieContainer = new CookieContainer()
-            // };
-    
-            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
-            // {
-            //     Domain = "review.learn.microsoft.com",
-            // };
-            // handler.CookieContainer.Add(cookie);
+            var cookie = new System.Net.Cookie(cookieName, cookieVal)
+            {
+                Domain = "review.learn.microsoft.com",
+            };
+            handler.CookieContainer.Add(cookie);
 
-            // var httpClient = new HttpClient(handler);
-            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            // var response = httpClient.GetAsync(apiRefDocPage).Result;
-            // response.EnsureSuccessStatusCode();
+            var httpClient = new HttpClient(handler);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            var response = httpClient.GetAsync(apiRefDocPage).Result;
+            response.EnsureSuccessStatusCode();
 
-            // var htmlContent = response.Content.ReadAsStringAsync().Result;
+            var htmlContent = response.Content.ReadAsStringAsync().Result;
 
-            // var doc = new HtmlDocument();
-            // doc.LoadHtml(htmlContent);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(htmlContent);
 
-            //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
-            if (IsTrue(apiRefDocPage))
+            // The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
+            if (IsTrue(apiRefDocPage, cookieName, cookieVal))
             {
                 var aNodes = doc.DocumentNode.SelectNodes("//td/a | //td/span/a");
 
@@ -161,46 +155,41 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}/" + node.Attributes["href"].Value;
+                        string href = $"{baseUri}/" + node.Attributes["href"].Value + "&branch=" + branch;
 
                         if (!links.Contains(href))
                         {
                             links.Add(href);
 
-                            //Call GetAllLinks method recursively for each new link.
-                            GetAllPages(href, baseUri, links);
+                            // Call GetAllPages method recursively for each new link.
+                            GetAllPages(href, baseUri, links, branch, cookieName, cookieVal);
                         }
                     }
                 }
             }
         }
-
-        static bool IsTrue(string link)
+        static bool IsTrue(string link, string cookieName, string cookieVal)
         {
-            var web = new HtmlWeb();
-            var doc = web.Load(link);
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = new CookieContainer()
+            };
 
-            //TODO
-            // var handler = new HttpClientHandler
-            // {
-            //     CookieContainer = new CookieContainer()
-            // };
-    
-            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
-            // {
-            //     Domain = "review.learn.microsoft.com",
-            // };
-            // handler.CookieContainer.Add(cookie);
+            var cookie = new System.Net.Cookie(cookieName, cookieVal)
+            {
+                Domain = "review.learn.microsoft.com",
+            };
+            handler.CookieContainer.Add(cookie);
 
-            // var httpClient = new HttpClient(handler);
-            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            // var response = httpClient.GetAsync(link).Result;
-            // response.EnsureSuccessStatusCode();
+            var httpClient = new HttpClient(handler);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            var response = httpClient.GetAsync(link).Result;
+            response.EnsureSuccessStatusCode();
 
-            // var htmlContent = response.Content.ReadAsStringAsync().Result;
+            var htmlContent = response.Content.ReadAsStringAsync().Result;
 
-            // var doc = new HtmlDocument();
-            // doc.LoadHtml(htmlContent);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(htmlContent);
 
             var checks = new[]
             {
