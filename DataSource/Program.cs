@@ -49,6 +49,18 @@ namespace DataSource
 
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
         {
+
+            // If the current page meets the IsTrue condition, call GetAllPages directly.
+            if (IsTrue(pagelink, cookieName, cookieVal))
+            {
+                
+                int lastSlashIndex = pagelink.LastIndexOf('/');
+                string baseUri = pagelink.Substring(0, lastSlashIndex + 1);
+                allPages.Add(pagelink);
+                GetAllPages(pagelink, baseUri, allPages, branch, cookieName, cookieVal);
+                return;
+            }
+
             // Launch a browser
             var playwright = await Playwright.CreateAsync();
             var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
@@ -56,24 +68,7 @@ namespace DataSource
                 Headless = true
             });
 
-            var context = await browser.NewContextAsync();
-
-            if (branch != "main")
-            {
-                var cookie = new[]
-                {
-                    new Microsoft.Playwright.Cookie
-                    {
-                        Name = cookieName,
-                        Value = cookieVal,
-                        Domain = "review.learn.microsoft.com",
-                        Path = "/"
-                    }
-                };
-
-                await context.AddCookiesAsync(cookie);
-            }
-
+            var context = await ConfigureBrowserContextAsync(browser, branch, cookieName, cookieVal);
             var page = await context.NewPageAsync();
 
             IReadOnlyList<ILocator> links = new List<ILocator>();
@@ -123,28 +118,31 @@ namespace DataSource
             }
         }
 
-        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string branch, string cookieName, string cookieVal)
+        static async Task<IBrowserContext> ConfigureBrowserContextAsync(IBrowser browser, string branch, string? cookieName, string? cookieVal)
         {
-            var handler = new HttpClientHandler
+            var context = await browser.NewContextAsync();
+
+            if (!string.IsNullOrEmpty(cookieName) && !string.IsNullOrEmpty(cookieVal))
             {
-                CookieContainer = new CookieContainer()
-            };
+                var cookie = new[]
+                {
+                    new Microsoft.Playwright.Cookie
+                    {
+                        Name = cookieName,
+                        Value = cookieVal,
+                        Domain = "review.learn.microsoft.com",
+                        Path = "/"
+                    }
+                };
+                await context.AddCookiesAsync(cookie);
+            }
 
-            var cookie = new System.Net.Cookie(cookieName, cookieVal)
-            {
-                Domain = "review.learn.microsoft.com",
-            };
-            handler.CookieContainer.Add(cookie);
+            return context;
+        }
 
-            var httpClient = new HttpClient(handler);
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            var response = httpClient.GetAsync(apiRefDocPage).Result;
-            response.EnsureSuccessStatusCode();
-
-            var htmlContent = response.Content.ReadAsStringAsync().Result;
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(htmlContent);
+        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string branch, string? cookieName, string? cookieVal)
+        {
+            var doc = FetchHtmlContent(apiRefDocPage, cookieName, cookieVal);
 
             // The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
             if (IsTrue(apiRefDocPage, cookieName, cookieVal))
@@ -168,8 +166,40 @@ namespace DataSource
                 }
             }
         }
-        static bool IsTrue(string link, string cookieName, string cookieVal)
+        static bool IsTrue(string link, string? cookieName, string? cookieVal)
         {
+            var doc = FetchHtmlContent(link, cookieName, cookieVal);
+
+            var checks = new[]
+            {
+                new { XPath = "//h1", Content = "Package" },
+                new { XPath = "//h2[@id='classes']", Content = "Classes" },
+                new { XPath = "//h2[@id='interfaces']", Content = "Interfaces" },
+                new { XPath = "//h2[@id='structs']", Content = "Structs" },
+                new { XPath = "//h2[@id='typeAliases']", Content = "Type Aliases" },
+                new { XPath = "//h2[@id='functions']", Content = "Functions" },
+                new { XPath = "//h2[@id='enums']", Content = "Enums" },
+                new { XPath = "//h2[@id='modules']", Content = "Modules" },
+                new { XPath = "//h2[@id='packages']", Content = "Packages" }
+            };
+
+            return checks.Any(check =>
+            {
+                string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText?.Trim();
+                return !string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content);
+            });
+        }
+
+        static HtmlDocument FetchHtmlContent(string url, string? cookieName, string? cookieVal)
+        {
+            // If cookieName and cookieVal is "", use HtmlWeb load page.
+            if (string.IsNullOrEmpty(cookieName) && string.IsNullOrEmpty(cookieVal))
+            {
+                var web = new HtmlWeb();
+                return web.Load(url);
+            }
+
+            // Else, use HttpClient to load page.
             var handler = new HttpClientHandler
             {
                 CookieContainer = new CookieContainer()
@@ -181,9 +211,10 @@ namespace DataSource
             };
             handler.CookieContainer.Add(cookie);
 
-            var httpClient = new HttpClient(handler);
+            using var httpClient = new HttpClient(handler);
             httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            var response = httpClient.GetAsync(link).Result;
+
+            var response = httpClient.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
 
             var htmlContent = response.Content.ReadAsStringAsync().Result;
@@ -191,27 +222,7 @@ namespace DataSource
             var doc = new HtmlDocument();
             doc.LoadHtml(htmlContent);
 
-            var checks = new[]
-            {
-                new { XPath = "//h1", Content = "Package" },
-                new { XPath = "//h2[@id='classes']", Content = "Classes" },
-                new { XPath = "//h2[@id='interfaces']", Content = "Interfaces" },
-                new { XPath = "//h2[@id='structs']", Content = "Structs" },
-                new { XPath = "//h2[@id='typeAliases']", Content = "Type Aliases" },
-                new { XPath = "//h2[@id='functions']", Content = "Functions" },
-                new { XPath = "//h2[@id='enums']", Content = "Enums" }
-            };
-
-            foreach (var check in checks)
-            {
-                string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText;
-                if (!string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return doc;
         }
 
         static void ExportData(List<string> pages)
