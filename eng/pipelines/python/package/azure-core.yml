@@ -14,13 +14,13 @@ parameters:
   default: ''
 - name: Branch
   type: string
-  default: 'main'
+  default: ''
 
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
     parameters:
       PackageName: 'azure-core'
-      ReadmeName: 'other/core'
+      ReadmeName: 'core-readme'
       jobDisplayName: 'AZURE_CORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}

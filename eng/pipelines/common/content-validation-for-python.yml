@@ -28,7 +28,7 @@ parameters:
   default: ''
 - name: Branch
   type: string
-  default: 'main'
+  default: ''
 
 jobs:
   - job: ${{ parameters.jobDisplayName }}

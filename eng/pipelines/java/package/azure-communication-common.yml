@@ -12,6 +12,9 @@ parameters:
 - name: GitHubRepo
   type: string
   default: ''
+- name: Branch
+  type: string
+  default: 'main'
 
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml

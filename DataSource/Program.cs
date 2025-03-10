@@ -24,7 +24,7 @@ namespace DataSource
             string branch = config["Branch"]!;
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
-            
+
             string? overviewUrl = GetLanguagePageOverview(language, branch);
 
             List<string> pages = new List<string>();
@@ -36,44 +36,39 @@ namespace DataSource
             ExportData(allPages);
         }
 
-        static string GetLanguagePageOverview(string? language, string branch)
+        static string GetLanguagePageOverview(string? language, string branch = "")
         {
             language = language?.ToLower();
-            if(branch == "main")
+            if (branch != "")
             {
-                return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
-            }
-            else{
                 return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/";
+
             }
+            return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
         }
 
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
         {
+
+            // If the current page meets the IsTrue condition, call GetAllPages directly.
+            if (IsTrue(pagelink, cookieName, cookieVal))
+            {
+                
+                int lastSlashIndex = pagelink.LastIndexOf('/');
+                string baseUri = pagelink.Substring(0, lastSlashIndex + 1);
+                allPages.Add(pagelink);
+                GetAllPages(pagelink, baseUri, allPages, branch, cookieName, cookieVal);
+                return;
+            }
+
             // Launch a browser
             var playwright = await Playwright.CreateAsync();
             var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = true
             });
-            
-            var context = await browser.NewContextAsync();
 
-            if(branch != "main"){
-                var cookie = new[]
-                {
-                    new Microsoft.Playwright.Cookie
-                    {
-                        Name = cookieName,
-                        Value = cookieVal,
-                        Domain = "review.learn.microsoft.com",
-                        Path = "/"
-                    }
-                };
-
-                await context.AddCookiesAsync(cookie);
-            }
-
+            var context = await ConfigureBrowserContextAsync(browser, branch, cookieName, cookieVal);
             var page = await context.NewPageAsync();
 
             IReadOnlyList<ILocator> links = new List<ILocator>();
@@ -94,7 +89,7 @@ namespace DataSource
                 });
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
-                
+
                 i++;
             }
 
@@ -104,11 +99,9 @@ namespace DataSource
                 foreach (var link in links)
                 {
                     var href = await link.GetAttributeAsync("href");
-                    // TODO
-                    // if(branch != "main")
-                    // {
-                    //     href = href + "&branch=" + branch;
-                    // }
+
+                    href = href + "&branch=" + branch;
+
                     pages.Add(href);
                 }
 
@@ -120,40 +113,39 @@ namespace DataSource
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
                     allPages.Add(pa);
-                    GetAllPages(pa, baseUri, allPages);
+                    GetAllPages(pa, baseUri, allPages, branch, cookieName, cookieVal);
                 }
             }
         }
 
-        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links)
+        static async Task<IBrowserContext> ConfigureBrowserContextAsync(IBrowser browser, string branch, string? cookieName, string? cookieVal)
         {
-            HtmlWeb web = new HtmlWeb();
-            var doc = web.Load(apiRefDocPage);
+            var context = await browser.NewContextAsync();
 
-            // TODO
-            // var handler = new HttpClientHandler
-            // {
-            //     CookieContainer = new CookieContainer()
-            // };
-    
-            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
-            // {
-            //     Domain = "review.learn.microsoft.com",
-            // };
-            // handler.CookieContainer.Add(cookie);
+            if (!string.IsNullOrEmpty(cookieName) && !string.IsNullOrEmpty(cookieVal))
+            {
+                var cookie = new[]
+                {
+                    new Microsoft.Playwright.Cookie
+                    {
+                        Name = cookieName,
+                        Value = cookieVal,
+                        Domain = "review.learn.microsoft.com",
+                        Path = "/"
+                    }
+                };
+                await context.AddCookiesAsync(cookie);
+            }
 
-            // var httpClient = new HttpClient(handler);
-            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            // var response = httpClient.GetAsync(apiRefDocPage).Result;
-            // response.EnsureSuccessStatusCode();
+            return context;
+        }
 
-            // var htmlContent = response.Content.ReadAsStringAsync().Result;
+        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string branch, string? cookieName, string? cookieVal)
+        {
+            var doc = FetchHtmlContent(apiRefDocPage, cookieName, cookieVal);
 
-            // var doc = new HtmlDocument();
-            // doc.LoadHtml(htmlContent);
-
-            //The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
-            if (IsTrue(apiRefDocPage))
+            // The recursion terminates when there are no valid sub pages in the page or when all package links have been visited.
+            if (IsTrue(apiRefDocPage, cookieName, cookieVal))
             {
                 var aNodes = doc.DocumentNode.SelectNodes("//td/a | //td/span/a");
 
@@ -161,46 +153,22 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}/" + node.Attributes["href"].Value;
+                        string href = $"{baseUri}/" + node.Attributes["href"].Value + "&branch=" + branch;
 
                         if (!links.Contains(href))
                         {
                             links.Add(href);
 
-                            //Call GetAllLinks method recursively for each new link.
-                            GetAllPages(href, baseUri, links);
+                            // Call GetAllPages method recursively for each new link.
+                            GetAllPages(href, baseUri, links, branch, cookieName, cookieVal);
                         }
                     }
                 }
             }
         }
-
-        static bool IsTrue(string link)
+        static bool IsTrue(string link, string? cookieName, string? cookieVal)
         {
-            var web = new HtmlWeb();
-            var doc = web.Load(link);
-
-            //TODO
-            // var handler = new HttpClientHandler
-            // {
-            //     CookieContainer = new CookieContainer()
-            // };
-    
-            // var cookie = new System.Net.Cookie(cookieName, cookieVal)
-            // {
-            //     Domain = "review.learn.microsoft.com",
-            // };
-            // handler.CookieContainer.Add(cookie);
-
-            // var httpClient = new HttpClient(handler);
-            // httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            // var response = httpClient.GetAsync(link).Result;
-            // response.EnsureSuccessStatusCode();
-
-            // var htmlContent = response.Content.ReadAsStringAsync().Result;
-
-            // var doc = new HtmlDocument();
-            // doc.LoadHtml(htmlContent);
+            var doc = FetchHtmlContent(link, cookieName, cookieVal);
 
             var checks = new[]
             {
@@ -210,19 +178,51 @@ namespace DataSource
                 new { XPath = "//h2[@id='structs']", Content = "Structs" },
                 new { XPath = "//h2[@id='typeAliases']", Content = "Type Aliases" },
                 new { XPath = "//h2[@id='functions']", Content = "Functions" },
-                new { XPath = "//h2[@id='enums']", Content = "Enums" }
+                new { XPath = "//h2[@id='enums']", Content = "Enums" },
+                new { XPath = "//h2[@id='modules']", Content = "Modules" },
+                new { XPath = "//h2[@id='packages']", Content = "Packages" }
             };
 
-            foreach (var check in checks)
+            return checks.Any(check =>
             {
-                string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText;
-                if (!string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content))
-                {
-                    return true;
-                }
+                string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText?.Trim();
+                return !string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content);
+            });
+        }
+
+        static HtmlDocument FetchHtmlContent(string url, string? cookieName, string? cookieVal)
+        {
+            // If cookieName and cookieVal is "", use HtmlWeb load page.
+            if (string.IsNullOrEmpty(cookieName) && string.IsNullOrEmpty(cookieVal))
+            {
+                var web = new HtmlWeb();
+                return web.Load(url);
             }
 
-            return false;
+            // Else, use HttpClient to load page.
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = new CookieContainer()
+            };
+
+            var cookie = new System.Net.Cookie(cookieName, cookieVal)
+            {
+                Domain = "review.learn.microsoft.com",
+            };
+            handler.CookieContainer.Add(cookie);
+
+            using var httpClient = new HttpClient(handler);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+
+            var response = httpClient.GetAsync(url).Result;
+            response.EnsureSuccessStatusCode();
+
+            var htmlContent = response.Content.ReadAsStringAsync().Result;
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(htmlContent);
+
+            return doc;
         }
 
         static void ExportData(List<string> pages)
