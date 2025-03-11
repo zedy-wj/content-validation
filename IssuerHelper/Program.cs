@@ -63,6 +63,13 @@ namespace IssuerHelper
                 {
                     return string.Empty;
                 }
+
+                FileInfo fileInfo = new FileInfo(matchingFiles[0]);
+                if(fileInfo.Length < 5)
+                {
+                    return string.Empty;
+                }
+                
                 return File.ReadAllText(matchingFiles[0]);
             }
             else
