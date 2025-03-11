@@ -37,7 +37,10 @@ public class InvalidTagsValidation : IValidation
             {
                 invalidTags.Add(tagName);
             }
+        }
 
+        if(invalidTags.Count > 0)
+        {
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = invalidTags.Count;
