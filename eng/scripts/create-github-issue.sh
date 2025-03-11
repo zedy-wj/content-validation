@@ -16,9 +16,9 @@ REPO_ROOT="$PWD"
 RELATIVE_PATH="eng"
 DIFF_ISSUE_FILE="$REPO_ROOT/$RELATIVE_PATH/GitHubBodyOrCommentDiff.txt"
 TOTAL_ISSUE_FILE="$REPO_ROOT/$RELATIVE_PATH/GitHubBodyOrCommentTotal.txt"
-STATUS_REPORTS_PATH="$REPO_ROOT/Reports/IssueStatusInfo.json"
-ARTIFACT_NAME=$PACKAGE_NAME
-API_VERSION="7.1-preview.5"
+# STATUS_REPORTS_PATH="$REPO_ROOT/Reports/IssueStatusInfo.json"
+# ARTIFACT_NAME=$PACKAGE_NAME
+# API_VERSION="7.1-preview.5"
 
 # AUTH_HEADER="-u :$AZURE_DEVOPS_PAT"
 # URL="https://dev.azure.com/${ORG_NAME}/${PROJECT_NAME}/_apis/build/builds/${RUN_ID}/artifacts?artifactName=${ARTIFACT_NAME}&api-version=${API_VERSION}"
@@ -30,7 +30,7 @@ API_VERSION="7.1-preview.5"
 
 
 # Querying whether issue exist
-QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=1"
+QUERY_URL="https://api.github.com/search/issues?q=repo:$REPO_OWNER/$REPO_NAME+state:open+$ISSUE_TITLE&per_page=10"
 
 url_encode(){
   local encoded="${1// /%20}"
@@ -47,12 +47,33 @@ response=$(curl -s \
   -H "Authorization: token $GITHUB_PAT" "$QUERY_URL")
 
 # Parsing the response
-item_count=$(echo "$response" | jq -r '.total_count')
+item_count=$(echo "$response" | jq -r '.items | length')
 
 if [ -z "$item_count" ]; then
-  echo "$response"
+  echo "Failed to retrieve item count from response: $response"
   exit 1
-elif [ $item_count -eq 0 ]; then
+fi
+
+# Flag to check if issue with the same title exists
+flag=true
+
+# Check if there are any matching issues
+if [ $item_count -ne 0 ]; then
+  readarray -t titles <<< "$(echo "$response" | jq -r --arg title "$ISSUE_TITLE" '.items[] | select(.title == $title) | .title')"
+
+  if [ ${#titles[@]} -ne 0 ]; then
+    # Iterate over the titles in the array
+    for title in "${titles[@]}"; do
+      # Since we used jq to filter by title, this should always match, but just in case...
+      if [ "$(echo "$title" | xargs)" == "$(echo "$ISSUE_TITLE" | xargs)" ]; then
+        flag=false
+        break  # No need to continue the loop if a match is found
+      fi
+    done
+  fi
+fi
+
+if [ $item_count -eq 0 ] || [ $flag == true ]; then
 
   # Check whether the current pipeline have issues of this package
   if [ -f "$TOTAL_ISSUE_FILE" ]; then
@@ -83,7 +104,7 @@ else
   if [ -f "$DIFF_ISSUE_FILE" ]; then
       echo "$DIFF_ISSUE_FILE exists"
       file_content=$(cat "$DIFF_ISSUE_FILE")
-      file_content="$file_content\n\nDetails of issue download url: $download_url"
+      # file_content="$file_content\n\nDetails of issue download url: $download_url"
       echo "$file_content"
   elif [ -f "$TOTAL_ISSUE_FILE" ]; then
       echo "$DIFF_ISSUE_FILE does not exist, have not new issues. But $TOTAL_ISSUE_FILE exist."
