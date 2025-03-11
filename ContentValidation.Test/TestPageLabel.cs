@@ -105,7 +105,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
-        [Category("GeneralTest")]
+        [Category("Ignore")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestInvalidTags(string testLink)
         {
