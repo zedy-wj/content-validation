@@ -13,6 +13,11 @@
         "Rule": "UnnecessarySymbolsValidation",
         "IgnoreList": [
             {
+                "IgnoreText": "/indexes/",
+                "Usage":"prefix",
+                "Description": "Example: include /indexes/[index name]/docs for a given index name , Link: https://learn.microsoft.com/en-us/java/api//com.azure.search.documents.searchclient?view=azure-java-stable"
+            },
+            {
                 "IgnoreText": "dist",
                 "Usage":"prefix",
                 "Description": "Example: dict[str, str] , If the prefix is 'dist' / 'list' / 'optional' ..., the symbol [ is considered meaningful. , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.containerclient?view=azure-python#azure-storage-blob-aio-containerclient-from-connection-string"

@@ -86,8 +86,12 @@ public class UnnecessarySymbolsValidation : IValidation
         // Usage: Find the text that include [ , ], < , >, &, ~, and /// symbols.
         string includePattern = @"[\[\]<>&~]|/{3}";
 
-        // Usage: When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
-        string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)";
+        // Usage: 
+        // (?<=\w\s)[<>](?=\s\w): When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
+        // <\s*[a-zA-Z_][a-zA-Z0-9_]*(\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*\s*(\[\s*\])*\s*>: <String>, <Integer, Double>, <String[]>, <String, Integer[], MyClass[]>
+        // <\s*\?\s*(extends\s+[A-Za-z_][A-Za-z0-9_]*\s*,\?\s*)*\s*>: <? extends T, ? extends T, U>, <?>
+        // Example: HTMLText - A list of stemming rules in the following format: "word => stem", for example: "ran => run".
+        string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)|<\s*[a-zA-Z_][a-zA-Z0-9_]*(\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*\s*(\[\s*\])*\s*>|<\s*\?\s*(extends\s+[A-Za-z_][A-Za-z0-9_]*\s*,\?\s*)*\s*>";
 
         // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
         string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
@@ -156,6 +160,11 @@ public class UnnecessarySymbolsValidation : IValidation
     {
         if (input[index] == '[')
         {
+            if (index + 1 < input.Length && input[index + 1] == ']')
+            {
+                return true;
+            }
+
             // Extract content between "[" and "]"
             int startIndex = index + 1;
             int endIndex = input.IndexOf("]", startIndex);

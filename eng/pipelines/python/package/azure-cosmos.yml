@@ -14,7 +14,7 @@ parameters:
   default: ''
 - name: Branch
   type: string
-  default: 'main'
+  default: ''
 
 jobs:
   - template: /eng/pipelines/common/content-validation-for-python.yml
