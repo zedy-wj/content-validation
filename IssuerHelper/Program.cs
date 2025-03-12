@@ -338,7 +338,6 @@ namespace IssuerHelper
                         response.EnsureSuccessStatusCode();
 
                         string responseBody = response.Content.ReadAsStringAsync().Result;
-                        Console.WriteLine(responseBody);
                         JArray issues = JArray.Parse(responseBody);
                         allIssues.Merge(issues);
 
@@ -349,7 +348,7 @@ namespace IssuerHelper
                             var nextLink = links.FirstOrDefault(l => l.EndsWith("rel=\"next\""));
                             if (nextLink != null)
                             {
-                                apiUrl = nextLink.Split(';')[0].TrimStart('[').TrimEnd('>');
+                                apiUrl = nextLink.Split(';')[0].TrimStart('[').TrimStart(' ').TrimStart('<').TrimEnd('>');
                             }
                             else
                             {
