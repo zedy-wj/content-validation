@@ -457,7 +457,33 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   ```csharp
 
-    //Todo
+    var res = new TResult();
+    var errorList = new List<string>();
+
+    //Get all code content in the test page.
+    var codeElements = await page.Locator("code").AllAsync();
+
+    //Check if there are wrong code format.
+    foreach (var element in codeElements)
+    {
+        var codeText = await element.InnerTextAsync();
+
+        // Check for unnecessary space before import
+        var matches = Regex.Matches(codeText, @"^ import\s+[a-zA-Z_]\w*([.][a-zA-Z_]\w*)+;$", RegexOptions.Multiline);
+
+        foreach (Match match in matches)
+        {
+            errorList.Add($"Unnecessary space before import: {match.Value}");
+        }
+    }
+
+    if(errorList.Count > 0)
+    {
+        res.Result = false;
+        res.ErrorLink = testLink;
+        res.NumberOfOccurrences = errorList.Count;
+        res.ErrorInfo = "Have Incorrect Code Format: " + string.Join(",", errorList);
+    }
 
   ```
 
