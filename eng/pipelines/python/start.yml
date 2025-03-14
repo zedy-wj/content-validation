@@ -14,7 +14,7 @@ parameters:
   type: string
   default: ''
 
-# stages:
+stages:
 # - stage: ContentValidationTesting
 #   jobs:
 #   - ${{ each packageName in split(parameters.packages, ',') }}:
