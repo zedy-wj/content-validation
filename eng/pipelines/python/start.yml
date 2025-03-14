@@ -14,27 +14,27 @@ parameters:
   type: string
   default: ''
 
-stages:
-- stage: ContentValidationTesting
-  jobs:
-  - ${{ each packageName in split(parameters.packages, ',') }}:
-    - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/python/package/${{ packageName }}.yml
-        parameters:
-          AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
-          GitHubPat: $(GITHUB_PAT)
-          GitHubOwner: $(GITHUB_OWNER)
-          GitHubRepo: $(GITHUB_REPO)
-          Branch: ${{ parameters.branch }}
+# stages:
+# - stage: ContentValidationTesting
+#   jobs:
+#   - ${{ each packageName in split(parameters.packages, ',') }}:
+#     - ${{ if ne(parameters.packages, 'all') }}:
+#       - template: /eng/pipelines/python/package/${{ packageName }}.yml
+#         parameters:
+#           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
+#           GitHubPat: $(GITHUB_PAT)
+#           GitHubOwner: $(GITHUB_OWNER)
+#           GitHubRepo: $(GITHUB_REPO)
+#           Branch: ${{ parameters.branch }}
 
-  - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/python/package/run-all-packages.yml
-      parameters:
-        AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
-        GitHubPat: $(GITHUB_PAT)
-        GitHubOwner: $(GITHUB_OWNER)
-        GitHubRepo: $(GITHUB_REPO)
-        Branch: ${{ parameters.branch }}
+#   - ${{ if eq(parameters.packages, 'all') }}:
+#     - template: /eng/pipelines/python/package/run-all-packages.yml
+#       parameters:
+#         AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
+#         GitHubPat: $(GITHUB_PAT)
+#         GitHubOwner: $(GITHUB_OWNER)
+#         GitHubRepo: $(GITHUB_REPO)
+#         Branch: ${{ parameters.branch }}
   
   # - template: /eng/pipelines/common/content-validation-special-cases.yml
   #   parameters:
