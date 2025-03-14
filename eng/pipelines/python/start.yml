@@ -12,7 +12,7 @@ parameters:
   displayName: |
       You can choose the review version of the page for testing, and you need to select the corresponding branch. Example: 'nickwalk/yaml-changes'
   type: string
-  default: 'main'
+  default: ''
 
 stages:
 - stage: ContentValidationTesting
