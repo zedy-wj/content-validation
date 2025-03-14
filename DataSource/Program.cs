@@ -39,7 +39,7 @@ namespace DataSource
         static string GetLanguagePageOverview(string? language, string branch = "")
         {
             language = language?.ToLower();
-            if (branch != "")
+            if (branch != "main")
             {
                 return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/";
 
