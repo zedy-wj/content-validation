@@ -1,4 +1,10 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |
-| 1 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/319 | 02/25/2025 08:15:03 | 03/14/2025 05:42:25 | 3/14/2025 5:46:53 AM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=14 |
+| 1 | azure-ai-formrecognizer | Test fail | https://github.com/zedy-wj/content-validation/issues/316 | 02/25/2025 07:29:20 | 03/16/2025 11:30:05 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 2 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/319 | 02/25/2025 08:15:03 | 03/14/2025 05:42:25 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 3 | azure-identity | Test fail | https://github.com/zedy-wj/content-validation/issues/381 | 03/11/2025 17:38:04 | 03/16/2025 12:03:25 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 4 | azure-keyvault-administration | Test fail | https://github.com/zedy-wj/content-validation/issues/357 | 02/25/2025 13:46:38 | 03/16/2025 11:40:04 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 5 | azure-keyvault-keys | Test fail | https://github.com/zedy-wj/content-validation/issues/359 | 02/25/2025 13:58:47 | 03/16/2025 12:22:57 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 6 | azure-keyvault-secrets | Test fail | https://github.com/zedy-wj/content-validation/issues/360 | 02/25/2025 14:16:29 | 03/16/2025 12:11:25 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
+| 7 | azure-storage-blob | Test fail | https://github.com/zedy-wj/content-validation/issues/382 | 03/11/2025 20:30:14 | 03/16/2025 12:40:09 | 3/16/2025 12:43:08 PM | https://dev.azure.com/test-organi/content-validation-automation/_build/results?buildId=15 |
