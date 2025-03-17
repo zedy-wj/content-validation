@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-mixedreality-authentication'
       ReadmeName: 'mixedreality-authentication-readme'
       jobDisplayName: 'AZURE_MIXEDREALITY_REMOTERENDERING'

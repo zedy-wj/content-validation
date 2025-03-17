@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-identity'
       ReadmeName: 'identity-readme'
       jobDisplayName: 'AZURE_IOT_DEVICEUPDATE'

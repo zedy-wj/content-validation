@@ -84,6 +84,7 @@ jobs:
       env:
         ReadmeName: ${{ parameters.ReadmeName }}
         Language: "Java"
+        Branch: ${{ parameters.Branch }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'

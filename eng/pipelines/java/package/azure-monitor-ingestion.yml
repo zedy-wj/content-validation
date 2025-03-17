@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-monitor-ingestion'
       ReadmeName: 'monitor-ingestion-readme'
       jobDisplayName: 'AZURE_MONITOR_QUERY'

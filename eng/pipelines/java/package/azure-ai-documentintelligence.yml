@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-ai-documentintelligence'
       ReadmeName: 'ai-documentintelligence-readme'
       jobDisplayName: 'AZURE_AI_DOCUMENTINTELLIGENCE'
