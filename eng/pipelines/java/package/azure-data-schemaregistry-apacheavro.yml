@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-data-schemaregistry-apacheavro'
       ReadmeName: 'data-schemaregistry-apacheavro-readme'
       jobDisplayName: 'AZURE_DATA_SCHEMAREGISTRY_APACHEAVRO'

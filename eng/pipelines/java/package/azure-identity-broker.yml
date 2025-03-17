@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-identity-broker'
       ReadmeName: 'identity-broker-readme'
       jobDisplayName: 'AZURE_IDENTITY'

@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-ai-vision-imageanalysis'
       ReadmeName: 'ai-vision-imageanalysis-readme'
       jobDisplayName: 'AZURE_AI_VISION_IMAGEANALYSIS'

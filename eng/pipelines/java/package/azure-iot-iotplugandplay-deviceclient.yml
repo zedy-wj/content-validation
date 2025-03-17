@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-iot-iotplugandplay-deviceclient'
       ReadmeName: 'iot/iotplugandplay-deviceclient'
       jobDisplayName: 'AZURE_IOT_IOTPLUGANDPLAY_DEVICECLIENT'

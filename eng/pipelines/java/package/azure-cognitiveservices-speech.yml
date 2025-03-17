@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-cognitiveservices-speech'
       ReadmeName: 'cognitiveservices/speech'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_SPEECH'

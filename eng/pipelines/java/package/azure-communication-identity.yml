@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-communication-identity'
       ReadmeName: 'communication-identity-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_IDENTITY'

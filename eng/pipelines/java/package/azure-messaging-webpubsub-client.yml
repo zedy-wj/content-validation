@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-messaging-webpubsub-client'
       ReadmeName: 'messaging-webpubsub-client-readme'
       jobDisplayName: 'AZURE_MESSAGING_WEBPUBSUB_CLIENT'
