@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-messaging-webpubsub'
       ReadmeName: 'messaging-webpubsub-readme'
       jobDisplayName: 'AZURE_MIXEDREALITY_AUTHENTICATION'

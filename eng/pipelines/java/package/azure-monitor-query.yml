@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-monitor-query'
       ReadmeName: 'monitor-query-readme'
       jobDisplayName: 'AZURE_RUN_ALL_PACKAGES'

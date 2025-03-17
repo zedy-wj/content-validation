@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-search-documents'
       ReadmeName: 'search-documents-readme'
       jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'

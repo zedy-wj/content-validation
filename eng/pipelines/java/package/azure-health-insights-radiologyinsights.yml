@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-health-insights-radiologyinsights'
       ReadmeName: 'health-insights-radiologyinsights-readme'
       jobDisplayName: 'AZURE_IDENTITY_BROKER'

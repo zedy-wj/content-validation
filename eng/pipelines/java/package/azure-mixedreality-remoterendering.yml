@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-mixedreality-remoterendering'
       ReadmeName: 'mixedreality-remoterendering-readme'
       jobDisplayName: 'AZURE_MONITOR_INGESTION'
