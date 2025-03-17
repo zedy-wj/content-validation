@@ -321,7 +321,7 @@ namespace IssuerHelper
         {
             string owner = "zedy-wj";
             string repo = "content-validation";
-            string issueTitle = $"{package} content validation issue for learn microsoft website in ${language}.";
+            string issueTitle = $"{package} content validation issue for learn microsoft website in {language}.";
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
             JArray allIssues = new JArray();
 
