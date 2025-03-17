@@ -29,6 +29,9 @@ parameters:
 - name: Branch
   type: string
   default: ''
+- name: Language
+  type: string
+  default: 'Java'
 
 jobs:
   - job: ${{ parameters.jobDisplayName }}
@@ -178,3 +181,4 @@ jobs:
           ${{ parameters.OrganizationName }}
           ${{ parameters.ProjectName }}
           $(Build.BuildId)
+          ${{ parameters.Language }}

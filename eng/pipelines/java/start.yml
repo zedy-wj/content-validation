@@ -8,6 +8,24 @@ parameters:
   type: string
   default: 'all'
 
+- name: branch
+  displayName: |
+      You can choose the review version of the page for testing, and you need to select the corresponding branch. Example: 'nickwalk/yaml-changes'
+  type: string
+  default: 'main'
+
+- name: language
+  displayName: |
+      You can choose the language for testing, only Python, Java supported now. We plan extent to JavaScript, .NET and Go in future. Example: Python
+  type: string
+  default: 'Java'
+  values:
+  - Python
+  - Java
+  - JavaScript
+  - DotNet
+  - Go
+
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -19,6 +37,7 @@ stages:
           GitHubPat: $(GITHUB_PAT)
           GitHubOwner: $(GITHUB_OWNER)
           GitHubRepo: $(GITHUB_REPO)
+          Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/java/package/run-all-packages.yml
@@ -27,6 +46,7 @@ stages:
         GitHubPat: $(GITHUB_PAT)
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
+        Branch: ${{ parameters.branch }}
 
 
 - stage: TotalIssuesSummary
@@ -63,10 +83,23 @@ stages:
         command: 'build'
         projects: 'IssuerHelper/IssuerHelper.csproj'
 
+    - script: |
+        organization=$(System.CollectionUri)
+        project=$(System.TeamProject)
+        buildId=$(Build.BuildId)
+  
+        pipelineUrl="${organization}${project}/_build/results?buildId=${buildId}"
+  
+        echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
+      displayName: Get the current pipeline url
+
     - task: DotNetCoreCLI@2
       displayName: Summary Total Issues of all packages
       env:
         PackageName: ${{ parameters.packages }}
+        PipelineRunLink: $(pipelineUrl)
+        GitHubPat: $(GITHUB_PAT)
+        Language: ${{ parameters.language }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
@@ -96,3 +129,4 @@ stages:
           $(GITHUB_REPO)
           $(GIT_USER_NAME)
           $(GIT_USER_EMAIL)
+          ${{ parameters.language }}
