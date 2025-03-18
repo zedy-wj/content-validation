@@ -55,7 +55,8 @@ namespace ContentValidation.Test
 
 
         [Test]
-        [Category("GeneralTest")]
+        [Category("PythonTest")]
+        [Category("JavaTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestTableMissingContent(string testLink)
         {
@@ -85,7 +86,8 @@ namespace ContentValidation.Test
         }
 
         [Test]
-        [Category("GeneralTest")]
+        [Category("PythonTest")]
+        [Category("JavaTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestGarbledText(string testLink)
         {
@@ -115,7 +117,7 @@ namespace ContentValidation.Test
 
 
         [Test]
-        [Category("GeneralTest")]
+        [Category("JavaTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestInconsistentTextFormat(string testLink)
         {

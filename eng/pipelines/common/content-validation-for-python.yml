@@ -106,7 +106,7 @@ jobs:
       inputs:
         command: 'test'
         projects: 'ContentValidation.Test/ContentValidation.Test.csproj'
-        arguments: '-e BROWSER=chromium --filter Category=GeneralTest'
+        arguments: '-e BROWSER=chromium --filter Category=PythonTest'
         testRunTitle: 'Content Validation Testing Start'
       continueOnError: true
 
