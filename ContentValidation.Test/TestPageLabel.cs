@@ -143,7 +143,6 @@ namespace ContentValidation.Test
         }
         
         [Test]
-        [Category("PythonTest")]
         [Category("JavaTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestCodeFormat(string testLink)
