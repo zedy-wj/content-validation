@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-monitor-ingestion'
       ReadmeName: 'monitor-ingestion-readme'
-      jobDisplayName: 'AZURE_MONITOR_QUERY'
+      jobDisplayName: 'AZURE_MONITOR_INGESTION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

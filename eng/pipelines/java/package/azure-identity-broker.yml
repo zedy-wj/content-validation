@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-identity-broker'
       ReadmeName: 'identity-broker-readme'
-      jobDisplayName: 'AZURE_IDENTITY'
+      jobDisplayName: 'AZURE_IDENTITY_BROKER'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

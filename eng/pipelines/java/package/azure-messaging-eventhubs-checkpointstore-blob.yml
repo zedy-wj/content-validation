@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-messaging-eventhubs-checkpointstore-blob'
       ReadmeName: 'messaging-eventhubs-checkpointstore-blob-readme'
-      jobDisplayName: 'AZURE_MESSAGING_EVENTHUBS'
+      jobDisplayName: 'AZURE_MESSAGING_EVENTHUBS_CHECKPOINTSTORE_BLOB'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-messaging-servicebus'
       ReadmeName: 'messaging-servicebus-readme'
-      jobDisplayName: 'AZURE_MESSAGING_WEBPUBSUB'
+      jobDisplayName: 'AZURE_MESSAGING_SERVICEBUS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
