@@ -20,6 +20,8 @@ namespace IssuerHelper
             string pipelineRunLink = config["PipelineRunLink"] ?? "";
             string githubToken = config["GitHubPat"] ?? "";
             string language = config["Language"] ?? "Python";
+            string owner = config["GitHubOwner"] ?? "";
+            string repo = config["GitHubRepo"] ?? "";
 
             Console.WriteLine("Running packages: " + packages);
 
@@ -50,7 +52,7 @@ namespace IssuerHelper
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
             GenerateAllPackageExcelFile(updatedDiffJsonPath);
             
-            GenerateMarkDownFile(allPackages, pipelineRunLink, githubToken, language);
+            GenerateMarkDownFile(allPackages, pipelineRunLink, githubToken, language, owner, repo);
 
         }
 
@@ -264,7 +266,7 @@ namespace IssuerHelper
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
         }
 
-        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink, string githubToken, string language)
+        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink, string githubToken, string language, string owner, string repo)
         {
             string markdownTable = $@"
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
@@ -277,7 +279,7 @@ namespace IssuerHelper
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
-                var issueObject = GetIssueInfo(package, githubToken, language);
+                var issueObject = GetIssueInfo(package, githubToken, language, owner, repo);
 
                 if (packageIssueInfo.Equals("Failed"))
                 {
@@ -317,10 +319,8 @@ namespace IssuerHelper
             }
         }
 
-        static JToken? GetIssueInfo(string package, string githubToken, string language)
+        static JToken? GetIssueInfo(string package, string githubToken, string language, string owner, string repo)
         {
-            string owner = "zedy-wj";
-            string repo = "content-validation";
             string issueTitle = $"{package} content validation issue for learn microsoft website in {language}.";
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
             JArray allIssues = new JArray();

@@ -103,6 +103,8 @@ stages:
         PipelineRunLink: $(pipelineUrl)
         GitHubPat: $(GITHUB_PAT)
         Language: ${{ parameters.language }}
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
