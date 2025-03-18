@@ -490,7 +490,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 ### 8. InvalidTagsValidation
 
 - **Goal:**
-  Check if the code format is right.
+  Check for the presence of invalid html tags in web pages.
 
 - **Example:**
 

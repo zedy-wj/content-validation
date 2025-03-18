@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-mixedreality-remoterendering'
       ReadmeName: 'mixedreality-remoterendering-readme'
-      jobDisplayName: 'AZURE_MONITOR_INGESTION'
+      jobDisplayName: 'AZURE_MIXEDREALITY_REMOTERENDERING'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

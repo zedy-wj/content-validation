@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-messaging-eventhubs'
       ReadmeName: 'messaging-eventhubs-readme'
-      jobDisplayName: 'AZURE_MESSAGING_SERVICEBUS'
+      jobDisplayName: 'AZURE_MESSAGING_EVENTHUBS'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

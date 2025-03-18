@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-iot-deviceupdate'
       ReadmeName: 'iot-deviceupdate-readme'
-      jobDisplayName: 'AZURE_MESSAGING_EVENTGRID_NAMESPACES'
+      jobDisplayName: 'AZURE_IOT_DEVICEUPDATE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

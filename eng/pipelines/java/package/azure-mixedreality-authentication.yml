@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-mixedreality-authentication'
       ReadmeName: 'mixedreality-authentication-readme'
-      jobDisplayName: 'AZURE_MIXEDREALITY_REMOTERENDERING'
+      jobDisplayName: 'AZURE_MIXEDREALITY_AUTHENTICATION'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

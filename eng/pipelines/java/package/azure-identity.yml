@@ -22,7 +22,7 @@ jobs:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-identity'
       ReadmeName: 'identity-readme'
-      jobDisplayName: 'AZURE_IOT_DEVICEUPDATE'
+      jobDisplayName: 'AZURE_IDENTITY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}
