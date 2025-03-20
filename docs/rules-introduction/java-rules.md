@@ -322,11 +322,17 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
 - **Garbled Text:**
 
+  - `:xxxx:`
+  - `:xxxx xxxx:`
+  - `:xxxx xxxx xxxx:`
   - `<components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
-  - `<components�ikn5y4·schemas�dppworkerrequest�properties�headers�additionalproperties>`
+  - `<components ikn5y4·schemas dppworkerrequest properties headers additionalproperties>`
 
 - **Example:**
 
+  - Garbled Text: `<components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
+  - Text Content:
+    `Dictionary of <components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.resourcemanager.dataprotection.models.dppworkerrequest?view=azure-java-stable#method-summary
   - Image:
