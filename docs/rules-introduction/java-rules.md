@@ -97,7 +97,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">  
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
 
-- **Example2(TODO):**
+- **Example2:**
 
   - Unnecessary Symbols: `/**` , `-`
 
