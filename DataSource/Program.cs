@@ -83,10 +83,20 @@ namespace DataSource
                     break;
                 }
 
-                await page.GotoAsync(pagelink, new PageGotoOptions
+                try
                 {
-                    WaitUntil = WaitUntilState.NetworkIdle
-                });
+                    await page.GotoAsync(pagelink, new PageGotoOptions
+                    {
+                        WaitUntil = WaitUntilState.NetworkIdle,
+                        Timeout = 60000 // 超时时间设置为 60 秒
+                    });
+                    Console.WriteLine("Page loaded successfully");
+                }
+                catch (TimeoutException)
+                {
+                    Console.WriteLine("Page load timeout");
+                }
+
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
 
@@ -186,7 +196,20 @@ namespace DataSource
             return checks.Any(check =>
             {
                 string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText?.Trim();
-                return !string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content);
+                if (!string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content))
+                {
+                    // Check for the presence of <table> tags
+                    var tableNode = doc.DocumentNode.SelectSingleNode("//table");
+                    if (tableNode != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
             });
         }
 

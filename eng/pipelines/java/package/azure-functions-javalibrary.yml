@@ -21,7 +21,7 @@ jobs:
     parameters:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-functions-javalibrary'
-      ReadmeName: 'functions-javalibrary-readme'
+      ReadmeName: 'functions/functions-javalibrary'
       jobDisplayName: 'AZURE_FUNCTIONS_JAVALIBRARY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
