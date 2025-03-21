@@ -21,7 +21,7 @@ jobs:
     parameters:
       Branch: ${{ parameters.Branch }}
       PackageName: 'azure-durablefunctions-javalibrary'
-      ReadmeName: 'functions/functions-javalibrary'
+      ReadmeName: 'functions/durablefunctions-javalibrary'
       jobDisplayName: 'AZURE_DURABLEFUNCTIONS_JAVALIBRARY'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
