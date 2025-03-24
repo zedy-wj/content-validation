@@ -30,13 +30,25 @@ public class CodeFormatValidation : IValidation
         {
             var codeText = await element.InnerTextAsync();
 
-            // Check for unnecessary space before import
-            var matches = Regex.Matches(codeText, @"^ import\s+[a-zA-Z_]\w*([.][a-zA-Z_]\w*)+;$", RegexOptions.Multiline);
-
-            foreach (Match match in matches)
+            // Check the number of spaces at the beginning of the code line by line, and add errorList if it is an odd number. 
+            // This method is not the best solution. Currently, there is no library in C# that can check the format of Java code. 
+            // We can consider adding optimization in the future.
+            string[] lines = codeText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                errorList.Add($"Unnecessary space before import: {match.Value}");
+                var match = Regex.Match(line, @"^(\s*)");
+                if (match.Success)
+                {
+                    int spaceCount = match.Groups[1].Value.Length;
+    
+                    if (spaceCount % 2 != 0)
+                    {
+                        errorList.Add($"There is an error in the space format, please check:\n {codeText}");
+                        break;
+                    }
+                }
             }
+
         }
 
         if(errorList.Count > 0)
