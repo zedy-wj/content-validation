@@ -46,7 +46,6 @@
             "azure-messaging-eventgrid",
             "azure-messaging-eventhubs-checkpointstore-blob",
             "azure-messaging-eventhubs",
-            "azure-messaging-servicebus",
             "azure-messaging-webpubsub-client",
             "azure-messaging-webpubsub",
             "azure-mixedreality-authentication",
