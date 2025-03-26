@@ -158,7 +158,7 @@ jobs:
     - task: PublishPipelineArtifact@1
       displayName: "Upload pipeline test data"
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/Reports
+        targetPath: $(System.DefaultWorkingDirectory)/eng
         artifactName: ${{ parameters.PackageName }}
         publishLocation: "pipeline"
 
