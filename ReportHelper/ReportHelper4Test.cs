@@ -345,7 +345,8 @@ public class GithubHelper
             result += $"\n";
         }
 
-        result = result.Replace("\n", "\\n");
+        result = result.Replace("\\", "\\\\");
+        // result = result.Replace("\n", "\\n");
         result = result.Replace("\"", "\\\"");
         return result;
     }
