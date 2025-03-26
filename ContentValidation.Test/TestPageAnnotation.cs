@@ -33,7 +33,7 @@ namespace ContentValidation.Test
         }
 
         [Test]
-        [Category("GeneralTest")]
+        [Category("PythonTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestMissingTypeAnnotation(string testLink)
         {

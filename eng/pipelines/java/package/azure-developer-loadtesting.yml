@@ -19,9 +19,10 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-developer-loadtesting'
       ReadmeName: 'developer-loadtesting-readme'
-      jobDisplayName: 'AZURE_DIGITALTWINS_CORE'
+      jobDisplayName: 'AZURE_DEVELOPER_LOADTESTING'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

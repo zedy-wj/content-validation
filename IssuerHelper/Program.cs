@@ -19,11 +19,14 @@ namespace IssuerHelper
             string packages = config["PackageName"] ?? "all";
             string pipelineRunLink = config["PipelineRunLink"] ?? "";
             string githubToken = config["GitHubPat"] ?? "";
+            string language = config["Language"] ?? "Python";
+            string owner = config["GitHubOwner"] ?? "";
+            string repo = config["GitHubRepo"] ?? "";
 
             Console.WriteLine("Running packages: " + packages);
 
             // Parse all packages in this pipeline run
-            string[] allPackages = ParseInputPackages(packages);
+            string[] allPackages = ParseInputPackages(packages, language);
 
             // Create the upload folder
             string reportPath = "../Reports";
@@ -49,7 +52,7 @@ namespace IssuerHelper
             UploadCurrentPipelineDiffIssuesArtifact(allPackages, packageADiffSearchPattern, updatedDiffJsonPath);
             GenerateAllPackageExcelFile(updatedDiffJsonPath);
             
-            GenerateMarkDownFile(allPackages, pipelineRunLink, githubToken);
+            GenerateMarkDownFile(allPackages, pipelineRunLink, githubToken, language, owner, repo);
 
         }
 
@@ -78,11 +81,11 @@ namespace IssuerHelper
             }
         }
 
-        static string[] ParseInputPackages(string packages)
+        static string[] ParseInputPackages(string packages, string language)
         {
             if (packages.Equals("all"))
             {
-                string packagesFilePath = "ConfigureAllPackages.json";
+                string packagesFilePath = $"ConfigureAllPackagesFor{language}.json";
                 string content = File.ReadAllText(packagesFilePath);
                 JArray jsonArray = JArray.Parse(content);
                 JObject jsonObject = (JObject)jsonArray[0];
@@ -263,7 +266,7 @@ namespace IssuerHelper
             File.WriteAllText(updatedDiffJsonPath, diffJsonContent);
         }
 
-        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink, string githubToken)
+        static void GenerateMarkDownFile(string[] packages, string pipelineRunLink, string githubToken, string language, string owner, string repo)
         {
             string markdownTable = $@"
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
@@ -276,7 +279,7 @@ namespace IssuerHelper
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
-                var issueObject = GetIssueInfo(package, githubToken);
+                var issueObject = GetIssueInfo(package, githubToken, language, owner, repo);
 
                 if (packageIssueInfo.Equals("Failed"))
                 {
@@ -304,7 +307,7 @@ namespace IssuerHelper
                 index++;
             }
 
-            string filePath = $"../latest-pipeline-result.md";
+            string filePath = $"../latest-pipeline-result-for-{language.ToLower()}.md";
 
             try
             {
@@ -316,11 +319,9 @@ namespace IssuerHelper
             }
         }
 
-        static JToken? GetIssueInfo(string package, string githubToken)
+        static JToken? GetIssueInfo(string package, string githubToken, string language, string owner, string repo)
         {
-            string owner = "zedy-wj";
-            string repo = "content-validation";
-            string issueTitle = $"{package} content validation issue for learn microsoft website.";
+            string issueTitle = $"{package} content validation issue for learn microsoft website in {language}.";
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
             JArray allIssues = new JArray();
 

@@ -19,9 +19,10 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-digitaltwins-core'
       ReadmeName: 'digitaltwins-core-readme'
-      jobDisplayName: 'AZURE_FUNCTIONS_JAVALIBRARY'
+      jobDisplayName: 'AZURE_DIGITALTWINS_CORE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
       GitHubOwner: ${{ parameters.GitHubOwner }}

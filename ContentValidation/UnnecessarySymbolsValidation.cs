@@ -108,6 +108,11 @@ public class UnnecessarySymbolsValidation : IValidation
             {
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
+                    // This case is not an issue in java doc, we will move it in ignore pattern.
+                    if (line.Contains("java.util.Map<java.lang.String,java.lang.String>"))
+                    {
+                        continue;
+                    }
                     if (Regex.IsMatch(line, excludePattern1))
                     {
                         continue;

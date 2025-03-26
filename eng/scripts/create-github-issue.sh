@@ -9,9 +9,10 @@ REPO_NAME=$4
 ORG_NAME=$5
 PROJECT_NAME=$6
 RUN_ID=$7
-# AZURE_DEVOPS_PAT=$8
+LANGUAGE=$8
+# AZURE_DEVOPS_PAT=$9
 
-ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website."
+ISSUE_TITLE="$PACKAGE_NAME content validation issue for learn microsoft website in $LANGUAGE."
 REPO_ROOT="$PWD"
 RELATIVE_PATH="eng"
 DIFF_ISSUE_FILE="$REPO_ROOT/$RELATIVE_PATH/GitHubBodyOrCommentDiff.txt"

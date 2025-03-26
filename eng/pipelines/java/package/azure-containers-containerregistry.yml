@@ -19,6 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-java.yml
     parameters:
+      Branch: ${{ parameters.Branch }}
       PackageName: 'azure-containers-containerregistry'
       ReadmeName: 'containers-containerregistry-readme'
       jobDisplayName: 'AZURE_CONTAINERS_CONTAINERREGISTRY'

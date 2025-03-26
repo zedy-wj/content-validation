@@ -97,7 +97,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation001.png" alt="UnnecessarySymbolsValidation001" style="width:700px;">  
     &nbsp;<img src="./image/java-sdk/image-UnnecessarySymbolsValidation002.png" alt="UnnecessarySymbolsValidation002" style="width:700px;">
 
-- **Example2(TODO):**
+- **Example2:**
 
   - Unnecessary Symbols: `/**` , `-`
 
@@ -322,11 +322,17 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
 - **Garbled Text:**
 
+  - `:xxxx:`
+  - `:xxxx xxxx:`
+  - `:xxxx xxxx xxxx:`
   - `<components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
-  - `<components�ikn5y4·schemas�dppworkerrequest�properties�headers�additionalproperties>`
+  - `<components ikn5y4·schemas dppworkerrequest properties headers additionalproperties>`
 
 - **Example:**
 
+  - Garbled Text: `<components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
+  - Text Content:
+    `Dictionary of <components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>`
   - Link:
     https://learn.microsoft.com/en-us/java/api/com.azure.resourcemanager.dataprotection.models.dppworkerrequest?view=azure-java-stable#method-summary
   - Image:
@@ -490,7 +496,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 ### 8. InvalidTagsValidation
 
 - **Goal:**
-  Check if the code format is right.
+  Check for the presence of invalid html tags in web pages.
 
 - **Example:**
 

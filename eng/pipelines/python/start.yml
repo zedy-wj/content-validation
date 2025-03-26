@@ -14,6 +14,18 @@ parameters:
   type: string
   default: 'main'
 
+- name: language
+  displayName: |
+      You can choose the language for testing, only Python, Java supported now. We plan extent to JavaScript, .NET and Go in future. Example: Python
+  type: string
+  default: 'Python'
+  values:
+  - Python
+  - Java
+  - JavaScript
+  - DotNet
+  - Go
+
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -90,6 +102,9 @@ stages:
         PackageName: ${{ parameters.packages }}
         PipelineRunLink: $(pipelineUrl)
         GitHubPat: $(GITHUB_PAT)
+        Language: ${{ parameters.language }}
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
@@ -119,3 +134,4 @@ stages:
           $(GITHUB_REPO)
           $(GIT_USER_NAME)
           $(GIT_USER_EMAIL)
+          ${{ parameters.language }}

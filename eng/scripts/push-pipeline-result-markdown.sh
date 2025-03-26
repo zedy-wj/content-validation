@@ -7,11 +7,19 @@ REPO_OWNER=$2
 REPO_NAME=$3
 GIT_USER_NAME=$4
 GIT_USER_EMAIL=$5
+LANGUAGE=$6
+
+to_lowercase() {
+    local input="$1"
+    echo "$input" | tr '[:upper:]' '[:lower:]'
+}
+
+language=$(to_lowercase "$LANGUAGE")
 
 REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
 CLONE_DIR="./repo-clone"
 BRANCH="latest-pipeline-result"
-FILE_NAME="latest-pipeline-result.md"
+FILE_NAME="latest-pipeline-result-for-${language}.md"
 
 git clone "https://${GITHUB_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git" $CLONE_DIR
 cd $CLONE_DIR
