@@ -88,13 +88,16 @@ if [ $item_count -eq 0 ] || [ $flag == true ]; then
 
   # Opening new issue
   create_new_issue="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/issues"
-  json="{
-    \"title\": \"$ISSUE_TITLE\",
-    \"body\": \"$file_content\",
-    \"labels\": [\"bug\"]
-  }"
 
-  response=$(curl -s -X POST -H "Authorization: token $GITHUB_PAT" -H "Content-Type: application/json" -d "$json" "$create_new_issue")
+  cat <<EOF > data.json
+  {
+    "title": "$ISSUE_TITLE",
+    "body": "$file_content",
+    "labels": ["bug"]
+  }
+EOF
+
+  response=$(curl -s -X POST -H "Authorization: token $GITHUB_PAT" -H "Content-Type: application/json" -d @data.json "$create_new_issue")
 
   echo "Response from GitHub API:"
   echo "$response"
