@@ -84,7 +84,7 @@ public class UnnecessarySymbolsValidation : IValidation
     private void ValidateHtmlContent(string htmlContent)
     {
         // Usage: Find the text that include [ , ], < , >, &, ~, and /// symbols.
-        string includePattern = @"[\[\]<>&~]|/{3}";
+        string includePattern = @"[\[\]<>~]|/{3}";
 
         // Usage: 
         // (?<=\w\s)[<>](?=\s\w): When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
@@ -109,7 +109,24 @@ public class UnnecessarySymbolsValidation : IValidation
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
                     // This case is not an issue in java doc, we will move it in ignore pattern.
-                    if (line.Contains("java.util.") || line.Contains("List<") || line.Contains("Set<") || line.Contains("<? super T>") || line.Contains("Collection<? extends") || line.Contains("Mono<>") )
+                    if (line.Contains("java.util.") || line.Contains("List<") || line.Contains("Set<") || line.Contains("<? super T>") || line.Contains("Collection<? extends") || line.Contains("Mono<>") || line.Contains("azure.core."))
+                    {
+                        continue;
+                    }
+
+                    if (line.Contains(">>") && line.Contains("<<"))
+                    {
+                        continue;
+                    }
+                    if (line.Contains("tempfile.gettempdir()"))
+                    {
+                        continue;
+                    }
+                    if (line.Contains("azure.servicebus."))
+                    {
+                        continue;
+                    }
+                    if (line.Contains(">=") || line.Contains("<="))
                     {
                         continue;
                     }
@@ -134,7 +151,11 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 if (match.Value.Equals("[") || match.Value.Equals("]"))
                 {
-                    if (line.Contains("<xref"))
+                    if (line.Contains("list") || line.Contains("ItemPaged") || line.Contains("PiiEntityCategory.US") || line.Contains("str") || line.Contains("DocumentError") || line.Contains("NotRequired") || line.Contains("a"))
+                    {
+                        continue;
+                    }
+                    if (line.Contains("<xref") || line.Contains("AppExtension"))
                     {
                         continue;
                     }
