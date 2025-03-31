@@ -94,7 +94,7 @@ public class UnnecessarySymbolsValidation : IValidation
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)|<\s*[a-zA-Z_][a-zA-Z0-9_]*(\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*\s*(\[\s*\])*\s*>|<\s*\?\s*(extends\s+[A-Za-z_][A-Za-z0-9_]*\s*,\?\s*)*\s*>";
 
         // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
-        string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
+        string newPatternForJava = @"\s\""[a-zA-Z]+\.(?![a-zA-Z])|^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
