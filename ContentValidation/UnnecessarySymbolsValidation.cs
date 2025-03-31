@@ -19,6 +19,12 @@ public class UnnecessarySymbolsValidation : IValidation
     // Content list for checking if the content between "[ ]" is in the list.
     public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
+    // Prefix list for checking if the content before the "[" is in the list.
+    public List<IgnoreItem> containList01 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "<contain>");
+
+    // Content list for checking if the content between "[ ]" is in the list.
+    public List<IgnoreItem> containList02 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "[contain]");
+
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
@@ -109,7 +115,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
                     // This case is not an issue in java doc, we will move it in ignore pattern.
-                    if (line.Contains("java.util.") || line.Contains("List<") || line.Contains("Set<") || line.Contains("<? super T>") || line.Contains("Collection<? extends") || line.Contains("Mono<>") || line.Contains("azure.core."))
+                    if (containList01.Any(item => line.Contains(item.IgnoreText)))
                     {
                         continue;
                     }
@@ -118,24 +124,7 @@ public class UnnecessarySymbolsValidation : IValidation
                     {
                         continue;
                     }
-                    if (line.Contains("tempfile.gettempdir()"))
-                    {
-                        continue;
-                    }
-                    if (line.Contains("azure.servicebus."))
-                    {
-                        continue;
-                    }
-                    if (line.Contains(">=") || line.Contains("<="))
-                    {
-                        continue;
-                    }
                     if (Regex.IsMatch(line, excludePattern1))
-                    {
-                        continue;
-                    }
-                    // Usage: When the text contains <xref, this case will be categorized as an error of ExtraLabelValidation.
-                    if (line.Contains("<xref"))
                     {
                         continue;
                     }
@@ -151,11 +140,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 if (match.Value.Equals("[") || match.Value.Equals("]"))
                 {
-                    if (line.Contains("list") || line.Contains("ItemPaged") || line.Contains("PiiEntityCategory.US") || line.Contains("str") || line.Contains("DocumentError") || line.Contains("NotRequired") || line.Contains("a"))
-                    {
-                        continue;
-                    }
-                    if (line.Contains("<xref") || line.Contains("AppExtension"))
+                    if (containList02.Any(item => line.Contains(item.IgnoreText)))
                     {
                         continue;
                     }
