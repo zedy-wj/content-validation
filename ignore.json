@@ -138,62 +138,62 @@
             {
                 "IgnoreText": "java.util.",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": ""
             },
             {
                 "IgnoreText": "List<",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "Set<",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "<? super T>",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "Collection<? extends",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "Mono<>",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "azure.core.",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: <class 'azure.core.pipeline.policies._universal._Unset'> , Link: https://learn.microsoft.com/en-us/python/api/azure-core//azure.core.pipeline.policies.requestidpolicy?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "tempfile.gettempdir()",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: Defaults to <tempfile.gettempdir()> , Link: https://learn.microsoft.com/en-us/python/api/azure-monitor-opentelemetry/azure.monitor.opentelemetry?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "azure.servicebus.",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: Default value: <azure.servicebus.management._models.TrueRuleFilter object at 0x000002262FB86210> , Link: https://learn.microsoft.com/en-us/python/api/azure-servicebus//azure.servicebus.management.servicebusadministrationclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": ">=",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: starting_position is inclusive(>=) or not (>) , Link: https://learn.microsoft.com/en-us/python/api/azure-eventhub//azure.eventhub.eventhubconsumerclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "<=",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: Permission size is <= 8KB , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share//azure.storage.fileshare.aio.sharedirectoryclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "<xref",
                 "Usage":"<contain>",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
 
 
@@ -202,47 +202,63 @@
             {
                 "IgnoreText": "list",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "ItemPaged",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: TextAnalysisLROPoller[ItemPaged[ AbstractiveSummaryResult, DocumentError]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "PiiEntityCategory.US",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: [PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER] for this kwarg , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics//azure.ai.textanalytics.recognizepiientitiesaction?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "str",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "DocumentError",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: input a list[TextDocumentInput] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "NotRequired",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example: NotRequired[Literal[\"azure_openai\"]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.azureopenaimodelconfiguration?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "a",
+                "IgnoreText": "abc",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  [abc] matches , Link: https://learn.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.outputfile?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "<xref",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
             },
             {
                 "IgnoreText": "AppExtension",
                 "Usage":"[contain]",
-                "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+                "Description": "Example:  , Link: "
+            },
+
+            {
+                "IgnoreText": "azure_core_exception",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "1-3",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "DocumentStatus",
+                "Usage":"[contain]",
+                "Description": "Example: AsyncDocumentTranslationLROPoller[AsyncItemPaged[DocumentStatus]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-translation-document/azure.ai.translation.document.aio.documenttranslationclient?view=azure-python&branch=main"
             }
         ]
     },
