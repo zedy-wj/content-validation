@@ -29,6 +29,7 @@ namespace DataSource
 
             List<string> pages = new List<string>();
             List<string> allPages = new List<string>();
+            allPages.Add(config["PackageName"]!);
             string pagelink = $"{overviewUrl}{package}?branch={branch}";
 
             await GetAllChildPage(pages, allPages, pagelink, branch, cookieName, cookieValue);

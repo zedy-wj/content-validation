@@ -1,30 +1,24 @@
 ﻿using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace ReportHelper
 {
-    public class CompareDate
+    public class CompareData
     {
         public static void Main(string[] args)
         {
-            using IHost host = Host.CreateApplicationBuilder(args).Build();
+            string? HostPackageName = args[0];
 
-            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
-
-            string? HostPackageName = config["PackageName"];
-
+            // Reports folder
             string rootDirectory = ConstData.ReportsDirectory;
 
-            //Results of the last data summary data (maintenance data)
+            //Results of the last data summary data (maintenance data), Artifacts/HistorySummaryTotalIssues.json
             string allPackagePath = ConstData.LastPipelineAllPackageJsonFilePath!;
             List<TPackage4Json> allPackageList = new List<TPackage4Json>();
 
             //Data results for the aim package
             List<TResult4Json> oldDataList = new List<TResult4Json>();
 
-            //Results of this time.
+            //Results of this time. Reports/Total issue file
             string newDataPath = Path.Combine(rootDirectory, ConstData.TotalIssuesJsonFileName);
             List<TResult4Json> newDataList = new List<TResult4Json>();
 

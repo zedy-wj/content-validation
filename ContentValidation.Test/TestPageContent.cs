@@ -13,6 +13,8 @@ namespace ContentValidation.Test
         public static List<string> TestLinks { get; set; }
         public static List<string> DuplicateTestLink { get; set; }
 
+        public static string PackageName { get; set; }
+
         public static ConcurrentQueue<TResult> TestTableMissingContentResults = new ConcurrentQueue<TResult>();
 
         public static ConcurrentQueue<TResult> TestGarbledTextResults = new ConcurrentQueue<TResult>();
@@ -27,6 +29,8 @@ namespace ContentValidation.Test
         {
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            PackageName = TestLinks.First();
+            TestLinks.RemoveAt(0);
 
             //This list is for testing duplicate services.
             DuplicateTestLink = new List<string>
@@ -47,10 +51,11 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestInconsistentTextFormatResults, excelFilePath, sheetName);
-            JsonHelper4Test.AddTestResult(TestTableMissingContentResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestGarbledTextResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestTableMissingContentResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestGarbledTextResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestDuplicateServiceResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath, PackageName);
+            CompareData.Main(new string[] {PackageName});
         }
 
 

@@ -12,6 +12,8 @@ namespace ContentValidation.Test
     {
         public static List<string> TestLinks { get; set; }
 
+        public static string PackageName { get; set; }
+
         public static ConcurrentQueue<TResult> TestMissingTypeAnnotationResults = new ConcurrentQueue<TResult>();
 
         public static IPlaywright playwright;
@@ -19,6 +21,8 @@ namespace ContentValidation.Test
         {
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            PackageName = TestLinks.First();
+            TestLinks.RemoveAt(0);
         }
 
         [OneTimeTearDown]
@@ -29,7 +33,8 @@ namespace ContentValidation.Test
             string sheetName = "TotalIssues";
             string jsonFilePath = ConstData.TotalIssuesJsonFileName;
             ExcelHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, excelFilePath, sheetName);
-            JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestMissingTypeAnnotationResults, jsonFilePath, PackageName);
+            CompareData.Main(new string[] {PackageName});
         }
 
         [Test]

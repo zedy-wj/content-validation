@@ -12,6 +12,8 @@ namespace ContentValidation.Test
     {
         public static List<string> TestLinks { get; set; }
 
+        public static string PackageName { get; set; }
+
         public static ConcurrentQueue<TResult> TestExtraLabelResults = new ConcurrentQueue<TResult>();
 
         public static ConcurrentQueue<TResult> TestUnnecessarySymbolsResults = new ConcurrentQueue<TResult>();
@@ -26,6 +28,8 @@ namespace ContentValidation.Test
         {
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            PackageName = TestLinks.First();
+            TestLinks.RemoveAt(0);
         }
 
         [OneTimeTearDown]
@@ -41,10 +45,11 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestInvalidTagsResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestCodeFormatResults, excelFilePath, sheetName);
-            JsonHelper4Test.AddTestResult(TestExtraLabelResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestInvalidTagsResults, jsonFilePath);
-            JsonHelper4Test.AddTestResult(TestCodeFormatResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestExtraLabelResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestUnnecessarySymbolsResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestInvalidTagsResults, jsonFilePath, PackageName);
+            JsonHelper4Test.AddTestResult(TestCodeFormatResults, jsonFilePath, PackageName);
+            CompareData.Main(new string[] {PackageName});
         }
 
         [Test]

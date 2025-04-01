@@ -73,6 +73,20 @@ jobs:
         custom: 'tool '
         arguments: run playwright install
 
+    - task: DownloadPipelineArtifact@2
+      displayName: Download The Last Artifact issues-summary
+      inputs:
+        buildType: 'specific'
+        project: 'content-validation-automation'
+        pipeline: 'Content Validation For Python'
+        buildVersionToDownload: 'latestFromBranch'
+        allowPartiallySucceededBuilds: true
+        allowFailedBuilds: false
+        branchName: 'refs/heads/main'
+        artifactName: 'issues-summary'
+        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+      continueOnError: true
+      
     - task: DotNetCoreCLI@2
       displayName: Build get data source project
       inputs:
@@ -83,6 +97,7 @@ jobs:
       displayName: Get test data source
       env:
         ReadmeName: ${{ parameters.ReadmeName }}
+        PackageName: ${{ parameters.PackageName }}
         Branch: ${{ parameters.Branch }}
         Language: "Python"
       inputs:
@@ -126,20 +141,6 @@ jobs:
             cat "$FILE_PATH"
             exit 1
           fi
-
-    - task: DownloadPipelineArtifact@2
-      displayName: Download The Last Artifact issues-summary
-      inputs:
-        buildType: 'specific'
-        project: 'content-validation-automation'
-        pipeline: 'Content Validation For Python'
-        buildVersionToDownload: 'latestFromBranch'
-        allowPartiallySucceededBuilds: true
-        allowFailedBuilds: false
-        branchName: 'refs/heads/main'
-        artifactName: 'issues-summary'
-        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
-      continueOnError: true
 
     - task: DotNetCoreCLI@2
       displayName: Build report helper project

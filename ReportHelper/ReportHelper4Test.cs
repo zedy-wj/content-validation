@@ -236,7 +236,7 @@ public class JsonHelper4Test
 
     }
 
-    public static void AddTestResult(ConcurrentQueue<TResult> testResults, string fileName)
+    public static void AddTestResult(ConcurrentQueue<TResult> testResults, string fileName, string packageName)
     {
 
         lock (LockObj)
@@ -268,7 +268,11 @@ public class JsonHelper4Test
                 WriteIndented = true
             };
 
+            // Generate Total Issue file.
             File.WriteAllText(localFilePath, JsonSerializer.Serialize(jsonList, options));
+
+            // Generate Diff Issue file.
+            // CompareData.Main(new string[] {packageName});
         }
     }
 
@@ -278,8 +282,8 @@ public class JsonHelper4Test
         {
             string localFilePath = Init(fileName);
             string jsonString = File.ReadAllText(localFilePath);
-            List<TResult4Json> jsonList = JsonSerializer.Deserialize<List<TResult4Json>>(jsonString)!;
-            int count = jsonList.Count;
+            List<TResult4Json> jsonList = new List<TResult4Json>();
+            int count = 0;
 
             foreach (var res in testResults)
             {
