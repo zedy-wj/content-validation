@@ -294,6 +294,26 @@
                 "IgnoreText": ":51:",
                 "Usage":"",
                 "Description": "2021-12-08T23:51:14.1104269Z, ':51:' , Link: https://learn.microsoft.com/en-us/python/api/overview/azure/monitor-ingestion-readme?view=azure-python"
+            },
+            {
+                "IgnoreText": ":29:",
+                "Usage":"",
+                "Description": " 2017-09-28T16:29:42.3447817Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.deviceregistrationstate?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":34:",
+                "Usage":"",
+                "Description": " 2017-11-14T12:34:18, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.enrollmentgroup?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":22:",
+                "Usage":"",
+                "Description": " 2016-06-01T21:22:43.7996883Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.enrollmentgroup?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":07:",
+                "Usage":"",
+                "Description": " 2017-09-21T02:07:44.238Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.twincollection?view=azure-java-stable&branch=main"
             }
         ]
     }
