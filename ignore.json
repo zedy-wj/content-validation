@@ -314,6 +314,11 @@
                 "IgnoreText": ":07:",
                 "Usage":"",
                 "Description": " 2017-09-21T02:07:44.238Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.twincollection?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":13:",
+                "Usage":"",
+                "Description": " 2021-06-17T07:13:07Z, Link: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration?view=azure-java-stable&branch=main"
             }
         ]
     }
