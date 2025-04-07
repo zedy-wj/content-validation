@@ -58,8 +58,29 @@ namespace IssuerHelper
 
         static string ReadFileWithFuzzyMatch(string directory, string searchPattern)
         {
+            string ruleStatusPattern = "RuleStatus.json";
             if (Directory.Exists(directory))
             {
+                string[] ruleStatusFiles = Directory.GetFiles(directory, ruleStatusPattern, SearchOption.AllDirectories);
+                if (ruleStatusFiles.Length != 0 && File.Exists(ruleStatusFiles[0]))
+                {
+                    string fileContent = File.ReadAllText(ruleStatusFiles[0]);
+                    var rulesStatusList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(fileContent);
+                    if (rulesStatusList != null)
+                    {
+                        foreach (var ruleStatus in rulesStatusList)
+                        {
+                            foreach (var kvp in ruleStatus)
+                            {
+                                if (kvp.Value == "failed")
+                                {
+                                    return "Failed";
+                                }
+                            }
+                        }
+                    }
+                }
+
                 string[] matchingFiles = Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
 
                 if (matchingFiles.Length == 0)

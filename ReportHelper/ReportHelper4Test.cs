@@ -378,31 +378,49 @@ public class GithubHelper
 public class pipelineStatusHelper
 {
     private static readonly object LockObj = new object();
-    public static void SavePipelineFailedStatus(string description)
+    public static void SavePipelineFailedStatus(string rule, string status)
     {
         lock (LockObj)
         {
-            string rootDirectory = ConstData.EngDirectory;
+            string rootDirectory = ConstData.ReportsDirectory;
+            if (!Directory.Exists(rootDirectory))
             {
                 Directory.CreateDirectory(rootDirectory);
             }
 
-            string filePath = Path.Combine(rootDirectory, "PipelineFailedStatus.txt");
+            string filePath = Path.Combine(rootDirectory, "RuleStatus.json");
+            List<Dictionary<string, string>> rulesStatusList = new List<Dictionary<string, string>>();
 
             if (File.Exists(filePath))
             {
                 string fileContent = File.ReadAllText(filePath);
-                if (fileContent.Contains(description))
+                try
                 {
-                    return;
+                    rulesStatusList = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(fileContent) ?? new List<Dictionary<string, string>>();
                 }
+                catch (JsonException)
+                {
+                    rulesStatusList = new List<Dictionary<string, string>>();
+                }
+            }
 
-                File.AppendAllText(filePath, description + "\n");
-            }
-            else
+            bool ruleExists = false;
+            foreach (var ruleStatus in rulesStatusList)
             {
-                File.WriteAllText(filePath, description + "\n");
+                if (ruleStatus.ContainsKey(rule))
+                {
+                    ruleExists = true;
+                    break;
+                }
             }
+
+            if (!ruleExists)
+            {
+                rulesStatusList.Add(new Dictionary<string, string> { { rule, status } });
+            }
+            
+            string jsonContent = JsonSerializer.Serialize(rulesStatusList, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, jsonContent);
         }
     }
 }
