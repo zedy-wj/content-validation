@@ -88,7 +88,7 @@ namespace DataSource
                     await page.GotoAsync(pagelink, new PageGotoOptions
                     {
                         WaitUntil = WaitUntilState.NetworkIdle,
-                        Timeout = 60000 // 超时时间设置为 60 秒
+                        Timeout = 60000 // Timeout 60000ms
                     });
                     Console.WriteLine("Page loaded successfully");
                 }
@@ -183,6 +183,7 @@ namespace DataSource
             var checks = new[]
             {
                 new { XPath = "//h1", Content = "Package" },
+                new { XPath = "//h1", Content = "Module" },
                 new { XPath = "//h2[@id='classes']", Content = "Classes" },
                 new { XPath = "//h2[@id='interfaces']", Content = "Interfaces" },
                 new { XPath = "//h2[@id='structs']", Content = "Structs" },

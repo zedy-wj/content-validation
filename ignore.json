@@ -13,6 +13,11 @@
         "Rule": "UnnecessarySymbolsValidation",
         "IgnoreList": [
             {
+                "IgnoreText": "LROPoller",
+                "Usage":"prefix",
+                "Description": "Example: LROPoller[KeyVaultCertificate | CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
                 "IgnoreText": "/indexes/",
                 "Usage":"prefix",
                 "Description": "Example: include /indexes/[index name]/docs for a given index name , Link: https://learn.microsoft.com/en-us/java/api//com.azure.search.documents.searchclient?view=azure-java-stable"
@@ -26,6 +31,11 @@
                 "IgnoreText": "list",
                 "Usage":"prefix",
                 "Description": "Example: list[RecognizedForm] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+            },
+            {
+                "IgnoreText": "List",
+                "Usage":"prefix",
+                "Description": "Example: List[KeyOperation,str] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-keys/azure.keyvault.keys.deletedkey?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "dict",
@@ -131,6 +141,152 @@
                 "IgnoreText": ",",
                 "Usage":"content",
                 "Description": "Example: like pages=[\"1-3\", \"5-6\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formrecognizerclient?view=azure-python"
+            },
+            {
+                "IgnoreText": "java.util.",
+                "Usage":"<contain>",
+                "Description": ""
+            },
+            {
+                "IgnoreText": "List<",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "Set<",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "<? super T>",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "Collection<? extends",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "Mono<>",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "azure.core.",
+                "Usage":"<contain>",
+                "Description": "Example: <class 'azure.core.pipeline.policies._universal._Unset'> , Link: https://learn.microsoft.com/en-us/python/api/azure-core//azure.core.pipeline.policies.requestidpolicy?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "tempfile.gettempdir()",
+                "Usage":"<contain>",
+                "Description": "Example: Defaults to <tempfile.gettempdir()> , Link: https://learn.microsoft.com/en-us/python/api/azure-monitor-opentelemetry/azure.monitor.opentelemetry?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "azure.servicebus.",
+                "Usage":"<contain>",
+                "Description": "Example: Default value: <azure.servicebus.management._models.TrueRuleFilter object at 0x000002262FB86210> , Link: https://learn.microsoft.com/en-us/python/api/azure-servicebus//azure.servicebus.management.servicebusadministrationclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": ">=",
+                "Usage":"<contain>",
+                "Description": "Example: starting_position is inclusive(>=) or not (>) , Link: https://learn.microsoft.com/en-us/python/api/azure-eventhub//azure.eventhub.eventhubconsumerclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "<=",
+                "Usage":"<contain>",
+                "Description": "Example: Permission size is <= 8KB , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share//azure.storage.fileshare.aio.sharedirectoryclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "<xref",
+                "Usage":"<contain>",
+                "Description": "Example:  , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.shardrange?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "lhs>",
+                "Usage":"<contain>",
+                "Description": "Example: True if lhs> rhs , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.shardrange?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "<rhs",
+                "Usage":"<contain>",
+                "Description": "Example: True if lhs <rhs , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.shardrange?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "Event<>",
+                "Usage":"<contain>",
+                "Description": "Example: shardExecutionBegan= new Event<>() , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.query.multishard.multishardstatement?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "<<2",
+                "Usage":"<contain>",
+                "Description": "Example: LOOKUP_IN_STORE= new LookupOptions(1 <<2) , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.lookupoptions?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "list",
+                "Usage":"[contain]",
+                "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "ItemPaged",
+                "Usage":"[contain]",
+                "Description": "Example: TextAnalysisLROPoller[ItemPaged[ AbstractiveSummaryResult, DocumentError]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "PiiEntityCategory.US",
+                "Usage":"[contain]",
+                "Description": "Example: [PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER] for this kwarg , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics//azure.ai.textanalytics.recognizepiientitiesaction?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "str",
+                "Usage":"[contain]",
+                "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "DocumentError",
+                "Usage":"[contain]",
+                "Description": "Example: input a list[TextDocumentInput] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.textanalyticsclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "NotRequired",
+                "Usage":"[contain]",
+                "Description": "Example: NotRequired[Literal[\"azure_openai\"]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.azureopenaimodelconfiguration?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "abc",
+                "Usage":"[contain]",
+                "Description": "Example:  [abc] matches , Link: https://learn.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.outputfile?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "<xref",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "AppExtension",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+
+            {
+                "IgnoreText": "azure_core_exception",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "1-3",
+                "Usage":"[contain]",
+                "Description": "Example:  , Link: "
+            },
+            {
+                "IgnoreText": "DocumentStatus",
+                "Usage":"[contain]",
+                "Description": "Example: AsyncDocumentTranslationLROPoller[AsyncItemPaged[DocumentStatus]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-translation-document/azure.ai.translation.document.aio.documenttranslationclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "CertificateOperation",
+                "Usage":"[contain]",
+                "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             }
         ]
     },
@@ -151,6 +307,46 @@
                 "IgnoreText": ":10:",
                 "Usage":"",
                 "Description": "Date: Fri, 19 May 2023 17:10:33 GMT, ':10:' , Link: https://learn.microsoft.com/en-us/python/api/overview/azure/storage?view=azure-python"
+            },
+            {
+                "IgnoreText": ":00:",
+                "Usage":"",
+                "Description": "2020-02-20 00:00:00, ':00:' , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-language-conversations/azure.ai.language.conversations.aio.conversationanalysisclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": ":24:",
+                "Usage":"",
+                "Description": " for example, 2015-01-28T16:24:48.789Z., ':24:' , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.twin(class)?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": ":51:",
+                "Usage":"",
+                "Description": "2021-12-08T23:51:14.1104269Z, ':51:' , Link: https://learn.microsoft.com/en-us/python/api/overview/azure/monitor-ingestion-readme?view=azure-python"
+            },
+            {
+                "IgnoreText": ":29:",
+                "Usage":"",
+                "Description": " 2017-09-28T16:29:42.3447817Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.deviceregistrationstate?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":34:",
+                "Usage":"",
+                "Description": " 2017-11-14T12:34:18, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.enrollmentgroup?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":22:",
+                "Usage":"",
+                "Description": " 2016-06-01T21:22:43.7996883Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.enrollmentgroup?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":07:",
+                "Usage":"",
+                "Description": " 2017-09-21T02:07:44.238Z, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.provisioning.service.configs.twincollection?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":13:",
+                "Usage":"",
+                "Description": " 2021-06-17T07:13:07Z, Link: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration?view=azure-java-stable&branch=main"
             }
         ]
     }

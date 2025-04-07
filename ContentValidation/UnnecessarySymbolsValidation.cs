@@ -19,6 +19,12 @@ public class UnnecessarySymbolsValidation : IValidation
     // Content list for checking if the content between "[ ]" is in the list.
     public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
+    // Prefix list for checking if the content before the "[" is in the list.
+    public List<IgnoreItem> containList01 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "<contain>");
+
+    // Content list for checking if the content between "[ ]" is in the list.
+    public List<IgnoreItem> containList02 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "[contain]");
+
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
@@ -84,7 +90,7 @@ public class UnnecessarySymbolsValidation : IValidation
     private void ValidateHtmlContent(string htmlContent)
     {
         // Usage: Find the text that include [ , ], < , >, &, ~, and /// symbols.
-        string includePattern = @"[\[\]<>&~]|/{3}";
+        string includePattern = @"[\[\]<>~]|/{3}";
 
         // Usage: 
         // (?<=\w\s)[<>](?=\s\w): When the text contains symbols  < or >, exclude cases where they are used in a comparative context (e.g., a > b).
@@ -94,7 +100,7 @@ public class UnnecessarySymbolsValidation : IValidation
         string excludePattern1 = @"(?<=\w\s)[<>](?=\s\w)|<\s*[a-zA-Z_][a-zA-Z0-9_]*(\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*\s*(\[\s*\])*\s*>|<\s*\?\s*(extends\s+[A-Za-z_][A-Za-z0-9_]*\s*,\?\s*)*\s*>";
 
         // New pattern to match the specified conditions.(e.g., /** hello , **note:** , "word.)
-        string newPatternForJava = @"\s\""[a-zA-Z]+\.|^\s*/?\*\*.*$";
+        string newPatternForJava = @"\s\""[a-zA-Z]+\.(?![a-zA-Z])|^\s*/?\*\*.*$";
 
         string[] lines = htmlContent.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
@@ -108,17 +114,22 @@ public class UnnecessarySymbolsValidation : IValidation
             {
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
+                    if (AreAngleBracketsPaired(line))
+                    {
+                        continue; 
+                    }
+
                     // This case is not an issue in java doc, we will move it in ignore pattern.
-                    if (line.Contains("java.util.") || line.Contains("List<") || line.Contains("Set<") || line.Contains("<? super T>") || line.Contains("Collection<? extends") || line.Contains("Mono<>") )
+                    if (containList01.Any(item => line.Contains(item.IgnoreText)))
+                    {
+                        continue;
+                    }
+
+                    if (line.Contains(">>") && line.Contains("<<"))
                     {
                         continue;
                     }
                     if (Regex.IsMatch(line, excludePattern1))
-                    {
-                        continue;
-                    }
-                    // Usage: When the text contains <xref, this case will be categorized as an error of ExtraLabelValidation.
-                    if (line.Contains("<xref"))
                     {
                         continue;
                     }
@@ -134,11 +145,11 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 if (match.Value.Equals("[") || match.Value.Equals("]"))
                 {
-                    if (line.Contains("<xref"))
+                    if (IsBracketCorrect(line, match.Index))
                     {
                         continue;
                     }
-                    if (IsBracketCorrect(line, match.Index))
+                    if (containList02.Any(item => line.Contains(item.IgnoreText)))
                     {
                         continue;
                     }
@@ -163,74 +174,114 @@ public class UnnecessarySymbolsValidation : IValidation
 
     private bool IsBracketCorrect(string input, int index)
     {
+        // Check if the content before "[" is in the prefix list
+        foreach (var ignoreItem in prefixList)
+        {
+            string prefix = ignoreItem.IgnoreText;
+            int prefixLength = prefix.Length;
+            if (index >= prefixLength)
+            {
+                string prefixStr = input.Substring(index - prefixLength, prefixLength);
+                if (prefixStr.Equals(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+        }
+
+        // Use a stack to track '[' and ']'
+        Stack<char> stack = new Stack<char>();
+
+        // Traverse the string to check if brackets are paired correctly
+        for (int i = 0; i < input.Length; i++)
+        {
+            if (input[i] == '[')
+            {
+                // Push '[' onto the stack
+                stack.Push(input[i]);
+            }
+            else if (input[i] == ']')
+            {
+                // Check if the stack is not empty and the top of the stack is '['
+                if (stack.Count > 0 && stack.Peek() == '[')
+                {
+                    // Pop the stack, indicating a successful match
+                    stack.Pop();
+                }
+                else
+                {
+                    // If the stack is empty or the top is not '[', it indicates a mismatch
+                    return false;
+                }
+            }
+        }
+
+        // If the stack is empty, all '[' and ']' are correctly paired
+        if (stack.Count != 0)
+        {
+            return false;
+        }
+
+        // Check if the content is in the contentList
         if (input[index] == '[')
         {
-            if (index + 1 < input.Length && input[index + 1] == ']')
-            {
-                return true;
-            }
-
-            // Extract content between "[" and "]"
-            int startIndex = index + 1;
+            // Extract the content between '[' and ']'
+            int startIndex = index;
             int endIndex = input.IndexOf("]", startIndex);
             if (endIndex == -1)
             {
-                // Don't have a closing bracket "]"
+                // If no corresponding ']' is found
                 return false;
             }
 
-            string contentBetweenBrackets = input.Substring(startIndex, endIndex - startIndex);
+            string contentBetweenBrackets = input.Substring(startIndex + 1, endIndex - startIndex - 1);
 
+            // Check if the content is in the contentList
             if (contentList.Any(content => contentBetweenBrackets.Contains(content.IgnoreText, StringComparison.OrdinalIgnoreCase)))
             {
-                // Content between brackets is in the `contentList` list
                 return true;
             }
 
-            // Check if the content before "[" is in the prefix list
-            foreach (var ignoreItem in prefixList)
-            {
-                string prefix = ignoreItem.IgnoreText;
-                try
-                {
-                    string prefixStr = input.Substring(startIndex - prefix.Length - 1, prefix.Length);
-                    if (prefixStr.Equals(prefix, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
-                }
-                catch { }
-            }
-
-            // Check if the content between brackets contains spaces
+            // Check if the content contains only letters
             if (Regex.IsMatch(contentBetweenBrackets, @"^[A-Za-z]+$"))
             {
                 return true;
             }
         }
 
-        if (input[index] == ']')
-        {
-            // Check if ] is closed
-            int count = 0;
-            for (int i = 0; i < index; i++)
-            {
-                if (input[i] == '[')
-                {
-                    count++;
-                }
-                if (input[i] == ']')
-                {
-                    count--;
-                }
-            }
-            if (count >= 0)
-            {
-                return true;
-            }
+        return true;
+    }
 
+    private bool AreAngleBracketsPaired(string input)
+    {
+        // use the stack to keep track of '<' and '>'
+        Stack<char> stack = new Stack<char>();
+
+        foreach (char c in input)
+        {
+            if (c == '<')
+            {
+                // Encounter '<', press to stack
+                stack.Push(c);
+            }
+            else if (c == '>')
+            {
+                // When '>' is encountered, check if the stack is empty.
+                if (stack.Count > 0 && stack.Peek() == '<')
+                {
+                    // If the top of the stack is '<', pop it, indicating a successful match
+                    stack.Pop();
+                }
+                else
+                {
+                    // If the stack is empty or the top of the stack is not a '<', then it is a mismatch
+                    return false;
+                }
+            }
         }
-        return false;
+
+        // If the stack is empty, all '<' and '>' pairs match.
+        return stack.Count == 0;
     }
 
     private async Task<string> GetHtmlContent(IPage page)

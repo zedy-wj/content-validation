@@ -56,7 +56,7 @@ public class CodeFormatValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = "Have Incorrect Code Format: " + string.Join(",", errorList);
+            res.ErrorInfo = "Incorrect code format: " + string.Join(",", errorList);
         }
 
         await browser.CloseAsync();
