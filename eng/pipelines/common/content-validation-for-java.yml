@@ -83,7 +83,7 @@ jobs:
       displayName: Get test data source
       env:
         ReadmeName: ${{ parameters.ReadmeName }}
-        Language: "Java"
+        Language: ${{ parameters.Language }}
         Branch: ${{ parameters.Branch }}
       inputs:
         command: 'run'
@@ -151,6 +151,7 @@ jobs:
       displayName: Resolve data by report helper
       env:
         PackageName: ${{ parameters.PackageName }}
+        Language: ${{ parameters.Language }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'

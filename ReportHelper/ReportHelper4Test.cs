@@ -2,7 +2,10 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Concurrent;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Net.Http.Headers;
 using UtilityLibraries;
+
 namespace ReportHelper;
 public class ExcelHelper4Test
 {
@@ -349,6 +352,231 @@ public class GithubHelper
         result = result.Replace("\n", "\\n");
         result = result.Replace("\"", "\\\"");
         return result;
+    }
+
+    public static void CreateGitHubIssue(string packageName, string language){
+        var owner = "zedy-wj";
+        var repo = "content-validation";
+        string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
+
+        List<string> succeedRules = GetSucceedRules();
+
+        if(succeedRules.Count == 0){
+            Console.WriteLine("No succeed rules found.");
+            return;
+        }
+
+        foreach (var rule in succeedRules){
+            string issueTitle = $"{packageName} content validation issues about {rule} for {language} sdk.";
+            Console.WriteLine($"Searching issue with title: {issueTitle}");
+
+            var allIssues = GetAllGitHubIssues(apiUrl,"github_token");
+
+            var matchingIssue = allIssues.FirstOrDefault(i => i["title"]?.GetValue<string>() == issueTitle);
+
+            if (matchingIssue != null)
+            {
+                Console.WriteLine($"Html url: {matchingIssue["html_url"]?.GetValue<string>()}");
+                Console.WriteLine($"Created at: {matchingIssue["created_at"]?.GetValue<string>()}");
+                Console.WriteLine($"Updated at: {matchingIssue["updated_at"]?.GetValue<string>()}");
+                Console.WriteLine($"Issue: {issueTitle} already exist.");
+
+                // Add a comment to the existing issue with diff issue json. TODO
+                string searchPattern = "DiffIssues*.json";
+                GenerateSpecificIssueJson(rule, searchPattern);
+            }
+            else
+            {
+                Console.WriteLine($"No issue found with title: {issueTitle}");
+                Console.WriteLine($"Opening a new issue with title: {issueTitle}");
+
+                // Open a new issue with total issue json. TODO
+                string searchPattern = "TotalIssues*.json";
+                GenerateSpecificIssueJson(rule, searchPattern);
+            }
+        }
+    }
+
+    public static void GenerateSpecificIssueJson(string rule, string searchPattern){
+        string rootDirectory = ConstData.ReportsDirectory;
+
+        string outputDirectory = ConstData.EngDirectory;
+        string outputFilePath = Path.Combine(outputDirectory, $"{rule}Error.json");
+
+        string[] matchingFiles = Directory.GetFiles(rootDirectory, searchPattern, SearchOption.AllDirectories);
+
+        if (matchingFiles.Length == 0)
+        {
+            if(searchPattern.Contains("DiffIssues")){
+                Console.WriteLine("No diff issue matching files found. There are no new issues to report.");
+            }
+            else{
+                Console.WriteLine("No total issue matching files found. This package have no issue in this pipeline run.");
+            }
+        }
+
+        var matchingObjects = FindMatchingObjects(rule, matchingFiles[0]);
+
+        SaveToJson(matchingObjects, outputFilePath);
+    }
+
+    static List<Dictionary<string, object>> FindMatchingObjects(string rule, string jsonFilePath)
+    {
+        // Define rule mapping: the values ​​in succeedRules correspond to the uppercase version of TestCase in JSON
+        var ruleToTestCaseMap = new Dictionary<string, string>
+        {
+            { "TypeAnnotationValidation", "TestMissingTypeAnnotation" },
+            { "MissingContentValidation", "TestTableMissingContent" },
+            { "GarbledTextValidation", "TestGarbledText" },
+            { "InconsistentTextFormatValidation", "TestInconsistentTextFormat" },
+            { "DuplicateServiceValidation", "TestDuplicateService" },
+            { "ExtraLabelValidation", "TestExtraLabel" },
+            { "UnnecessarySymbolsValidation", "TestUnnecessarySymbols" },
+            { "InvalidTagsValidation", "TestInvalidTags" },
+            { "CodeFormatValidation", "TestCodeFormat" }
+        };
+ 
+        string jsonContent = File.ReadAllText(jsonFilePath);
+        var jsonArray = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(jsonContent);
+ 
+        if (jsonArray == null)
+        {
+            return new List<Dictionary<string, object>>();
+        }
+ 
+        var matchingObjects = new List<Dictionary<string, object>>();
+ 
+        if (ruleToTestCaseMap.TryGetValue(rule, out string testCase))
+        {
+            // Find all TestCase objects whose fields match
+            var matchedObjects = jsonArray.Where(obj =>
+                obj.ContainsKey("TestCase") && obj["TestCase"]?.ToString().Equals(testCase, StringComparison.OrdinalIgnoreCase) == true).ToList();
+
+            matchingObjects.AddRange(matchedObjects);
+        }
+ 
+        return matchingObjects;
+    }
+
+    static void SaveToJson(List<Dictionary<string, object>> data, string outputFilePath)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+        string jsonString = JsonSerializer.Serialize(data, options);
+        File.WriteAllText(outputFilePath, jsonString);
+    }
+
+    public static List<JsonNode> GetAllGitHubIssues(string apiUrl, string githubToken){
+        List<JsonNode> allIssues = new List<JsonNode>();
+
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyGitHubApp", "1.0"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", githubToken);
+                string? linkHeader = null;
+
+                while(true)
+                {
+                    HttpResponseMessage response = client.GetAsync(apiUrl).Result;
+                    response.EnsureSuccessStatusCode();
+
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+                    using (JsonDocument jsonDoc = JsonDocument.Parse(responseBody))
+                    {
+                        JsonElement root = jsonDoc.RootElement;
+                        foreach (JsonElement issueElement in root.EnumerateArray())
+                        {
+                            // Deserialize each issue into a JsonNode (or a custom class if needed)
+                            allIssues.Add(JsonNode.Parse(issueElement.GetRawText())!);
+                        }
+                    }
+
+                    if (response.Headers.TryGetValues("Link", out IEnumerable<string> linkValues))
+                    {
+                        linkHeader = linkValues.FirstOrDefault();
+                        var links = ParseLinkHeader(linkHeader);
+                        if (links.TryGetValue("next", out string? nextUrl))
+                        {
+                            apiUrl = nextUrl.Split(';')[0].TrimStart('[').TrimStart(' ').TrimStart('<').TrimEnd('>');
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred:");
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        return allIssues;
+    }
+
+    // Helper method to parse GitHub's Link header
+    private static Dictionary<string, string> ParseLinkHeader(string? linkHeader)
+    {
+        var links = new Dictionary<string, string>();
+        if (string.IsNullOrEmpty(linkHeader))
+            return links;
+ 
+        foreach (var linkPart in linkHeader.Split(','))
+        {
+            var parts = linkPart.Split(';');
+            if (parts.Length < 2)
+                continue;
+ 
+            var url = parts[0].Trim('<', '>');
+            var relation = parts[1].Trim().Split('=')[1].Trim('"');
+            links[relation] = url;
+        }
+ 
+        return links;
+    }
+    public static List<string> GetSucceedRules(){
+        string rootDirectory = ConstData.ReportsDirectory;
+        string ruleStatusFilePath = Path.Combine(rootDirectory, "RuleStatus.json");
+        
+
+        List<string> succeedRules = new List<string>();
+
+        if (File.Exists(ruleStatusFilePath)){
+            string ruleStatusJsonContent = File.ReadAllText(ruleStatusFilePath);
+
+            try
+            {
+                // Parse JSON Array
+                var jsonArray = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(ruleStatusJsonContent);
+    
+                if (jsonArray != null)
+                {
+                    foreach (var item in jsonArray)
+                    {
+                        foreach (var kvp in item)
+                        {
+                            if (kvp.Value == "succeed")
+                            {
+                                succeedRules.Add(kvp.Key);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading or parsing JSON: {ex.Message}");
+                return succeedRules;
+            }
+        }
+        return succeedRules;
     }
 
     public static List<TResult4Json> DeduplicateList(List<TResult4Json> differentList)

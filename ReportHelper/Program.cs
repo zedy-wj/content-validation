@@ -13,7 +13,8 @@ namespace ReportHelper
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? HostPackageName = config["PackageName"];
+            string HostPackageName = config["PackageName"] ?? "PackageName";
+            string language = config["Language"] ?? "Language";
 
             string rootDirectory = ConstData.ReportsDirectory;
 
@@ -73,6 +74,7 @@ namespace ReportHelper
                 File.WriteAllText(ConstData.TotalGithubTxtFileName, githubBodyOrCommentTotal);
             }
 
+            GithubHelper.CreateGitHubIssue(HostPackageName, language);
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {

@@ -84,7 +84,7 @@ jobs:
       env:
         ReadmeName: ${{ parameters.ReadmeName }}
         Branch: ${{ parameters.Branch }}
-        Language: "Python"
+        Language: ${{ parameters.Language }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
@@ -152,6 +152,7 @@ jobs:
       displayName: Resolve data by report helper
       env:
         PackageName: ${{ parameters.PackageName }}
+        Language: ${{ parameters.Language }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ReportHelper'
