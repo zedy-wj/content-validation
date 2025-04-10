@@ -198,6 +198,11 @@
                 "Description": "Example: Permission size is <= 8KB , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-share//azure.storage.fileshare.aio.sharedirectoryclient?view=azure-python&branch=main"
             },
             {
+                "IgnoreText": ">>",
+                "Usage":"<contain>",
+                "Description": "Example: Map<String,List<String>> , Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.device.transport.https.httpsresponse?view=azure-java-stable&branch=main"
+            },
+            {
                 "IgnoreText": "<xref",
                 "Usage":"<contain>",
                 "Description": "Example:  , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.shardrange?view=azure-java-stable&branch=main"
@@ -347,6 +352,11 @@
                 "IgnoreText": ":13:",
                 "Usage":"",
                 "Description": " 2021-06-17T07:13:07Z, Link: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":31:",
+                "Usage":"",
+                "Description": "  2020-11-19T16:31:49.048Z, Link: https://learn.microsoft.com/en-us/python/api/azure-communication-phonenumbers/azure.communication.phonenumbers.phonenumbersearchresult?view=azure-python&branch=main"
             }
         ]
     }
