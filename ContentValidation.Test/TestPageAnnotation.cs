@@ -50,10 +50,11 @@ namespace ContentValidation.Test
                 {
                     TestMissingTypeAnnotationResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("TypeAnnotationValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : TypeAnnotationValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("TypeAnnotationValidation", "failed");
                 throw;
             }
 

@@ -65,10 +65,11 @@ namespace ContentValidation.Test
                 {
                     TestExtraLabelResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("ExtraLabelValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : ExtraLabelValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("ExtraLabelValidation", "failed");
                 throw;
             }
 
@@ -97,11 +98,11 @@ namespace ContentValidation.Test
                 {
                     TestUnnecessarySymbolsResults.Enqueue(res);
                 }
-
+                pipelineStatusHelper.SavePipelineFailedStatus("UnnecessarySymbolsValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : UnnecessarySymbolsValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("UnnecessarySymbolsValidation", "failed");
                 throw;
             }
 
@@ -129,11 +130,11 @@ namespace ContentValidation.Test
                 {
                     TestInvalidTagsResults.Enqueue(res);
                 }
-
+                pipelineStatusHelper.SavePipelineFailedStatus("InvalidTagsValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : InvalidTagsValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("InvalidTagsValidation", "failed");
                 throw;
             }
 
@@ -161,11 +162,11 @@ namespace ContentValidation.Test
                 {
                     TestCodeFormatResults.Enqueue(res);
                 }
-
+                pipelineStatusHelper.SavePipelineFailedStatus("CodeFormatValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : CodeFormatValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("CodeFormatValidation", "failed");
                 throw;
             }
 

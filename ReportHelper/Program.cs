@@ -7,13 +7,17 @@ namespace ReportHelper
 {
     public class CompareDate
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             using IHost host = Host.CreateApplicationBuilder(args).Build();
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? HostPackageName = config["PackageName"];
+            string HostPackageName = config["PackageName"] ?? "PackageName";
+            string language = config["Language"] ?? "Language";
+            string owner = config["Owner"] ?? "Owner";
+            string repo = config["Repo"] ?? "Repo";
+            string githubToken = config["GitHubToken"] ?? "GitHubToken";
 
             string rootDirectory = ConstData.ReportsDirectory;
 
@@ -62,17 +66,17 @@ namespace ReportHelper
                 string differentSheetName = "DiffSheet";
                 ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
 
-                // github issues
-                string githubBodyOrCommentDiff = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(differentList));
-                File.WriteAllText(ConstData.DiffGithubTxtFileName, githubBodyOrCommentDiff);
-            }
-
-            if (newDataList.Count != 0)
+                // Update github issues
+                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language);
+            }else if (newDataList.Count != 0)
             {
-                string githubBodyOrCommentTotal = GithubHelper.FormatToMarkdown(GithubHelper.DeduplicateList(newDataList));
-                File.WriteAllText(ConstData.TotalGithubTxtFileName, githubBodyOrCommentTotal);
-            }
+                // Create github issues
+                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language);
 
+            }else
+            {
+                Console.WriteLine($"There are no content validation issue with {HostPackageName} in {language}.");
+            }
         }
         public static List<TResult4Json> CompareLists(List<TResult4Json> oldDataList, List<TResult4Json> newDataList)
         {

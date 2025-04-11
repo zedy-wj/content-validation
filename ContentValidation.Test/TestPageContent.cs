@@ -73,10 +73,11 @@ namespace ContentValidation.Test
                 {
                     TestTableMissingContentResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("MissingContentValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : MissingContentValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("MissingContentValidation", "failed");
                 throw;
             }
 
@@ -103,10 +104,11 @@ namespace ContentValidation.Test
                 {
                     TestGarbledTextResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("GarbledTextValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : GarbledTextValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("GarbledTextValidation", "failed");
                 throw;
             }
 
@@ -133,10 +135,11 @@ namespace ContentValidation.Test
                 {
                     TestInconsistentTextFormatResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("InconsistentTextFormatValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : InconsistentTextFormatValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("InconsistentTextFormatValidation", "failed");
                 throw;
             }
 
@@ -163,10 +166,11 @@ namespace ContentValidation.Test
                 {
                     TestDuplicateServiceResults.Enqueue(res);
                 }
+                pipelineStatusHelper.SavePipelineFailedStatus("DuplicateServiceValidation", "succeed");
             }
             catch
             {
-                pipelineStatusHelper.SavePipelineFailedStatus("code error : DuplicateServiceValidation");
+                pipelineStatusHelper.SavePipelineFailedStatus("DuplicateServiceValidation", "failed");
                 throw;
             }
 
