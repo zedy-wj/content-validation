@@ -1,5 +1,4 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |
-| 1 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/576 https://github.com/zedy-wj/content-validation/issues/577 https://github.com/zedy-wj/content-validation/issues/578  | Need Confirm | Need Confirm | 4/11/2025 8:03:03 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=25 |
-| 2 | azure-keyvault-keys | Test fail | https://github.com/zedy-wj/content-validation/issues/574 https://github.com/zedy-wj/content-validation/issues/575  | Need Confirm | Need Confirm | 4/11/2025 8:03:03 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=25 |
+| 1 | azure-appconfiguration | Test fail | https://github.com/zedy-wj/content-validation/issues/576 https://github.com/zedy-wj/content-validation/issues/577 https://github.com/zedy-wj/content-validation/issues/578  | Need Confirm | Need Confirm | 4/11/2025 8:29:29 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=26 |
