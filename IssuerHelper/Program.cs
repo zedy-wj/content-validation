@@ -300,6 +300,8 @@ namespace IssuerHelper
                 string packageFilePath = $"../Artifacts/{package}";
                 string IssueSearchPattern = "TotalIssues*.json";
                 string packageIssueInfo = ReadFileWithFuzzyMatch(packageFilePath, IssueSearchPattern);
+                // Need to confirm with Yuchao:
+                // var issueObject = GetIssueInfo(package, githubToken, language, owner, repo);
                 var issueObject = GetIssueInfo(package, githubToken, language, owner, repo);
 
                 if (packageIssueInfo.Equals("Failed"))
@@ -310,7 +312,7 @@ namespace IssuerHelper
                     index++;
                     continue;
                 }
-                if (string.IsNullOrEmpty(packageIssueInfo) && issueObject == null)
+                if (string.IsNullOrEmpty(packageIssueInfo) && string.IsNullOrEmpty(issueObject))
                 {
                     markdownTable += $@"
 | {index} | {package} | PASS | / | / | / | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
@@ -318,12 +320,12 @@ namespace IssuerHelper
                 else if (string.IsNullOrEmpty(packageIssueInfo) && issueObject != null)
                 {
                     markdownTable += $@"
-| {index} | {package} | PASS | {issueObject["html_url"]?.ToString()} | {issueObject["created_at"]?.ToObject<DateTime>()} | {issueObject["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
+| {index} | {package} | PASS | {issueObject} | Need Confirm | Need Confirm | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | Test fail | {issueObject?["html_url"]?.ToString()} | {issueObject?["created_at"]?.ToObject<DateTime>()} | {issueObject?["updated_at"]?.ToObject<DateTime>()} | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
+| {index} | {package} | Test fail | {issueObject} | Need Confirm | Need Confirm | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 index++;
             }
@@ -339,10 +341,47 @@ namespace IssuerHelper
                 Console.WriteLine($"Occurrence error when creating md file: {ex.Message}");
             }
         }
-
-        static JToken? GetIssueInfo(string package, string githubToken, string language, string owner, string repo)
+        // Need to confirm with Yuchao:
+        // static JToken? GetIssueInfo(string package, string githubToken, string language, string owner, string repo)
+        static string? GetIssueInfo(string package, string githubToken, string language, string owner, string repo)
         {
-            string issueTitle = $"{package} content validation issue for learn microsoft website in {language}.";
+            string? issueLinks = null;
+            List<string> succeedRules = new List<string>();
+            string packageFilePath = $"../Artifacts/{package}";
+            string ruleStatusFilePath = Path.Combine(packageFilePath, "RuleStatus.json");
+
+            if (File.Exists(ruleStatusFilePath)){
+                string ruleStatusJsonContent = File.ReadAllText(ruleStatusFilePath);
+                try
+                {
+                    // Parse JSON Array
+                    var jsonArray = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(ruleStatusJsonContent);
+        
+                    if (jsonArray != null)
+                    {
+                        foreach (var item in jsonArray)
+                        {
+                            foreach (var kvp in item)
+                            {
+                                if (kvp.Value == "succeed")
+                                {
+                                    succeedRules.Add(kvp.Key);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading or parsing JSON: {ex.Message}");
+                }
+            }
+
+            if(succeedRules.Count == 0){
+                Console.WriteLine("No succeed rules found.");
+                return issueLinks;
+            }
+
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
             JArray allIssues = new JArray();
 
@@ -383,19 +422,22 @@ namespace IssuerHelper
                         }
                     }
 
-                    var matchingIssue = allIssues.FirstOrDefault(i => (string?)i["title"] == issueTitle);
+                    foreach (var rule in succeedRules){
+                        string issueTitle = $"{package} content validation issues about {rule} for {language} sdk.";
 
-                    if (matchingIssue != null)
-                    {
-                        Console.WriteLine($"Html url: {matchingIssue["html_url"]}");
-                        Console.WriteLine($"Created at: {matchingIssue["created_at"]}");
-                        Console.WriteLine($"Updated at: {matchingIssue["updated_at"]}");
-                        return matchingIssue;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"No issue found with title: {issueTitle}");
-                        return null;
+                        var matchingIssue = allIssues.FirstOrDefault(i => (string?)i["title"] == issueTitle);
+
+                        if (matchingIssue != null)
+                        {
+                            Console.WriteLine($"Html url: {matchingIssue["html_url"]}");
+                            Console.WriteLine($"Created at: {matchingIssue["created_at"]}");
+                            Console.WriteLine($"Updated at: {matchingIssue["updated_at"]}");
+                            issueLinks += $"{matchingIssue["html_url"]} ";
+                        }
+                        else
+                        {
+                            Console.WriteLine($"No issue found with title: {issueTitle}, please check creating or updating github issue stage.");
+                        }
                     }
                 }
             }
@@ -405,6 +447,7 @@ namespace IssuerHelper
                 Console.WriteLine(ex.Message);
                 return null;
             }
+            return issueLinks;
         }
 
 

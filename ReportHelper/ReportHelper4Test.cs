@@ -769,6 +769,10 @@ public class pipelineStatusHelper
                 if (ruleStatus.ContainsKey(rule))
                 {
                     ruleExists = true;
+                    if(status == "failed")
+                    {
+                        ruleStatus[rule] = status;
+                    }
                     break;
                 }
             }
