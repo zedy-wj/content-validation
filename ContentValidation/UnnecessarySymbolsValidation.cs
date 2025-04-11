@@ -286,14 +286,18 @@ public class UnnecessarySymbolsValidation : IValidation
 
     private async Task<string> GetHtmlContent(IPage page)
     {
-        var contentElement = page.Locator(".content");
+        var contentElements = await page.QuerySelectorAllAsync(".content");
 
-        await contentElement.EvaluateAsync(@"(element) => {
-            const codeElements = element.querySelectorAll('code');
-            codeElements.forEach(code => code.remove());
-        }");
-
-        var text = await contentElement.InnerTextAsync();
-        return text;
+        var combinedText = "";
+        foreach (var contentElement in contentElements)
+        {
+            await contentElement.EvaluateAsync(@"(element) => {
+                const codeElements = element.querySelectorAll('code');
+                codeElements.forEach(code => code.remove());
+            }");
+            var text = await contentElement.InnerTextAsync();
+            combinedText += text + "\n";
+        }
+        return combinedText;
     }
 }
