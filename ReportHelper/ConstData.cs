@@ -7,8 +7,7 @@ public class ConstData
     public static readonly string DiffIssuesExcelFileName = $"DiffIssues{FormattedTime}.xlsx";
     public static readonly string TotalIssuesExcelFileName = $"TotalIssues{FormattedTime}.xlsx";
     public static readonly string DiffIssuesJsonFileName = $"DiffIssues{FormattedTime}.json";
-    public static readonly string DiffGithubTxtFileName = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../eng/GitHubBodyOrCommentDiff.txt"));
-    public static readonly string TotalGithubTxtFileName = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../eng/GitHubBodyOrCommentTotal.txt"));
+
     public static readonly string? LastPipelineAllPackageJsonFilePath = GetLastPipelineAllPackagesJsonFilePath();
 
     static string? GetLastPipelineAllPackagesJsonFilePath()

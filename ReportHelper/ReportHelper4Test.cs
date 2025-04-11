@@ -1,9 +1,10 @@
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Net.Http.Headers;
 using UtilityLibraries;
 
 namespace ReportHelper;
@@ -313,10 +314,10 @@ public class JsonHelper4Test
 
 public class GithubHelper
 {
-    public static string FormatToMarkdown(List<TResult4Json> list)
+    public static string FormatToMarkdown(List<Dictionary<string, object>> list)
     {
 
-        string result = "";
+        string result = $"";
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -324,39 +325,45 @@ public class GithubHelper
 
             result += $"{i + 1}.\n";
 
-            result += $"**ErrorInfo**: {item.ErrorInfo}\n";
-            result += $"**ErrorLink**: {item.ErrorLink}\n";
+            result += $"**ErrorInfo**: {(item.ContainsKey("ErrorInfo") ? item["ErrorInfo"]?.ToString() : "N/A")}\n";
+            result += $"**ErrorLink**: {(item.ContainsKey("ErrorLink") ? item["ErrorLink"]?.ToString() : "N/A")}\n";
 
-            if (item.LocationsOfErrors != null && item.LocationsOfErrors.Count > 0)
+            if (item.ContainsKey("LocationsOfErrors") && item["LocationsOfErrors"] is JsonElement jsonElement)
             {
                 result += $"**ErrorLocation**:\n";
-                foreach (var location in item.LocationsOfErrors)
+                List<string> locations = new List<string>();
+    
+                foreach (JsonElement element in jsonElement.EnumerateArray())
                 {
-                    string str = location.Contains(".") ? location.Substring(location.IndexOf(".") + 1) : location;
-                    str = " -" + str;
-                    result += $"{str}\n";
+                    if (element.ValueKind == JsonValueKind.String)
+                    {
+                        locations.Add(element.GetString());
+                    }
                 }
-                result += "\n";
+
+                if (locations != null && locations.Count > 0)
+                {
+                    foreach (var location in locations)
+                    {
+                        string str = location.Contains(".") ? location.Substring(location.IndexOf(".") + 1) : location;
+                        str = " -" + str;
+                        result += $"{str}\n";
+                    }
+                }
             }
 
-
-            if (!string.IsNullOrWhiteSpace(item.Note))
+            if (item.ContainsKey("Note") && !string.IsNullOrWhiteSpace(item["Note"]?.ToString()))
             {
-                result += $"**Note**: {item.Note}\n";
+                result += $"**Note**: {item["Note"]}\n";
             }
 
             result += $"\n";
         }
 
-        result = result.Replace("\\", "\\\\");
-        result = result.Replace("\n", "\\n");
-        result = result.Replace("\"", "\\\"");
         return result;
     }
 
-    public static void CreateGitHubIssue(string packageName, string language){
-        var owner = "zedy-wj";
-        var repo = "content-validation";
+    public static async Task CreateOrUpdateGitHubIssue(string owner, string repo, string githubToken, string packageName, string language){
         string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
 
         List<string> succeedRules = GetSucceedRules();
@@ -366,38 +373,145 @@ public class GithubHelper
             return;
         }
 
+        var allIssues = GetAllGitHubIssues(apiUrl, githubToken);
+
         foreach (var rule in succeedRules){
             string issueTitle = $"{packageName} content validation issues about {rule} for {language} sdk.";
             Console.WriteLine($"Searching issue with title: {issueTitle}");
-
-            var allIssues = GetAllGitHubIssues(apiUrl,"github_token");
 
             var matchingIssue = allIssues.FirstOrDefault(i => i["title"]?.GetValue<string>() == issueTitle);
 
             if (matchingIssue != null)
             {
                 Console.WriteLine($"Html url: {matchingIssue["html_url"]?.GetValue<string>()}");
+                Console.WriteLine($"Issue Number: {matchingIssue["number"]?.GetValue<int>()}");
                 Console.WriteLine($"Created at: {matchingIssue["created_at"]?.GetValue<string>()}");
                 Console.WriteLine($"Updated at: {matchingIssue["updated_at"]?.GetValue<string>()}");
                 Console.WriteLine($"Issue: {issueTitle} already exist.");
 
                 // Add a comment to the existing issue with diff issue json. TODO
                 string searchPattern = "DiffIssues*.json";
-                GenerateSpecificIssueJson(rule, searchPattern);
+                var githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern);
+
+                if(githubIssueBodyForJson.Count != 0)
+                {
+                    string githubBodyOrCommentDiff = FormatToMarkdown(githubIssueBodyForJson);
+
+                    await AddCommentToIssue(owner, repo, matchingIssue["number"]?.GetValue<int>(), githubBodyOrCommentDiff, githubToken);
+                }else
+                {
+                    Console.WriteLine($"There are no new issue about {rule} in this pipeline run.");
+                }
             }
             else
             {
                 Console.WriteLine($"No issue found with title: {issueTitle}");
-                Console.WriteLine($"Opening a new issue with title: {issueTitle}");
 
-                // Open a new issue with total issue json. TODO
+                // Open a new issue with total issue json.
                 string searchPattern = "TotalIssues*.json";
-                GenerateSpecificIssueJson(rule, searchPattern);
+                var githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern);
+
+                if(githubIssueBodyForJson.Count != 0)
+                {
+                    Console.WriteLine($"Opening a new issue with title: {issueTitle}");
+
+                    // Create a new issue in GitHub
+                    try
+                    {
+                        string githubBodyOrCommentTotal = FormatToMarkdown(githubIssueBodyForJson);
+                        await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }else
+                {
+                    Console.WriteLine($"There are no issue about {rule} in this pipeline run.");
+                }
             }
         }
     }
 
-    public static void GenerateSpecificIssueJson(string rule, string searchPattern){
+    private static async Task AddCommentToIssue(string owner, string repo, int? issueNumber, string body, string githubToken)
+    {
+        string url = $"https://api.github.com/repos/{owner}/{repo}/issues/{issueNumber}/comments";
+
+        using (HttpClient client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", githubToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", "MyApp/1.0");
+ 
+            var issueBodyData = new
+            {
+                body = body
+            };
+ 
+            StringContent content = new StringContent(JsonSerializer.Serialize(issueBodyData), Encoding.UTF8, "application/json");
+ 
+            try
+            {
+                Console.WriteLine("Sending request to create a new issue...");
+                HttpResponseMessage response = await client.PostAsync(url, content);
+ 
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Error: Response status code does not indicate success: {response.StatusCode}");
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error details: {errorContent}");
+                    return;
+                }
+ 
+                Console.WriteLine("HTTP request successful.");
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"HTTP request failed: {ex.Message}");
+                throw;
+            }
+        }
+    }
+    private static async Task CreateNewIssueAsync(string ApiUrl, string title, string body, string githubToken)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", githubToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", "MyApp/1.0");
+ 
+            var issueData = new
+            {
+                title = title,
+                body = body
+            };
+ 
+            StringContent content = new StringContent(JsonSerializer.Serialize(issueData), Encoding.UTF8, "application/json");
+ 
+            try
+            {
+                Console.WriteLine("Sending request to create a new issue...");
+                HttpResponseMessage response = await client.PostAsync(ApiUrl, content);
+ 
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Error: Response status code does not indicate success: {response.StatusCode}");
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error details: {errorContent}");
+                    return;
+                }
+ 
+                Console.WriteLine("HTTP request successful.");
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"HTTP request failed: {ex.Message}");
+                throw;
+            }
+        }
+    }
+
+    public static List<Dictionary<string, object>> GenerateSpecificIssueJson(string rule, string searchPattern){
         string rootDirectory = ConstData.ReportsDirectory;
 
         string outputDirectory = ConstData.EngDirectory;
@@ -417,7 +531,9 @@ public class GithubHelper
 
         var matchingObjects = FindMatchingObjects(rule, matchingFiles[0]);
 
-        SaveToJson(matchingObjects, outputFilePath);
+        SaveToJson(matchingObjects, outputFilePath, rule);
+
+        return matchingObjects;
     }
 
     static List<Dictionary<string, object>> FindMatchingObjects(string rule, string jsonFilePath)
@@ -458,8 +574,23 @@ public class GithubHelper
         return matchingObjects;
     }
 
-    static void SaveToJson(List<Dictionary<string, object>> data, string outputFilePath)
+    static void SaveToJson(List<Dictionary<string, object>> data, string outputFilePath, string rule)
     {
+        if (data == null || data.Count == 0)
+        {
+            return;
+        }
+
+        // Change the No. from 1 to above
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (data[i].ContainsKey("NO."))
+            {
+                data[i]["NO."] = i + 1; 
+            }
+        }
+
+        // Generate Error.json 
         var options = new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
         string jsonString = JsonSerializer.Serialize(data, options);
         File.WriteAllText(outputFilePath, jsonString);
