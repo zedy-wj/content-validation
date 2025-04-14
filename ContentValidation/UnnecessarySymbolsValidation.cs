@@ -81,7 +81,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 {
                     string unnecessarySymbol = $"\"{match.Value}\""; ;
                     valueSet.Add(unnecessarySymbol);
-                    errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: {line}");
+                    errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in code: `{line}`");
                 }
             }
         }
@@ -157,7 +157,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 string unnecessarySymbol = $"\"{match.Value}\""; ;
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`");
             }
 
             // Check the new patternForJava
@@ -167,7 +167,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 string matchedContent = matchData.Value;
                 string unnecessarySymbol = $"\"{matchedContent}\"";
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: {line}");      
+                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`"); 
             }
         }
     }

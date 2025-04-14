@@ -65,7 +65,7 @@ stages:
         pipeline: 'Content Validation For Java'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
-        allowFailedBuilds: false
+        allowFailedBuilds: true
         branchName: 'refs/heads/main'
         artifactName: 'issues-summary'
         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
