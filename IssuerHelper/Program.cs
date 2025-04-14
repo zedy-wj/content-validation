@@ -325,7 +325,7 @@ namespace IssuerHelper
                 else
                 {
                     markdownTable += $@"
-| {index} | {package} | Test fail | {issueObject} | Need Confirm | Need Confirm | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
+| {index} | {package} | Content issue found | {issueObject} | Need Confirm | Need Confirm | {now.ToString("M/d/yyyy h:mm:ss tt")} | {pipelineRunLink} |";
                 }
                 index++;
             }
