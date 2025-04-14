@@ -512,6 +512,7 @@ public class GithubHelper
     }
 
     public static List<Dictionary<string, object>> GenerateSpecificIssueJson(string rule, string searchPattern){
+        var matchingObjects = new List<Dictionary<string, object>>();
         string rootDirectory = ConstData.ReportsDirectory;
 
         string outputDirectory = ConstData.EngDirectory;
@@ -527,9 +528,10 @@ public class GithubHelper
             else{
                 Console.WriteLine("No total issue matching files found. This package have no issue in this pipeline run.");
             }
+            return matchingObjects;
         }
 
-        var matchingObjects = FindMatchingObjects(rule, matchingFiles[0]);
+        matchingObjects = FindMatchingObjects(rule, matchingFiles[0]);
 
         SaveToJson(matchingObjects, outputFilePath, rule);
 
