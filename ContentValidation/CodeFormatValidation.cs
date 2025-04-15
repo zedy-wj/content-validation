@@ -43,7 +43,7 @@ public class CodeFormatValidation : IValidation
 
                     if (spaceCount % 2 != 0)
                     {
-                        errorList.Add(line);
+                        errorList.Add($"Improper whitespace formatting detected in code snippet: `{line}`");
                         break;
                     }
                 }
@@ -61,7 +61,7 @@ public class CodeFormatValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = "Incorrect code format: " + string.Join(",", errorList);
+            res.ErrorInfo = "Incorrect code format: there is an error in the space format, please check.";
             res.LocationsOfErrors = formattedList;
         }
 
