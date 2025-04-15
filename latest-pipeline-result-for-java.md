@@ -1,4 +1,4 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |
-| 1 | azure-ai-contentsafety | Content issue found | https://github.com/zedy-wj/content-validation/issues/983 https://github.com/zedy-wj/content-validation/issues/984 https://github.com/zedy-wj/content-validation/issues/985  | Need Confirm | Need Confirm | 4/15/2025 7:15:07 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=33 |
+| 1 | azure-ai-contentsafety | Content issue found | https://github.com/zedy-wj/content-validation/issues/987 https://github.com/zedy-wj/content-validation/issues/988 https://github.com/zedy-wj/content-validation/issues/989  | Need Confirm | Need Confirm | 4/15/2025 8:06:48 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=34 |
