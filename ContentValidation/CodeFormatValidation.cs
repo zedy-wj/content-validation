@@ -43,8 +43,7 @@ public class CodeFormatValidation : IValidation
 
                     if (spaceCount % 2 != 0)
                     {
-                        string firstLine = lines.FirstOrDefault() ?? string.Empty;
-                        errorList.Add(firstLine);
+                        errorList.Add(line);
                         break;
                     }
                 }
