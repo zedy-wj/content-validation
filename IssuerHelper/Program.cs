@@ -61,7 +61,7 @@ namespace IssuerHelper
             string ruleStatusPattern = "RuleStatus.json";
             if (Directory.Exists(directory))
             {
-                string[] ruleStatusFiles = Directory.GetFiles(directory, ruleStatusPattern, SearchOption.AllDirectories);
+                string[] ruleStatusFiles = Directory.GetFiles(directory, ruleStatusPattern);
                 if (ruleStatusFiles.Length != 0 && File.Exists(ruleStatusFiles[0]))
                 {
                     string fileContent = File.ReadAllText(ruleStatusFiles[0]);
