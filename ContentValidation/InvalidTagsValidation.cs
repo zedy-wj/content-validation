@@ -21,6 +21,7 @@ public class InvalidTagsValidation : IValidation
 
         List<string> invalidTags = new List<string>();
         List<string> allTagNames = new List<string>();
+        List<string> errorList = new List<string>();
 
         HashSet<string> validHtmlTags = new HashSet<string>
         {
@@ -35,16 +36,24 @@ public class InvalidTagsValidation : IValidation
             allTagNames.Add(tagName);
             if (!validHtmlTags.Contains(tagName))
             {
+                var context = await page.EvaluateAsync<string>($"() => {{ const element = document.querySelector('body {tagName}'); return element ? element.parentElement.outerHTML : ''; }}");
                 invalidTags.Add(tagName);
+                errorList.Add(context);
             }
         }
 
-        if(invalidTags.Count > 0)
+        var formattedList = errorList
+            .GroupBy(item => item)
+            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times ,  {group.Key}")
+            .ToList();
+
+        if (invalidTags.Count > 0)
         {
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = invalidTags.Count;
             res.ErrorInfo = "Invalid tags found: " + string.Join(",", invalidTags);
+            res.LocationsOfErrors = formattedList;
         }
 
         await browser.CloseAsync();
