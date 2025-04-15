@@ -40,10 +40,11 @@ public class CodeFormatValidation : IValidation
                 if (match.Success)
                 {
                     int spaceCount = match.Groups[1].Value.Length;
-    
+
                     if (spaceCount % 2 != 0)
                     {
-                        errorList.Add($"There is an error in the space format, please check:\n {codeText}");
+                        string firstLine = lines.FirstOrDefault() ?? string.Empty;
+                        errorList.Add($"\nThere is an error in the space format, please check: {firstLine}");
                         break;
                     }
                 }
