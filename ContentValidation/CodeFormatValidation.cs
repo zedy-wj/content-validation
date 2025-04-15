@@ -44,7 +44,7 @@ public class CodeFormatValidation : IValidation
                     if (spaceCount % 2 != 0)
                     {
                         string firstLine = lines.FirstOrDefault() ?? string.Empty;
-                        errorList.Add($"\nThere is an error in the space format, please check: {firstLine}");
+                        errorList.Add(firstLine);
                         break;
                     }
                 }
@@ -52,12 +52,18 @@ public class CodeFormatValidation : IValidation
 
         }
 
-        if(errorList.Count > 0)
+        var formattedList = errorList
+            .GroupBy(item => item)
+            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times ,  {group.Key}")
+            .ToList();
+
+        if (errorList.Count > 0)
         {
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
             res.ErrorInfo = "Incorrect code format: " + string.Join(",", errorList);
+            res.LocationsOfErrors = formattedList;
         }
 
         await browser.CloseAsync();
