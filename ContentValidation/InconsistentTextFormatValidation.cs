@@ -21,6 +21,7 @@ public class InconsistentTextFormatValidation : IValidation
 
         var res = new TResult();
         var errorList = new List<string>();
+        var errorLocation = new List<string>();
 
         var hTagsInTd = await page.QuerySelectorAllAsync("td h1, td h2, td h3, td h4, td h5, td h6");
 
@@ -29,13 +30,17 @@ public class InconsistentTextFormatValidation : IValidation
             foreach (var element in hTagsInTd)
             {
                 var text = await element.InnerTextAsync();
+                var headerId = await element.GetAttributeAsync("id");
+                var anchorLink = string.IsNullOrEmpty(headerId) ? "No anchor link" : $"{testLink}#{headerId}";
                 errorList.Add(text);
+                errorLocation.Add(anchorLink);
             }
 
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = hTagsInTd.Count;
             res.ErrorInfo = "Inconsistent Text Format: " + string.Join(",", errorList);
+            res.LocationsOfErrors = errorLocation;
         }
 
         await browser.CloseAsync();
