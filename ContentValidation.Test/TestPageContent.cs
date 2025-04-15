@@ -21,6 +21,8 @@ namespace ContentValidation.Test
 
         public static ConcurrentQueue<TResult> TestInconsistentTextFormatResults = new ConcurrentQueue<TResult>();
 
+        public static ConcurrentQueue<TResult> TestErrorDisplayResults = new ConcurrentQueue<TResult>();
+
         public static IPlaywright playwright;
 
         static TestPageContent()
@@ -47,16 +49,19 @@ namespace ContentValidation.Test
             ExcelHelper4Test.AddTestResult(TestGarbledTextResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestDuplicateServiceResults, excelFilePath, sheetName);
             ExcelHelper4Test.AddTestResult(TestInconsistentTextFormatResults, excelFilePath, sheetName);
+            ExcelHelper4Test.AddTestResult(TestErrorDisplayResults, excelFilePath, sheetName);
             JsonHelper4Test.AddTestResult(TestTableMissingContentResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestGarbledTextResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestDuplicateServiceResults, jsonFilePath);
             JsonHelper4Test.AddTestResult(TestInconsistentTextFormatResults, jsonFilePath);
+            JsonHelper4Test.AddTestResult(TestErrorDisplayResults, jsonFilePath);
         }
 
 
         [Test]
         [Category("PythonTest")]
         [Category("JavaTest")]
+        [Category("JsTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestTableMissingContent(string testLink)
         {
@@ -89,6 +94,7 @@ namespace ContentValidation.Test
         [Test]
         [Category("PythonTest")]
         [Category("JavaTest")]
+        [Category("JsTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestGarbledText(string testLink)
         {
@@ -120,6 +126,7 @@ namespace ContentValidation.Test
 
         [Test]
         [Category("JavaTest")]
+        [Category("JsTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestInconsistentTextFormat(string testLink)
         {
@@ -140,6 +147,37 @@ namespace ContentValidation.Test
             catch
             {
                 pipelineStatusHelper.SavePipelineFailedStatus("InconsistentTextFormatValidation", "failed");
+                throw;
+            }
+
+            Assert.That(res.Result, res.FormatErrorMessage());
+
+
+        }
+
+        [Test]
+        [Category("JsTest")]
+        [TestCaseSource(nameof(TestLinks))]
+        public async Task TestErrorDisplay(string testLink)
+        {
+
+
+            IValidation Validation = new ErrorDisplayValidation(playwright);
+
+            var res = new TResult();
+            try
+            {
+                res = await Validation.Validate(testLink);
+                res.TestCase = "TestErrorDisplay";
+                if (!res.Result)
+                {
+                    TestDuplicateServiceResults.Enqueue(res);
+                }
+                pipelineStatusHelper.SavePipelineFailedStatus("ErrorDisplayValidation", "succeed");
+            }
+            catch
+            {
+                pipelineStatusHelper.SavePipelineFailedStatus("ErrorDisplayValidation", "failed");
                 throw;
             }
 
