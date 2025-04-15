@@ -25,6 +25,8 @@ public class UnnecessarySymbolsValidation : IValidation
     // Content list for checking if the content between "[ ]" is in the list.
     public List<IgnoreItem> containList02 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "[contain]");
 
+    public List<IgnoreItem> regularList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "regular");
+
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
@@ -108,6 +110,12 @@ public class UnnecessarySymbolsValidation : IValidation
         {
             string line = lines[index];
 
+            // Check for valid interval symbols
+            if (IsValidInterval(line))
+            {
+                continue; // Skip this line if it contains a valid interval symbol
+            }
+            
             var matchCollections = Regex.Matches(line, includePattern);
 
             foreach (Match match in matchCollections)
@@ -299,5 +307,17 @@ public class UnnecessarySymbolsValidation : IValidation
             combinedText += text + "\n";
         }
         return combinedText;
+    }
+
+    public bool IsValidInterval(string line)
+    {
+        foreach (var pattern in regularList)
+        {
+            if (Regex.IsMatch(line, pattern.IgnoreText))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
