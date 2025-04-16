@@ -36,6 +36,10 @@ public class CodeFormatValidation : IValidation
             string[] lines = codeText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
+                if(line.Trim().Length == 0)
+                {
+                    continue; // Skip empty lines
+                }
                 var match = Regex.Match(line, @"^(\s*)");
                 if (match.Success)
                 {
