@@ -38,14 +38,20 @@ public class InvalidTagsValidation : IValidation
             {
                 try{
                     var context = await page.EvaluateAsync<string>($"() => {{ const element = document.querySelector('body {tagName}'); return element ? element.parentElement.innerHTML : ''; }}");
-                    errorList.Add(context);
+                    if(context != null && context != "")
+                    {
+                        errorList.Add(context);
+                    }
+                    else
+                    {
+                        errorList.Add(tagName);
+                    }
                 }
                 catch
                 {
                     errorList.Add(tagName);
                 }
                 invalidTags.Add(tagName);
-
             }
         }
 
