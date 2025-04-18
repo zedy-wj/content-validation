@@ -27,11 +27,10 @@ namespace DataSource
 
             string? overviewUrl = GetLanguagePageOverview(language, branch);
 
-            List<string> pages = new List<string>();
             List<string> allPages = new List<string>();
-            string pagelink = $"{overviewUrl}{package}?branch={branch}";
+            string pageLink = $"{overviewUrl}{package}?branch={branch}";
 
-            await GetAllChildPage(pages, allPages, pagelink, branch, cookieName, cookieValue);
+            await GetAllDataSource(allPages, language, pageLink, cookieName, cookieValue, branch);
 
             ExportData(allPages);
         }
@@ -247,6 +246,100 @@ namespace DataSource
             doc.LoadHtml(htmlContent);
 
             return doc;
+        }
+
+        static async Task GetAllDataSource(List<string> allPages, string language, string pageLink, string cookieName, string cookieValue, string branch)
+        {
+            List<string> pages = new List<string>();
+            List<string> childPage = new List<string>();
+
+            if (language == "js" || language == "javascript")
+            {
+                await GetChildName(pageLink, childPage, pages);
+                GetLanguageChildPage(language, childPage, pages, branch);
+                // Recursively get all pages of the API reference document
+                foreach (var pa in pages)
+                {
+                    int lastSlashIndex = pa.LastIndexOf('/');
+                    string baseUri = pa.Substring(0, lastSlashIndex + 1);
+                    allPages.Add(pa);
+                    GetAllPages(pa, baseUri, allPages, branch, cookieName, cookieValue);
+                }
+            }
+            else
+            {
+                await GetAllChildPage(pages, allPages, pageLink, branch, cookieName, cookieValue);
+            }
+        }
+
+        static async Task GetChildName(string link, List<string> childPages, List<string> pages)
+        {
+            //Console.Write(link);
+
+            pages.Add(link);
+            // Launch a browser
+            var playwright = await Playwright.CreateAsync();
+            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = true
+            });
+
+            var context = await browser.NewContextAsync();
+            var pageInstance = await context.NewPageAsync();
+
+            try
+            {
+                // Navigate to the provided link
+                await pageInstance.GotoAsync(link, new PageGotoOptions
+                {
+                    WaitUntil = WaitUntilState.NetworkIdle,
+                    Timeout = 60000 // Timeout 60000ms
+                });
+                Console.WriteLine("Page loaded successfully");
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine("Page load timeout");
+                await browser.CloseAsync();
+                return;
+            }
+
+            // Get all li tags with aria-level="4"
+            var level4Lis = await pageInstance.Locator("li.tree-item[aria-level='4']").AllAsync();
+
+            if (level4Lis.Count != 0)
+            {
+                // Get the content of each li tag with aria-level="4"
+                foreach (var level4Li in level4Lis)
+                {
+                    var content = await level4Li.InnerTextAsync();
+                    if (!string.IsNullOrEmpty(content))
+                    {
+                        childPages.Add(content);
+                    }
+                }
+            }
+
+            await browser.CloseAsync();
+        }
+
+        static List<string> GetLanguageChildPage(string? language, List<string> childPage, List<string> childLink, string branch = "")
+        {
+            string link = null;
+            language = language?.ToLower();
+            foreach (var page in childPage)
+            {
+                if (branch != "main")
+                {
+                    link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{page}/";
+                }
+                else
+                {
+                    link = $"{SDK_API_URL_BASIC}{language}/api/{page}/?branch={branch}";
+                }
+                childLink.Add(link);
+            }
+            return childLink;
         }
 
         static void ExportData(List<string> pages)
