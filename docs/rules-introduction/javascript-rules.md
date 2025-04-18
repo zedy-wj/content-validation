@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document introduces 6 rules designed for Javascript Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/javascript/api/overview/azure/?view=azure-node-latest) to complete automated content validation.
+This document introduces 7 rules designed for Javascript Data SDK on [Microsoft Learn website](https://learn.microsoft.com/en-us/javascript/api/overview/azure/?view=azure-node-latest) to complete automated content validation.
 
 ## Validation Rules
 
