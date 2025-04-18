@@ -367,6 +367,16 @@
                 "IgnoreText": ":13:",
                 "Usage":"",
                 "Description": " 2021-06-17T07:13:07Z, Link: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.administration?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":04:",
+                "Usage":"",
+                "Description": " 2008-10-01T17:04:32.0000000, Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.sdk.iot.device.message?view=azure-java-stable"
+            },
+            {
+                "IgnoreText": ":31:",
+                "Usage":"",
+                "Description": " e.g. 2020-11-19T16:31:49.048Z, Link: https://learn.microsoft.com/en-us/java/api//com.azure.communication.phonenumbers.models.phonenumbersearchresult?view=azure-java-stable&branch=main"
             }
         ]
     }
