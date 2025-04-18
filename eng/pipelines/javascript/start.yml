@@ -1,4 +1,4 @@
-name: Run switched packages content validation for java
+name: Run switched packages content validation for javascript
 trigger: none
 
 parameters:
@@ -16,9 +16,9 @@ parameters:
 
 - name: language
   displayName: |
-      You can choose the language for testing, only Python, Java supported now. We plan extent to JavaScript, .NET and Go in future. Example: Java
+      You can choose the language for testing, only Python, Java, JavaScript supported now. We plan extent to .NET and Go in future. Example: JavaScript
   type: string
-  default: 'Java'
+  default: 'JavaScript'
   values:
   - Python
   - Java
@@ -31,7 +31,7 @@ stages:
   jobs:
   - ${{ each packageName in split(parameters.packages, ',') }}:
     - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/java/package/${{ packageName }}.yml
+      - template: /eng/pipelines/javascript/package/${{ packageName }}.yml
         parameters:
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
@@ -40,7 +40,7 @@ stages:
           Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/java/package/run-all-packages.yml
+    - template: /eng/pipelines/javascript/package/run-all-packages.yml
       parameters:
         AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
         GitHubPat: $(GITHUB_PAT)
@@ -62,7 +62,7 @@ stages:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Content Validation For Java'
+        pipeline: 'Content Validation For Javascript'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
