@@ -1,0 +1,29 @@
+parameters:
+- name: AzureDevOpsPat
+  type: string
+  default: ''
+- name: GitHubPat
+  type: string
+  default: ''
+- name: GitHubOwner
+  type: string
+  default: ''
+- name: GitHubRepo
+  type: string
+  default: ''
+- name: Branch
+  type: string
+  default: ''
+- name: packages
+  type: string
+  default: 'azure-keyvault-administration, azure-keyvault-certificates, azure-keyvault-common, azure-keyvault-keys, azure-keyvault-secrets, azure-search-documents, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, azure-storage-queue'
+  
+jobs:
+- ${{ each packageName in split(parameters.packages, ',') }}:
+  - template: /eng/pipelines/javascript/package/${{ packageName }}.yml
+    parameters:
+      GitHubPat: ${{ parameters.GitHubPat }}
+      GitHubOwner: ${{ parameters.GitHubOwner }}
+      GitHubRepo: ${{ parameters.GitHubRepo }}
+      AzureDevOpsPat: ${{ parameters.AzureDevOpsPat }}
+      Branch: ${{ parameters.Branch }}
