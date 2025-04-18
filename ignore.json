@@ -377,6 +377,11 @@
                 "IgnoreText": ":31:",
                 "Usage":"",
                 "Description": " e.g. 2020-11-19T16:31:49.048Z, Link: https://learn.microsoft.com/en-us/java/api//com.azure.communication.phonenumbers.models.phonenumbersearchresult?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": ":48:",
+                "Usage":"",
+                "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
             }
         ]
     }
