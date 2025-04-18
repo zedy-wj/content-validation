@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-search-documents'
+      PackageName: 'azure-storage-blob'
       ReadmeName: 'storage-blob-readme'
       jobDisplayName: 'AZURE_STORAGE_BLOB'
       DotNetSdkVersion: '8.0.x'
