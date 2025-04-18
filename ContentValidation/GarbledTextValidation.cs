@@ -48,7 +48,7 @@ public class GarbledTextValidation : IValidation
 
         var formattedList = errorList
             .GroupBy(item => item)
-            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , garbled text :   {group.Key}")
+            .Select((group, Index) => $"{Index + 1}. Appears {group.Count()} times , garbled text :   `{group.Key}`")
             .ToList();
 
         if (errorList.Count > 0)
