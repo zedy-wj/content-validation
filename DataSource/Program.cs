@@ -4,7 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Playwright;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Globalization;
 using Newtonsoft.Json;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace DataSource
 {
@@ -12,6 +16,9 @@ namespace DataSource
     {
         private static readonly string SDK_API_URL_BASIC = "https://learn.microsoft.com/en-us/";
         private static readonly string SDK_API_REVIEW_URL_BASIC = "https://review.learn.microsoft.com/en-us/";
+        private static readonly string PYTHON_DATA_SDK_RELEASES_LATEST_CSV_URL = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/python-packages.csv";
+        private static readonly string JAVA_DATA_SDK_RELEASES_LATEST_CSV_URL = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv";
+        private static readonly string JAVASCRIPT_DATA_SDK_RELEASES_LATEST_CSV_URL = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/js-packages.csv";
         static async Task Main(string[] args)
         {
             // Default Configuration
@@ -19,31 +26,156 @@ namespace DataSource
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? package = config["ReadmeName"];
+            string? readme = config["ReadmeName"];
             string? language = config["Language"];
             string branch = config["Branch"]!;
+            string? package = config["PackageName"];
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
 
-            string? overviewUrl = GetLanguagePageOverview(language, branch);
+            string? versionSuffix = ChooseGAOrPreview(language, package);
+
+            string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
+
+            Console.WriteLine($"Page link: {pageLink}");
 
             List<string> allPages = new List<string>();
-            string pageLink = $"{overviewUrl}{package}?branch={branch}";
 
             await GetAllDataSource(allPages, language, pageLink, cookieName, cookieValue, branch);
 
             ExportData(allPages);
         }
 
-        static string GetLanguagePageOverview(string? language, string branch = "")
+        static string GetPackagePageOverview(string? language, string readme, string versionSuffix, string branch = "")
         {
             language = language?.ToLower();
+
+            
             if (branch != "main")
             {
-                return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/";
-
+                return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/{readme}?{versionSuffix}&branch={branch}";
             }
-            return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/";
+            return $"{SDK_API_URL_BASIC}{language}/api/overview/azure/{readme}?{versionSuffix}&branch={branch}";
+        }
+
+        static string? ChooseGAOrPreview(string? language, string? package)
+        {
+            language = language?.ToLower();
+            string url;
+
+            if (language == "python")
+            {
+                url = PYTHON_DATA_SDK_RELEASES_LATEST_CSV_URL;
+                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-python" : "view=azure-python-preview";
+            }
+            else if (language == "java")
+            {
+                url = JAVA_DATA_SDK_RELEASES_LATEST_CSV_URL;
+                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-java-stable" : "view=azure-java-preview";
+            }
+            else if (language == "javascript" || language == "js")
+            {
+                url = JAVASCRIPT_DATA_SDK_RELEASES_LATEST_CSV_URL;
+                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-node-latest" : "view=azure-node-preview";
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported language specified.");
+            }
+        }
+
+        static async Task<string?> CompareGAAndPreview(string url, string? package)
+        {
+            package = package?.Replace("azure-", "@azure/");
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    var csvData = await httpClient.GetStringAsync(url);
+                    using (var stringReader = new StringReader(csvData))
+                    using (var csvReader = new CsvReader(stringReader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                    {
+                        HasHeaderRecord = true,
+                    }))
+                    {
+                        csvReader.Context.RegisterClassMap<PythonPackageMap>();
+    
+                        var records = new List<PackageCSV>();
+                        while (await csvReader.ReadAsync())
+                        {
+                            var record = csvReader.GetRecord<PackageCSV>();
+                            records.Add(record);
+                        }
+    
+                        var res = records.FirstOrDefault(p => p.Package.Equals(package, StringComparison.OrdinalIgnoreCase));
+
+                        if(res != null)
+                        {
+                            string versionGA = res.VersionGA;
+                            string versionPreview = res.VersionPreview;
+                            if(String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
+                            {
+                                return "Preview";
+                            }
+                            else if(!String.IsNullOrEmpty(versionGA) && String.IsNullOrEmpty(versionPreview))
+                            {
+                                return "GA";
+                            }
+                            else if(!String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
+                            {
+                                var versionRes = CompareVersions(versionGA, versionPreview);
+                                return versionRes < 0 ? "Preview" : "GA";
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Package {package} has not both GA and Preview version in the table.");
+                                return null;
+                            }
+                        }
+                        else{
+                            Console.WriteLine($"Package {package} not found in the CSV.");
+                            return null;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error downloading or parsing CSV: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+        static int CompareVersions(string v1, string v2)
+        {
+            var (version1Parts, _) = ParseVersion(v1);
+            var (version2Parts, _) = ParseVersion(v2);
+    
+            int length = Math.Max(version1Parts.Length, version2Parts.Length);
+            for (int i = 0; i < length; i++)
+            {
+                int part1 = i < version1Parts.Length ? version1Parts[i] : 0;
+                int part2 = i < version2Parts.Length ? version2Parts[i] : 0;
+    
+                if (part1 < part2) return -1;
+                if (part1 > part2) return 1;
+            }
+    
+            return 0;
+        }
+    
+        static (int[], string) ParseVersion(string version)
+        {
+            var match = Regex.Match(version, @"^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<pre>[-.\w]*)?$");
+            if (!match.Success)
+                throw new ArgumentException("Invalid version format");
+    
+            int major = int.Parse(match.Groups["major"].Value);
+            int minor = int.Parse(match.Groups["minor"].Value);
+            int patch = int.Parse(match.Groups["patch"].Value);
+            string preRelease = match.Groups["pre"].Value;
+    
+            return (new[] { major, minor, patch }, preRelease);
         }
 
         static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
@@ -252,6 +384,7 @@ namespace DataSource
         {
             List<string> pages = new List<string>();
             List<string> childPage = new List<string>();
+            language = language?.ToLower();
 
             if (language == "js" || language == "javascript")
             {
@@ -351,6 +484,23 @@ namespace DataSource
 
             Console.WriteLine(jsonString);
             File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
+        }
+    }
+
+    public class PackageCSV
+    {
+        public string Package { get; set; }
+        public string VersionGA { get; set; }
+        public string VersionPreview { get; set; }
+    }
+
+    public class PythonPackageMap : ClassMap<PackageCSV>
+    {
+        public PythonPackageMap()
+        {
+            Map(m => m.Package).Name("Package");
+            Map(m => m.VersionGA).Name("VersionGA");
+            Map(m => m.VersionPreview).Name("VersionPreview");
         }
     }
 }

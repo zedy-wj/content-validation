@@ -85,6 +85,7 @@ jobs:
         ReadmeName: ${{ parameters.ReadmeName }}
         Language: ${{ parameters.Language }}
         Branch: ${{ parameters.Branch }}
+        PackageName: ${{ parameters.PackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
