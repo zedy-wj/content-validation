@@ -66,17 +66,17 @@ namespace DataSource
             if (language == "python")
             {
                 url = PYTHON_DATA_SDK_RELEASES_LATEST_CSV_URL;
-                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-python" : "view=azure-python-preview";
+                return CompareGAAndPreview(url, package, language).Result == "GA" ? "view=azure-python" : "view=azure-python-preview";
             }
             else if (language == "java")
             {
                 url = JAVA_DATA_SDK_RELEASES_LATEST_CSV_URL;
-                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-java-stable" : "view=azure-java-preview";
+                return CompareGAAndPreview(url, package, language).Result == "GA" ? "view=azure-java-stable" : "view=azure-java-preview";
             }
             else if (language == "javascript" || language == "js")
             {
                 url = JAVASCRIPT_DATA_SDK_RELEASES_LATEST_CSV_URL;
-                return CompareGAAndPreview(url, package).Result == "GA" ? "view=azure-node-latest" : "view=azure-node-preview";
+                return CompareGAAndPreview(url, package, language).Result == "GA" ? "view=azure-node-latest" : "view=azure-node-preview";
             }
             else
             {
@@ -84,9 +84,14 @@ namespace DataSource
             }
         }
 
-        static async Task<string?> CompareGAAndPreview(string url, string? package)
+        static async Task<string?> CompareGAAndPreview(string url, string? package, string language)
         {
-            package = package?.Replace("azure-", "@azure/");
+            var searchPackage = package;
+            if(language == "javascript")
+            {
+                searchPackage = package?.Replace("azure-", "@azure/");
+            }
+            
             using (var httpClient = new HttpClient())
             {
                 try
@@ -107,7 +112,7 @@ namespace DataSource
                             records.Add(record);
                         }
     
-                        var res = records.FirstOrDefault(p => p.Package.Equals(package, StringComparison.OrdinalIgnoreCase));
+                        var res = records.FirstOrDefault(p => p.Package.Equals(searchPackage, StringComparison.OrdinalIgnoreCase));
 
                         if(res != null)
                         {
@@ -294,7 +299,7 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}/" + node.Attributes["href"].Value + "&branch=" + branch;
+                        string href = $"{baseUri}" + node.Attributes["href"].Value + "&branch=" + branch;
 
                         if (!links.Contains(href))
                         {
