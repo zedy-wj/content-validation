@@ -41,7 +41,7 @@ namespace DataSource
 
             List<string> allPages = new List<string>();
 
-            await GetAllDataSource(allPages, language, pageLink, cookieName, cookieValue, branch);
+            await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
 
             ExportData(allPages);
         }
@@ -183,7 +183,7 @@ namespace DataSource
             return (new[] { major, minor, patch }, preRelease);
         }
 
-        static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string branch, string? cookieName, string? cookieVal)
+        static async Task GetAllChildPage(List<string> pages, List<string> allPages, string pagelink, string versionSuffix, string branch, string? cookieName, string? cookieVal)
         {
 
             // If the current page meets the IsTrue condition, call GetAllPages directly.
@@ -193,7 +193,7 @@ namespace DataSource
                 int lastSlashIndex = pagelink.LastIndexOf('/');
                 string baseUri = pagelink.Substring(0, lastSlashIndex + 1);
                 allPages.Add(pagelink);
-                GetAllPages(pagelink, baseUri, allPages, branch, cookieName, cookieVal);
+                GetAllPages(pagelink, baseUri, allPages, versionSuffix, branch, cookieName, cookieVal);
                 return;
             }
 
@@ -232,9 +232,10 @@ namespace DataSource
                 {
                     Console.WriteLine("Page load timeout");
                 }
-
+                
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
+
 
                 i++;
             }
@@ -259,7 +260,7 @@ namespace DataSource
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
                     allPages.Add(pa);
-                    GetAllPages(pa, baseUri, allPages, branch, cookieName, cookieVal);
+                    GetAllPages(pa, baseUri, allPages, versionSuffix, branch, cookieName, cookieVal);
                 }
             }
         }
@@ -286,7 +287,7 @@ namespace DataSource
             return context;
         }
 
-        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string branch, string? cookieName, string? cookieVal)
+        static void GetAllPages(string apiRefDocPage, string? baseUri, List<string> links, string versionSuffix, string branch, string? cookieName, string? cookieVal)
         {
             var doc = FetchHtmlContent(apiRefDocPage, cookieName, cookieVal);
 
@@ -299,14 +300,14 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}" + node.Attributes["href"].Value + "&branch=" + branch;
+                        string href = $"{baseUri}" + node.Attributes["href"].Value + "?view="+ versionSuffix + "&branch=" + branch;
 
                         if (!links.Contains(href))
                         {
                             links.Add(href);
 
                             // Call GetAllPages method recursively for each new link.
-                            GetAllPages(href, baseUri, links, branch, cookieName, cookieVal);
+                            GetAllPages(href, baseUri, links, versionSuffix, branch, cookieName, cookieVal);
                         }
                     }
                 }
@@ -385,7 +386,7 @@ namespace DataSource
             return doc;
         }
 
-        static async Task GetAllDataSource(List<string> allPages, string language, string pageLink, string cookieName, string cookieValue, string branch)
+        static async Task GetAllDataSource(List<string> allPages, string language, string versionSuffix, string pageLink, string cookieName, string cookieValue, string branch)
         {
             List<string> pages = new List<string>();
             List<string> childPage = new List<string>();
@@ -394,19 +395,33 @@ namespace DataSource
             if (language == "js" || language == "javascript")
             {
                 await GetChildName(pageLink, childPage, pages);
-                GetLanguageChildPage(language, childPage, pages, branch);
+                GetLanguageChildPage(language, versionSuffix, childPage, pages, branch);
                 // Recursively get all pages of the API reference document
                 foreach (var pa in pages)
                 {
                     int lastSlashIndex = pa.LastIndexOf('/');
                     string baseUri = pa.Substring(0, lastSlashIndex + 1);
                     allPages.Add(pa);
-                    GetAllPages(pa, baseUri, allPages, branch, cookieName, cookieValue);
+                    GetAllPages(pa, baseUri, allPages, versionSuffix, branch, cookieName, cookieValue);
+                }
+            }
+            else if (language == "python" && versionSuffix.Contains("preview"))
+            {
+                await GetChildName(pageLink, childPage, pages);
+                GetLanguageChildPage(language, versionSuffix, childPage, pages, branch);
+                // Recursively get all pages of the API reference document
+                foreach (var pa in pages)
+                {
+                    int lastSlashIndex = pa.LastIndexOf('/');
+                    int secondLastSlashIndex = pa.LastIndexOf('/', lastSlashIndex - 1);
+                    string baseUri = pa.Substring(0, secondLastSlashIndex + 1);
+                    allPages.Add(pa);
+                    GetAllPages(pa, baseUri, allPages, versionSuffix, branch, cookieName, cookieValue);
                 }
             }
             else
             {
-                await GetAllChildPage(pages, allPages, pageLink, branch, cookieName, cookieValue);
+                await GetAllChildPage(pages, allPages, pageLink, versionSuffix, branch, cookieName, cookieValue);
             }
         }
 
@@ -461,21 +476,39 @@ namespace DataSource
             await browser.CloseAsync();
         }
 
-        static List<string> GetLanguageChildPage(string? language, List<string> childPage, List<string> childLink, string branch = "")
+        static List<string> GetLanguageChildPage(string? language, string versionSuffix, List<string> childPage, List<string> childLink, string branch = "")
         {
             string link = null;
             language = language?.ToLower();
-            foreach (var page in childPage)
+            if(language == "python"){
+                foreach (var page in childPage)
+                {
+                    string packageName = page.Replace(".", "-").ToLower();
+                    if (branch != "main")
+                    {
+                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{packageName}/{page}/?view={versionSuffix}";
+                    }
+                    else
+                    {
+                        link = $"{SDK_API_URL_BASIC}{language}/api/{packageName}/{page}/?view={versionSuffix}&branch={branch}";
+                    }
+                    childLink.Add(link);
+                }
+            }
+            else
             {
-                if (branch != "main")
+                foreach (var page in childPage)
                 {
-                    link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{page}/";
+                    if (branch != "main")
+                    {
+                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{page}/?view={versionSuffix}";
+                    }
+                    else
+                    {
+                        link = $"{SDK_API_URL_BASIC}{language}/api/{page}/?view={versionSuffix}&branch={branch}";
+                    }
+                    childLink.Add(link);
                 }
-                else
-                {
-                    link = $"{SDK_API_URL_BASIC}{language}/api/{page}/?branch={branch}";
-                }
-                childLink.Add(link);
             }
             return childLink;
         }
