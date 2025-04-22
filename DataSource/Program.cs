@@ -43,11 +43,7 @@ namespace DataSource
 
             await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
 
-            foreach (var page in allPages)
-            {
-                Console.WriteLine(page);
-            }
-            // ExportData(allPages);
+            ExportData(allPages);
         }
 
         static string GetPackagePageOverview(string? language, string readme, string versionSuffix, string branch = "")
