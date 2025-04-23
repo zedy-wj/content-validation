@@ -300,7 +300,7 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}" + node.Attributes["href"].Value + "?view="+ versionSuffix + "&branch=" + branch;
+                        string href = $"{baseUri}" + node.Attributes["href"].Value + "&branch=" + branch;
 
                         if (!links.Contains(href))
                         {
@@ -486,11 +486,11 @@ namespace DataSource
                     string packageName = page.Replace(".", "-").ToLower();
                     if (branch != "main")
                     {
-                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{packageName}/{page}/?view={versionSuffix}";
+                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{packageName}/{page}/?{versionSuffix}&branch={branch}";
                     }
                     else
                     {
-                        link = $"{SDK_API_URL_BASIC}{language}/api/{packageName}/{page}/?view={versionSuffix}&branch={branch}";
+                        link = $"{SDK_API_URL_BASIC}{language}/api/{packageName}/{page}/?{versionSuffix}";
                     }
                     childLink.Add(link);
                 }
@@ -501,11 +501,11 @@ namespace DataSource
                 {
                     if (branch != "main")
                     {
-                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{page}/?view={versionSuffix}";
+                        link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{page}/?{versionSuffix}&branch={branch}";
                     }
                     else
                     {
-                        link = $"{SDK_API_URL_BASIC}{language}/api/{page}/?view={versionSuffix}&branch={branch}";
+                        link = $"{SDK_API_URL_BASIC}{language}/api/{page}/?{versionSuffix}";
                     }
                     childLink.Add(link);
                 }
