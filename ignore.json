@@ -289,22 +289,22 @@
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\[\\s*\\d+\\s*,\\s*\\d+\\s*\\]",
+                "IgnoreText": "\\[\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\[\\s*\\d+\\s*,\\s*\\d+\\s*\\)",
+                "IgnoreText": "\\[\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\]",
+                "IgnoreText": "\\(\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\)",
+                "IgnoreText": "\\(\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             }
