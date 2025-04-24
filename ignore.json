@@ -382,6 +382,16 @@
                 "IgnoreText": ":48:",
                 "Usage":"",
                 "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
+            },
+            {
+                "IgnoreText": ":48:",
+                "Usage":"",
+                "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
+            },
+            {
+                "IgnoreText": ":acs:",
+                "Usage":"",
+                "Description": " CommunicationUserIdentifier(\"8:acs:...\"), Link: https://learn.microsoft.com/en-us/python/api/overview/azure/communication-callautomation-readme?view=azure-python-preview&branch=main"
             }
         ]
     }
