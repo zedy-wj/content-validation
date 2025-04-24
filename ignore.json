@@ -384,9 +384,9 @@
                 "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
             },
             {
-                "IgnoreText": ":48:",
+                "IgnoreText": ":dtdl:",
                 "Usage":"",
-                "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
+                "Description": " @context: dtmi:dtdl:context;2, Link: https://learn.microsoft.com/en-us/python/api/overview/azure/digitaltwins-core-readme?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": ":acs:",
