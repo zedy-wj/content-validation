@@ -300,8 +300,17 @@ namespace DataSource
                 {
                     foreach (var node in aNodes)
                     {
-                        string href = $"{baseUri}" + node.Attributes["href"].Value + "&branch=" + branch;
+                        string href = node.Attributes["href"].Value;
 
+                        // Check if the href starts with '#'
+                        if (href.StartsWith("#"))
+                        {
+                            // Skip anchor links
+                            continue;
+                        }
+
+                        href = $"{baseUri}{href}&branch=" + branch;
+                        
                         if (!links.Contains(href))
                         {
                             links.Add(href);
