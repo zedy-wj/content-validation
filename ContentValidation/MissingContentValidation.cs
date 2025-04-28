@@ -19,7 +19,7 @@ public class MissingContentValidation : IValidation
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
-        await PlaywrightHelper.GotoageWithRetriesAsync(page, testLink);
+        await PlaywrightHelper.GotoageWithRetriesAsync(page, "testLink"); // test rule failed situation.
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
