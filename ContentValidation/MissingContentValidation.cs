@@ -91,13 +91,16 @@ public class MissingContentValidation : IValidation
                         if(await elementHandle.InnerTextAsync() == nearestHTagText)
                         {
                             var href = await elementHandle.GetAttributeAsync("href");
-                            if (href != null) {
+                            if (href != null){
                                 anchorLink = testLink + href;
                             }
                         }
                     }
                 }
-                errorList.Add(anchorLink);
+                if(!anchorLink.Contains("#packages") && !anchorLink.Contains("#modules"))
+                {
+                    errorList.Add(anchorLink);
+                }
             }
         }
 

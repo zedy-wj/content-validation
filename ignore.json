@@ -43,11 +43,6 @@
                 "Description": "Example: dict[str, str] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.documentmodeladministrationclient?view=azure-python"
             },
             {
-                "IgnoreText": "Union",
-                "Usage":"prefix",
-                "Description": "Example: Union[str, int] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formtrainingclient?view=azure-python"
-            },
-            {
                 "IgnoreText": "Literal",
                 "Usage":"prefix",
                 "Description": "Example: Literal[\"High\", \"Low\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
