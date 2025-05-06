@@ -120,6 +120,7 @@ public class UnnecessarySymbolsValidation : IValidation
             
             foreach (Match match in matchCollections)
             {
+                var matchSymbol = match.Value;
                 // Console.WriteLine($"Unnecessary symbol: {match.Value} in text: `{line}`");
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
@@ -161,6 +162,10 @@ public class UnnecessarySymbolsValidation : IValidation
                     if (containList02.Any(item => line.Contains(item.IgnoreText)))
                     {
                         continue;
+                    }
+                    if (match.Value == "]")
+                    {
+                        matchSymbol = "[";
                     }
                 }
 
