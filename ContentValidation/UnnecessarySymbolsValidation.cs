@@ -120,6 +120,7 @@ public class UnnecessarySymbolsValidation : IValidation
             
             foreach (Match match in matchCollections)
             {
+                var matchSymbol = match.Value;
                 // Console.WriteLine($"Unnecessary symbol: {match.Value} in text: `{line}`");
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
@@ -162,9 +163,13 @@ public class UnnecessarySymbolsValidation : IValidation
                     {
                         continue;
                     }
+                    if(match.Value == "]")
+                    {
+                        matchSymbol = "[";
+                    }
                 }
 
-                string unnecessarySymbol = $"\"{match.Value}\""; ;
+                string unnecessarySymbol = $"\"{matchSymbol}\""; ;
                 valueSet.Add(unnecessarySymbol);
                 errorList.Add($"Symbols {unnecessarySymbol} do not match in text: `{line}`");
             }
