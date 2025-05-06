@@ -43,11 +43,6 @@
                 "Description": "Example: dict[str, str] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.documentmodeladministrationclient?view=azure-python"
             },
             {
-                "IgnoreText": "Union",
-                "Usage":"prefix",
-                "Description": "Example: Union[str, int] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formtrainingclient?view=azure-python"
-            },
-            {
                 "IgnoreText": "Literal",
                 "Usage":"prefix",
                 "Description": "Example: Literal[\"High\", \"Low\"] , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.aio.containerproxy?view=azure-python"
@@ -289,22 +284,48 @@
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\[\\s*\\d+\\s*,\\s*\\d+\\s*\\]",
+                "IgnoreText": "LogsQueryError",
+                "Usage":"[contain]",
+                "Description": "Example: list[LogsQueryResult,LogsQueryPartialResult,LogsQueryError] , Link: https://learn.microsoft.com/en-us/python/api/azure-monitor-query/azure.monitor.query.aio.logsqueryclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "\\[\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\[\\s*\\d+\\s*,\\s*\\d+\\s*\\)",
+                "IgnoreText": "\\[\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\]",
+                "IgnoreText": "\\(\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\)",
+                "IgnoreText": "\\(\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\)",
+                "Usage":"regular",
+                "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+
+            {
+                "IgnoreText": "\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
+                "Usage":"regular",
+                "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
+                "Usage":"regular",
+                "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
+                "Usage":"regular",
+                "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             }
@@ -382,6 +403,16 @@
                 "IgnoreText": ":48:",
                 "Usage":"",
                 "Description": " 2020-03-06T18:48:27.896Z, Link: https://learn.microsoft.com/en-us/javascript/api/overview/azure/search-documents-readme?view=azure-node-latest&branch=main"
+            },
+            {
+                "IgnoreText": ":dtdl:",
+                "Usage":"",
+                "Description": " @context: dtmi:dtdl:context;2, Link: https://learn.microsoft.com/en-us/python/api/overview/azure/digitaltwins-core-readme?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": ":acs:",
+                "Usage":"",
+                "Description": " CommunicationUserIdentifier(\"8:acs:...\"), Link: https://learn.microsoft.com/en-us/python/api/overview/azure/communication-callautomation-readme?view=azure-python-preview&branch=main"
             }
         ]
     }

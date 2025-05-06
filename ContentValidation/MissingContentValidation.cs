@@ -24,16 +24,30 @@ public class MissingContentValidation : IValidation
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
 
+        // Flag for ignore method clear, copy, items, keys, values
+        bool skipFlag = false;
+        List<string> ignoreList = new List<string>(){"clear", "copy", "items", "keys", "values"};
+
         // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning.
         foreach (var cell in cellElements)
         {
+            if(skipFlag == true){
+                skipFlag = false;
+                continue;
+            }
+            
             var cellText = (await cell.InnerTextAsync()).Trim();
+            if(ignoreList.Contains(cellText)){
+                skipFlag = true;
+            }
+            // Console.WriteLine($"Cell Text: {cellText}");
 
             // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
             // Example: The Description column of the Parameter table is Empty.
             // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
             if (string.IsNullOrEmpty(cellText))
             {
+                // Console.WriteLine($"Cell Text: {cellText}");
                 string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
                 var nearestHTagText = await cell.EvaluateAsync<string?>(@"element => {
                     function findNearestHeading(startNode) {
@@ -91,13 +105,16 @@ public class MissingContentValidation : IValidation
                         if(await elementHandle.InnerTextAsync() == nearestHTagText)
                         {
                             var href = await elementHandle.GetAttributeAsync("href");
-                            if (href != null) {
+                            if (href != null){
                                 anchorLink = testLink + href;
                             }
                         }
                     }
                 }
-                errorList.Add(anchorLink);
+                if(!anchorLink.Contains("#packages") && !anchorLink.Contains("#modules"))
+                {
+                    errorList.Add(anchorLink);
+                }
             }
         }
 

@@ -54,13 +54,12 @@ public class ExtraLabelValidation : IValidation
             int count = 0;
             while ((index = htmlText.IndexOf(label, index)) != -1)
             {
-                foreach (var ignoreItem in ignoreList)
+                // Check if the label is followed by /> (self-closing tag)
+                if (index + label.Length < htmlText.Length && htmlText[index + label.Length] == '/' && htmlText[index + label.Length + 1] == '>')
                 {
-                    if (htmlText.IndexOf(ignoreItem.IgnoreText, index) == index)
-                    {
-                        index += ignoreItem.IgnoreText.Length;
-                        continue;
-                    }
+                    // This is a self-closing tag, skip it
+                    index += label.Length + 2;
+                    continue;
                 }
 
                 count++;
