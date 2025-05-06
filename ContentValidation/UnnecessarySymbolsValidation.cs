@@ -120,7 +120,6 @@ public class UnnecessarySymbolsValidation : IValidation
             
             foreach (Match match in matchCollections)
             {
-                var matchSymbol = match.Value;
                 // Console.WriteLine($"Unnecessary symbol: {match.Value} in text: `{line}`");
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
@@ -153,7 +152,15 @@ public class UnnecessarySymbolsValidation : IValidation
                     }
                 }
 
-                if (match.Value.Equals("[") || match.Value.Equals("]"))
+                if (match.Value.Equals("]"))
+                {
+                    if (line.Contains("["))
+                    {
+                        continue;
+                    }
+                }
+
+                if (match.Value.Equals("["))
                 {
                     if (IsBracketCorrect(line, match.Index))
                     {
@@ -162,10 +169,6 @@ public class UnnecessarySymbolsValidation : IValidation
                     if (containList02.Any(item => line.Contains(item.IgnoreText)))
                     {
                         continue;
-                    }
-                    if (match.Value == "]")
-                    {
-                        matchSymbol = "[";
                     }
                 }
 
