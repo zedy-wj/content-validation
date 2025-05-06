@@ -73,6 +73,11 @@
                 "Description": "Example: \"[scope:][type]:[id]\" , If the prefix is ':' / ':' / ':]' ..., the symbol [ is considered meaningful."
             },
             {
+                "IgnoreText": "Union",
+                "Usage":"prefix",
+                "Description": "Example: Union[str, int] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-formrecognizer/azure.ai.formrecognizer.aio.formtrainingclient?view=azure-python"
+            },
+            {
                 "IgnoreText": ":",
                 "Usage":"prefix",
                 "Description": "Example: \"[scope:][type]:[id]\" , If the prefix is ':' / ':' / ':]' ..., the symbol [ is considered meaningful."
@@ -310,22 +315,22 @@
             },
 
             {
-                "IgnoreText": "\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
+                "IgnoreText": "\\s\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
+                "IgnoreText": "\\s\\[\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
+                "IgnoreText": "\\s\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\]",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
-                "IgnoreText": "\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
+                "IgnoreText": "\\s\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             }

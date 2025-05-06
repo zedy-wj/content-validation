@@ -117,9 +117,10 @@ public class UnnecessarySymbolsValidation : IValidation
             }
             
             var matchCollections = Regex.Matches(line, includePattern);
-
+            
             foreach (Match match in matchCollections)
             {
+                // Console.WriteLine($"Unnecessary symbol: {match.Value} in text: `{line}`");
                 if (match.Value.Equals("<") || match.Value.Equals(">"))
                 {
                     if (AreAngleBracketsPaired(line))
@@ -165,7 +166,7 @@ public class UnnecessarySymbolsValidation : IValidation
 
                 string unnecessarySymbol = $"\"{match.Value}\""; ;
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`");
+                errorList.Add($"Symbols {unnecessarySymbol} do not match in text: `{line}`");
             }
 
             // Check the new patternForJava
