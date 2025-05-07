@@ -172,9 +172,18 @@ public class UnnecessarySymbolsValidation : IValidation
                     }
                 }
 
+                List<string> matchSymbols = new List<string>() { "[", "]", "<", ">" };
                 string unnecessarySymbol = $"\"{match.Value}\""; ;
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Symbols {unnecessarySymbol} do not match in text: `{line}`");
+                
+                if(matchSymbols.Contains(match.Value))
+                {
+                    errorList.Add($"Symbols {unnecessarySymbol} do not match in text: `{line}`");
+                }
+                else{
+                    errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`");
+                }
+               
             }
 
             // Check the new patternForJava
