@@ -43,6 +43,10 @@ namespace DataSource
 
             await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
 
+            foreach(var item in allPages){
+                Console.WriteLine(item);
+            }
+            Console.WriteLine(allPages.Count());
             ExportData(allPages);
         }
 
@@ -450,7 +454,7 @@ namespace DataSource
             var pageInstance = await context.NewPageAsync();
 
             try
-            {
+            {https://dev.azure.com/v-wenjyu/content-validation-automation/_componentGovernance
                 // Navigate to the provided link
                 await pageInstance.GotoAsync(link, new PageGotoOptions
                 {
@@ -493,6 +497,9 @@ namespace DataSource
                 foreach (var page in childPage)
                 {
                     string packageName = page.Replace(".", "-").ToLower();
+                    if(packageName.Contains("fileshare") || packageName.Contains("filedatalake")){
+                        packageName = packageName.Replace("file","file-").ToLower();
+                    }
                     if (branch != "main")
                     {
                         link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{packageName}/{page}/?{versionSuffix}&branch={branch}";
