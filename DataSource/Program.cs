@@ -87,10 +87,6 @@ namespace DataSource
         static async Task<string?> CompareGAAndPreview(string url, string? package, string language)
         {
             var searchPackage = package;
-            if(language == "javascript")
-            {
-                searchPackage = package?.Replace("azure-", "@azure/");
-            }
             
             using (var httpClient = new HttpClient())
             {
