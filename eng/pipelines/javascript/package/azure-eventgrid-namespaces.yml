@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-eventgrid-namespaces'
+      PackageName: '@azure/eventgrid-namespaces'
       ReadmeName: 'eventgrid-namespaces-readme'
       jobDisplayName: 'AZURE_EVENTGRID_NAMESPACES'
       DotNetSdkVersion: '8.0.x'

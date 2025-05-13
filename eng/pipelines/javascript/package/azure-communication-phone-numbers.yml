@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-communication-phone-numbers'
+      PackageName: '@azure/communication-phone-numbers'
       ReadmeName: 'communication-phone-numbers-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_PHONE_NUMBERS'
       DotNetSdkVersion: '8.0.x'

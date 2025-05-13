@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-identity-cache-persistence'
+      PackageName: '@azure/identity-cache-persistence'
       ReadmeName: 'identity-cache-persistence-readme'
       jobDisplayName: 'AZURE_IDENTITY_CACHE_PERSISTENCE'
       DotNetSdkVersion: '8.0.x'

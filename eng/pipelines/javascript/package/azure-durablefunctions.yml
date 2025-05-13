@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-durablefunctions'
+      PackageName: 'durable-functions'
       ReadmeName: 'functions/durablefunctions'
       jobDisplayName: 'AZURE_DURABLEFUNCTIONS'
       DotNetSdkVersion: '8.0.x'

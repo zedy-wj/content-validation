@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-@azure-core'
+      PackageName: 'azure-core'
       ReadmeName: 'other/@azure/core'
       jobDisplayName: 'AZURE_@AZURE_CORE'
       DotNetSdkVersion: '8.0.x'

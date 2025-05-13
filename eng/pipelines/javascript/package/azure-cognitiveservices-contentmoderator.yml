@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-contentmoderator'
+      PackageName: '@azure/cognitiveservices-contentmoderator'
       ReadmeName: 'cognitiveservices/contentsafety'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_CONTENTMODERATOR'
       DotNetSdkVersion: '8.0.x'

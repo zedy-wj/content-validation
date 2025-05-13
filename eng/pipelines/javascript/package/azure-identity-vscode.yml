@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-identity-vscode'
+      PackageName: '@azure/identity-vscode'
       ReadmeName: 'identity-vscode-readme'
       jobDisplayName: 'AZURE_IDENTITY_VSCODE'
       DotNetSdkVersion: '8.0.x'
