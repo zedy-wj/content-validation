@@ -446,7 +446,7 @@ namespace DataSource
             var pageInstance = await context.NewPageAsync();
 
             try
-            {https://dev.azure.com/v-wenjyu/content-validation-automation/_componentGovernance
+            {
                 // Navigate to the provided link
                 await pageInstance.GotoAsync(link, new PageGotoOptions
                 {
