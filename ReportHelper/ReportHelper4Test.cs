@@ -314,7 +314,7 @@ public class JsonHelper4Test
 
 public class GithubHelper
 {
-    public static string FormatToMarkdown(List<Dictionary<string, object>> list)
+    public static string FormatToMarkdown(List<Dictionary<string, object>> list, bool retry = false)
     {
 
         string result = $"";
@@ -360,6 +360,10 @@ public class GithubHelper
             result += $"\n";
         }
 
+        if (retry)
+        {
+            result += $"**Note**: The issue body is too long, so we have shortened it.\n";
+        }
         return result;
     }
 
@@ -389,7 +393,7 @@ public class GithubHelper
                 Console.WriteLine($"Updated at: {matchingIssue["updated_at"]?.GetValue<string>()}");
                 Console.WriteLine($"Issue: {issueTitle} already exist.");
 
-                // Add a comment to the existing issue with diff issue json. TODO
+                // Add a comment to the existing issue with diff issue json.
                 string searchPattern = "DiffIssues*.json";
                 var githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern);
 
@@ -424,6 +428,22 @@ public class GithubHelper
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Error: {ex.Message}");
+                        Console.WriteLine("Trying to shorten the issue body and recreate the issue.");
+                        // If the issue body is too long, we can try to shorten it
+                        // For example, we can limit the number of items to 30
+                        int maxCount = 30;
+                        githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern, maxCount); 
+                        Console.WriteLine($"Re-opening a new issue with title: {issueTitle}");
+                        try
+                        {
+                            bool retry = true;
+                            string githubBodyOrCommentTotal = FormatToMarkdown(githubIssueBodyForJson, retry);
+                            await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
+                        }
+                        catch (Exception ex2)
+                        {
+                            Console.WriteLine($"Error: {ex2.Message}");
+                        }
                     }
                 }else
                 {
@@ -511,7 +531,7 @@ public class GithubHelper
         }
     }
 
-    public static List<Dictionary<string, object>> GenerateSpecificIssueJson(string rule, string searchPattern){
+    public static List<Dictionary<string, object>> GenerateSpecificIssueJson(string rule, string searchPattern, int maxCount = -1){
         var matchingObjects = new List<Dictionary<string, object>>();
         string rootDirectory = ConstData.ReportsDirectory;
 
@@ -531,14 +551,14 @@ public class GithubHelper
             return matchingObjects;
         }
 
-        matchingObjects = FindMatchingObjects(rule, matchingFiles[0]);
+        matchingObjects = FindMatchingObjects(rule, matchingFiles[0], maxCount);
 
         SaveToJson(matchingObjects, outputFilePath, rule);
 
         return matchingObjects;
     }
 
-    static List<Dictionary<string, object>> FindMatchingObjects(string rule, string jsonFilePath)
+    static List<Dictionary<string, object>> FindMatchingObjects(string rule, string jsonFilePath, int maxCount)
     {
         // Define rule mapping: the values ​​in succeedRules correspond to the uppercase version of TestCase in JSON
         var ruleToTestCaseMap = new Dictionary<string, string>
@@ -568,9 +588,13 @@ public class GithubHelper
         {
             // Find all TestCase objects whose fields match
             var matchedObjects = jsonArray.Where(obj =>
-                obj.ContainsKey("TestCase") && obj["TestCase"]?.ToString().Equals(testCase, StringComparison.OrdinalIgnoreCase) == true).ToList();
+                obj.ContainsKey("TestCase") && obj["TestCase"]?.ToString().Equals(testCase, StringComparison.OrdinalIgnoreCase) == true);
 
-            matchingObjects.AddRange(matchedObjects);
+            if (maxCount > 0)
+            {
+                matchedObjects = matchedObjects.Take(maxCount);
+            }
+            matchingObjects.AddRange(matchedObjects.ToList());
         }
  
         return matchingObjects;
