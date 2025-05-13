@@ -743,12 +743,18 @@ public class pipelineStatusHelper
     {
         lock (LockObj)
         {
+            string engDirectory = ConstData.EngDirectory;
             string rootDirectory = ConstData.ReportsDirectory;
             if (!Directory.Exists(rootDirectory))
             {
                 Directory.CreateDirectory(rootDirectory);
             }
+            if (!Directory.Exists(engDirectory))
+            {
+                Directory.CreateDirectory(engDirectory);
+            }
 
+            string pipelineStatusfilePath = Path.Combine(engDirectory, "PipelineFailedStatus.txt");
             string filePath = Path.Combine(rootDirectory, "RuleStatus.json");
             List<Dictionary<string, string>> rulesStatusList = new List<Dictionary<string, string>>();
 
@@ -774,6 +780,7 @@ public class pipelineStatusHelper
                     if(status == "failed")
                     {
                         ruleStatus[rule] = status;
+                        File.WriteAllText(pipelineStatusfilePath, "failed, please check the detail of error info.");
                     }
                     break;
                 }
