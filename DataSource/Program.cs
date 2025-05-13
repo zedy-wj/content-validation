@@ -43,10 +43,6 @@ namespace DataSource
 
             await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
 
-            foreach(var item in allPages){
-                Console.WriteLine(item);
-            }
-            Console.WriteLine(allPages.Count());
             ExportData(allPages);
         }
 
