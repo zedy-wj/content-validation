@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-communication-call-automation'
+      PackageName: '@azure/communication-call-automation'
       ReadmeName: 'communication-call-automation-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_CALL_AUTOMATION'
       DotNetSdkVersion: '8.0.x'

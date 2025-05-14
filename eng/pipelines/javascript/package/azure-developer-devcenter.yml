@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-developer-devcenter'
+      PackageName: '@azure-rest/developer-devcenter'
       ReadmeName: 'developer-devcenter-rest-readme'
       jobDisplayName: 'AZURE_DEVELOPER_DEVCENTER'
       DotNetSdkVersion: '8.0.x'

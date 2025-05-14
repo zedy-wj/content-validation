@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-confidential-ledger'
+      PackageName: '@azure-rest/confidential-ledger'
       ReadmeName: 'confidential-ledger-rest-readme'
       jobDisplayName: 'AZURE_CONFIDENTIAL_LEDGER'
       DotNetSdkVersion: '8.0.x'

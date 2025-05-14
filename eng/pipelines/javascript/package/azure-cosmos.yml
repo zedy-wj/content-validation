@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cosmos'
+      PackageName: '@azure/cosmos'
       ReadmeName: 'cosmos-readme'
       jobDisplayName: 'AZURE_COSMOS'
       DotNetSdkVersion: '8.0.x'

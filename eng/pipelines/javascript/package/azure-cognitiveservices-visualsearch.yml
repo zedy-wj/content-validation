@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-visualsearch'
+      PackageName: '@azure/cognitiveservices-visualsearch'
       ReadmeName: 'cognitiveservices-visualsearch-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_VISUALSEARCH'
       DotNetSdkVersion: '8.0.x'

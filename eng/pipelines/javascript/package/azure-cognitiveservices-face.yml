@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-face'
+      PackageName: '@azure/cognitiveservices-face'
       ReadmeName: 'cognitiveservices-face-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_FACE'
       DotNetSdkVersion: '8.0.x'

@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-communication-messages'
+      PackageName: 'azure-rest/communication-messages'
       ReadmeName: 'communication-messages-rest-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_MESSAGES'
       DotNetSdkVersion: '8.0.x'

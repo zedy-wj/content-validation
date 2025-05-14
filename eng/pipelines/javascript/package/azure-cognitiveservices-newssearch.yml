@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-newssearch'
+      PackageName: '@azure/cognitiveservices-newssearch'
       ReadmeName: 'cognitiveservices-newssearch-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_NEWSSEARCH'
       DotNetSdkVersion: '8.0.x'

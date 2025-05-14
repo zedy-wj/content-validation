@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-storage-file-datalake'
+      PackageName: '@azure/storage-file-datalake'
       ReadmeName: 'storage-file-datalake-readme'
       jobDisplayName: 'AZURE_STORAGE_FILE_DATALAKE'
       DotNetSdkVersion: '8.0.x'

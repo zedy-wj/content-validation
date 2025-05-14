@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-event-hubs'
+      PackageName: '@azure/event-hubs'
       ReadmeName: 'event-hubs-readme'
       jobDisplayName: 'AZURE_EVENT_HUBS'
       DotNetSdkVersion: '8.0.x'

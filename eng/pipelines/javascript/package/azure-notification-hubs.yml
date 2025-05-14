@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-notification-hubs'
+      PackageName: '@azure/notification-hubs'
       ReadmeName: 'notification-hubs-readme'
       jobDisplayName: 'AZURE_NOTIFICATION_HUBS'
       DotNetSdkVersion: '8.0.x'
