@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-communication-email'
+      PackageName: '@azure/communication-email'
       ReadmeName: 'communication-email-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_EMAIL'
       DotNetSdkVersion: '8.0.x'

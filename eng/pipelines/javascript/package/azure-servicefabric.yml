@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-servicefabric'
+      PackageName: '@azure/servicefabric'
       ReadmeName: 'servicefabric/servicefabric'
       jobDisplayName: 'AZURE_SERVICEFABRIC'
       DotNetSdkVersion: '8.0.x'

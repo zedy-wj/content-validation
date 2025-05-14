@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-batch'
+      PackageName: '@azure/batch'
       ReadmeName: 'batch/batch'
       jobDisplayName: 'AZURE_BATCH'
       DotNetSdkVersion: '8.0.x'

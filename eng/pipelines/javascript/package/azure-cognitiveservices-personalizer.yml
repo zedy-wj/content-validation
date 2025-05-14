@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-personalizer'
+      PackageName: '@azure/cognitiveservices-personalizer'
       ReadmeName: 'cognitiveservices/personalizer'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_PERSONALIZER'
       DotNetSdkVersion: '8.0.x'

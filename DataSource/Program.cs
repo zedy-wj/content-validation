@@ -87,10 +87,6 @@ namespace DataSource
         static async Task<string?> CompareGAAndPreview(string url, string? package, string language)
         {
             var searchPackage = package;
-            if(language == "javascript")
-            {
-                searchPackage = package?.Replace("azure-", "@azure/");
-            }
             
             using (var httpClient = new HttpClient())
             {
@@ -493,6 +489,9 @@ namespace DataSource
                 foreach (var page in childPage)
                 {
                     string packageName = page.Replace(".", "-").ToLower();
+                    if(packageName.Contains("fileshare") || packageName.Contains("filedatalake")){
+                        packageName = packageName.Replace("file","file-").ToLower();
+                    }
                     if (branch != "main")
                     {
                         link = $"{SDK_API_REVIEW_URL_BASIC}{language}/api/{packageName}/{page}/?{versionSuffix}&branch={branch}";

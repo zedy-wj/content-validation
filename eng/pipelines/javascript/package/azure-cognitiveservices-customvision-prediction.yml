@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-cognitiveservices-customvision-prediction'
+      PackageName: '@azure/cognitiveservices-customvision-prediction'
       ReadmeName: 'cognitiveservices/customvisionprediction'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_CUSTOMVISION_PREDICTION'
       DotNetSdkVersion: '8.0.x'

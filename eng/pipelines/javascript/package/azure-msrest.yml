@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-msrest'
+      PackageName: 'ms-rest'
       ReadmeName: 'other/msrest'
       jobDisplayName: 'AZURE_MSREST'
       DotNetSdkVersion: '8.0.x'

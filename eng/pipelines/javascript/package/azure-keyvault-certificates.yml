@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-keyvault-certificates'
+      PackageName: '@azure/keyvault-certificates'
       ReadmeName: 'keyvault-certificates-readme'
       jobDisplayName: 'AZURE_KEYVAULT_CERTIFICATES'
       DotNetSdkVersion: '8.0.x'
