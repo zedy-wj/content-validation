@@ -30,21 +30,11 @@ namespace DataSource
             string? language = config["Language"];
             string branch = config["Branch"]!;
             string? package = config["PackageName"];
-            string? csvPackageName = config["CsvPackageName"];
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
 
-            string? versionSuffix = "";
-            if (language == "JavaScript")
-            {
-                versionSuffix = ChooseGAOrPreview(language, csvPackageName);
-            }
-            else
-            {
-                versionSuffix = ChooseGAOrPreview(language, package);
-            }
+            string? versionSuffix = ChooseGAOrPreview(language, package);
             
-
             string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
 
             Console.WriteLine($"Page link: {pageLink}");
