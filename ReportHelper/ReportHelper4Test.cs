@@ -377,7 +377,8 @@ public class GithubHelper
             return;
         }
 
-        var allIssues = GetAllGitHubIssues(apiUrl, githubToken);
+        var allIssues = new List<JsonNode>();
+        allIssues = GetAllGitHubIssues(apiUrl, githubToken);
 
         foreach (var rule in succeedRules){
             string issueTitle = $"{packageName} content validation issues about {rule} for {language} sdk.";
@@ -423,27 +424,31 @@ public class GithubHelper
                     try
                     {
                         string githubBodyOrCommentTotal = FormatToMarkdown(githubIssueBodyForJson);
-                        await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
+                        var res = await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
+
+                        if (!res)
+                        {
+                            Console.WriteLine("Trying to shorten the issue body and recreate the issue.");
+                            // If the issue body is too long, we can try to shorten it
+                            // For example, we can limit the number of items to 30
+                            int maxCount = 30;
+                            githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern, maxCount);
+                            Console.WriteLine($"Re-opening a new issue with title: {issueTitle}");
+                            try
+                            {
+                                bool retry = true;
+                                githubBodyOrCommentTotal  = FormatToMarkdown(githubIssueBodyForJson, retry);
+                                await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
+                            }
+                            catch (Exception ex2)
+                            {
+                                Console.WriteLine($"Error: {ex2.Message}");
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Error: {ex.Message}");
-                        Console.WriteLine("Trying to shorten the issue body and recreate the issue.");
-                        // If the issue body is too long, we can try to shorten it
-                        // For example, we can limit the number of items to 30
-                        int maxCount = 30;
-                        githubIssueBodyForJson = GenerateSpecificIssueJson(rule, searchPattern, maxCount); 
-                        Console.WriteLine($"Re-opening a new issue with title: {issueTitle}");
-                        try
-                        {
-                            bool retry = true;
-                            string githubBodyOrCommentTotal = FormatToMarkdown(githubIssueBodyForJson, retry);
-                            await CreateNewIssueAsync(apiUrl, issueTitle, githubBodyOrCommentTotal, githubToken);
-                        }
-                        catch (Exception ex2)
-                        {
-                            Console.WriteLine($"Error: {ex2.Message}");
-                        }
                     }
                 }else
                 {
@@ -492,7 +497,7 @@ public class GithubHelper
             }
         }
     }
-    private static async Task CreateNewIssueAsync(string ApiUrl, string title, string body, string githubToken)
+    private static async Task<bool> CreateNewIssueAsync(string ApiUrl, string title, string body, string githubToken)
     {
         using (HttpClient client = new HttpClient())
         {
@@ -507,21 +512,21 @@ public class GithubHelper
             };
  
             StringContent content = new StringContent(JsonSerializer.Serialize(issueData), Encoding.UTF8, "application/json");
- 
+
             try
             {
                 Console.WriteLine("Sending request to create a new issue...");
                 HttpResponseMessage response = await client.PostAsync(ApiUrl, content);
- 
+
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.WriteLine($"Error: Response status code does not indicate success: {response.StatusCode}");
                     string errorContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"Error details: {errorContent}");
-                    return;
+                    return false;
                 }
- 
                 Console.WriteLine("HTTP request successful.");
+                return true;
             }
             catch (HttpRequestException ex)
             {

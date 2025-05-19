@@ -13,6 +13,16 @@
             "args": [],
             "cwd": "${workspaceFolder}/DataSource/bin/Debug/net8.0",
             "stopAtEntry": false,
+        },
+        {
+            "name": "ReportHelper",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/ReportHelper/bin/Debug/net8.0/ReportHelper.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ReportHelper/bin/Debug/net8.0",
+            "stopAtEntry": false,
         }
     ]
 }
