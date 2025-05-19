@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-iot-common'
+      CsvPackageName: 'azure-iot-common'
       ReadmeName: 'iot/iothub-iotcommon'
       jobDisplayName: 'AZURE_IOT_COMMON'
       DotNetSdkVersion: '8.0.x'

@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/monitor-opentelemetry'
+      PackageName: 'azure-monitor-opentelemetry'
+      CsvPackageName: '@azure/monitor-opentelemetry'
       ReadmeName: 'monitor-opentelemetry-readme'
       jobDisplayName: 'AZURE_MONITOR_OPENTELEMETRY'
       DotNetSdkVersion: '8.0.x'

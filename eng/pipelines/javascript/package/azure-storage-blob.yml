@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/storage-blob'
+      PackageName: 'azure-storage-blob'
+      CsvPackageName: '@azure/storage-blob'
       ReadmeName: 'storage-blob-readme'
       jobDisplayName: 'AZURE_STORAGE_BLOB'
       DotNetSdkVersion: '8.0.x'

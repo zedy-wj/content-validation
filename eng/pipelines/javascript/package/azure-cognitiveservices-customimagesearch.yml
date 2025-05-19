@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-customimagesearch'
+      PackageName: 'azure-cognitiveservices-customimagesearch'
+      CsvPackageName: '@azure/cognitiveservices-customimagesearch'
       ReadmeName: 'cognitiveservices-customimagesearch-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_CUSTOMIMAGESEARCH'
       DotNetSdkVersion: '8.0.x'

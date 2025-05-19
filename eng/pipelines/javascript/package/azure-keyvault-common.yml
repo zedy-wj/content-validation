@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/keyvault-common'
+      PackageName: 'azure-keyvault-common'
+      CsvPackageName: '@azure/keyvault-common'
       ReadmeName: 'keyvault-common-readme'
       jobDisplayName: 'AZURE_KEYVAULT_COMMON'
       DotNetSdkVersion: '8.0.x'

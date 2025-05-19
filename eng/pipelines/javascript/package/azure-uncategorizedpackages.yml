@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-uncategorizedpackages'
+      CsvPackageName: 'azure-uncategorizedpackages'
       ReadmeName: 'other/uncategorizedpackages'
       jobDisplayName: 'AZURE_UNCATEGORIZEDPACKAGES'
       DotNetSdkVersion: '8.0.x'

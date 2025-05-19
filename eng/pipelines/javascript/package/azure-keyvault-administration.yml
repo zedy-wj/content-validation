@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/keyvault-admin'
+      PackageName: 'azure-keyvault-administration'
+      CsvPackageName: '@azure/keyvault-admin'
       ReadmeName: 'keyvault-admin-readme'
       jobDisplayName: 'AZURE_KEYVAULT_ADMINISTRATION'
       DotNetSdkVersion: '8.0.x'
