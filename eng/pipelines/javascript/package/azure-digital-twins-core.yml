@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-digital-twins-core'
+      PackageName: '@azure/digital-twins-core'
       ReadmeName: 'digital-twins-core-readme'
       jobDisplayName: 'AZURE_DIGITAL_TWINS_CORE'
       DotNetSdkVersion: '8.0.x'

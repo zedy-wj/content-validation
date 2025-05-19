@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-service-bus'
+      PackageName: '@azure/service-bus'
       ReadmeName: 'service-bus-readme'
       jobDisplayName: 'AZURE_SERVICE_BUS'
       DotNetSdkVersion: '8.0.x'

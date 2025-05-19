@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-search-documents'
+      PackageName: '@azure/search-documents'
       ReadmeName: 'search-documents-readme'
       jobDisplayName: 'AZURE_SEARCH_DOCUMENTS'
       DotNetSdkVersion: '8.0.x'

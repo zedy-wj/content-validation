@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-storage-file-share'
+      PackageName: '@azure/storage-file-share'
       ReadmeName: 'storage-file-share-readme'
       jobDisplayName: 'AZURE_STORAGE_FILE_SHARE'
       DotNetSdkVersion: '8.0.x'

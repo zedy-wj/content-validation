@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-communication-job-router'
+      PackageName: '@azure-rest/communication-job-router'
       ReadmeName: 'communication-job-router-rest-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_JOB_ROUTER'
       DotNetSdkVersion: '8.0.x'

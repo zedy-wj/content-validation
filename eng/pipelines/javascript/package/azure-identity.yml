@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-identity'
+      PackageName: '@azure/identity'
       ReadmeName: 'identity-readme'
       jobDisplayName: 'AZURE_IDENTITY'
       DotNetSdkVersion: '8.0.x'

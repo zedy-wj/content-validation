@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-load-testing'
+      PackageName: '@azure-rest/load-testing'
       ReadmeName: 'load-testing-rest-readme'
       jobDisplayName: 'AZURE_LOAD_TESTING'
       DotNetSdkVersion: '8.0.x'

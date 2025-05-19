@@ -19,7 +19,7 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: 'azure-eventgrid'
+      PackageName: '@azure/eventgrid'
       ReadmeName: 'eventgrid-readme'
       jobDisplayName: 'AZURE_EVENTGRID'
       DotNetSdkVersion: '8.0.x'
