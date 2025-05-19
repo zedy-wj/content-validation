@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-react'
+      PackageName: 'azure-communication-react'
+      CsvPackageName: '@azure/communication-react'
       ReadmeName: 'communication/@azure/communication-react'
       jobDisplayName: 'AZURE_COMMUNICATION_REACT'
       DotNetSdkVersion: '8.0.x'

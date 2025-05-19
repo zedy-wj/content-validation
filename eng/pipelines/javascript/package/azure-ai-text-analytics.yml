@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/ai-text-analytics'
+      PackageName: 'azure-ai-text-analytics'
+      CsvPackageNam: '@azure/ai-text-analytics'
       ReadmeName: 'ai-text-analytics-readme'
       jobDisplayName: 'AZURE_AI_TEXT_ANALYTICS'
       DotNetSdkVersion: '8.0.x'

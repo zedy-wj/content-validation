@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure-rest/ai-document-intelligence'
+      PackageName: 'azure-ai-document-intelligence'
+      CsvPackageName: '@azure-rest/ai-document-intelligence'
       ReadmeName: 'ai-document-intelligence-rest-readme'
       jobDisplayName: 'AZURE_AI_DOCUMENT_INTELLIGENCE'
       DotNetSdkVersion: '8.0.x'

@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-websearch'
+      PackageName: 'azure-cognitiveservices-websearch'
+      CsvPackageName: '@azure/cognitiveservices-websearch'
       ReadmeName: 'cognitiveservices-websearch-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_WEBSEARCH'
       DotNetSdkVersion: '8.0.x'

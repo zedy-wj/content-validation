@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/eventhubs-checkpointstore-blob'
+      PackageName: 'azure-eventhubs-checkpointstore-blob'
+      CsvPackageName: '@azure/eventhubs-checkpointstore-blob'
       ReadmeName: 'eventhubs-checkpointstore-blob-readme'
       jobDisplayName: 'AZURE_EVENTHUBS_CHECKPOINTSTORE_BLOB'
       DotNetSdkVersion: '8.0.x'

@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-calling-effects'
+      PackageName: 'azure-communication-calling-effects'
+      CsvPackageName: '@azure/communication-calling-effects'
       ReadmeName: 'communication/@azure/communication-calling-effects'
       jobDisplayName: 'AZURE_COMMUNICATION_CALLING_EFFECTS'
       DotNetSdkVersion: '8.0.x'

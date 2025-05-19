@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-computervision'
+      PackageName: 'azure-cognitiveservices-computervision'
+      CsvPackageName: '@azure/cognitiveservices-computervision'
       ReadmeName: 'cognitiveservices/computervision'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_COMPUTERVISION'
       DotNetSdkVersion: '8.0.x'

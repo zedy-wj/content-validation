@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-identity'
+      PackageName: 'azure-communication-identity'
+      CsvPackageName: '@azure/communication-identity'
       ReadmeName: 'communication-identity-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_IDENTITY'
       DotNetSdkVersion: '8.0.x'

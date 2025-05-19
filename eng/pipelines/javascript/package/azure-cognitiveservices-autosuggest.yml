@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-autosuggest'
+      PackageName: 'azure-cognitiveservices-autosuggest'
+      CsvPackageName: '@azure/cognitiveservices-autosuggest'
       ReadmeName: 'cognitiveservices-autosuggest-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_AUTOSUGGEST'
       DotNetSdkVersion: '8.0.x'

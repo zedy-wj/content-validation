@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/identity-broker'
+      PackageName: 'azure-identity-broker'
+      CsvPackageName: '@azure/identity-broker'
       ReadmeName: 'identity-broker-readme'
       jobDisplayName: 'AZURE_IDENTITY_BROKER'
       DotNetSdkVersion: '8.0.x'

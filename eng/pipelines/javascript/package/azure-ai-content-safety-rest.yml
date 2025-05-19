@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure-rest/ai-content-safety'
+      PackageName: 'azure-ai-content-safety-rest'
+      CsvPackageName: '@azure-rest/ai-content-safety'
       ReadmeName: 'ai-content-safety-rest-readme'
       jobDisplayName: 'AZURE_AI_CONTENT_SAFETY_REST'
       DotNetSdkVersion: '8.0.x'
