@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/functions'
+      PackageName: 'azure-functions'
+      CsvPackageName: '@azure/functions'
       ReadmeName: 'functions/azurefunctions'
       jobDisplayName: 'AZURE_FUNCTIONS'
       DotNetSdkVersion: '8.0.x'

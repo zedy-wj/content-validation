@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-sms'
+      PackageName: 'azure-communication-sms'
+      CsvPackageName: '@azure/communication-sms'
       ReadmeName: 'communication-sms-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_SMS'
       DotNetSdkVersion: '8.0.x'

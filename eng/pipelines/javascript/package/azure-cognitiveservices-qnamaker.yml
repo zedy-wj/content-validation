@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-qnamaker'
+      PackageName: 'azure-cognitiveservices-qnamaker'
+      CsvPackageName: '@azure/cognitiveservices-qnamaker'
       ReadmeName: 'cognitiveservices/questionanswering'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_QNAMAKER'
       DotNetSdkVersion: '8.0.x'

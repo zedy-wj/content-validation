@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/monitor-ingestion'
+      PackageName: 'azure-monitor-ingestion'
+      CsvPackageName: '@azure/monitor-ingestion'
       ReadmeName: 'monitor-ingestion-readme'
       jobDisplayName: 'AZURE_MONITOR_INGESTION'
       DotNetSdkVersion: '8.0.x'

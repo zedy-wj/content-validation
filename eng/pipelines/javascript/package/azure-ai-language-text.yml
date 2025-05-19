@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/ai-language-text'
+      PackageName: 'azure-ai-language-text'
+      CsvPackageName: '@azure/ai-language-text'
       ReadmeName: 'ai-language-text-readme'
       jobDisplayName: 'AZURE_AI_LANGUAGE_TEXT'
       DotNetSdkVersion: '8.0.x'

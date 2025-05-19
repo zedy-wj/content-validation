@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-iot-device'
+      CsvPackageName: 'azure-iot-device'
       ReadmeName: 'iot/iothub-iotdevice'
       jobDisplayName: 'AZURE_IOT_DEVICE'
       DotNetSdkVersion: '8.0.x'

@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-iot-digitaltwins-service'
+      CsvPackageName: 'azure-iot-digitaltwins-service'
       ReadmeName: 'iot/digitaltwinsservices'
       jobDisplayName: 'AZURE_IOT_DIGITALTWINS_SERVICE'
       DotNetSdkVersion: '8.0.x'

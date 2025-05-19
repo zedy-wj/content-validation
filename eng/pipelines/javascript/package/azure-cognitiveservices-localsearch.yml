@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-localsearch'
+      PackageName: 'azure-cognitiveservices-localsearch'
+      CsvPackageName: '@azure/cognitiveservices-localsearch'
       ReadmeName: 'localsearch/localsearch'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_LOCALSEARCH'
       DotNetSdkVersion: '8.0.x'

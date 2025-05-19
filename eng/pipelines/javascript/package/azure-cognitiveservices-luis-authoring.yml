@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-luis-authoring'
+      PackageName: 'azure-cognitiveservices-luis-authoring'
+      CsvPackageName: '@azure/cognitiveservices-luis-authoring'
       ReadmeName: 'cognitiveservices/luisauthoring'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_LUIS_AUTHORING'
       DotNetSdkVersion: '8.0.x'

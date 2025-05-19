@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-spellcheck'
+      PackageName: 'azure-cognitiveservices-spellcheck'
+      CsvPackageName: '@azure/cognitiveservices-spellcheck'
       ReadmeName: 'cognitiveservices-spellcheck-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_SPELLCHECK'
       DotNetSdkVersion: '8.0.x'

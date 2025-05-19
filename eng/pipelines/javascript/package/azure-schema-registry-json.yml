@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/schema-registry-json'
+      PackageName: 'azure-schema-registry-json'
+      CsvPackageName: '@azure/schema-registry-json'
       ReadmeName: 'schema-registry-json-readme'
       jobDisplayName: 'AZURE_SCHEMA_REGISTRY_JSON'
       DotNetSdkVersion: '8.0.x'

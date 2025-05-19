@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-microsoft-cognitiveservices-speech-sdk'
+      CsvPackageName: 'azure-microsoft-cognitiveservices-speech-sdk'
       ReadmeName: 'microsoft-cognitiveservices-speech-sdk-readme'
       jobDisplayName: 'AZURE_MICROSOFT_COGNITIVESERVICES_SPEECH_SDK'
       DotNetSdkVersion: '8.0.x'

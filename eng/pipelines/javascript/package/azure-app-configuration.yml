@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/app-configuration'
+      PackageName: 'azure-app-configuration'
+      CsvPackageName: '@azure/app-configuration'
       ReadmeName: 'app-configuration-readme'
       jobDisplayName: 'AZURE_APP_CONFIGURATION'
       DotNetSdkVersion: '8.0.x'

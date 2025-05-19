@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-common'
+      PackageName: 'azure-communication-common'
+      CsvPackageName: '@azure/communication-common'
       ReadmeName: 'communication-common-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_COMMON'
       DotNetSdkVersion: '8.0.x'

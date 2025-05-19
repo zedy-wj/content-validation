@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/ai-form-recognizer'
+      PackageName: 'azure-ai-form-recognizer'
+      CsvPackageName: '@azure/ai-form-recognizer'
       ReadmeName: 'ai-form-recognizer-readme'
       jobDisplayName: 'AZURE_AI_FORM_RECOGNIZER'
       DotNetSdkVersion: '8.0.x'

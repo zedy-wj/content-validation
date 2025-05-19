@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/attestation'
+      PackageName: 'azure-attestation'
+      CsvPackageName: '@azure/attestation'
       ReadmeName: 'attestation-readme'
       jobDisplayName: 'AZURE_ATTESTATION'
       DotNetSdkVersion: '8.0.x'

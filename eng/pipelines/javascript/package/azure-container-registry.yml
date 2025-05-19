@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/container-registry'
+      PackageName: 'azure-container-registry'
+      CsvPackageName: '@azure/container-registry'
       ReadmeName: 'container-registry-readme'
       jobDisplayName: 'AZURE_CONTAINER_REGISTRY'
       DotNetSdkVersion: '8.0.x'

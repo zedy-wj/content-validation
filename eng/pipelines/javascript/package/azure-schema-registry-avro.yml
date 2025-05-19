@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/schema-registry-avro'
+      PackageName: 'azure-schema-registry-avro'
+      CsvPackageName: '@azure/schema-registry-avro'
       ReadmeName: 'schema-registry-avro-readme'
       jobDisplayName: 'AZURE_SCHEMA_REGISTRY_AVRO'
       DotNetSdkVersion: '8.0.x'

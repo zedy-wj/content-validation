@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/monitor-query'
+      PackageName: 'azure-monitor-query'
+      CsvPackageName: '@azure/monitor-query'
       ReadmeName: 'monitor-query-readme'
       jobDisplayName: 'AZURE_MONITOR_QUERY'
       DotNetSdkVersion: '8.0.x'

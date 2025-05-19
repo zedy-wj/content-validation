@@ -34,7 +34,7 @@ namespace DataSource
             string? cookieValue = config["CookieValue"];
 
             string? versionSuffix = ChooseGAOrPreview(language, package);
-
+            
             string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
 
             Console.WriteLine($"Page link: {pageLink}");

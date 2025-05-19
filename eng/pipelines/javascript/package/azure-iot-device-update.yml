@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure-rest/iot-device-update'
+      PackageName: 'azure-iot-device-update'
+      CsvPackageName: '@azure-rest/iot-device-update'
       ReadmeName: 'iot-device-update-rest-readme'
       jobDisplayName: 'AZURE_IOT_DEVICE_UPDATE'
       DotNetSdkVersion: '8.0.x'

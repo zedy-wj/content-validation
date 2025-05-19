@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/web-pubsub'
+      PackageName: 'azure-web-pubsub'
+      CsvPackageName: '@azure/web-pubsub'
       ReadmeName: 'web-pubsub-readme'
       jobDisplayName: 'AZURE_WEB_PUBSUB'
       DotNetSdkVersion: '8.0.x'
