@@ -62,7 +62,7 @@ stages:
       inputs:
         buildType: 'specific'
         project: 'content-validation-automation'
-        pipeline: 'Content Validation For Javascript'
+        pipeline: 'Content Validation For JavaScript'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
