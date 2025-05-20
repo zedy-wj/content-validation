@@ -20,6 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-iothub'
+      CsvPackageName: 'azure-iothub'
       ReadmeName: 'iot/iothub'
       jobDisplayName: 'AZURE_IOTHUB'
       DotNetSdkVersion: '8.0.x'

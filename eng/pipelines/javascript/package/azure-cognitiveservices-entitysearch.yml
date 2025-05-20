@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-entitysearch'
+      PackageName: 'azure-cognitiveservices-entitysearch'
+      CsvPackageName: '@azure/cognitiveservices-entitysearch'
       ReadmeName: 'cognitiveservices-entitysearch-readme'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_ENTITYSEARCH'
       DotNetSdkVersion: '8.0.x'

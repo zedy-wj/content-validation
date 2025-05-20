@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/data-tables'
+      PackageName: 'azure-data-tables'
+      CsvPackageName: '@azure/data-tables'
       ReadmeName: 'data-tables-readme'
       jobDisplayName: 'AZURE_DATA_TABLES'
       DotNetSdkVersion: '8.0.x'

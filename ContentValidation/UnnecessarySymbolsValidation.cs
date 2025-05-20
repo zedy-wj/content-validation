@@ -178,10 +178,10 @@ public class UnnecessarySymbolsValidation : IValidation
                 
                 if(matchSymbols.Contains(match.Value))
                 {
-                    errorList.Add($"Symbols {unnecessarySymbol} do not match in text: `{line}`");
+                    errorList.Add($"Symbols `{unnecessarySymbol}` do not match in text: `{line}`");
                 }
                 else{
-                    errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`");
+                    errorList.Add($"Unnecessary symbol: `{unnecessarySymbol}` in text: `{line}`");
                 }
                
             }
@@ -193,7 +193,7 @@ public class UnnecessarySymbolsValidation : IValidation
                 string matchedContent = matchData.Value;
                 string unnecessarySymbol = $"\"{matchedContent}\"";
                 valueSet.Add(unnecessarySymbol);
-                errorList.Add($"Unnecessary symbol: {unnecessarySymbol} in text: `{line}`"); 
+                errorList.Add($"Unnecessary symbol: `{unnecessarySymbol}` in text: `{line}`"); 
             }
         }
     }

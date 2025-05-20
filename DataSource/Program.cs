@@ -29,12 +29,12 @@ namespace DataSource
             string? readme = config["ReadmeName"];
             string? language = config["Language"];
             string branch = config["Branch"]!;
-            string? package = config["PackageName"];
+            string? package = language?.ToLower() != "javascript" ? config["PackageName"] : config["CsvPackageName"];
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
 
             string? versionSuffix = ChooseGAOrPreview(language, package);
-
+            
             string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
 
             Console.WriteLine($"Page link: {pageLink}");

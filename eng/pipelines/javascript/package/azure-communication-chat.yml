@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-chat'
+      PackageName: 'azure-communication-chat'
+      CsvPackageName: '@azure/communication-chat'
       ReadmeName: 'communication-chat-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_CHAT'
       DotNetSdkVersion: '8.0.x'

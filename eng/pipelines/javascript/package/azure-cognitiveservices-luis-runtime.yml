@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/cognitiveservices-luis-runtime'
+      PackageName: 'azure-cognitiveservices-luis-runtime'
+      CsvPackageName: '@azure/cognitiveservices-luis-runtime'
       ReadmeName: 'cognitiveservices/luisruntime'
       jobDisplayName: 'AZURE_COGNITIVESERVICES_LUIS_RUNTIME'
       DotNetSdkVersion: '8.0.x'

@@ -19,7 +19,8 @@ parameters:
 jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
-      PackageName: '@azure/communication-rooms'
+      PackageName: 'azure-communication-rooms'
+      CsvPackageName: '@azure/communication-rooms'
       ReadmeName: 'communication-rooms-readme'
       jobDisplayName: 'AZURE_COMMUNICATION_ROOMS'
       DotNetSdkVersion: '8.0.x'
