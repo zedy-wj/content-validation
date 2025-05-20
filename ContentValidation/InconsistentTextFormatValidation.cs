@@ -1,5 +1,4 @@
 using Microsoft.Playwright;
-using System.Text.RegularExpressions;
 
 namespace UtilityLibraries;
 
@@ -30,8 +29,18 @@ public class InconsistentTextFormatValidation : IValidation
             foreach (var element in hTagsInTd)
             {
                 var text = await element.InnerTextAsync();
-                var headerId = await element.GetAttributeAsync("id");
-                var anchorLink = string.IsNullOrEmpty(headerId) ? "No anchor link" : $"{testLink}#{headerId}";
+
+                string headerId = null;
+                try
+                {
+                    headerId = await element.GetAttributeAsync("id");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("There no 'id' attribute. " + ex.Message);
+                }
+
+                var anchorLink = string.IsNullOrEmpty(headerId) ? $"{testLink}" : $"{testLink}#{headerId}";
                 errorList.Add(text);
                 errorLocation.Add(anchorLink);
             }
