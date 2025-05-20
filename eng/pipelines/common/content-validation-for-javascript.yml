@@ -3,6 +3,8 @@ parameters:
   type: string
 - name: PackageName
   type: string
+- name: CsvPackageName
+  type: string
 - name: ReadmeName
   type: string
 - name: GitHubPat
@@ -86,6 +88,7 @@ jobs:
         Language: ${{ parameters.Language }}
         Branch: ${{ parameters.Branch }}
         PackageName: ${{ parameters.PackageName }}
+        CsvPackageName: ${{ parameters.CsvPackageName }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/DataSource'
@@ -110,23 +113,6 @@ jobs:
         arguments: '-e BROWSER=chromium --filter Category=JsTest'
         testRunTitle: 'Content Validation Testing Start'
       continueOnError: true
-
-    # - task: Bash@3
-    #   displayName: Check the status of test case
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       #!/bin/bash
-    #       FILE_PATH="$(System.DefaultWorkingDirectory)/eng/PipelineFailedStatus.txt"
- 
-    #       if [ ! -f "$FILE_PATH" ]; then
-    #         echo "No exception was caught during the test case execution. Please check the test case running results."
-    #         exit 0
-    #       else
-    #         echo "An exception was caught during the test case execution, interrupting subsequent execution. Printing contents and exiting abnormally."
-    #         cat "$FILE_PATH"
-    #         exit 1
-    #       fi
 
     - task: DownloadPipelineArtifact@2
       displayName: Download The Last Artifact issues-summary
@@ -167,24 +153,20 @@ jobs:
         artifactName: ${{ parameters.PackageName }}
         publishLocation: "pipeline"
 
-    # - task: Bash@3
-    #   displayName: 'Set Script Executable'
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/create-github-issue.sh
-
-    # - task: Bash@3
-    #   displayName: 'Create GitHub Issue'
-    #   inputs:
-    #     targetType: 'filePath'
-    #     filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/create-github-issue.sh'
-    #     arguments: >-
-    #       ${{ parameters.PackageName }}
-    #       ${{ parameters.GitHubPat }}
-    #       ${{ parameters.GitHubOwner }}
-    #       ${{ parameters.GitHubRepo }}
-    #       ${{ parameters.OrganizationName }}
-    #       ${{ parameters.ProjectName }}
-    #       $(Build.BuildId)
-    #       ${{ parameters.Language }}
+    # If some rules failed, change the pipeline status to failed.
+    - task: Bash@3
+      displayName: Check the status of test case
+      inputs:
+        targetType: 'inline'
+        script: |
+          #!/bin/bash
+          FILE_PATH="$(System.DefaultWorkingDirectory)/eng/PipelineFailedStatus.txt"
+ 
+          if [ ! -f "$FILE_PATH" ]; then
+            echo "No exception was caught during the test case execution. Please check the test case running results."
+            exit 0
+          else
+            echo "An exception was caught during the test case execution, interrupting subsequent execution. Printing contents and exiting abnormally."
+            cat "$FILE_PATH"
+            exit 1
+          fi
