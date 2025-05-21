@@ -94,7 +94,7 @@ public class ExcelHelper4Test
                 ICellStyle hlinkStyle = workbook.CreateCellStyle();
                 IFont hlinkFont = workbook.CreateFont();
                 hlinkFont.Underline = FontUnderlineType.Single;
-                hlinkFont.FontName = "Arial";
+                hlinkFont.FontName = "Aptos Narrow";
                 hlinkFont.Color = IndexedColors.Blue.Index;
                 hlinkStyle.SetFont(hlinkFont);
 
@@ -128,11 +128,11 @@ public class ExcelHelper4Test
                     row.GetCell(6).CellStyle = hlinkStyle;
                 }
 
-                // // Automatically adjust column widths to fit content
-                // for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
-                // {
-                //     sheet.AutoSizeColumn(col);
-                // }
+                // Automatically adjust column widths to fit content
+                for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
+                {
+                    sheet.AutoSizeColumn(col);
+                }
 
                 // Save the updated workbook back to the file
                 using (var outFs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
@@ -167,7 +167,7 @@ public class ExcelHelper4Test
                 ICellStyle hlinkStyle = workbook.CreateCellStyle();
                 IFont hlinkFont = workbook.CreateFont();
                 hlinkFont.Underline = FontUnderlineType.Single;
-                hlinkFont.FontName = "Arial";
+                hlinkFont.FontName = "Aptos Narrow";
                 hlinkFont.Color = IndexedColors.Blue.Index;
                 hlinkStyle.SetFont(hlinkFont);
 
