@@ -94,7 +94,7 @@ public class ExcelHelper4Test
                 ICellStyle hlinkStyle = workbook.CreateCellStyle();
                 IFont hlinkFont = workbook.CreateFont();
                 hlinkFont.Underline = FontUnderlineType.Single;
-                hlinkFont.FontName = "Aptos Narrow";
+                hlinkFont.FontName = "Arial";
                 hlinkFont.Color = IndexedColors.Blue.Index;
                 hlinkStyle.SetFont(hlinkFont);
 
@@ -167,7 +167,7 @@ public class ExcelHelper4Test
                 ICellStyle hlinkStyle = workbook.CreateCellStyle();
                 IFont hlinkFont = workbook.CreateFont();
                 hlinkFont.Underline = FontUnderlineType.Single;
-                hlinkFont.FontName = "Aptos Narrow";
+                hlinkFont.FontName = "Arial";
                 hlinkFont.Color = IndexedColors.Blue.Index;
                 hlinkStyle.SetFont(hlinkFont);
 
