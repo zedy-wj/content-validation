@@ -131,7 +131,17 @@ public class ExcelHelper4Test
                 // Automatically adjust column widths to fit content
                 for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
                 {
-                    sheet.AutoSizeColumn(col);
+                    try
+                    {
+                        // 尝试自动调整列宽
+                        sheet.AutoSizeColumn(col, useMergedCells: false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to auto-size column {col}: {ex.Message}");
+                        // 如果失败，设置默认宽度
+                        sheet.SetColumnWidth(col, 20 * 256);
+                    }
                 }
 
                 // Save the updated workbook back to the file
@@ -198,7 +208,17 @@ public class ExcelHelper4Test
                 // Automatically adjust column widths to fit content
                 for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
                 {
-                    sheet.AutoSizeColumn(col);
+                    try
+                    {
+                        // 尝试自动调整列宽
+                        sheet.AutoSizeColumn(col, useMergedCells: false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to auto-size column {col}: {ex.Message}");
+                        // 如果失败，设置默认宽度
+                        sheet.SetColumnWidth(col, 20 * 256);
+                    }
                 }
 
                 // Save the updated workbook back to the file
