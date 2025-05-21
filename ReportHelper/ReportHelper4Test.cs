@@ -129,10 +129,10 @@ public class ExcelHelper4Test
                 }
 
                 // Automatically adjust column widths to fit content
-                for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
-                {
-                    sheet.AutoSizeColumn(col);
-                }
+                // for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
+                // {
+                //     sheet.AutoSizeColumn(col);
+                // }
 
                 // Save the updated workbook back to the file
                 using (var outFs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
