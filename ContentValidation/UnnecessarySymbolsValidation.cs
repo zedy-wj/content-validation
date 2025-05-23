@@ -16,7 +16,7 @@ public class UnnecessarySymbolsValidation : IValidation
     // Prefix list for checking if the content before the "[" is in the list.
     public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
 
-    // Prefix list for checking if the content before the "[" is in the list.
+    // Star list for checking if the content start with symbol in the list.
     public List<IgnoreItem> startList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "start");
 
     // Content list for checking if the content between "[ ]" is in the list.
