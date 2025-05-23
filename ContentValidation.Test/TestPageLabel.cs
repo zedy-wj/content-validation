@@ -25,7 +25,12 @@ namespace ContentValidation.Test
         static TestPageLabel()
         {
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
-            TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
+            TestLinks = new List<string>()
+            {
+                "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.aiservicesaccountidentity?view=azure-python-preview&branch=main",
+                "https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.aio.searchindexclient?view=azure-python-preview&branch=main"
+            };
+            // TestLinks = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("../../../appsettings.json")) ?? new List<string>();
         }
 
         [OneTimeTearDown]
