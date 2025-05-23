@@ -59,7 +59,7 @@ jobs:
         command: custom
         custom: 'tool '
         arguments: install Microsoft.Playwright.CLI
-
+   
     - task: DotNetCoreCLI@2
       displayName: Build all projects and libraries
       inputs:
