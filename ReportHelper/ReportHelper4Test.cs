@@ -128,22 +128,6 @@ public class ExcelHelper4Test
                     row.GetCell(6).CellStyle = hlinkStyle;
                 }
 
-                // Automatically adjust column widths to fit content
-                for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
-                {
-                    try
-                    {
-                        // 尝试自动调整列宽
-                        sheet.AutoSizeColumn(col, useMergedCells: false);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to auto-size column {col}: {ex.Message}");
-                        // 如果失败，设置默认宽度
-                        sheet.SetColumnWidth(col, 20 * 256);
-                    }
-                }
-
                 // Save the updated workbook back to the file
                 using (var outFs = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
                 {
@@ -203,22 +187,6 @@ public class ExcelHelper4Test
 
                     row.CreateCell(5).SetCellValue(res.TestCase);
                     row.CreateCell(6).SetCellValue(res.AdditionalNotes?.ToString());
-                }
-
-                // Automatically adjust column widths to fit content
-                for (int col = 0; col < sheet.GetRow(0).LastCellNum; col++)
-                {
-                    try
-                    {
-                        // 尝试自动调整列宽
-                        sheet.AutoSizeColumn(col, useMergedCells: false);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to auto-size column {col}: {ex.Message}");
-                        // 如果失败，设置默认宽度
-                        sheet.SetColumnWidth(col, 20 * 256);
-                    }
                 }
 
                 // Save the updated workbook back to the file
