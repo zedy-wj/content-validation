@@ -16,6 +16,9 @@ public class UnnecessarySymbolsValidation : IValidation
     // Prefix list for checking if the content before the "[" is in the list.
     public List<IgnoreItem> prefixList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "prefix");
 
+    // Prefix list for checking if the content before the "[" is in the list.
+    public List<IgnoreItem> startList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "start");
+
     // Content list for checking if the content between "[ ]" is in the list.
     public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
 
@@ -78,6 +81,11 @@ public class UnnecessarySymbolsValidation : IValidation
             string[] lines = codeBlock.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
+                if (startList.Any(item => line.Trim().Contains(item.IgnoreText)))
+                {
+                    continue;
+                }
+
                 var matchCollections = Regex.Matches(line, includePattern);
                 foreach (Match match in matchCollections)
                 {

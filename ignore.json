@@ -13,6 +13,11 @@
         "Rule": "UnnecessarySymbolsValidation",
         "IgnoreList": [
             {
+                "IgnoreText": "as_dict",
+                "Usage":"start",
+                "Description": "Example: as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.aiservicesaccountidentity?view=azure-python-preview&branch=main"
+            },
+            {
                 "IgnoreText": "LROPoller",
                 "Usage":"prefix",
                 "Description": "Example: LROPoller[KeyVaultCertificate | CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
