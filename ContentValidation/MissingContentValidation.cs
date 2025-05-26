@@ -11,6 +11,8 @@ public class MissingContentValidation : IValidation
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
     }
 
+    public List<IgnoreItem> ignoreList = IgnoreData.GetIgnoreList("MissingContentValidation", "equal");
+
     public async Task<TResult> Validate(string testLink)
     {
         var res = new TResult();
@@ -26,21 +28,21 @@ public class MissingContentValidation : IValidation
 
         // Flag for ignore method clear, copy, items, keys, values
         bool skipFlag = false;
-        List<string> ignoreList = new List<string>(){"clear", "copy", "items", "keys", "values"};
 
         // Check if the cell is empty. If it is, retrieve the href attribute of the anchor tag above it for positioning.
         foreach (var cell in cellElements)
         {
-            if(skipFlag == true){
+            if (skipFlag == true)
+            {
                 skipFlag = false;
                 continue;
             }
-            
+
             var cellText = (await cell.InnerTextAsync()).Trim();
-            if(ignoreList.Contains(cellText)){
+            if (ignoreList.Any(item => cellElements.Equals(item.IgnoreText)))
+            {
                 skipFlag = true;
             }
-            // Console.WriteLine($"Cell Text: {cellText}");
 
             // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
             // Example: The Description column of the Parameter table is Empty.
@@ -95,23 +97,25 @@ public class MissingContentValidation : IValidation
                     return findNearestHeading(element);
                 }");
 
-                if (nearestHTagText != null) {
+                if (nearestHTagText != null)
+                {
                     nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
                     var aLocators = page.Locator("#side-doc-outline a");
                     var aElements = await aLocators.ElementHandlesAsync();
 
                     foreach (var elementHandle in aElements)
                     {
-                        if(await elementHandle.InnerTextAsync() == nearestHTagText)
+                        if (await elementHandle.InnerTextAsync() == nearestHTagText)
                         {
                             var href = await elementHandle.GetAttributeAsync("href");
-                            if (href != null){
+                            if (href != null)
+                            {
                                 anchorLink = testLink + href;
                             }
                         }
                     }
                 }
-                if(!anchorLink.Contains("#packages") && !anchorLink.Contains("#modules"))
+                if (!anchorLink.Contains("#packages") && !anchorLink.Contains("#modules"))
                 {
                     errorList.Add(anchorLink);
                 }

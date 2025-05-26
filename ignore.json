@@ -420,6 +420,116 @@
                 "Description": " CommunicationUserIdentifier(\"8:acs:...\"), Link: https://learn.microsoft.com/en-us/python/api/overview/azure/communication-callautomation-readme?view=azure-python-preview&branch=main"
             }
         ]
+    },
+    {
+        "Rule": "TypeAnnotationValidation",
+        "IgnoreList": [
+            {
+                "IgnoreText": ":",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "from_dict",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "deserialize",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "serialize",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "get",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "has_key",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "update",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "values",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "*",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "/",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "**kwargs",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "*args",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "**kw",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            }
+        ]
+    },
+    {
+        "Rule": "MissingContentValidation",
+        "IgnoreList": [
+            {
+                "IgnoreText": "get",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "has_key",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "clear",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "copy",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "items",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "keys",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "values",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            }
+        ]
     }
 
 ]
