@@ -20,7 +20,7 @@ jobs:
   - template: /eng/pipelines/common/content-validation-for-javascript.yml
     parameters:
       PackageName: 'azure-ai-translation-document'
-      CsvPackageNam: '@azure-rest/ai-translation-document'
+      CsvPackageName: '@azure-rest/ai-translation-document'
       ReadmeName: 'ai-translation-document-rest-readme'
       jobDisplayName: 'AZURE_AI_TRANSLATION_DOCUMENT'
       DotNetSdkVersion: '8.0.x'
