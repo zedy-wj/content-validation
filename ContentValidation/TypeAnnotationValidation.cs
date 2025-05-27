@@ -62,7 +62,11 @@ public class TypeAnnotationValidation : IValidation
     // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
     bool IsCorrectTypeAnnotation(string text)
     {
-        if (equalList.Any(item => text.Contains(item.IgnoreText)))
+        if (equalList.Any(item => text.Equals(item.IgnoreText)))
+        {
+            return true;
+        }
+        if (containList.Any(item => text.Contains(item.IgnoreText)))
         {
             return true;
         }
