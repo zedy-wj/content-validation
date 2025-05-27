@@ -21,7 +21,7 @@ jobs:
     parameters:
       PackageName: 'azure-iot-digitaltwins-service'
       CsvPackageName: 'azure-iot-digitaltwins-service'
-      ReadmeName: 'iot/digitaltwinsservices'
+      ReadmeName: 'iot/digitaltwinsservice'
       jobDisplayName: 'AZURE_IOT_DIGITALTWINS_SERVICE'
       DotNetSdkVersion: '8.0.x'
       GitHubPat: ${{ parameters.GitHubPat }}
