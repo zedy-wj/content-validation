@@ -1,7 +1,6 @@
 [
     {
         "packages": [
-            "azure-@azure-core",
             "azure-ai-content-safety-rest",
             "azure-ai-document-intelligence",
             "azure-ai-form-recognizer",
@@ -75,11 +74,9 @@
             "azure-keyvault-keys",
             "azure-keyvault-secrets",
             "azure-load-testing",
-            "azure-microsoft-cognitiveservices-speech-sdk",
             "azure-monitor-ingestion",
             "azure-monitor-opentelemetry",
             "azure-monitor-query",
-            "azure-msrest",
             "azure-notification-hubs",
             "azure-schema-registry-avro",
             "azure-schema-registry-json",
@@ -91,7 +88,6 @@
             "azure-storage-file-datalake",
             "azure-storage-file-share",
             "azure-storage-queue",
-            "azure-uncategorizedpackages",
             "azure-web-pubsub-client",
             "azure-web-pubsub"
         ]
