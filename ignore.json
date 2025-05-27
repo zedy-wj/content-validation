@@ -420,6 +420,121 @@
                 "Description": " CommunicationUserIdentifier(\"8:acs:...\"), Link: https://learn.microsoft.com/en-us/python/api/overview/azure/communication-callautomation-readme?view=azure-python-preview&branch=main"
             }
         ]
+    },
+    {
+        "Rule": "TypeAnnotationValidation",
+        "IgnoreList": [
+            {
+                "IgnoreText": ":",
+                "Usage":"contains",
+                "Description": "Example: <class 'azure.core "
+            },
+            {
+                "IgnoreText": "from_dict",
+                "Usage":"contains",
+                "Description": "Example: from_dict(data, key_extractors=None, content_type=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "deserialize",
+                "Usage":"contains",
+                "Description": "Example: deserialize(data, content_type=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "serialize",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
+                "IgnoreText": "get",
+                "Usage":"contains",
+                "Description": "Example: get(key, default=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-datalake/azure.storage.filedatalake.accesscontrolchangecounters?view=azure-python-preview&branch=main"
+            },
+            {
+                "IgnoreText": "has_key",
+                "Usage":"contains",
+                "Description": "Example: has_key(k) , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-datalake/azure.storage.filedatalake.accesscontrolchangefailure?view=azure-python-preview&branch=main"
+            },
+            {
+                "IgnoreText": "update",
+                "Usage":"contains",
+                "Description": "Example: update([E], **F) , Link: https://learn.microsoft.com/en-us/python/api/azure-schemaregistry/azure.schemaregistry.messagecontent?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "values",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
+                "IgnoreText": ":",
+                "Usage":"equal",
+                "Description": "Example: "
+            },
+            {
+                "IgnoreText": "*",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "/",
+                "Usage":"equal",
+                "Description": "Example: <class 'azure.core"
+            },
+            {
+                "IgnoreText": "**kwargs",
+                "Usage":"equal",
+                "Description": "Example: AuthenticationMechanism(**kwargs) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "*args",
+                "Usage":"equal",
+                "Description": "Example: AsyncSearchItemPaged(*args, **kwargs) , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.aio.asyncsearchitempaged?view=azure-python"
+            },
+            {
+                "IgnoreText": "**kw",
+                "Usage":"equal",
+                "Description": "Example: "
+            }
+        ]
+    },
+    {
+        "Rule": "MissingContentValidation",
+        "IgnoreList": [
+            {
+                "IgnoreText": "get",
+                "Usage":"equal",
+                "Description": "Example: get , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.blobprefix?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "has_key",
+                "Usage":"equal",
+                "Description": "Example: has_key , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.blobprefix?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "clear",
+                "Usage":"equal",
+                "Description": "Example: clear , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "copy",
+                "Usage":"equal",
+                "Description": "Example: copy , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "items",
+                "Usage":"equal",
+                "Description": "Example: items , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "keys",
+                "Usage":"equal",
+                "Description": "Example: keys , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python#methods"
+            },
+            {
+                "IgnoreText": "values",
+                "Usage":"equal",
+                "Description": "Example: values , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python#methods"
+            }
+        ]
     }
 
 ]

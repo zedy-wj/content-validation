@@ -12,6 +12,9 @@ public class TypeAnnotationValidation : IValidation
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
     }
 
+    public List<IgnoreItem> containList = IgnoreData.GetIgnoreList("TypeAnnotationValidation", "contains");
+    public List<IgnoreItem> equalList = IgnoreData.GetIgnoreList("TypeAnnotationValidation", "equal");
+
     public async Task<TResult> Validate(string testLink)
     {
         var res = new TResult();
@@ -59,15 +62,15 @@ public class TypeAnnotationValidation : IValidation
     // If the parameter follows the format a:b (e.g., param1:int), it means a type annotation has been provided for the parameter.
     bool IsCorrectTypeAnnotation(string text)
     {
-        if (text == "*" || text == "/" || text == "**kwargs" || text == "*args" || text == "**kw")
+        if (equalList.Any(item => text.Equals(item.IgnoreText)))
+        {
+            return true;
+        }
+        if (containList.Any(item => text.Contains(item.IgnoreText)))
         {
             return true;
         }
         if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))
-        {
-            return true;
-        }
-        if (text.Contains(":"))
         {
             return true;
         }
@@ -182,6 +185,11 @@ public class TypeAnnotationValidation : IValidation
         {
             string key = item.Key;
             var paramList = item.Value;
+
+            if (containList.Any(item => key.Contains(item.IgnoreText)))
+            {
+                continue;
+            }
 
             // If a parameter is found to be missing a type annotation, add it to the errorList.
             string errorMessage = isClass ? "Class name:  " : "Method name: ";
