@@ -333,6 +333,26 @@
                 "IgnoreText": "\\s\\(\\s*[-+]?[a-zA-Z]+\\s*,\\s*[-+]?[a-zA-Z]+\\s*\\)",
                 "Usage":"regular",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "\\[\\s*[-+]?\\d+(\\.\\d+)?\\s*,\\s*[-+]?\\d+(\\.\\d+)?\\s*\\]",
+                "Usage": "regular",
+                "Description": "Matches expressions like [0.25, 0.75]"
+            },
+            {
+                "IgnoreText": "\\[\\s*[-+]?\\d+(\\.\\d+)?\\s*,\\s*[-+]?\\d+(\\.\\d+)?\\s*\\)",
+                "Usage": "regular",
+                "Description": "Matches expressions like [0.25, 0.75)"
+            },
+            {
+                "IgnoreText": "\\(\\s*[-+]?\\d+(\\.\\d+)?\\s*,\\s*[-+]?\\d+(\\.\\d+)?\\s*\\]",
+                "Usage": "regular",
+                "Description": "Matches expressions like (0.25, 0.75]"
+            },
+            {
+                "IgnoreText": "\\(\\s*[-+]?\\d+(\\.\\d+)?\\s*,\\s*[-+]?\\d+(\\.\\d+)?\\s*\\)",
+                "Usage": "regular",
+                "Description": "Matches expressions like (0.25, 0.75)"
             }
         ]
     },
