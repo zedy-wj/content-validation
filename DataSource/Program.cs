@@ -22,35 +22,217 @@ namespace DataSource
         static async Task Main(string[] args)
         {
             // Default Configuration
-            using IHost host = Host.CreateApplicationBuilder(args).Build();
+            // using IHost host = Host.CreateApplicationBuilder(args).Build();
 
-            IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+            // IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? readme = config["ReadmeName"];
-            string? language = config["Language"];
-            string branch = config["Branch"]!;
-            string? package = language?.ToLower() != "javascript" ? config["PackageName"] : config["CsvPackageName"];
-            string? cookieName = config["CookieName"];
-            string? cookieValue = config["CookieValue"];
+            // string? readme = config["ReadmeName"];
+            // string? language = config["Language"];
+            // string branch = config["Branch"]!;
+            // string? package = language?.ToLower() != "javascript" ? config["PackageName"] : config["CsvPackageName"];
+            // string? cookieName = config["CookieName"];
+            // string? cookieValue = config["CookieValue"];
 
-            string? versionSuffix = ChooseGAOrPreview(language, package);
-            
-            string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
+            // string? versionSuffix = ChooseGAOrPreview(language, package);
 
-            Console.WriteLine($"Page link: {pageLink}");
+            // string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
 
-            List<string> allPages = new List<string>();
+            // Console.WriteLine($"Page link: {pageLink}");
 
-            await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
+            // List<string> allPages = new List<string>();
 
-            ExportData(allPages);
+            // await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName, cookieValue, branch);
+
+            // ExportData(allPages);
+
+            var readmeList = new List<string>()
+            {
+"ai-content-safety-rest-readme",
+"ai-document-intelligence-rest-readme",
+"ai-form-recognizer-readme",
+"ai-language-text-readme",
+"ai-text-analytics-readme",
+"ai-translation-document-rest-readme",
+"ai-translation-text-rest-readme",
+"app-configuration-readme",
+"attestation-readme",
+"batch/batch",
+"cognitiveservices-autosuggest-readme",
+"cognitiveservices/computervision",
+"cognitiveservices/contentsafety",
+"cognitiveservices-customimagesearch-readme",
+"cognitiveservices-customsearch-readme",
+"cognitiveservices/customvisionprediction",
+"cognitiveservices/customvisiontraining",
+"cognitiveservices-entitysearch-readme",
+"cognitiveservices-face-readme",
+"cognitiveservices-imagesearch-readme",
+"localsearch/localsearch",
+"cognitiveservices/luisauthoring",
+"cognitiveservices/luisruntime",
+"cognitiveservices-newssearch-readme",
+"cognitiveservices/personalizer",
+"cognitiveservices/questionanswering",
+"cognitiveservices/questionanswering",
+"cognitiveservices-spellcheck-readme",
+"cognitiveservices-videosearch-readme",
+"cognitiveservices-visualsearch-readme",
+"cognitiveservices-websearch-readme",
+"communication-call-automation-readme",
+"communication/@azure/communication-calling-effects",
+"communication-chat-readme",
+"communication-common-readme",
+"communication-email-readme",
+"communication-identity-readme",
+"communication-job-router-rest-readme",
+"communication-messages-rest-readme",
+"communication-phone-numbers-readme",
+"communication/@azure/communication-react",
+"communication-rooms-readme",
+"communication-sms-readme",
+"confidential-ledger-rest-readme",
+"container-registry-readme",
+"cosmos-readme",
+"data-tables-readme",
+"developer-devcenter-rest-readme",
+"digital-twins-core-readme",
+"functions/durablefunctions",
+"event-hubs-readme",
+"eventgrid-namespaces-readme",
+"eventgrid-readme",
+"eventhubs-checkpointstore-blob-readme",
+"functions/azurefunctions",
+"identity-broker-readme",
+"identity-cache-persistence-readme",
+"identity-vscode-readme",
+"identity-readme",
+"iot/iothub-iotcommon",
+"iot-device-update-rest-readme",
+"iot/iothub-iotdevice",
+"iot/digitaltwinsservice",
+"iot/iothubdeviceprovisioning",
+"iot/deviceprovisioningservices",
+"iot/iothub",
+"keyvault-admin-readme",
+"keyvault-certificates-readme",
+"keyvault-common-readme",
+"keyvault-keys-readme",
+"keyvault-secrets-readme",
+"load-testing-rest-readme",
+"monitor-ingestion-readme",
+"monitor-opentelemetry-readme",
+"monitor-query-readme",
+"notification-hubs-readme",
+"schema-registry-avro-readme",
+"schema-registry-json-readme",
+"schema-registry-readme",
+"search-documents-readme",
+"service-bus-readme",
+"servicefabric/servicefabric",
+"storage-blob-readme",
+"storage-file-datalake-readme",
+"storage-file-share-readme",
+"storage-queue-readme",
+"web-pubsub-client-readme",
+"web-pubsub-readme",
+"test"
+            };
+
+            foreach (var readme in readmeList)
+            {
+                string? language = "javascript";
+                string? versionSuffix = ChooseGAOrPreview(language, readme);
+                string? branch = "main";
+
+                string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
+
+                // Console.WriteLine($"Page link: {pageLink}");
+
+                var res = IsDeprecated(pageLink, "", "");
+                var accessible = IsPageNotFound(pageLink);
+
+                // only for failure test
+                if (accessible)
+                {
+                    if (res)
+                    {
+
+                        Console.WriteLine($"{readme}, {pageLink}, deprecated, {accessible}");
+                    }
+                    // else
+                    // {
+                    //     Console.WriteLine($"{readme}, {pageLink}, success, {accessible}");
+                    // }
+                }
+                else
+                {
+                    Console.WriteLine($"{readme}, {pageLink}, NotFound, {accessible}");
+                }
+
+
+                
+
+            }
+
+        }
+
+        static bool IsPageNotFound(string url)
+        {
+            try
+            {
+                var web = new HtmlWeb();
+                var doc = web.Load(url);
+
+                // Check if the page title contains "404"
+                var titleNode = doc.DocumentNode.SelectSingleNode("//title");
+                if (titleNode != null && titleNode.InnerText.Contains("404"))
+                {
+                    return false; // Page is 404
+                }
+
+                return true; // Page is not 404
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking page: {url}, Exception: {ex.Message}");
+                return true; // Assume 404 if an error occurs
+            }
+        }
+
+        static bool IsDeprecated(string link, string? cookieName, string? cookieVal)
+        {
+            var doc = FetchHtmlContent(link, cookieName, cookieVal);
+
+            var checks = new[]
+            {
+                new { XPath = "//h1", Content = "deprecated" },
+            };
+
+            return checks.Any(check =>
+            {
+                string? hNode = doc.DocumentNode.SelectSingleNode(check.XPath)?.InnerText?.Trim();
+                if (!string.IsNullOrEmpty(hNode) && hNode.Contains(check.Content))
+                {
+                    // Check for the presence of <table> tags
+                    var tableNode = doc.DocumentNode.SelectSingleNode("//table");
+                    if (tableNode != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            });
         }
 
         static string GetPackagePageOverview(string? language, string readme, string versionSuffix, string branch = "")
         {
             language = language?.ToLower();
 
-            
+
             if (branch != "main")
             {
                 return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/{readme}?{versionSuffix}&branch={branch}";
@@ -80,7 +262,7 @@ namespace DataSource
             }
             else
             {
-                throw new ArgumentException("Unsupported language specified.");
+                throw new ArgumentException("");
             }
         }
 
@@ -129,12 +311,12 @@ namespace DataSource
                             }
                             else
                             {
-                                Console.WriteLine($"Package {package} has not both GA and Preview version in the table.");
+                                // Console.WriteLine($"Package {package} has not both GA and Preview version in the table.");
                                 return null;
                             }
                         }
                         else{
-                            Console.WriteLine($"Package {package} not found in the CSV.");
+                            // Console.WriteLine($"Package {package} not found in the CSV.");
                             return null;
                         }
                     }
