@@ -745,7 +745,7 @@ public class GithubHelper
                     var first = group.First();
                     string note = $"{first.ErrorInfo} - this type of issues appears {group.Count()} times, currently only one is shown here. For more details, please click on the excel download link below to view.";
                     first.Note = note;
-                    return new List<TResult4Json> { first }; ;
+                    return new List<TResult4Json> { first }; 
                 }
                 else
                 {
