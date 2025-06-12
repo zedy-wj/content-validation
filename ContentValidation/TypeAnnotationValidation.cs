@@ -14,11 +14,14 @@ public class TypeAnnotationValidation : IValidation
 
     public List<IgnoreItem> containList = IgnoreData.GetIgnoreList("TypeAnnotationValidation", "contains");
     public List<IgnoreItem> equalList = IgnoreData.GetIgnoreList("TypeAnnotationValidation", "equal");
+    public List<IgnoreItem> ignoreList = IgnoreData.GetIgnoreList("MissingContentValidation", "equal");
+
 
     public async Task<TResult> Validate(string testLink)
     {
         var res = new TResult();
         List<string> errorList = new List<string>();
+        List<string> errorList2 = new List<string>();
 
         // Create a browser instance.
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
@@ -37,18 +40,77 @@ public class TypeAnnotationValidation : IValidation
         errorList.AddRange(list1);
         errorList.AddRange(list2);
 
+        // Add location-based links for errors
+        foreach (var error in errorList)
+        {
+            string anchorLink = "No anchor link found, need to manually search for the issue on the page.";
+
+            // Find the nearest heading text
+            var nearestHTagText = await page.EvaluateAsync<string?>(@"() => {
+                function findNearestHeading(startNode) {
+                    let currentNode = startNode;
+
+                    while (currentNode && currentNode.tagName !== 'BODY' && currentNode.tagName !== 'HTML') {
+                        let sibling = currentNode.previousElementSibling;
+                        while (sibling) {
+                            if (['H2', 'H3'].includes(sibling.tagName)) {
+                                return sibling.textContent?.trim() || '';
+                            }
+
+                            let childHeading = findNearestHeadingInChildren(sibling);
+                            if (childHeading) {
+                                return childHeading;
+                            }
+
+                            sibling = sibling.previousElementSibling;
+                        }
+                        currentNode = currentNode.parentElement;
+                    }
+                    return null;
+                }
+
+                function findNearestHeadingInChildren(node) {
+                    for (let child of node.children) {
+                        if (['H2', 'H3'].includes(child.tagName)) {
+                            return child.textContent?.trim() || '';
+                        }
+                        let grandChildHeading = findNearestHeadingInChildren(child);
+                        if (grandChildHeading) {
+                            return grandChildHeading;
+                        }
+                    }
+                    return null;
+                }
+
+                return findNearestHeading(document.querySelector('.memberInfo'));
+            }");
+
+            if (!string.IsNullOrEmpty(nearestHTagText))
+            {
+                nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
+
+                Console.WriteLine($"Nearest heading text: {nearestHTagText}");
+                errorList2.Add($"Missing Type Annotation: {error} (Nearest Heading: {nearestHTagText})");
+                
+                if (ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue; // Skip if the nearest heading text is in the ignore list
+                }
+            }
+        }
+
         for (int i = 0; i < errorList.Count; i++)
         {
             errorList[i] = $"{i + 1}. {errorList[i]}";
         }
 
-        if (errorList.Count > 0)
+        if (errorList2.Count > 0)
         {
             res.Result = false;
             res.ErrorLink = testLink;
             res.ErrorInfo = "Missing Type Annotation";
-            res.NumberOfOccurrences = errorList.Count;
-            res.LocationsOfErrors = errorList;
+            res.NumberOfOccurrences = errorList2.Count;
+            res.LocationsOfErrors = errorList2;
         }
 
         await browser.CloseAsync();
