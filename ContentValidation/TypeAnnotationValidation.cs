@@ -95,7 +95,7 @@ public class TypeAnnotationValidation : IValidation
 
                 if (!ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
                 {
-                    // 查找左侧导航匹配的锚点链接
+                    // Find matching anchor link from the left side navigation
                     var aLocators = page.Locator("#side-doc-outline a");
                     var aElements = await aLocators.ElementHandlesAsync();
 
@@ -142,7 +142,7 @@ public class TypeAnnotationValidation : IValidation
     }
 
 
-    // 判断参数是否正确带有类型注解
+    // Determine whether the parameter correctly contains type annotation
     bool IsCorrectTypeAnnotation(string text)
     {
         if (equalList.Any(item => text.Equals(item.IgnoreText)))
@@ -153,14 +153,14 @@ public class TypeAnnotationValidation : IValidation
         {
             return true;
         }
-        if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))  // 形如 a=b
+        if (Regex.IsMatch(text, @"^[^=]+=[^=]+$"))  // pattern like a=b
         {
             return true;
         }
         return false;
     }
 
-    // 获取参数映射及对应元素句柄
+    // Get parameter mappings and their corresponding element handles
     async Task<List<(string key, List<string> paramList, IElementHandle element)>> GetParamMap(IPage page, bool isClass)
     {
         var result = new List<(string, List<string>, IElementHandle)>();
@@ -169,7 +169,7 @@ public class TypeAnnotationValidation : IValidation
 
         if (isClass)
         {
-            // Enum类型类跳过
+            // Skip Enum type classes
             var h1Locator = page.Locator(".content h1:first-of-type");
             string h1Text = "";
             try
@@ -212,7 +212,7 @@ public class TypeAnnotationValidation : IValidation
         return result;
     }
 
-    // 按照逗号分割参数，考虑括号内逗号不分割
+    // Split parameters by comma, considering brackets that may contain commas
     List<string> SplitParameters(string paramsText)
     {
         var paramList = new List<string>();
@@ -249,7 +249,7 @@ public class TypeAnnotationValidation : IValidation
         return paramList;
     }
 
-    // 验证参数是否都带类型注解，返回错误信息和对应元素
+    // Validate whether parameters all have type annotations, returning error info and corresponding element
     List<ParamError> ValidParamMap(List<(string key, List<string> paramList, IElementHandle element)> paramMap, bool isClass)
     {
         var errorList = new List<ParamError>();
