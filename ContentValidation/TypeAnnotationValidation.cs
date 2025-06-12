@@ -26,8 +26,6 @@ public class TypeAnnotationValidation : IValidation
     {
         var res = new TResult();
         List<string> errorList = new List<string>();
-        List<string> errorList2 = new List<string>();
-
         // Launch browser and new page
         var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         var page = await browser.NewPageAsync();
@@ -93,43 +91,27 @@ public class TypeAnnotationValidation : IValidation
             {
                 nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
 
-                if (!ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+                if (ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
                 {
-                    // Find matching anchor link from the left side navigation
-                    var aLocators = page.Locator("#side-doc-outline a");
-                    var aElements = await aLocators.ElementHandlesAsync();
-
-                    foreach (var aElem in aElements)
-                    {
-                        var linkText = (await aElem.InnerTextAsync())?.Trim();
-                        if (linkText == nearestHTagText)
-                        {
-                            var href = await aElem.GetAttributeAsync("href");
-                            if (!string.IsNullOrEmpty(href))
-                            {
-                                anchorLink = testLink + href;
-                                break;
-                            }
-                        }
-                    }
+                    continue; // Skip if the nearest heading text is in the ignore list
                 }
-            }
 
-            errorList2.Add($"{error.ErrorMessage} (Nearest Heading: {nearestHTagText}, Link: {anchorLink})");
+                errorList.Add($"{error.ErrorMessage}");
+            } 
         }
 
-        for (int i = 0; i < errorList2.Count; i++)
+        for (int i = 0; i < errorList.Count; i++)
         {
-            errorList2[i] = $"{i + 1}. {errorList2[i]}";
+            errorList[i] = $"{i + 1}. {errorList[i]}";
         }
 
-        if (errorList2.Count > 0)
+        if (errorList.Count > 0)
         {
             res.Result = false;
             res.ErrorLink = testLink;
             res.ErrorInfo = "Missing Type Annotation";
-            res.NumberOfOccurrences = errorList2.Count;
-            res.LocationsOfErrors = errorList2;
+            res.NumberOfOccurrences = errorList.Count;
+            res.LocationsOfErrors = errorList;
         }
         else
         {
