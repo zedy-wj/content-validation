@@ -97,6 +97,12 @@ public class MissingContentValidation : IValidation
                 if (!string.IsNullOrEmpty(nearestHTagText))
                 {
                     nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
+
+                    if(ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue; // Skip if the nearest heading text is in the ignore list
+                    }
+                    
                     var aLocators = page.Locator("#side-doc-outline a");
                     var aElements = await aLocators.ElementHandlesAsync();
 
