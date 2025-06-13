@@ -97,7 +97,7 @@ public class TypeAnnotationValidation : IValidation
                 }
 
                 errorList.Add($"{error.ErrorMessage}");
-            } 
+            }
         }
 
         for (int i = 0; i < errorList.Count; i++)
