@@ -1,4 +1,4 @@
-name: Run switched packages content validation for java
+name: Run switched packages content validation for DotNet
 trigger: none
 
 parameters:
@@ -18,7 +18,7 @@ parameters:
   displayName: |
       You can choose the language for testing, only Python, Java supported now. We plan extent to JavaScript, .NET and Go in future. Example: Java
   type: string
-  default: 'Java'
+  default: 'DotNet'
   values:
   - Python
   - Java
@@ -31,7 +31,7 @@ stages:
   jobs:
   - ${{ each packageName in split(parameters.packages, ',') }}:
     - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/java/package/${{ packageName }}.yml
+      - template: /eng/pipelines/dotnet/package/${{ packageName }}.yml
         parameters:
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
@@ -40,7 +40,7 @@ stages:
           Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/java/package/run-all-packages.yml
+    - template: /eng/pipelines/dotnet/package/run-all-packages.yml
       parameters:
         AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
         GitHubPat: $(GITHUB_PAT)
