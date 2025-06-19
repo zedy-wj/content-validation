@@ -27,12 +27,12 @@ namespace DataSource
 
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
-            string? readme = "storage.blobs-readme";
-            string? language = "dotnet";
-            string branch = "main";
-            string? package = "Azure.Storage.Blobs";
-            string? cookieName = "";
-            string? cookieValue = "";
+            string? readme = config["ReadmeName"];
+            string? language = config["Language"];
+            string branch = config["Branch"]!;
+            string? package = language?.ToLower() != "javascript" ? config["PackageName"] : config["CsvPackageName"];
+            string? cookieName = config["CookieName"];
+            string? cookieValue = config["CookieValue"];
 
             string? versionSuffix = ChooseGAOrPreview(language, package);
 
