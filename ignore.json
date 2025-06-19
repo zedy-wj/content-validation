@@ -510,6 +510,21 @@
                 "Description": "Example: "
             },
             {
+                "IgnoreText": "lowerker_items",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
+                "IgnoreText": "is_xml_model",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
+                "IgnoreText": "enable_additional_properties_sending",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
                 "IgnoreText": "pop",
                 "Usage":"contains",
                 "Description": "Example: pop(k, [d]) , Link: https://learn.microsoft.com/en-us/python/api/azure-schemaregistry/azure.schemaregistry.messagecontent?view=azure-python&branch=main"
@@ -569,6 +584,21 @@
     {
         "Rule": "MissingContentValidation",
         "IgnoreList": [
+            {
+                "IgnoreText": "lowerker_items",
+                "Usage":"subset",
+                "Description": "Example: , Link: "
+            },
+            {
+                "IgnoreText": "is_xml_model",
+                "Usage":"subset",
+                "Description": "Example: , Link: "
+            },
+            {
+                "IgnoreText": "enable_additional_properties_sending",
+                "Usage":"subset",
+                "Description": "Example: , Link: "
+            },
             {
                 "IgnoreText": "get",
                 "Usage":"subset",
