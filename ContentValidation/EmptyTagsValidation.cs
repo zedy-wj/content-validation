@@ -2,7 +2,6 @@ using Microsoft.Playwright;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace UtilityLibraries;
@@ -26,26 +25,25 @@ public class EmptyTagsValidation : IValidation
         var res = new TResult();
         var errorList = new List<string>();
 
-        var htmlContent = await page.ContentAsync();
+        // Get all <li> elements
+        var liElements = page.Locator("main#main li").AllAsync();
+        // int count = await liElements.CountAsync();
 
-        // Define the regex pattern to match empty <li> tags
-        string pattern = @"<li>\s*</li>";
-
-        // Use Regex.Matches to find all matches in the HTML content
-        var matches = Regex.Matches(htmlContent, pattern, RegexOptions.Multiline);
-
-        int threshold = 2; 
-
-        if (matches.Count > threshold)
+        foreach (var li in await liElements)
         {
-            foreach (Match match in matches)
-            {
-                if (match.Success)
-                {
-                    errorList.Add(match.Value);
-                }
-            }
+            // Get and trim inner text
+            var text = (await li.InnerTextAsync())?.Trim();
 
+            if (text == "")
+            {
+                // Add to error list
+                errorList.Add("<li></li>");
+            }
+        }
+        
+
+        if (errorList.Any())
+        {
             var formattedList = errorList
                 .GroupBy(item => item)
                 .Select((group, index) => $"{index + 1}. Appears {group.Count()} times, {group.Key}")
@@ -54,10 +52,10 @@ public class EmptyTagsValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = $"There are too many empty <li> tags. ";
+            res.ErrorInfo = "There are empty <li> tags on the page.";
             res.LocationsOfErrors = formattedList;
         }
-        
+
         await browser.CloseAsync();
 
         return res;

@@ -167,7 +167,6 @@ namespace ContentValidation.Test
         public async Task TestErrorDisplay(string testLink)
         {
 
-
             IValidation Validation = new ErrorDisplayValidation(playwright);
 
             var res = new TResult();
@@ -199,14 +198,13 @@ namespace ContentValidation.Test
         public async Task TestEmptyTags(string testLink)
         {
 
-
-            IValidation Validation = new ErrorDisplayValidation(playwright);
+            IValidation Validation = new EmptyTagsValidation(playwright);
 
             var res = new TResult();
             try
             {
                 res = await Validation.Validate(testLink);
-                res.TestCase = "TestErrorDisplay";
+                res.TestCase = "TestEmptyTags";
                 if (!res.Result)
                 {
                     TestEmptyTagsResults.Enqueue(res);
