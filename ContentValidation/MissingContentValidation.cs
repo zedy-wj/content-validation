@@ -25,6 +25,7 @@ public class MissingContentValidation : IValidation
 
         // Fetch all th and td tags in the test page.
         var cellElements = await page.Locator("td,th").AllAsync();
+        // var cellElements = await page.Locator("td,th").AllAsync();
 
         // Flag for ignore method clear, copy, items, keys, values
         bool skipFlag = false;
@@ -46,12 +47,17 @@ public class MissingContentValidation : IValidation
                 skipFlag = true;
                 continue;
             }
+            Console.WriteLine($"Processing cell: {cell}");
+            Console.WriteLine($"Checking cell: {cellText}");
 
             // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
             // Example: The Description column of the Parameter table is Empty.
             // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
             if (string.IsNullOrEmpty(cellText))
             {
+                Console.WriteLine("Empty cell found, checking for anchor link...");
+                Console.WriteLine($"Cell: {cell}");
+                Console.WriteLine($"Cell Text: {cellText}");
                 string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
 
                 // Find the nearest heading text
@@ -98,11 +104,11 @@ public class MissingContentValidation : IValidation
                 {
                     nearestHTagText = nearestHTagText.Replace("\n", "").Replace("\t", "");
 
-                    if(ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+                    if (ignoreList.Any(item => nearestHTagText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
                     {
                         continue; // Skip if the nearest heading text is in the ignore list
                     }
-                    
+
                     var aLocators = page.Locator("#side-doc-outline a");
                     var aElements = await aLocators.ElementHandlesAsync();
 
