@@ -8,9 +8,8 @@ This document introduces 6 rules designed for DotNet Data SDK on [Microsoft Lear
 
 - [MissingContentValidation](#1-missingcontentvalidation)
 - [EmptyTagsValidation](#2-emptytagsvalidation)
-- [DuplicateServiceValidation](#3-duplicateservicevalidation)
   > Note: Compared to Python rules, `EmptyTagsValidation` exists only in DotNet rules.
-
+- [DuplicateServiceValidation](#3-duplicateservicevalidation)
 
 ### 1. MissingContentValidation
 
