@@ -40,6 +40,7 @@ public class MissingContentValidation : IValidation
             }
 
             var cellText = (await cell.InnerTextAsync()).Trim();
+            var cellHtml = await cell.EvaluateAsync<string>("element => element.outerHTML");
 
             // Skip cells that match the ignore list
             if (ignoreList.Any(item => cellText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
@@ -47,17 +48,16 @@ public class MissingContentValidation : IValidation
                 skipFlag = true;
                 continue;
             }
+            
             Console.WriteLine($"Processing cell: {cell}");
-            Console.WriteLine($"Checking cell: {cellText}");
+            Console.WriteLine($"Cell Text: '{cellText}'");
+            Console.WriteLine($"Cell HTML: '{cellHtml}'");
 
             // Usage: Check if it is an empty cell and get the href attribute of the nearest <a> tag with a specific class name before it. Finally, group and format these errors by position and number of occurrences.
             // Example: The Description column of the Parameter table is Empty.
             // Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.asyncanalyzeactionslropoller?view=azure-python
-            if (string.IsNullOrEmpty(cellText))
+            if (string.IsNullOrEmpty(cellText) && string.IsNullOrWhiteSpace(cellHtml))
             {
-                Console.WriteLine("Empty cell found, checking for anchor link...");
-                Console.WriteLine($"Cell: {cell}");
-                Console.WriteLine($"Cell Text: {cellText}");
                 string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
 
                 // Find the nearest heading text
