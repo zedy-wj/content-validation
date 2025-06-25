@@ -26,7 +26,7 @@ public class MissingContentValidation : IValidation
         await page.Locator("td").First.WaitForAsync(new() { Timeout = 10000 });
 
         // Get all td and th elements
-        var cellElements = await page.Locator("td,th").ElementHandlesAsync();
+        var cellElements = await page.Locator("th,td").ElementHandlesAsync();
         var cellElements2 = await page.Locator("td[colspan='2']").ElementHandlesAsync();
 
         // Process all cells
@@ -60,6 +60,7 @@ public class MissingContentValidation : IValidation
         return res;
     }
 
+    public bool isIgnore = false;
     private async Task ProcessCellAsync(
         IElementHandle cell,
         IPage page,
@@ -68,21 +69,33 @@ public class MissingContentValidation : IValidation
         List<IgnoreItem> ignoreList,
         bool isColspan2 = false)
     {
-        var cellText = (await cell.InnerTextAsync()).Trim();
+        // var cellText = (await cell.InnerTextAsync()).Trim();
+        var rawText = await cell.EvaluateAsync<string>("el => el.textContent");
+        var cellText = rawText?.Trim() ?? "";
 
-        if (string.IsNullOrEmpty(cellText))
-        {
-            return;
-        }
+        // Console.WriteLine($"Processing cell: {cellText}");
+
         // Skip ignored text
         if (ignoreList.Any(item => cellText.Equals(item.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+        {
+            isIgnore = true;
             return;
+        }
 
         if (!isColspan2)
         {
             if (!string.IsNullOrEmpty(cellText))
             {
+                isIgnore = false;
                 return;
+            }
+            else
+            {
+                if (isIgnore)
+                {
+                    isIgnore = false;
+                    return; // Skip if the cell is ignored
+                }
             }
         }
 
