@@ -1,6 +1,8 @@
 [
     {
         "packages": [
+            "azure-ai-metricsadvisor",
+            "azure-search-common",
             "azure-storage-blobs-batch",
             "azure-storage-blobs"
         ]
