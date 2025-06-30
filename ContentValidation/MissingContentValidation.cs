@@ -96,7 +96,7 @@ public class MissingContentValidation : IValidation
 
         var anchorLink = await GetAnchorLinkForCellAsync(cell, page, testLink);
 
-        if(anchorLink == "This is an empty cell, please ignore it.")
+        if(anchorLink == "This is an ignore cell, please ignore it.")
         {
             return; // Skip if the anchor link is the ignore text
         }
@@ -111,7 +111,7 @@ public class MissingContentValidation : IValidation
     private async Task<string> GetAnchorLinkForCellAsync(IElementHandle cell, IPage page, string testLink)
     {
         string anchorLink = "No anchor link found, need to manually search for empty cells on the page.";
-        string ignoreText = "This is an empty cell, please ignore it.";
+        string ignoreText = "This is an ignore cell, please ignore it.";
 
         var nearestHTagText = await cell.EvaluateAsync<string?>(@"element => {
             function findNearestHeading(startNode) {
