@@ -1,4 +1,4 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |
-| 1 | azure-appconfiguration | Content issue found | https://github.com/zedy-wj/content-validation/issues/2099 https://github.com/zedy-wj/content-validation/issues/2100 https://github.com/zedy-wj/content-validation/issues/2101  | Need Confirm | Need Confirm | 6/25/2025 2:13:26 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=46 |
+| 1 | azure-appconfiguration | Content issue found | https://github.com/zedy-wj/content-validation/issues/2288 https://github.com/zedy-wj/content-validation/issues/2289 https://github.com/zedy-wj/content-validation/issues/2290  | Need Confirm | Need Confirm | 7/1/2025 2:38:45 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=48 |
