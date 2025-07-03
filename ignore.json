@@ -18,6 +18,11 @@
                 "Description": "Example: "
             },
             {
+                "IgnoreText": "close",
+                "Usage":"contains",
+                "Description": "Example: "
+            },
+            {
                 "IgnoreText": "get",
                 "Usage":"contains",
                 "Description": "Example: get(key, default=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-file-datalake/azure.storage.filedatalake.accesscontrolchangecounters?view=azure-python-preview&branch=main"
@@ -595,6 +600,11 @@
                 "Description": "Example: <class 'azure.core "
             },
             {
+                "IgnoreText": "close",
+                "Usage":"contains",
+                "Description": "Example:  "
+            },
+            {
                 "IgnoreText": "from_dict",
                 "Usage":"contains",
                 "Description": "Example: from_dict(data, key_extractors=None, content_type=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
@@ -706,6 +716,11 @@
         "IgnoreList": [
             {
                 "IgnoreText": "lowerker_items",
+                "Usage":"subset",
+                "Description": "Example: , Link: "
+            },
+            {
+                "IgnoreText": "close",
                 "Usage":"subset",
                 "Description": "Example: , Link: "
             },
