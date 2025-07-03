@@ -93,6 +93,41 @@
         "Rule": "UnnecessarySymbolsValidation",
         "IgnoreList": [
             {
+                "IgnoreText": "datetime",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.containerclient?view=azure-python-preview&branch=main"
+            },
+            {
+                "IgnoreText": "BlobPrefix",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.containerclient?view=azure-python-preview&branch=main"
+            },
+            {
+                "IgnoreText": "bytes, <xref:PrimitiveTypes>",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-servicebus/azure.servicebus.servicebusmessage?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "LogsQueryError",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-monitor-query/azure.monitor.query.aio.logsqueryclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "str",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-keys/azure.keyvault.keys.deletedkey?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "CertificateOperation",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "DocumentError",
+                "Usage":"before]",
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.textanalyticsclient?view=azure-python&branch=main"
+            },
+            {
                 "IgnoreText": "as_dict",
                 "Usage":"start",
                 "Description": "Example: as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable , Link: https://learn.microsoft.com/en-us/python/api/azure-search-documents/azure.search.documents.indexes.models.aiservicesaccountidentity?view=azure-python-preview&branch=main"
@@ -306,6 +341,11 @@
                 "IgnoreText": "<<2",
                 "Usage":"<contain>",
                 "Description": "Example: LOOKUP_IN_STORE= new LookupOptions(1 <<2) , Link: https://learn.microsoft.com/en-us/java/api//com.microsoft.azure.elasticdb.shard.base.lookupoptions?view=azure-java-stable&branch=main"
+            },
+            {
+                "IgnoreText": "'>', '<'",
+                "Usage":"<contain>",
+                "Description": "Example: , Link: "
             },
             {
                 "IgnoreText": "list",
