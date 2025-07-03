@@ -309,7 +309,7 @@ namespace ContentValidation.Test
         [Test]
         [Category("CommonTest")]
         [TestCaseSource(nameof(TestLinksOfTypeAnnotationValidation))]
-        public async Task TestMissingTypeAnnotation(string testLink)
+        public async Task TestMissingTypeAnnotationValidation(string testLink)
         {
 
             IValidation Validation = new TypeAnnotationValidation(playwright);
