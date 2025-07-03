@@ -782,17 +782,17 @@
             {
                 "IgnoreText": "message",
                 "Usage":"subsetOfErrorClass",
-                "Description": "Example: , Link: "
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/javascript/api/azure-iot-common/errors.argumenterror?view=azure-node-latest&branch=main#constructors"
             },
             {
                 "IgnoreText": "name",
                 "Usage":"subsetOfErrorClass",
-                "Description": "Example: , Link: "
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/javascript/api/azure-iot-common/errors.argumenterror?view=azure-node-latest&branch=main#constructors"
             },
             {
                 "IgnoreText": "stack",
                 "Usage":"subsetOfErrorClass",
-                "Description": "Example: , Link: "
+                "Description": "Example: , Link: https://learn.microsoft.com/en-us/javascript/api/azure-iot-common/errors.argumenterror?view=azure-node-latest&branch=main#constructors"
             },
             {
                 "IgnoreText": "entries",
@@ -873,6 +873,21 @@
                 "IgnoreText": "index",
                 "Usage":"subset",
                 "Description": "Example: index(value, start=0, stop=9223372036854775807, /) , Link: https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmoslist?view=azure-python-preview&branch=main"
+            },
+            {
+                "IgnoreText": "from_dict",
+                "Usage":"contains",
+                "Description": "Example: from_dict(data, key_extractors=None, content_type=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "deserialize",
+                "Usage":"contains",
+                "Description": "Example: deserialize(data, content_type=None) , Link: https://learn.microsoft.com/en-us/python/api/azure-iot-hub/azure.iot.hub.protocol.models.authentication_mechanism.authenticationmechanism?view=azure-python&branch=main"
+            },
+            {
+                "IgnoreText": "close",
+                "Usage":"subset",
+                "Description": "Example: , Link: "
             }
         ]
     }
