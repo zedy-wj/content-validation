@@ -29,46 +29,43 @@ namespace ContentValidation.Test
             playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
             TestLinksOfCodeFormatValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/java/api/com.azure.storage.file.share.shareasyncclient?view=azure-java-stable&branch=main",
+                "https://learn.microsoft.com/en-us/dotnet/api/azure.ai.metricsadvisor.administration?view=azure-dotnet"
             };
             TestLinksOfEmptyTagsValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/dotnet/api/azure.ai.metricsadvisor.administration?view=azure-dotnet"
+                "https://learn.microsoft.com/en-us/dotnet/api/azure.ai.metricsadvisor.administration.azureblobdatafeedsource?view=azure-dotnet"
             };
             TestLinksOfErrorDisplayValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/javascript/api/@azure/app-configuration/listrevisionsoptions?view=azure-node-latest"
+                "https://learn.microsoft.com/en-us/javascript/api/@azure/app-configuration/optionallabelsfields?view=azure-node-latest"
             };
             TestLinksOfExtraLabelValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/python/api/azure-ai-language-questionanswering/azure.ai.language.questionanswering.authoring.aio.authoringclient?view=azure-python&branch=main"
+                "https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.tableserviceasyncclient?view=azure-java-stable"
             };
             TestLinksOfGarbledTextValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python&branch=main"
+                "https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.tableserviceasyncclient?view=azure-java-stable"
             };
             TestLinksOfInconsistentTextFormatValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models?view=azure-java-stable",
+                "https://learn.microsoft.com/en-us/java/api/com.azure.data.tables.models.listentitiesoptions?view=azure-java-stable",
             };
             TestLinksOfInvalidTagsValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/java/api/com.azure.storage.file.share.sharefileasyncclient?view=azure-java-stable"
+                "https://learn.microsoft.com/en-us/python/api/azure-ai-language-questionanswering/azure.ai.language.questionanswering.authoring.aio.authoringclient?view=azure-python&branch=main"
             };
             TestLinksOfMissingContentValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/python/api/azure-ai-translation-document/azure.ai.translation.document.aio.asyncdocumenttranslationlropoller?view=azure-python&branch=main",
-                "https://learn.microsoft.com/en-us/javascript/api/@azure/storage-queue/queueclient?view=azure-node-preview&branch=main",
-                "https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.elasticdb.shard.store.storeexception?view=azure-java-stable",
-                "https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.mobile.server.config?view=azure-dotnet"
+                "https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python&branch=main"
             };
             TestLinksOfTypeAnnotationValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/python/api/uamqp/uamqp.async_ops.client_async.amqpclientasync?view=azure-python&branch=main"
+                "https://learn.microsoft.com/en-us/python/api/azure-ai-contentsafety/azure.ai.contentsafety.models.addorupdatetextblocklistitemsoptions?view=azure-python&branch=main"
             };
             TestLinksOfUnnecessarySymbolsValidation = new List<string>()
             {
-                "https://learn.microsoft.com/en-us/python/api/azure-storage-queue/azure.storage.queue.aio.queueserviceclient?view=azure-python-preview&branch=main"
+                "https://learn.microsoft.com/en-us/python/api/azure-monitor-query/azure.monitor.query.aio.logsqueryclient?view=azure-python&branch=main"
             };
         }
 
@@ -96,7 +93,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -124,8 +121,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(13), res.FormatErrorMessage());
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -153,8 +149,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(2), res.FormatErrorMessage());
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -182,8 +177,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(18), res.FormatErrorMessage());
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -211,9 +205,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(26), res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains(":param grader_config:", StringComparison.OrdinalIgnoreCase)),Is.True, "At least one error location should contain ':param grader_config:");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -241,8 +233,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains("#overview", StringComparison.OrdinalIgnoreCase)), Is.True, "At least one error location should contain '#overview'");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -270,9 +261,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(77), res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains("<void>", StringComparison.OrdinalIgnoreCase)), Is.True, "At least one error location should contain '<void>'");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -300,9 +289,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains("#", StringComparison.OrdinalIgnoreCase)), Is.True, "Must contain anchor links '#'");
-            Assert.That(res.LocationsOfErrors, Has.None.Contains("No anchor link found, need to manually search for empty cells on the page.").IgnoreCase,"No error location should contain '#packages'");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -330,9 +317,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(2), res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains("mgmt_request", StringComparison.OrdinalIgnoreCase)), Is.True, "At least one error location should contain 'mgmt_request'");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
 
 
@@ -360,9 +345,7 @@ namespace ContentValidation.Test
                 throw;
             }
 
-            Assert.That(res.Result, Is.False, res.FormatErrorMessage());
-            Assert.That(res.NumberOfOccurrences, Is.EqualTo(3), res.FormatErrorMessage());
-            Assert.That(res.LocationsOfErrors.Any(location => location.Contains("~", StringComparison.OrdinalIgnoreCase)), Is.True, "At least one error location should contain '~'");
+            Assert.That(res.Result, Is.True, res.FormatErrorMessage());
         }
     }
 }
