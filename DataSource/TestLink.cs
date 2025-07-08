@@ -16,7 +16,7 @@ public class TestLinkItem
 
 public class TestLinkData
 {
-    private static readonly string DataFolderPath = "DataFolder";
+    private static readonly string DataFolderPath = "../DataSource/DataFolder";
 
     private static string GetFilePath(string language, string packageName)
     {
