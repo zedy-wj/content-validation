@@ -42,16 +42,26 @@ namespace DataSource
                 { "python", appConfig.Languages.Python }
             };
 
+            // Check if a specific language is passed as an argument
+            string? selectedLanguage = args.Length > 0 ? args[0].ToLower() : null;
+
             foreach (var languageEntry in languageMap)
             {
                 string language = languageEntry.Key;
                 List<PackageConfig> packages = languageEntry.Value;
 
+                // If a specific language is selected, skip other languages
+                if (selectedLanguage != null && language != selectedLanguage)
+                {
+                    continue;
+                }
+                
                 Console.WriteLine($"Processing language: {language}");
 
                 foreach (var packageConfig in packages)
                 {
-                    if (string.IsNullOrEmpty(packageConfig.ReadmeName) || 
+                    
+                    if (string.IsNullOrEmpty(packageConfig.ReadmeName) ||
                         string.IsNullOrEmpty(packageConfig.PackageName))
                     {
                         Console.WriteLine($"Skipping empty configuration for {language}");
@@ -60,8 +70,8 @@ namespace DataSource
 
                     Console.WriteLine($"Processing package: {packageConfig.PackageName}");
 
-                    string packageForVersionCheck = language?.ToLower() == "javascript" || language?.ToLower() == "dotnet" 
-                        ? packageConfig.CsvPackageName 
+                    string packageForVersionCheck = language?.ToLower() == "javascript" || language?.ToLower() == "dotnet"
+                        ? packageConfig.CsvPackageName
                         : packageConfig.PackageName;
 
                     string? versionSuffix = ChooseGAOrPreview(language, packageForVersionCheck);
