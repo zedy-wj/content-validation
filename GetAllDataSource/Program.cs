@@ -6,7 +6,6 @@ using Microsoft.Playwright;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using Newtonsoft.Json;
 using CsvHelper;
 using CsvHelper.Configuration;
 
