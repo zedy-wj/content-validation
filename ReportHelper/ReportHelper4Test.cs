@@ -377,6 +377,7 @@ public class GithubHelper
 
         Dictionary<string, string> ruleMappings = new Dictionary<string, string>
         {
+            { "TypeAnnotationValidation", "Missing Type Annotation" },
             { "MissingContentValidation", "Missing Content" },
             { "GarbledTextValidation", "Garbled Text" },
             { "InconsistentTextFormatValidation", "Inconsistent Text Format" },
@@ -387,15 +388,22 @@ public class GithubHelper
             { "CodeFormatValidation", "Code Format" }
         };
 
+        Dictionary<string, string> languageMappings = new Dictionary<string, string>
+        {
+            { "javascript", "JS SDK" },
+            { "python", "Python SDK" },
+            { "java", "Java SDK" },
+            { "dotnet", "DotNet SDK" }
+        };
+
         foreach (var rule in succeedRules)
         {
-            string issueTitle = $"{packageName} content validation issues about {rule} for {language} sdk.";
+            string issueTitle = "";
 
-            if (language.ToLower() == "javascript")
-            {
-                string mappedRule = GetMappedValue(ruleMappings, rule);
-                issueTitle = $"[JS SDK][{packageName}]{mappedRule}";
-            }
+            string mappedRule = GetMappedValue(ruleMappings, rule);
+            string mappedLanguage = GetMappedValue(languageMappings, language.ToLower());
+            issueTitle = $"[{mappedLanguage}][{packageName}]{mappedRule}";
+            
             Console.WriteLine($"Searching issue with title: {issueTitle}");
 
             var matchingIssue = allIssues.FirstOrDefault(i => i["title"]?.GetValue<string>() == issueTitle);
