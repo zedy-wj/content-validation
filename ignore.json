@@ -588,6 +588,26 @@
                 "IgnoreText": ":44:",
                 "Usage":"",
                 "Description": " 2018-12-31T03:44:23.882Z, Link: https://learn.microsoft.com/en-us/javascript/api/@azure/storage-file-datalake/datalakefilesystemclient?view=azure-node-preview&branch=main"
+            },
+            {
+                "IgnoreText": ":connection:",
+                "Usage":"",
+                "Description": " amqp:connection:forced, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.device.transport.amqps.exceptions?view=azure-java-preview&branch=main"
+            },
+            {
+                "IgnoreText": ":link:",
+                "Usage":"",
+                "Description": " amqp:link:detach-forced, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.device.transport.amqps.exceptions?view=azure-java-preview&branch=main"
+            },
+            {
+                "IgnoreText": ":session:",
+                "Usage":"",
+                "Description": " amqp:session:errant-link, Link: https://learn.microsoft.com/en-us/java/api/com.microsoft.azure.sdk.iot.device.transport.amqps.exceptions?view=azure-java-preview&branch=main"
+            },
+            {
+                "IgnoreText": ":44:",
+                "Usage":"",
+                "Description": " :connection:, Link: "
             }
         ]
     },
