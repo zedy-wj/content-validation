@@ -40,7 +40,14 @@ public class CodeFormatValidation : IValidation
                 {
                     continue; // Skip empty lines
                 }
+                
+                if (line.StartsWith(" *"))
+                {
+                    continue; // Skip lines that do not start with whitespace
+                }
+
                 var match = Regex.Match(line, @"^(\s*)");
+
                 if (match.Success)
                 {
                     int spaceCount = match.Groups[1].Value.Length;
