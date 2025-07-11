@@ -44,12 +44,20 @@ public class InconsistentTextFormatValidation : IValidation
                 errorList.Add(text);
                 errorLocation.Add($" https://learn.{anchorLink} ");
             }
+            // Format the error list
+            var formattedList = errorLocation
+                .GroupBy(item => item)
+                .Select((group, index) => $"{index + 1}. Appears {group.Count()} times , location : {group.Key}")
+                .ToList();
 
-            res.Result = false;
-            res.ErrorLink = testLink;
-            res.NumberOfOccurrences = hTagsInTd.Count;
-            res.ErrorInfo = "Inconsistent Text Format: " + string.Join(",", errorList);
-            res.LocationsOfErrors = errorLocation;
+            if (errorList.Count > 0)
+            {
+                res.Result = false;
+                res.ErrorLink = testLink;
+                res.NumberOfOccurrences = hTagsInTd.Count;
+                res.ErrorInfo = "Inconsistent Text Format: " + string.Join(",", errorList);
+                res.LocationsOfErrors = formattedList;
+            }
         }
 
         await browser.CloseAsync();
