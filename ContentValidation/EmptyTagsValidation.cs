@@ -52,7 +52,7 @@ public class EmptyTagsValidation : IValidation
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = "There are empty <li> tags on the page.";
+            res.ErrorInfo = "There are empty `<li>` tags on the page.";
             res.LocationsOfErrors = formattedList;
         }
 

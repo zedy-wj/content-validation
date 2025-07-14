@@ -395,17 +395,17 @@ namespace IssuerHelper
 
             Dictionary<string, string> ruleMappings = new Dictionary<string, string>
             {
-                { "TypeAnnotationValidation", "Missing Type Annotation" },
-                { "MissingContentValidation", "Missing Content" },
-                { "GarbledTextValidation", "Garbled Text" },
-                { "InconsistentTextFormatValidation", "Inconsistent Text Format" },
-                { "DuplicateServiceValidation", "Duplicate Service" },
-                { "ExtraLabelValidation", "Extra Label" },
-                { "UnnecessarySymbolsValidation", "Unnecessary Symbols" },
-                { "InvalidTagsValidation", "Invalid Tags" },
-                { "CodeFormatValidation", "Code Format" },
-                { "EmptyTagsValidation", "Empty Tags"},
-                { "ErrorDisplayValidation", "Error Display" }
+                { "TypeAnnotationValidation", " Missing Type Annotation" },
+                { "MissingContentValidation", " Missing Content" },
+                { "GarbledTextValidation", " Garbled Text" },
+                { "InconsistentTextFormatValidation", " Inconsistent Text Format" },
+                { "DuplicateServiceValidation", " Duplicate Service" },
+                { "ExtraLabelValidation", " Extra Label" },
+                { "UnnecessarySymbolsValidation", " Unnecessary Symbols" },
+                { "InvalidTagsValidation", " Invalid Tags" },
+                { "CodeFormatValidation", " Code Format" },
+                { "EmptyTagsValidation", " Empty Tags"},
+                { "ErrorDisplayValidation", " Error Display" }
             };
 
             Dictionary<string, string> languageMappings = new Dictionary<string, string>
@@ -413,7 +413,7 @@ namespace IssuerHelper
                 { "javascript", "JS SDK" },
                 { "python", "Python SDK" },
                 { "java", "Java SDK" },
-                { "dotnet", "DotNet SDK" }
+                { "dotnet", ".NET SDK" }
             };
 
             try
