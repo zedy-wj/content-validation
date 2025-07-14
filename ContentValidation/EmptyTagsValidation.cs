@@ -46,13 +46,13 @@ public class EmptyTagsValidation : IValidation
         {
             var formattedList = errorList
                 .GroupBy(item => item)
-                .Select((group, index) => $"{index + 1}. Appears {group.Count()} times, {group.Key}")
+                .Select((group, index) => $"{index + 1}. Appears {group.Count()} times, `{group.Key}`")
                 .ToList();
 
             res.Result = false;
             res.ErrorLink = testLink;
             res.NumberOfOccurrences = errorList.Count;
-            res.ErrorInfo = "There are empty <li> tags on the page.";
+            res.ErrorInfo = "There are empty `<li>` tags on the page.";
             res.LocationsOfErrors = formattedList;
         }
 

@@ -6,7 +6,6 @@ using Microsoft.Playwright;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using Newtonsoft.Json;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -42,16 +41,26 @@ namespace DataSource
                 { "python", appConfig.Languages.Python }
             };
 
+            // Check if a specific language is passed as an argument
+            string? selectedLanguage = args.Length > 0 ? args[0].ToLower() : null;
+
             foreach (var languageEntry in languageMap)
             {
                 string language = languageEntry.Key;
                 List<PackageConfig> packages = languageEntry.Value;
 
+                // If a specific language is selected, skip other languages
+                if (selectedLanguage != null && language != selectedLanguage)
+                {
+                    continue;
+                }
+                
                 Console.WriteLine($"Processing language: {language}");
 
                 foreach (var packageConfig in packages)
                 {
-                    if (string.IsNullOrEmpty(packageConfig.ReadmeName) || 
+                    
+                    if (string.IsNullOrEmpty(packageConfig.ReadmeName) ||
                         string.IsNullOrEmpty(packageConfig.PackageName))
                     {
                         Console.WriteLine($"Skipping empty configuration for {language}");
@@ -60,8 +69,8 @@ namespace DataSource
 
                     Console.WriteLine($"Processing package: {packageConfig.PackageName}");
 
-                    string packageForVersionCheck = language?.ToLower() == "javascript" || language?.ToLower() == "dotnet" 
-                        ? packageConfig.CsvPackageName 
+                    string packageForVersionCheck = language?.ToLower() == "javascript" || language?.ToLower() == "dotnet"
+                        ? packageConfig.CsvPackageName
                         : packageConfig.PackageName;
 
                     string? versionSuffix = ChooseGAOrPreview(language, packageForVersionCheck);
@@ -187,19 +196,19 @@ namespace DataSource
                             else
                             {
                                 Console.WriteLine($"Package {package} has not both GA and Preview version in the table.");
-                                return null;
+                                return "GA";
                             }
                         }
                         else{
                             Console.WriteLine($"Package {package} not found in the CSV.");
-                            return null;
+                            return "GA";
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error downloading or parsing CSV: {ex.Message}");
-                    return null;
+                    return "GA";
                 }
             }
         }

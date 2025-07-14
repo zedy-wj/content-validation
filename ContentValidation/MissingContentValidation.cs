@@ -11,7 +11,7 @@ public class MissingContentValidation : IValidation
         _playwright = playwright ?? throw new ArgumentNullException(nameof(playwright));
     }
 
-    public List<IgnoreItem> ignoreList = IgnoreData.GetIgnoreList("MissingContentValidation", "subset");
+    public List<IgnoreItem> ignoreList = IgnoreData.GetIgnoreList("CommonValidation", "contains");
     public List<IgnoreItem> ignoreListOfErrorClass = IgnoreData.GetIgnoreList("MissingContentValidation", "subsetOfErrorClass");
 
     public async Task<TResult> Validate(string testLink)
@@ -34,10 +34,15 @@ public class MissingContentValidation : IValidation
             await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: false);
         }
 
-        foreach (var cell in cellElements2)
+        if(!testLink.Contains("/java/", StringComparison.OrdinalIgnoreCase))
         {
-            await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: true);
+            // Skip processing colspan=2 cells for Java errors
+            foreach (var cell in cellElements2)
+            {
+                await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: true);
+            }
         }
+        
 
         // Format the error list
         var formattedList = errorList
@@ -70,6 +75,13 @@ public class MissingContentValidation : IValidation
         bool isColspan2 = false
         )
     {
+        var innerHtml = await cell.EvaluateAsync<string>("el => el.innerHTML");
+
+        if (innerHtml.IndexOf("<img", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return;  
+        }
+
         var rawText = await cell.EvaluateAsync<string>("el => el.textContent");
         var cellText = rawText?.Trim() ?? "";
 
