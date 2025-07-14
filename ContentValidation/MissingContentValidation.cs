@@ -34,10 +34,15 @@ public class MissingContentValidation : IValidation
             await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: false);
         }
 
-        foreach (var cell in cellElements2)
+        if(!testLink.Contains("/java/", StringComparison.OrdinalIgnoreCase))
         {
-            await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: true);
+            // Skip processing colspan=2 cells for Java errors
+            foreach (var cell in cellElements2)
+            {
+                await ProcessCellAsync(cell, page, testLink, errorList, ignoreList, ignoreListOfErrorClass, isColspan2: true);
+            }
         }
+        
 
         // Format the error list
         var formattedList = errorList
