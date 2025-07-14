@@ -70,6 +70,13 @@ public class MissingContentValidation : IValidation
         bool isColspan2 = false
         )
     {
+        var innerHtml = await cell.EvaluateAsync<string>("el => el.innerHTML");
+
+        if (innerHtml.IndexOf("<img", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return;  
+        }
+
         var rawText = await cell.EvaluateAsync<string>("el => el.textContent");
         var cellText = rawText?.Trim() ?? "";
 
