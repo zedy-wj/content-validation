@@ -111,6 +111,150 @@
       Write-Host "Agent.OS: $(Agent.OS)"
 ```
 
+## 问题 2: Bash 脚本在 Windows Self-Hosted Agent 上的兼容性问题
+
+### 错误现象
+```
+chmod: cannot access 'C:agent_work1s/eng/scripts/push-pipeline-result-markdown.sh': No such file or directory
+##[error]Bash exited with code '1'.
+```
+
+### 根本原因
+1. **路径转换问题**：Windows 路径 `C:\agent\_work\1\s` 在 WSL/Bash 中转换不正确
+2. **命令兼容性**：`chmod` 是 Unix/Linux 命令，在 Windows 环境中不适用
+3. **文件系统差异**：Windows 和 Linux 的文件权限模型不同
+
+### 解决方案
+
+#### 1. 创建 PowerShell 版本的脚本
+
+创建 `eng/scripts/push-pipeline-result-markdown.ps1`：
+
+```powershell
+param(
+    [Parameter(Mandatory=$true)][string]$GitHubPat,
+    [Parameter(Mandatory=$true)][string]$RepoOwner,
+    [Parameter(Mandatory=$true)][string]$RepoName,
+    [Parameter(Mandatory=$true)][string]$GitUserName,
+    [Parameter(Mandatory=$true)][string]$GitUserEmail,
+    [Parameter(Mandatory=$true)][string]$Language
+)
+
+$ErrorActionPreference = "Stop"
+
+try {
+    $language = $Language.ToLower()
+    $repoUrl = "https://github.com/$RepoOwner/$RepoName.git"
+    $cloneDir = "./repo-clone"
+    $branch = "latest-pipeline-result"
+    $fileName = "latest-pipeline-result-for-$language.md"
+    
+    # 清理现有目录
+    if (Test-Path $cloneDir) {
+        Remove-Item -Path $cloneDir -Recurse -Force
+    }
+    
+    # 克隆仓库
+    $cloneUrl = "https://$GitHubPat@github.com/$RepoOwner/$RepoName.git"
+    git clone $cloneUrl $cloneDir
+    
+    Set-Location $cloneDir
+    
+    # 检出分支
+    git checkout $branch
+    if ($LASTEXITCODE -ne 0) {
+        git checkout -b $branch
+    }
+    git pull origin $branch
+    
+    # 复制文件
+    $sourceFile = "../$fileName"
+    if (Test-Path $sourceFile) {
+        Copy-Item -Path $sourceFile -Destination . -Force
+    } else {
+        "# Latest Pipeline Result for $Language" | Out-File -FilePath $fileName -Encoding UTF8
+    }
+    
+    # 配置 Git 并提交
+    git config --global user.email $GitUserEmail
+    git config --global user.name $GitUserName
+    git add $fileName
+    git commit -m "Updating the latest pipeline result"
+    git push origin $branch
+    
+} catch {
+    Write-Error "Error during git operations: $_"
+    exit 1
+} finally {
+    Set-Location ".."
+    if (Test-Path $cloneDir) {
+        Remove-Item -Path $cloneDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+```
+
+#### 2. 更新 Pipeline 配置
+
+将原有的 Bash 任务替换为跨平台兼容的 PowerShell 任务：
+
+**修改前：**
+```yaml
+- task: Bash@3
+  displayName: 'Set Script Executable'
+  inputs:
+    targetType: 'inline'
+    script: |
+      chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh
+
+- task: Bash@3
+  displayName: 'Push commit about current pipeline status'
+  inputs:
+    targetType: 'filePath'
+    filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh'
+    arguments: >-
+      $(GITHUB_PAT) $(GITHUB_OWNER) $(GITHUB_REPO) 
+      $(GIT_USER_NAME) $(GIT_USER_EMAIL) ${{ parameters.language }}
+```
+
+**修改后：**
+```yaml
+- task: PowerShell@2
+  displayName: 'Push commit about current pipeline status'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $workingDir = "$(System.DefaultWorkingDirectory)"
+      $agentOS = "$(Agent.OS)"
+      
+      if ($agentOS -eq "Windows_NT") {
+        # 使用 PowerShell 脚本处理 Windows
+        $scriptPath = "$workingDir/eng/scripts/push-pipeline-result-markdown.ps1"
+        if (Test-Path $scriptPath) {
+          & $scriptPath -GitHubPat "$(GITHUB_PAT)" -RepoOwner "$(GITHUB_OWNER)" -RepoName "$(GITHUB_REPO)" -GitUserName "$(GIT_USER_NAME)" -GitUserEmail "$(GIT_USER_EMAIL)" -Language "${{ parameters.language }}"
+        } else {
+          Write-Error "PowerShell script not found"
+          exit 1
+        }
+      } else {
+        # 使用 Bash 脚本处理 Linux/macOS
+        $bashScript = "$workingDir/eng/scripts/push-pipeline-result-markdown.sh"
+        if (Test-Path $bashScript) {
+          bash -c "chmod +x '$bashScript'"
+          bash -c "'$bashScript' '$(GITHUB_PAT)' '$(GITHUB_OWNER)' '$(GITHUB_REPO)' '$(GIT_USER_NAME)' '$(GIT_USER_EMAIL)' '${{ parameters.language }}'"
+        } else {
+          Write-Error "Bash script not found"
+          exit 1
+        }
+      }
+```
+
+### 优势
+
+1. **跨平台兼容**：自动检测操作系统并使用相应的脚本
+2. **路径处理正确**：PowerShell 原生处理 Windows 路径
+3. **错误处理完善**：提供详细的错误信息和调试输出
+4. **维护简单**：保持原有 Bash 脚本的功能不变
+
 ## 已修改的文件
 
 以下文件已被更新以支持 self-hosted agent：

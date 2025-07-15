@@ -168,22 +168,43 @@ stages:
         artifactName: issues-summary
         publishLocation: "pipeline"
 
-    - task: Bash@3
-      displayName: 'Set Script Executable'
+    - task: PowerShell@2
+      displayName: 'Push commit about current pipeline status'
       inputs:
         targetType: 'inline'
         script: |
-          chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh
-
-    - task: Bash@3
-      displayName: 'Push commit about current pipeline status'
-      inputs:
-        targetType: 'filePath'
-        filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh'
-        arguments: >-
-          $(GITHUB_PAT)
-          $(GITHUB_OWNER)
-          $(GITHUB_REPO)
-          $(GIT_USER_NAME)
-          $(GIT_USER_EMAIL)
-          ${{ parameters.language }}
+          $workingDir = "$(System.DefaultWorkingDirectory)"
+          $agentOS = "$(Agent.OS)"
+          
+          Write-Host "Agent OS: $agentOS"
+          Write-Host "Working Directory: $workingDir"
+          
+          if ($agentOS -eq "Windows_NT") {
+            # Use PowerShell script for Windows
+            $scriptPath = "$workingDir/eng/scripts/push-pipeline-result-markdown.ps1"
+            
+            Write-Host "Using PowerShell script: $scriptPath"
+            
+            if (Test-Path $scriptPath) {
+              & $scriptPath -GitHubPat "$(GITHUB_PAT)" -RepoOwner "$(GITHUB_OWNER)" -RepoName "$(GITHUB_REPO)" -GitUserName "$(GIT_USER_NAME)" -GitUserEmail "$(GIT_USER_EMAIL)" -Language "${{ parameters.language }}"
+            } else {
+              Write-Error "PowerShell script not found at: $scriptPath"
+              exit 1
+            }
+          } else {
+            # Use bash script for Linux/macOS
+            $bashScript = "$workingDir/eng/scripts/push-pipeline-result-markdown.sh"
+            
+            Write-Host "Using Bash script: $bashScript"
+            
+            if (Test-Path $bashScript) {
+              # Make script executable
+              bash -c "chmod +x '$bashScript'"
+              
+              # Execute script
+              bash -c "'$bashScript' '$(GITHUB_PAT)' '$(GITHUB_OWNER)' '$(GITHUB_REPO)' '$(GIT_USER_NAME)' '$(GIT_USER_EMAIL)' '${{ parameters.language }}'"
+            } else {
+              Write-Error "Bash script not found at: $bashScript"
+              exit 1
+            }
+          }
