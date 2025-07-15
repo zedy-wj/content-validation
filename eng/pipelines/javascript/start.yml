@@ -83,15 +83,70 @@ stages:
         command: 'build'
         projects: 'IssuerHelper/IssuerHelper.csproj'
 
-    - script: |
-        organization=$(System.CollectionUri)
-        project=$(System.TeamProject)
-        buildId=$(Build.BuildId)
-  
-        pipelineUrl="${organization}${project}/_build/results?buildId=${buildId}"
-  
-        echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
+    - task: PowerShell@2
       displayName: Get the current pipeline url
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Get predefined variables with proper escaping for self-hosted agents
+          $organization = "$(System.CollectionUri)"
+          $project = "$(System.TeamProject)"
+          $buildId = "$(Build.BuildId)"
+          
+          # Ensure organization URL ends with /
+          if (-not $organization.EndsWith('/')) {
+            $organization += '/'
+          }
+          
+          # Construct the pipeline URL
+          $pipelineUrl = "${organization}${project}/_build/results?buildId=${buildId}"
+          
+          Write-Host "Organization: $organization"
+          Write-Host "Project: $project"
+          Write-Host "Build ID: $buildId"
+          Write-Host "Pipeline URL: $pipelineUrl"
+          
+          # Set the pipeline variable
+          Write-Host "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
+
+    - task: PowerShell@2
+      displayName: Validate Environment Variables
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Validate that all required variables are available
+          $workingDir = "$(System.DefaultWorkingDirectory)"
+          $organization = "$(System.CollectionUri)"
+          $project = "$(System.TeamProject)"
+          $buildId = "$(Build.BuildId)"
+          
+          Write-Host "=== Environment Validation ==="
+          Write-Host "Working Directory: $workingDir"
+          Write-Host "Organization: $organization"
+          Write-Host "Project: $project"
+          Write-Host "Build ID: $buildId"
+          
+          # Check if essential directories exist
+          if (Test-Path "$workingDir/IssuerHelper") {
+            Write-Host "✓ IssuerHelper directory found"
+          } else {
+            Write-Warning "⚠ IssuerHelper directory not found at $workingDir/IssuerHelper"
+          }
+          
+          if (Test-Path "$workingDir/Artifacts") {
+            Write-Host "✓ Artifacts directory found"
+          } else {
+            Write-Warning "⚠ Artifacts directory not found at $workingDir/Artifacts"
+          }
+          
+          # Validate that required variables are not empty
+          if ([string]::IsNullOrEmpty($organization) -or [string]::IsNullOrEmpty($project) -or [string]::IsNullOrEmpty($buildId)) {
+            Write-Error "❌ One or more required Azure DevOps variables are missing!"
+            Write-Error "This might indicate an issue with the self-hosted agent configuration."
+            exit 1
+          } else {
+            Write-Host "✓ All required variables are available"
+          }
 
     - task: DotNetCoreCLI@2
       displayName: Summary Total Issues of all packages
