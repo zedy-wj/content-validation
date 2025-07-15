@@ -52,7 +52,7 @@ public class InconsistentTextFormatValidation : IValidation
                 res.Result = false;
                 res.ErrorLink = testLink;
                 res.NumberOfOccurrences = hTagsInTd.Count;
-                res.ErrorInfo = "Inconsistent Text Format: " + string.Join(",", errorList);
+                res.ErrorInfo = $"Inconsistent Text Format: `{string.Join(",", errorList)}`";
                 res.LocationsOfErrors = formattedList;
             }
         }
