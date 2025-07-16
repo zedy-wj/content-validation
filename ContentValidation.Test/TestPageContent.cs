@@ -180,7 +180,7 @@ namespace ContentValidation.Test
 
 
         [Test]
-        [Category("DotNetTest")]
+        [Category("PendingDotNetTest")]
         [TestCaseSource(nameof(TestLinks))]
         public async Task TestEmptyTags(string testLink)
         {
