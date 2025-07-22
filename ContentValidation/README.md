@@ -202,3 +202,5 @@ You can filter out some unexpected errors by configuring the `ignore.json` file.
   - **IgnoreText** - The content that actually needs to be filtered out.
   - **Usage** - Defines the filtering logic (see usage types above for detailed explanations)
   - **Description** - Not used in rule code, but only used as a comment in JSON for documentation purposes.
+
+>Notes: If none of the above Usage types apply, you can also design your own Usage and write the necessary filtering conditions in the corresponding rule.
