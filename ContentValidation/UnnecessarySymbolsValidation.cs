@@ -22,17 +22,11 @@ public class UnnecessarySymbolsValidation : IValidation
     
     public List<IgnoreItem> ignoreListBefore = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "before]");
 
-    // Star list for checking if the content start with symbol in the list.
-    public List<IgnoreItem> startList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "start");
-
-    // Content list for checking if the content between "[ ]" is in the list.
-    public List<IgnoreItem> contentList = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "content");
-
     // Prefix list for checking if the content before the "[" is in the list.
-    public List<IgnoreItem> containList01 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "<contain>");
+    public List<IgnoreItem> containList01 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "<contains>");
 
     // Content list for checking if the content between "[ ]" is in the list.
-    public List<IgnoreItem> containList02 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "[contain]");
+    public List<IgnoreItem> containList02 = IgnoreData.GetIgnoreList("UnnecessarySymbolsValidation", "[contains]");
 
     public UnnecessarySymbolsValidation(IPlaywright playwright)
     {
@@ -85,7 +79,7 @@ public class UnnecessarySymbolsValidation : IValidation
             string[] lines = codeBlock.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
-                if (startList.Any(item => line.Trim().Contains(item.IgnoreText)) || commonIgnore.Any(item => line.Trim().Contains(item.IgnoreText)))
+                if (prefixList.Any(item => line.Trim().Contains(item.IgnoreText)) || commonIgnore.Any(item => line.Trim().Contains(item.IgnoreText)))
                 {
                     continue;
                 }
@@ -265,7 +259,7 @@ public class UnnecessarySymbolsValidation : IValidation
             return false;
         }
 
-        // Check if the content is in the contentList
+        // Check if the content is in the containList02
         if (input[index] == '[')
         {
             // Extract the content between '[' and ']'
@@ -279,8 +273,8 @@ public class UnnecessarySymbolsValidation : IValidation
 
             string contentBetweenBrackets = input.Substring(startIndex + 1, endIndex - startIndex - 1);
 
-            // Check if the content is in the contentList
-            if (contentList.Any(content => contentBetweenBrackets.Contains(content.IgnoreText, StringComparison.OrdinalIgnoreCase)))
+            // Check if the content is in the containList02
+            if (containList02.Any(content => contentBetweenBrackets.Contains(content.IgnoreText, StringComparison.OrdinalIgnoreCase)))
             {
                 return true;
             }
