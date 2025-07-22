@@ -364,73 +364,73 @@
             },
             {
                 "IgnoreText": "list",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "ItemPaged",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: TextAnalysisLROPoller[ItemPaged[ AbstractiveSummaryResult, DocumentError]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "PiiEntityCategory.US",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: [PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER] for this kwarg , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics//azure.ai.textanalytics.recognizepiientitiesaction?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "str",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: list[dict[str, str]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "DocumentError",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: input a list[TextDocumentInput] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-textanalytics/azure.ai.textanalytics.aio.textanalyticsclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "NotRequired",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: NotRequired[Literal[\"azure_openai\"]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.azureopenaimodelconfiguration?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "abc",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example:  [abc] matches , Link: https://learn.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.outputfile?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "<xref",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": ""
             },
             {
                 "IgnoreText": "AppExtension",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": ""
             },
 
             {
                 "IgnoreText": "azure_core_exception",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": ""
             },
             {
                 "IgnoreText": "1-3",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": ""
             },
             {
                 "IgnoreText": "DocumentStatus",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: AsyncDocumentTranslationLROPoller[AsyncItemPaged[DocumentStatus]] , Link: https://learn.microsoft.com/en-us/python/api/azure-ai-translation-document/azure.ai.translation.document.aio.documenttranslationclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "CertificateOperation",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: LROPoller[KeyVaultCertificate,CertificateOperation] , Link: https://learn.microsoft.com/en-us/python/api/azure-keyvault-certificates/azure.keyvault.certificates.certificateclient?view=azure-python&branch=main"
             },
             {
                 "IgnoreText": "LogsQueryError",
-                "Usage":"[contain]",
+                "Usage":"[contains]",
                 "Description": "Example: list[LogsQueryResult,LogsQueryPartialResult,LogsQueryError] , Link: https://learn.microsoft.com/en-us/python/api/azure-monitor-query/azure.monitor.query.aio.logsqueryclient?view=azure-python&branch=main"
             },
             {

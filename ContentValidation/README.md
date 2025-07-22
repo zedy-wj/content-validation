@@ -113,31 +113,92 @@ You can filter out some unexpected errors by configuring the `ignore.json` file.
 ]
 ```
 
->Notes: In the above example, six types of validation rules are introduced to filter out content during content validation:
+### Validation Rules and Usage Types
 
-### Validation Rules
->
->- **CommonValidation** - Filters common programming patterns like standard Python methods (`from_dict`, `serialize`, `deserialize`) and mathematical expressions with regular expressions.
->- **ExtraLabelValidation** - Filters legitimate HTML/XML tags that might be incorrectly flagged as errors.
->- **UnnecessarySymbolsValidation** - Filters bracket usage in type annotations, generic types, and URL patterns that are syntactically correct.
->- **GarbledTextValidation** - Filters time formats, timestamps, and special identifiers that might appear as garbled text but are legitimate.
->- **TypeAnnotationValidation** - Filters Python function signature syntax like `*args`, `**kwargs`, and parameter annotations.
->- **MissingContentValidation** - Filters standard error class properties and array methods that are expected to be present.
+#### 1. CommonValidation
+
+**Purpose**: Filters common programming patterns, standard methods, and mathematical expressions that are legitimate but might be flagged as errors.
+
+**Usage Types**:
+
+- **`contains`** - Filters standard Python methods and common programming terms
+  - **When to use**: Common method names that appear anywhere in text (`from_dict`, `serialize`, `deserialize`, `get`, `pop`, `count`, etc.)
+  - **Other cases**: Built-in Python methods, dictionary operations, list operations
+
+- **`regular`** - Filters mathematical expressions using regex patterns  
+  - **When to use**: Complex patterns like mathematical intervals (`[1, 2]`, `(1, 5]`, `[0.25, 0.75]`)
+  - **Other cases**: Coordinate pairs, version ranges, structured data formats
+
+#### 2. ExtraLabelValidation
+
+**Purpose**: Filters legitimate HTML/XML tags and markup that might be incorrectly flagged.
+
+**Usage Types**:
+
+- **`contains`** - Filters HTML/XML tag beginnings
+  - **When to use**: HTML or XML tags in documentation (`<img`, `<table`, `<true`)
+  - **Other cases**: Configuration placeholders, markup elements
+
+#### 3. UnnecessarySymbolsValidation  
+
+**Purpose**: Filters unnecessary or incorrectly flagged symbols and brackets that appear in legitimate code examples, type definitions, and documentation content.
+
+**Usage Types**:
+
+- **`before]`** - Filters content that appears before closing brackets
+  - **When to use**: When legitimate type names or content before `]` are incorrectly flagged as unnecessary symbols (`List[str]`, `Optional[datetime]`)
+  - **Other cases**: Generic type parameters, array notation, bracket expressions
+
+- **`prefix`** - Filters content starting with specific keywords that have meaningful brackets
+  - **When to use**: When text starting with certain keywords should not have their brackets flagged as unnecessary (`list[RecognizedForm]`, `dict[str, str]`)
+  - **Other cases**: Type constructors, method calls with generic parameters
+
+- **`[contains]`** - Filters content within square bracket contexts that are legitimate
+  - **When to use**: When content inside square brackets is valid and shouldn't be flagged as unnecessary (`dict[str, str]`, `List[KeyOperation or str]`)
+  - **Other cases**: Array indexing, generic type arguments, mathematical notation
+
+- **`<contains>`** - Filters content within angle bracket contexts that are legitimate  
+  - **When to use**: When content inside angle brackets is valid code or markup (`List<String>`, `<azure.core.class>`, comparison operators)
+  - **Other cases**: Java generics, XML/HTML tags, template syntax, mathematical inequalities
+
+#### 4. GarbledTextValidation
+
+**Purpose**: Filters time formats, timestamps, and special identifiers that might appear as garbled text.
+
+**Usage Types**:
+
+- **`contains`** - Filters time components and protocol identifiers
+  - **When to use**: Time formats (`:mm:`, `:05:`), protocol identifiers (`:dtdl:`, `:acs:`)
+  - **Other cases**: Timestamp components, service identifiers, namespace separators
+
+#### 5. TypeAnnotationValidation
+
+**Purpose**: Filters Python function signature syntax and parameter annotations.
+
+**Usage Types**:
+
+- **`equal`** - Filters exact matches of syntax elements
+  - **When to use**: Exact Python syntax (`**kwargs`, `*args`, `:`, `*`, `/`)
+  - **Other cases**: Function parameter syntax, annotation separators
+
+#### 6. MissingContentValidation
+
+**Purpose**: Filters standard error properties and array methods that are expected to exist.
+
+**Usage Types**:
+
+- **`subsetOfErrorClass`** - Filters standard error object properties
+  - **When to use**: Standard error properties (`message`, `name`, `stack`)
+  - **Other cases**: Exception attributes, error object fields
+
+- **`subset`** - Filters standard array/collection methods
+  - **When to use**: Standard array methods (`entries`, `reduce`, `reduceRight`)
+  - **Other cases**: Collection operations, prototype methods
 
 ### Configuration Structure
->
->- **Rule** - One of the validation rules where your filter condition needs to be added.
->- **IgnoreList** - This is an array of objects in JSON, each object contains:
->   - **IgnoreText** - The content that actually needs to be filtered out.
->   - **Usage** - Defines the filtering logic with examples:
->     - `contains` - Example: "from_dict" filters any text containing "from_dict"
->     - `equal` - Example: "**kwargs" filters text exactly matching "**kwargs"
->     - `prefix` - Example: "list" filters text starting with "list" like "list[str]"
->     - `before]` - Example: "str" filters "str" when it appears before closing bracket "]"
->     - `[contains]` - Example: " str" filters " str" within bracket context like "dict[str, int]"
->     - `[contain]` - Example: "list" filters "list" within brackets with slight variation
->     - `<contains>` - Example: "azure.core." filters "azure.core." within angle brackets like "<azure.core.class>"
->     - `regular` - Example: "\\[\\s*-?\\d+\\s*,\\s*-?\\d+\\s*\\]" uses regex to match "[1, 2]"
->     - `subsetOfErrorClass` - Example: "message" filters "message" as standard error property
->     - `subset` - Example: "reduce" filters "reduce" as standard array method
->   - **Description** - Not used in rule code, but only used as a comment in JSON for
+
+- **Rule** - One of the validation rules where your filter condition needs to be added.
+- **IgnoreList** - This is an array of objects in JSON, each object contains:
+  - **IgnoreText** - The content that actually needs to be filtered out.
+  - **Usage** - Defines the filtering logic (see usage types above for detailed explanations)
+  - **Description** - Not used in rule code, but only used as a comment in JSON for documentation purposes.
