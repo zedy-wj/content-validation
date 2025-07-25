@@ -19,12 +19,15 @@ parameters:
   default: ''
   
 jobs:
-  job: ValidatePackages
+- job: ValidatePackages
   strategy:
-    matrix: ${{ fromJson(format('{{{0}}}', join(',', split(parameters.packages, ',').select(trim).select(format('"{0}":{{}}'))))) }}
+    matrix:
+      ${{ each package in split(parameters.packages, ',') }}:
+        ${{ replace(trim(package), '-', '_') }}:
+          packageName: ${{ trim(package) }}
     maxParallel: 1
   steps:
-  - template: /eng/pipelines/java/package/${{ matrix.key }}.yml
+  - template: /eng/pipelines/java/package/$(packageName).yml
     parameters:
       AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
       GitHubPat: $(GITHUB_PAT)
