@@ -19,11 +19,15 @@ parameters:
   default: ''
   
 jobs:
-- ${{ each packageName in split(parameters.packages, ',') }}:
-  - template: /eng/pipelines/java/package/${{ packageName }}.yml
+  job: ValidatePackages
+  strategy:
+    matrix: ${{ fromJson(format('{{{0}}}', join(',', split(parameters.packages, ',').select(trim).select(format('"{0}":{{}}'))))) }}
+    maxParallel: 1
+  steps:
+  - template: /eng/pipelines/java/package/${{ matrix.key }}.yml
     parameters:
-      GitHubPat: ${{ parameters.GitHubPat }}
-      GitHubOwner: ${{ parameters.GitHubOwner }}
-      GitHubRepo: ${{ parameters.GitHubRepo }}
-      AzureDevOpsPat: ${{ parameters.AzureDevOpsPat }}
-      Branch: ${{ parameters.Branch }}
+      AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
+      GitHubPat: $(GITHUB_PAT)
+      GitHubOwner: $(GITHUB_OWNER)
+      GitHubRepo: $(GITHUB_REPO)
+      Branch: ${{ parameters.branch }}

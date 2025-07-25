@@ -29,9 +29,13 @@ parameters:
 stages:
 - stage: ContentValidationTesting
   jobs:
-  - ${{ each packageName in split(parameters.packages, ',') }}:
-    - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/java/package/${{ packageName }}.yml
+  - ${{ if ne(parameters.packages, 'all') }}:
+      job: ValidatePackages
+      strategy:
+        matrix: ${{ fromJson(format('{{{0}}}', join(',', split(parameters.packages, ',').select(trim).select(format('"{0}":{{}}'))))) }}
+        maxParallel: 1
+      steps:
+      - template: /eng/pipelines/java/package/${{ matrix.key }}.yml
         parameters:
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
