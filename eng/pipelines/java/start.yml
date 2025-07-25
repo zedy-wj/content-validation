@@ -28,17 +28,11 @@ parameters:
 
 stages:
 - stage: ContentValidationTesting
+  lockBehavior: sequential
   jobs:
-  - ${{ if ne(parameters.packages, 'all') }}:
-    - job: ValidatePackages
-      strategy:
-        matrix:
-          ${{ each package in split(parameters.packages, ',') }}:
-            ${{ replace(trim(package), '-', '_') }}:
-              packageName: ${{ trim(package) }}
-        maxParallel: 1
-      steps:
-      - template: /eng/pipelines/java/package/$(packageName).yml
+  - ${{ each packageName in split(parameters.packages, ',') }}:
+    - ${{ if ne(parameters.packages, 'all') }}:
+      - template: /eng/pipelines/java/package/${{ packageName }}.yml
         parameters:
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
