@@ -28,17 +28,24 @@ parameters:
 
 stages:
 - stage: ContentValidationTesting
-  lockBehavior: sequential
   jobs:
-  - ${{ each packageName in split(parameters.packages, ',') }}:
-    - ${{ if ne(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/java/package/${{ packageName }}.yml
-        parameters:
-          AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
-          GitHubPat: $(GITHUB_PAT)
-          GitHubOwner: $(GITHUB_OWNER)
-          GitHubRepo: $(GITHUB_REPO)
-          Branch: ${{ parameters.branch }}
+  - ${{ if ne(parameters.packages, 'all') }}:
+    - ${{ each packageName in split(parameters.packages, ',') }}:
+      - deployment: ValidatePackage_${{ replace(trim(packageName), '-', '_') }}
+        displayName: 'Validate ${{ trim(packageName) }}'
+        environment: 'validation-queue'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - template: /eng/pipelines/java/package/${{ trim(packageName) }}.yml
+                parameters:
+                  AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
+                  GitHubPat: $(GITHUB_PAT)
+                  GitHubOwner: $(GITHUB_OWNER)
+                  GitHubRepo: $(GITHUB_REPO)
+                  Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/java/package/run-all-packages.yml
