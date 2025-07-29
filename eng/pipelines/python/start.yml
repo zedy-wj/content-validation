@@ -30,15 +30,15 @@ stages:
 - stage: ContentValidationTesting
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
-    - ${{ each packageName in split(parameters.packages, ',') }}:
-      - job: ${{ trim(format('{0}', replace(packageName, '-', '_'))) }}
-        displayName: Run Validation for ${{ packageName }}
+      - job: ContentValidation
+        displayName: Run Content Validation
         pool:
           vmImage: ubuntu-latest
         strategy:
+          matrix: ${{ fromJson('{"' + join('":{"packageName":"', split(parameters.packages, ',')) + '"}') }}
           maxParallel: 2
         steps:
-        - template: /eng/pipelines/python/package/${{ packageName }}.yml
+        - template: /eng/pipelines/python/package/${{ matrix.packageName }}.yml
           parameters:
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
