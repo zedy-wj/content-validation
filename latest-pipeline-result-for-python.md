@@ -1,5 +1,6 @@
 
 | id | package | status | issue link | created date of issue | update date of issue | run date of pipeline | pipeline run link |
 |----|---------|--------|------------|-----------------------|----------------------| ---------------------| ----------------- |
-| 1 | azure-appconfiguration | Content issue found | https://github.com/zedy-wj/content-validation/issues/3018 https://github.com/zedy-wj/content-validation/issues/3019 https://github.com/zedy-wj/content-validation/issues/3020 https://github.com/zedy-wj/content-validation/issues/3021  | Need Confirm | Need Confirm | 7/29/2025 8:24:24 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=68 |
-| 2 | azure-keyvault-keys | Pipeline fail | / | / | / | 7/29/2025 8:24:24 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=68 |
+| 1 | azure-ai-contentsafety | Pipeline fail | / | / | / | 7/29/2025 9:13:10 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=70 |
+| 2 | azure-ai-documentintelligence | Pipeline fail | / | / | / | 7/29/2025 9:13:10 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=70 |
+| 3 | azure-ai-evaluation | Pipeline fail | / | / | / | 7/29/2025 9:13:10 AM | https://dev.azure.com/v-wenjyu/content-validation-automation/_build/results?buildId=70 |
