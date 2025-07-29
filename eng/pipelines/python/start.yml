@@ -28,43 +28,23 @@ parameters:
 
 stages:
 - stage: ContentValidationTesting
-
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
-      - job: generate_matrix
-        displayName: Generate Matrix YAML
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-        - task: PowerShell@2
-          displayName: Generate matrix yaml
-          inputs:
-            targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/eng/pipelines/python/generate-matrix.ps1'
-            arguments: '-Packages "${{ parameters.packages }}" -MappingFile "$(System.DefaultWorkingDirectory)/eng/pipelines/python/package-readme-mapping.yml" -OutputFile "$(System.DefaultWorkingDirectory)/eng/pipelines/python/generated-matrix.yml"'
-        - publish: $(System.DefaultWorkingDirectory)/eng/pipelines/python/generated-matrix.yml
-          artifact: matrix-yaml
-
       - job: content_validation
         displayName: Content Validation Matrix
-        dependsOn: generate_matrix
+        strategy:
+          matrix:
+            ${{ each packageName in split(parameters.packages, ',') }}:
+              ${{ trim(packageName) }}:
+                packageName: ${{ trim(packageName) }}
+          maxParallel: 2
         pool:
           vmImage: ubuntu-latest
-        strategy:
-          matrix: $[ fromYaml(variables['MATRIX_YAML']) ]
-          maxParallel: 2
-        variables:
-          - name: MATRIX_YAML
-            value: |
-              ${{
-                download: matrix-yaml
-                path: eng/pipelines/python/generated-matrix.yml
-              }}
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: ${{ matrix.packageName }}
-            ReadmeName: ${{ matrix.readmeName }}
+            PackageName: ${{ variables.packageName }}
+            ReadmeName: ${{ format('{0}-readme', replace(replace(variables.packageName, 'azure-', ''), ' ', '')) }}
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
