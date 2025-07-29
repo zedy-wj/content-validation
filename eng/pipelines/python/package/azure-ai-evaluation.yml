@@ -16,6 +16,9 @@ parameters:
   type: string
   default: ''
 
+pool:
+  vmImage: ubuntu-latest
+  
 steps:
 - template: /eng/pipelines/common/content-validation-for-python.yml
   parameters:
