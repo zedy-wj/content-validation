@@ -35,10 +35,13 @@ stages:
         pool:
           vmImage: ubuntu-latest
         strategy:
-          matrix: ${{ fromJson(format('{{"{0}"}}', join('":{"packageName":"', split(parameters.packages, ',')))) }}
+          matrix:
+            ${{ each packageName in split(parameters.packages, ',') }}:
+              ${{ replace(packageName, '-', '_') }}:
+                packageName: ${{ packageName }}
           maxParallel: 2
         steps:
-        - template: /eng/pipelines/python/package/${{ matrix.packageName }}.yml
+        - template: /eng/pipelines/python/package/${{ parameters.packageName }}.yml
           parameters:
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
