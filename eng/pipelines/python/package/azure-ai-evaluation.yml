@@ -16,6 +16,7 @@ parameters:
   type: string
   default: ''
 
+steps:
 - template: /eng/pipelines/common/content-validation-for-python.yml
   parameters:
     PackageName: 'azure-ai-evaluation'
