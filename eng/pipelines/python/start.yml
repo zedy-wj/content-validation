@@ -44,7 +44,7 @@ stages:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
             PackageName: ${{ variables.packageName }}
-            ReadmeName: ${{ format('{0}-readme', replace(replace(variables.packageName, 'azure-', ''), ' ', '')) }}
+            ReadmeName: ${{ format('{0}-readme', replace(variables.packageName, 'azure-', '')) }}
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
