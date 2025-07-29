@@ -40,11 +40,13 @@ stages:
           maxParallel: 2
         pool:
           vmImage: ubuntu-latest
+        variables:
+          packageName: ${{ matrix.packageName }}
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: ${{ matrix.packageName }}
-            ReadmeName: ${{ format('{0}-readme', replace(matrix.packageName, 'azure-', '')) }}
+            PackageName: ${{ variables.packageName }}
+            ReadmeName: ${{ format('{0}-readme', replace(variables.packageName, 'azure-', '')) }}
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
