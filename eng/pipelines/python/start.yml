@@ -41,7 +41,7 @@ stages:
                 packageName: ${{ packageName }}
           maxParallel: 2
         steps:
-        - template: /eng/pipelines/python/package/${{ parameters.packageName }}.yml
+        - template: /eng/pipelines/python/package/${{ matrix.packageName }}.yml
           parameters:
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
