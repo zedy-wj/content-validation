@@ -35,7 +35,7 @@ stages:
         pool:
           vmImage: ubuntu-latest
         strategy:
-          matrix: ${{ fromJson('{"' + join('":{"packageName":"', split(parameters.packages, ',')) + '"}') }}
+          matrix: ${{ fromJson(format('{{"{0}"}}', join('":{"packageName":"', split(parameters.packages, ',')))) }}
           maxParallel: 2
         steps:
         - template: /eng/pipelines/python/package/${{ matrix.packageName }}.yml
