@@ -31,7 +31,7 @@ stages:
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
     - ${{ each packageName in split(parameters.packages, ',') }}:
-      - job: ${{ packageName }}
+      - job: ${{ format('{0}', replace(toUpper(packageName), '-', '_')) }}
         displayName: Run Validation for ${{ packageName }}
         pool:
           vmImage: ubuntu-latest
