@@ -39,9 +39,10 @@ stages:
             ${{ each packageName in split(parameters.packages, ',') }}:
               ${{ replace(packageName, '-', '_') }}:
                 packageName: ${{ packageName }}
+                templatePath: ${{ format('/eng/pipelines/python/package/{0}.yml', trim(packageName)) }}
           maxParallel: 2
         steps:
-        - template: /eng/pipelines/python/package/$(packageName).yml
+        - template: ${{ matrix.templatePath }}
           parameters:
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
