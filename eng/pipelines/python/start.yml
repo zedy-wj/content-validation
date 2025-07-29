@@ -30,20 +30,22 @@ stages:
 - stage: ContentValidationTesting
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
-      - job: ContentValidation
-        displayName: Run Content Validation
-        pool:
-          vmImage: ubuntu-latest
+      - job: content_validation
+        displayName: Content Validation Matrix
         strategy:
           matrix:
             ${{ each packageName in split(parameters.packages, ',') }}:
-              ${{ replace(packageName, '-', '_') }}:
-                packageName: ${{ packageName }}
-                templatePath: ${{ format('/eng/pipelines/python/package/{0}.yml', trim(packageName)) }}
+              ${{ replace(trim(packageName), '-', '_') }}:
+                packageName: ${{ trim(packageName) }}
           maxParallel: 2
+        pool:
+          vmImage: ubuntu-latest
         steps:
-        - template: ${{ matrix.templatePath }}
+        - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
+            PackageName: ${{ matrix.packageName }}
+            ReadmeName: ${{ format('{0}-readme', replace(replace(matrix.packageName, 'azure-', ''), ' ', '')) }}
+            DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
             GitHubOwner: $(GITHUB_OWNER)
