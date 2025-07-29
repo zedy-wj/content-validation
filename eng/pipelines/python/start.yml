@@ -30,14 +30,14 @@ stages:
 - stage: ContentValidationTesting
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
-    - job: SelectedPackages
-      displayName: Run Selected Packages Validation
-      pool:
-        vmImage: ubuntu-latest
-      strategy:
-        maxParallel: 2
-      steps:
-      - ${{ each packageName in split(parameters.packages, ',') }}:
+    - ${{ each packageName in split(parameters.packages, ',') }}:
+      - job: ${{ packageName }}
+        displayName: Run Validation for ${{ packageName }}
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          maxParallel: 2
+        steps:
         - template: /eng/pipelines/python/package/${{ packageName }}.yml
           parameters:
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
