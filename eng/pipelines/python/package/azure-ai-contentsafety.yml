@@ -16,15 +16,14 @@ parameters:
   type: string
   default: ''
 
-jobs:
-  - template: /eng/pipelines/common/content-validation-for-python.yml
-    parameters:
-      PackageName: 'azure-ai-contentsafety'
-      ReadmeName: 'ai-contentsafety-readme'
-      jobDisplayName: 'AZURE_AI_CONTENTSAFETY'
-      DotNetSdkVersion: '8.0.x'
-      GitHubPat: ${{ parameters.GitHubPat }}
-      GitHubOwner: ${{ parameters.GitHubOwner }}
-      GitHubRepo: ${{ parameters.GitHubRepo }}
-      AzureDevOpsPat: ${{ parameters.AzureDevOpsPat }}
-      Branch: ${{ parameters.Branch }}
+- template: /eng/pipelines/common/content-validation-for-python.yml
+  parameters:
+    PackageName: 'azure-ai-contentsafety'
+    ReadmeName: 'ai-contentsafety-readme'
+    jobDisplayName: 'AZURE_AI_CONTENTSAFETY'
+    DotNetSdkVersion: '8.0.x'
+    GitHubPat: ${{ parameters.GitHubPat }}
+    GitHubOwner: ${{ parameters.GitHubOwner }}
+    GitHubRepo: ${{ parameters.GitHubRepo }}
+    AzureDevOpsPat: ${{ parameters.AzureDevOpsPat }}
+    Branch: ${{ parameters.Branch }}
