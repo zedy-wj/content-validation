@@ -32,6 +32,8 @@ stages:
   - ${{ if ne(parameters.packages, 'all') }}:
     - job: SelectedPackages
       displayName: Run Selected Packages Validation
+      pool:
+        vmImage: ubuntu-latest
       strategy:
         maxParallel: 2
       steps:
