@@ -26,6 +26,3 @@ jobs:
       parameters:
         packageName: $(PackageName)
         readmeName: $(ReadmeName)
-        githubPat: $(GITHUB_PAT)
-        githubOwner: $(GITHUB_OWNER)
-        githubRepo: $(GITHUB_REPO)

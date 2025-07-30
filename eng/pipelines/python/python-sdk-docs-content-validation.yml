@@ -37,9 +37,6 @@ stages:
           parameters:
             packageName: $(PackageName)
             readmeName: $(ReadmeName)
-            githubPat: $(GITHUB_PAT)
-            githubOwner: $(GITHUB_OWNER)
-            githubRepo: $(GITHUB_REPO)
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/python/run-all-packages.yml
