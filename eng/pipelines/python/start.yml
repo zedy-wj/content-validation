@@ -26,8 +26,6 @@ parameters:
     - DotNet
     - Go
 
-template: /eng/pipelines/python/packages.yml
-
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -60,6 +58,7 @@ stages:
             Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
+      - template: /eng/pipelines/python/packages.yml
       - job: content_validation_all
         displayName: Content Validation Matrix (All)
         strategy:
