@@ -63,7 +63,7 @@ stages:
       displayName: Content Validation Matrix (All)
       strategy:
         matrix:
-          ${{ each pkg in fromYaml(readFile('/eng/pipelines/python/packages.yml')) }}:
+          ${{ each pkg in fromJson(readFile('/eng/pipelines/packages.json')) }}:
             ${{ pkg.packageName }}:
               packageName: ${{ pkg.packageName }}
               readmeName: ${{ coalesce(pkg.readmeName, format('{0}-readme', replace(pkg.packageName, 'azure-', ''))) }}
