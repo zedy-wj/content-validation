@@ -26,6 +26,11 @@ parameters:
     - DotNet
     - Go
 
+- name: matrix
+  type: object
+  default: ${{ load('/eng/pipelines/python/matrix-template.yml') }}
+
+
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -61,8 +66,7 @@ stages:
     - job: content_validation_all
       displayName: Content Validation Matrix (All)
       strategy:
-        matrix:
-          ${{ template '/eng/pipelines/python/matrix-template.yml' }}
+        matrix: ${{ parameters.matrix }}
         maxParallel: 2
       variables:
         PackageName: $(packageName)
