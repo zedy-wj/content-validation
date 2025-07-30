@@ -66,17 +66,21 @@ stages:
         strategy:
           matrix:
             ${{ each pkg in variables.packages }}:
-              ${{ pkg }}:
-                packageName: ${{ pkg }}
-                readmeName: ${{ format('{0}-readme', replace(pkg, 'azure-', '')) }}
+              ${{ trim(pkg) }}:
+                packageName: ${{ trim(pkg) }}
+                readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
           maxParallel: 2
+        variables:
+          # map matrix entries to runtime variables
+          PackageName: $(packageName)
+          ReadmeName: $(readmeName)
         pool:
           vmImage: ubuntu-latest
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: ${{ matrix.packageName }}
-            ReadmeName: ${{ matrix.readmeName }}
+            PackageName: $(PackageName)
+            ReadmeName: $(ReadmeName)
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
