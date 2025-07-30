@@ -26,6 +26,10 @@ parameters:
     - DotNet
     - Go
 
+variables:
+  - name: packagesJson
+    value: $[ readFile('/eng/pipelines/python/packages.json') ]
+
 stages:
 - stage: ContentValidationTesting
   jobs:
