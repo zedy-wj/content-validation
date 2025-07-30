@@ -8,23 +8,11 @@ parameters:
   type: string
   default: 'all'
 
-- name: branch
+- name: maxParallel
   displayName: |
-      You can choose the review version of the page for testing, and you need to select the corresponding branch. Example: 'nickwalk/yaml-changes'
-  type: string
-  default: 'main'
-
-- name: language
-  displayName: |
-      You can choose the language for testing, only Python, Java supported now. We plan extent to JavaScript, .NET and Go in future. Example: Python
-  type: string
-  default: 'Python'
-  values:
-    - Python
-    - Java
-    - JavaScript
-    - DotNet
-    - Go
+      Maximum number of parallel jobs to run (by default, 2). Example: 10
+  type: number
+  default: 2
 
 stages:
 - stage: ContentValidationTesting
@@ -38,9 +26,8 @@ stages:
               ${{ trim(pkg) }}:
                 packageName: ${{ trim(pkg) }}
                 readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
-          maxParallel: 2
+          maxParallel: ${{ parameters.maxParallel }}
         variables:
-          # map matrix entries to runtime variables
           PackageName: $(packageName)
           ReadmeName: $(readmeName)
         pool:
@@ -48,25 +35,20 @@ stages:
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: $(PackageName)
-            ReadmeName: $(ReadmeName)
-            DotNetSdkVersion: '8.0.x'
-            GitHubPat: $(GITHUB_PAT)
-            GitHubOwner: $(GITHUB_OWNER)
-            GitHubRepo: $(GITHUB_REPO)
-            Branch: ${{ parameters.branch }}
+            packageName: $(PackageName)
+            readmeName: $(ReadmeName)
+            githubPat: $(GITHUB_PAT)
+            githubOwner: $(GITHUB_OWNER)
+            githubRepo: $(GITHUB_REPO)
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/python/package/run-all-packages.yml
+    - template: /eng/pipelines/python/run-all-packages.yml
       parameters:
-        GitHubPat: $(GITHUB_PAT)
-        GitHubOwner: $(GITHUB_OWNER)
-        GitHubRepo: $(GITHUB_REPO)
-        Branch: ${{ parameters.branch }}
-  
-  # - template: /eng/pipelines/common/content-validation-special-cases.yml
-  #   parameters:
-  #     DotNetSdkVersion: '8.0.x'
+        maxParallel: ${{ parameters.maxParallel }}
+
+    # - template: /eng/pipelines/common/content-validation-special-cases.yml
+    #   parameters:
+    #     DotNetSdkVersion: '8.0.x'
 
 - stage: TotalIssuesSummary
   condition: always()
@@ -80,8 +62,8 @@ stages:
       displayName: Download The Last Artifact history-issues-summary
       inputs:
         buildType: 'specific'
-        project: 'content-validation-automation'
-        pipeline: 'Content Validation For Python'
+        project: '$(System.TeamProject)'
+        pipeline: '$(System.DefinitionName)'
         buildVersionToDownload: 'latestFromBranch'
         allowPartiallySucceededBuilds: true
         allowFailedBuilds: true
@@ -118,7 +100,7 @@ stages:
         PackageName: ${{ parameters.packages }}
         PipelineRunLink: $(pipelineUrl)
         GitHubPat: $(GITHUB_PAT)
-        Language: ${{ parameters.language }}
+        Language: 'Python'
         GitHubOwner: $(GITHUB_OWNER)
         GitHubRepo: $(GITHUB_REPO)
       inputs:
@@ -150,4 +132,4 @@ stages:
           $(GITHUB_REPO)
           $(GIT_USER_NAME)
           $(GIT_USER_EMAIL)
-          ${{ parameters.language }}
+          'Python'
