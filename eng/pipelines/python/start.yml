@@ -58,23 +58,18 @@ stages:
             Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/python/packages.yml
       - job: content_validation_all
         displayName: Content Validation Matrix (All)
         strategy:
-          matrix: ${{ parameters.packageMatrix }}
+          matrix: ${{ template: /eng/pipelines/python/packages.yml }}
           maxParallel: 2
-        variables:
-          # map matrix entries to runtime variables
-          PackageName: $(packageName)
-          ReadmeName: $(readmeName)
         pool:
           vmImage: ubuntu-latest
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: $(PackageName)
-            ReadmeName: $(ReadmeName)
+            PackageName: $(packageName)
+            ReadmeName: $(readmeName)
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
