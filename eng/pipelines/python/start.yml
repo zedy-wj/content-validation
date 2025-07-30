@@ -62,7 +62,7 @@ stages:
       displayName: Content Validation Matrix (All)
       strategy:
         matrix:
-          ${{ from 'matrix-template.yml' }}
+          ${{ from '/eng/pipelines/python/matrix-template.yml' }}
         maxParallel: 2
       variables:
         PackageName: $(packageName)
