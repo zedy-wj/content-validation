@@ -1,11 +1,6 @@
-parameters:
-  matrix:
-    azure-appconfiguration:
-      packageName: azure-appconfiguration
-      readmeName: appconfiguration-readme
-    azure-keyvault-keys:
-      packageName: azure-keyvault-keys
-      readmeName: keyvault-keys-readme
-    azure-ai-evaluation:
-      packageName: azure-ai-evaluation
-      readmeName: ai-evaluation-readme
+- packageName: "azure-ai-contentsafety"
+  readmeName: "ai-contentsafety-readme"
+- packageName: "azure-ai-documentintelligence"
+  readmeName: "ai-documentintelligence-readme"
+- packageName: "azure-ai-evaluation"
+  readmeName: "ai-evaluation-readme"

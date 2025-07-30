@@ -62,15 +62,22 @@ stages:
     - job: content_validation_all
       displayName: Content Validation Matrix (All)
       strategy:
-        matrix: ${{ parameters.matrix }}
+        matrix:
+          ${{ each pkg in fromYaml(readFile('/eng/pipelines/python/packages.yml')) }}:
+            ${{ pkg.packageName }}:
+              packageName: ${{ pkg.packageName }}
+              readmeName: ${{ coalesce(pkg.readmeName, format('{0}-readme', replace(pkg.packageName, 'azure-', ''))) }}
         maxParallel: 2
+      variables:
+        PackageName: $(packageName)
+        ReadmeName: $(readmeName)
       pool:
         vmImage: ubuntu-latest
       steps:
       - template: /eng/pipelines/common/content-validation-for-python.yml
         parameters:
-          PackageName: $(packageName)
-          ReadmeName: $(readmeName)
+          PackageName: $(PackageName)
+          ReadmeName: $(ReadmeName)
           DotNetSdkVersion: '8.0.x'
           AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
           GitHubPat: $(GITHUB_PAT)
