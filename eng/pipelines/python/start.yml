@@ -36,23 +36,15 @@ stages:
       - job: content_validation
         displayName: Content Validation Matrix
         strategy:
-          matrix:
-            ${{ each pkg in split(parameters.packages, ',') }}:
-              ${{ trim(pkg) }}:
-                packageName: ${{ trim(pkg) }}
-                readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
+          matrix: ${{ variables.packageMatrix }}
           maxParallel: 2
-        variables:
-          # map matrix entries to runtime variables
-          PackageName: $(packageName)
-          ReadmeName: $(readmeName)
         pool:
           vmImage: ubuntu-latest
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: $(PackageName)
-            ReadmeName: $(ReadmeName)
+            PackageName: ${{ matrix.Key }}
+            ReadmeName: ${{ matrix.readmeName }}
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
@@ -64,11 +56,7 @@ stages:
       - job: content_validation_all
         displayName: Content Validation Matrix (All)
         strategy:
-          matrix:
-            ${{ each pkg in variables.packages }}:
-              ${{ trim(pkg) }}:
-                packageName: ${{ trim(pkg) }}
-                readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
+          matrix: ${{ variables.packageMatrix }}
           maxParallel: 2
         variables:
           # map matrix entries to runtime variables

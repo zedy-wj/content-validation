@@ -1,8 +1,11 @@
 variables:
-  packages:
-    - azure-ai-contentsafety
-    - azure-ai-documentintelligence
-    - azure-ai-evaluation
+  packageMatrix:
+    azure-ai-contentsafety:
+      readmeName: ai-contentsafety-readme
+    azure-ai-documentintelligence:
+      readmeName: ai-documentintelligence-readme
+    azure-ai-evaluation:
+      readmeName: ai-evaluation-readme
     # - azure-ai-formrecognizer
     # - azure-ai-language-conversations
     # - azure-ai-language-questionanswering
