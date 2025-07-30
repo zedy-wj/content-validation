@@ -26,7 +26,8 @@ parameters:
   - DotNet
   - Go
 
-template: /eng/pipelines/python/packages.yml
+variables:
+- template: /eng/pipelines/python/packages.yml
 
 stages:
 - stage: ContentValidationTesting
@@ -35,15 +36,23 @@ stages:
       - job: content_validation
         displayName: Content Validation Matrix
         strategy:
-          matrix: ${{ parameters.packageMatrix }}
+          matrix:
+            ${{ each pkg in split(parameters.packages, ',') }}:
+              ${{ trim(pkg) }}:
+                packageName: ${{ trim(pkg) }}
+                readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
           maxParallel: 2
+        variables:
+          # map matrix entries to runtime variables
+          PackageName: $(packageName)
+          ReadmeName: $(readmeName)
         pool:
           vmImage: ubuntu-latest
         steps:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
-            PackageName: ${{ matrix.Key }}
-            ReadmeName: ${{ matrix.readmeName }}
+            PackageName: $(PackageName)
+            ReadmeName: $(ReadmeName)
             DotNetSdkVersion: '8.0.x'
             AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
