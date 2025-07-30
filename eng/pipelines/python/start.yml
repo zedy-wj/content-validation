@@ -51,35 +51,18 @@ stages:
             PackageName: $(PackageName)
             ReadmeName: $(ReadmeName)
             DotNetSdkVersion: '8.0.x'
-            AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
             GitHubPat: $(GITHUB_PAT)
             GitHubOwner: $(GITHUB_OWNER)
             GitHubRepo: $(GITHUB_REPO)
             Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - job: content_validation_all
-      displayName: Content Validation Matrix (All)
-      strategy:
-        matrix:
-          ${{ include '/eng/pipelines/python/matrix-template.yml' }}
-        maxParallel: 2
-      variables:
-        PackageName: $(packageName)
-        ReadmeName: $(readmeName)
-      pool:
-        vmImage: ubuntu-latest
-      steps:
-      - template: /eng/pipelines/common/content-validation-for-python.yml
-        parameters:
-          PackageName: $(PackageName)
-          ReadmeName: $(ReadmeName)
-          DotNetSdkVersion: '8.0.x'
-          AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
-          GitHubPat: $(GITHUB_PAT)
-          GitHubOwner: $(GITHUB_OWNER)
-          GitHubRepo: $(GITHUB_REPO)
-          Branch: ${{ parameters.branch }}
+    - template: /eng/pipelines/python/package/run-all-packages.yml
+      parameters:
+        GitHubPat: $(GITHUB_PAT)
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
+        Branch: ${{ parameters.branch }}
   
   # - template: /eng/pipelines/common/content-validation-special-cases.yml
   #   parameters:

@@ -20,9 +20,6 @@ parameters:
 - name: ProjectName
   type: string
   default: 'content-validation-automation'
-- name: AzureDevOpsPat
-  type: string
-  default: ''
 - name: jobDisplayName
   type: string
   default: ''
