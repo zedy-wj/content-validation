@@ -26,9 +26,9 @@ parameters:
   - DotNet
   - Go
 
-stages:
-- template: /eng/pipelines/python/packages.yml
+template: /eng/pipelines/python/packages.yml
 
+stages:
 - stage: ContentValidationTesting
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
