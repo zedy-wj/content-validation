@@ -20,11 +20,11 @@ parameters:
   type: string
   default: 'Python'
   values:
-  - Python
-  - Java
-  - JavaScript
-  - DotNet
-  - Go
+    - Python
+    - Java
+    - JavaScript
+    - DotNet
+    - Go
 
 template: /eng/pipelines/python/packages.yml
 
