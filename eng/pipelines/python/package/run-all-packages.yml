@@ -15,28 +15,28 @@ parameters:
   type: string
   default: 'azure-ai-contentsafety, azure-ai-documentintelligence, azure-ai-evaluation'
   
-
-- job: content_validation_all
-  displayName: Content Validation Matrix (All)
-  strategy:
-    matrix:
-      ${{ each pkg in split(parameters.packages, ',') }}:
-        ${{ trim(pkg) }}:
-          packageName: ${{ trim(pkg) }}
-          readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
-    maxParallel: 2
-  variables:
-    PackageName: $(packageName)
-    ReadmeName: $(readmeName)
-  pool:
-    vmImage: ubuntu-latest
-  steps:
-  - template: /eng/pipelines/common/content-validation-for-python.yml
-    parameters:
-      PackageName: $(PackageName)
-      ReadmeName: $(ReadmeName)
-      DotNetSdkVersion: '8.0.x'
-      GitHubPat: $(GITHUB_PAT)
-      GitHubOwner: $(GITHUB_OWNER)
-      GitHubRepo: $(GITHUB_REPO)
-      Branch: ${{ parameters.branch }}
+jobs:
+  - job: content_validation_all
+    displayName: Content Validation Matrix (All)
+    strategy:
+      matrix:
+        ${{ each pkg in split(parameters.packages, ',') }}:
+          ${{ trim(pkg) }}:
+            packageName: ${{ trim(pkg) }}
+            readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
+      maxParallel: 2
+    variables:
+      PackageName: $(packageName)
+      ReadmeName: $(readmeName)
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - template: /eng/pipelines/common/content-validation-for-python.yml
+      parameters:
+        PackageName: $(PackageName)
+        ReadmeName: $(ReadmeName)
+        DotNetSdkVersion: '8.0.x'
+        GitHubPat: $(GITHUB_PAT)
+        GitHubOwner: $(GITHUB_OWNER)
+        GitHubRepo: $(GITHUB_REPO)
+        Branch: ${{ parameters.branch }}
