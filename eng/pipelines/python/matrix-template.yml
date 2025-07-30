@@ -1,0 +1,9 @@
+azure-ai-contentsafety:
+  packageName: 'azure-ai-contentsafety'
+  readmeName: 'ai-contentsafety-readme'
+azure-ai-documentintelligence:
+  packageName: 'azure-ai-documentintelligence'
+  readmeName: 'ai-documentintelligence-readme'
+azure-ai-evaluation:
+  packageName: 'azure-ai-evaluation'
+  readmeName: 'ai-evaluation-readme'

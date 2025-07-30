@@ -26,10 +26,6 @@ parameters:
     - DotNet
     - Go
 
-variables:
-  - name: packagesJson
-    value: $[ readFile('/eng/pipelines/python/packages.json') ]
-
 stages:
 - stage: ContentValidationTesting
   jobs:
@@ -62,9 +58,28 @@ stages:
             Branch: ${{ parameters.branch }}
 
   - ${{ if eq(parameters.packages, 'all') }}:
-      - template: /eng/pipelines/python/generate-matrix-from-json.yml
+    - job: content_validation_all
+      displayName: Content Validation Matrix (All)
+      strategy:
+        matrix:
+          ${{ from 'matrix-template.yml' }}
+        maxParallel: 2
+      variables:
+        PackageName: $(packageName)
+        ReadmeName: $(readmeName)
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - template: /eng/pipelines/common/content-validation-for-python.yml
         parameters:
-          packagesJson: $(packagesJson)
+          PackageName: $(PackageName)
+          ReadmeName: $(ReadmeName)
+          DotNetSdkVersion: '8.0.x'
+          AzureDevOpsPat: $(AZURE_DEVOPS_PAT)
+          GitHubPat: $(GITHUB_PAT)
+          GitHubOwner: $(GITHUB_OWNER)
+          GitHubRepo: $(GITHUB_REPO)
+          Branch: ${{ parameters.branch }}
   
   # - template: /eng/pipelines/common/content-validation-special-cases.yml
   #   parameters:
