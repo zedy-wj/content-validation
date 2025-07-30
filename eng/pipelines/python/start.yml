@@ -26,7 +26,6 @@ parameters:
   - DotNet
   - Go
 
-variables:
 - template: /eng/pipelines/python/packages.yml
 
 stages:
@@ -64,7 +63,7 @@ stages:
       - job: content_validation_all
         displayName: Content Validation Matrix (All)
         strategy:
-          matrix: ${{ variables.packageMatrix }}
+          matrix: ${{ parameters.packageMatrix }}
           maxParallel: 2
         variables:
           # map matrix entries to runtime variables

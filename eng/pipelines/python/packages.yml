@@ -1,4 +1,4 @@
-variables:
+parameters:
   packageMatrix:
     azure-ai-contentsafety:
       readmeName: ai-contentsafety-readme
