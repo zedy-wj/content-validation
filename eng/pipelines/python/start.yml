@@ -26,7 +26,7 @@ parameters:
   - DotNet
   - Go
 
-- template: /eng/pipelines/python/packages.yml
+template: /eng/pipelines/python/packages.yml
 
 stages:
 - stage: ContentValidationTesting
