@@ -12,9 +12,8 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 - [GarbledTextValidation](#4-garbledtextvalidation)
 - [DuplicateServiceValidation](#5-duplicateservicevalidation)
 - [InconsistentTextFormatValidation](#6-inconsistenttextformatvalidation)
-- [CodeFormatValidation](#7-codeformatvalidation)
-- [InvalidTagsValidation](#8-invalidtagsvalidation)
-  > Note: Compared to Python rules, `InconsistentTextFormatValidation` and `CodeFormatValidation` exist only in Java rules, while `TypeAnnotationValidation` does not exist in Java rules.
+- [InvalidTagsValidation](#7-invalidtagsvalidation)
+  > Note: `InconsistentTextFormatValidation` exist only in Java rules.
 
 ### 1. ExtraLabelValidation
 
@@ -428,58 +427,7 @@ This document introduces 6 rules designed for Java Data SDK on [Microsoft Learn 
 
   ```
 
-### 7. CodeFormatValidation
-
-- **Goal:**
-  Check if the code format is right.
-
-- **Example:**
-
-  - Link: https://learn.microsoft.com/en-us/java/api/com.azure.resourcemanager.appservice.models.webappbase.definitionstages.withwebcontainer?view=azure-java-stable#method-details
-
-  - Image:
-
-    &nbsp;<img src="./image/java-sdk/image-CodeFormatValidation.png" alt="CodeFormatValidation" style="width:700px;">
-
-- **Code Snippet:**
-
-  ```csharp
-
-    //Get all code content in the test page.
-    var codeElements = await page.Locator("code").AllAsync();
-  
-    //Check if there are wrong code format.
-    foreach (var element in codeElements)
-    {
-        var codeText = await element.InnerTextAsync();
-  
-        // Check the number of spaces at the beginning of the code line by line, and add errorList if it is an odd number. 
-        // This method is not the best solution. Currently, there is no library in C# that can check the format of Java code. 
-        // We can consider adding optimization in the future.
-        string[] lines = codeText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        foreach (var line in lines)
-        {
-            if(line.Trim().Length == 0)
-            {
-                continue; // Skip empty lines
-            }
-            var match = Regex.Match(line, @"^(\s*)");
-            if (match.Success)
-            {
-                int spaceCount = match.Groups[1].Value.Length;
-  
-                if (spaceCount % 2 != 0)
-                {
-                    errorList.Add($"Improper whitespace formatting detected in code snippet: `{line}`");
-                    break;
-                }
-            }
-        }
-    }
-
-  ```
-
-### 8. InvalidTagsValidation
+### 7. InvalidTagsValidation
 
 - **Goal:**
   Check for the presence of invalid html tags in web pages.
