@@ -33,7 +33,7 @@ namespace DataSource
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
 
-            string configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
+            string configPath = Path.Combine(AppContext.BaseDirectory, "../../../config.json");
             if (!File.Exists(configPath))
             {
                 throw new FileNotFoundException($"Config file not found: {configPath}");
