@@ -50,6 +50,10 @@ namespace DataSource
                     if (pkgDict.TryGetValue(package, out var entry) && entry != null)
                     {
                         readme = entry.readme;
+                        if (langKey == "javascript" || langKey == "dotnet")
+                        {
+                            package = entry.csvPackage;
+                        }
                     }
                 }
             }
@@ -607,6 +611,7 @@ namespace DataSource
     public class ConfigEntry
     {
         public string readme { get; set; } = string.Empty;
+        public string? csvPackage { get; set; } = string.Empty;
     }
 
     public class PythonPackageMap : ClassMap<PackageCSV>

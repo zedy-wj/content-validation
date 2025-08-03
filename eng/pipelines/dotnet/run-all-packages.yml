@@ -14,15 +14,12 @@ jobs:
         ${{ each pkg in split(parameters.packages, ',') }}:
           ${{ trim(pkg) }}:
             packageName: ${{ trim(pkg) }}
-            readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
-      maxParallel: 2
+      maxParallel: ${{ parameters.maxParallel }}
     variables:
       PackageName: $(packageName)
-      ReadmeName: $(readmeName)
     pool:
       vmImage: ubuntu-latest
     steps:
     - template: /eng/pipelines/common/content-validation-for-dotnet.yml
       parameters:
         packageName: $(PackageName)
-        readmeName: $(ReadmeName)
