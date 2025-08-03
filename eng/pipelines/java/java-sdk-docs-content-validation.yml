@@ -25,18 +25,15 @@ stages:
             ${{ each pkg in split(parameters.packages, ',') }}:
               ${{ trim(pkg) }}:
                 packageName: ${{ trim(pkg) }}
-                readmeName: ${{ format('{0}-readme', replace(trim(pkg), 'azure-', '')) }}
           maxParallel: ${{ parameters.maxParallel }}
         variables:
           PackageName: $(packageName)
-          ReadmeName: $(readmeName)
         pool:
           vmImage: ubuntu-latest
         steps:
         - template: /eng/pipelines/common/content-validation-for-java.yml
           parameters:
             packageName: $(PackageName)
-            readmeName: $(ReadmeName)
 
   - ${{ if eq(parameters.packages, 'all') }}:
     - template: /eng/pipelines/java/run-all-packages.yml

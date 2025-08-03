@@ -14,7 +14,7 @@ jobs:
         ${{ each pkg in split(parameters.packages, ',') }}:
           ${{ trim(pkg) }}:
             packageName: ${{ trim(pkg) }}
-      maxParallel: 2
+      maxParallel: ${{ parameters.maxParallel }}
     variables:
       PackageName: $(packageName)
     pool:
