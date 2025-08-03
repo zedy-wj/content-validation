@@ -1,0 +1,198 @@
+{
+  "python": {
+    "azure-ai-contentsafety": {
+      "readme": "ai-contentsafety-readme"
+    },
+    "azure-ai-documentintelligence": {
+      "readme": "ai-documentintelligence-readme"
+    },
+    "azure-ai-evaluation": {
+      "readme": "ai-evaluation-readme"
+    },
+    "azure-ai-formrecognizer": {
+      "readme": "ai-formrecognizer-readme"
+    },
+    "azure-ai-language-conversations": {
+      "readme": "ai-language-conversations-readme"
+    },
+    "azure-ai-language-questionanswering": {
+      "readme": "ai-language-questionanswering-readme"
+    },
+    "azure-ai-ml": {
+      "readme": "ai-ml-readme"
+    },
+    "azure-ai-textanalytics": {
+      "readme": "ai-textanalytics-readme"
+    },
+    "azure-ai-translation-document": {
+      "readme": "ai-translation-document-readme"
+    },
+    "azure-ai-translation-text": {
+      "readme": "ai-translation-text-readme"
+    },
+    "azure-ai-vision-imageanalysis": {
+      "readme": "ai-vision-imageanalysis-readme"
+    },
+    "azure-appconfiguration-provider": {
+      "readme": "appconfiguration-provider-readme"
+    },
+    "azure-appconfiguration": {
+      "readme": "appconfiguration-readme"
+    },
+    "azure-batch": {
+      "readme": "batch-readme"
+    },
+    "azure-cognitiveservices-speech": {
+      "readme": "cognitiveservices/speech"
+    },
+    "azure-communication-callautomation": {
+      "readme": "communication-callautomation-readme"
+    },
+    "azure-communication-chat": {
+      "readme": "communication-chat-readme"
+    },
+    "azure-communication-email": {
+      "readme": "communication-email-readme"
+    },
+    "azure-communication-identity": {
+      "readme": "communication-identity-readme"
+    },
+    "azure-communication-jobrouter": {
+      "readme": "communication-jobrouter-readme"
+    },
+    "azure-communication-messages": {
+      "readme": "communication-messages-readme"
+    },
+    "azure-communication-phonenumbers": {
+      "readme": "communication-phonenumbers-readme"
+    },
+    "azure-communication-rooms": {
+      "readme": "communication-rooms-readme"
+    },
+    "azure-communication-sms": {
+      "readme": "communication-sms-readme"
+    },
+    "azure-confidentialledger": {
+      "readme": "confidentialledger-readme"
+    },
+    "azure-containerregistry": {
+      "readme": "containerregistry-readme"
+    },
+    "azure-core": {
+      "readme": "core-readme"
+    },
+    "azure-cosmos": {
+      "readme": "cosmos-readme"
+    },
+    "azure-data-tables": {
+      "readme": "data-tables-readme"
+    },
+    "azure-developer-devcenter": {
+      "readme": "developer-devcenter-readme"
+    },
+    "azure-developer-loadtesting": {
+      "readme": "developer-loadtesting-readme"
+    },
+    "azure-digitaltwins-core": {
+      "readme": "digitaltwins-core-readme"
+    },
+    "azure-eventgrid": {
+      "readme": "eventgrid-readme"
+    },
+    "azure-eventhub-checkpointstoreblob-aio": {
+      "readme": "eventhub-checkpointstoreblob-aio-readme"
+    },
+    "azure-eventhub-checkpointstoreblob": {
+      "readme": "eventhub-checkpointstoreblob-readme"
+    },
+    "azure-eventhub": {
+      "readme": "eventhub-readme"
+    },
+    "azure-functions-durable": {
+      "readme": "functions/durablefunctions"
+    },
+    "azure-functions": {
+      "readme": "functions/functions"
+    },
+    "azure-healthinsights-radiologyinsights": {
+      "readme": "healthinsights-radiologyinsights-readme"
+    },
+    "azure-identity-broker": {
+      "readme": "identity-broker-readme"
+    },
+    "azure-identity": {
+      "readme": "identity-readme"
+    },
+    "azure-iot-device": {
+      "readme": "iot/iotdevice"
+    },
+    "azure-iot-deviceupdate": {
+      "readme": "iot-deviceupdate-readme"
+    },
+    "azure-iot-hub": {
+      "readme": "iot/iothub"
+    },
+    "azure-keyvault-administration": {
+      "readme": "keyvault-administration-readme"
+    },
+    "azure-keyvault-certificates": {
+      "readme": "keyvault-certificates-readme"
+    },
+    "azure-keyvault-keys": {
+      "readme": "keyvault-keys-readme"
+    },
+    "azure-keyvault-secrets": {
+      "readme": "keyvault-secrets-readme"
+    },
+    "azure-messaging-webpubsubclient": {
+      "readme": "messaging-webpubsubclient-readme"
+    },
+    "azure-messaging-webpubsubservice": {
+      "readme": "messaging-webpubsubservice-readme"
+    },
+    "azure-monitor-ingestion": {
+      "readme": "monitor-ingestion-readme"
+    },
+    "azure-monitor-opentelemetry": {
+      "readme": "monitor-opentelemetry-readme"
+    },
+    "azure-monitor-query": {
+      "readme": "monitor-query-readme"
+    },
+    "azure-schemaregistry-avroencoder": {
+      "readme": "schemaregistry-avroencoder-readme"
+    },
+    "azure-schemaregistry": {
+      "readme": "schemaregistry-readme"
+    },
+    "azure-search-documents": {
+      "readme": "search-documents-readme"
+    },
+    "azure-security-attestation": {
+      "readme": "security-attestation-readme"
+    },
+    "azure-servicebus": {
+      "readme": "servicebus-readme"
+    },
+    "azure-servicefabric": {
+      "readme": "servicefabric-readme"
+    },
+    "azure-storage-blob": {
+      "readme": "storage-blob-readme"
+    },
+    "azure-storage-file-datalake": {
+      "readme": "storage-file-datalake-readme"
+    },
+    "azure-storage-file-share": {
+      "readme": "storage-file-share-readme"
+    },
+    "azure-storage-queue": {
+      "readme": "storage-queue-readme"
+    }
+  },
+  "dotnet": {
+    "Azure.AI.TextAnalytics": {
+      "readme": "ai-textanalytics-readme"
+    }
+  }
+}

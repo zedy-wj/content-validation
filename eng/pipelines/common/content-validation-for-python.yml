@@ -4,8 +4,6 @@ parameters:
   default: '8.0.x'
 - name: packageName
   type: string
-- name: readmeName
-  type: string
 - name: branch
   type: string
   default: 'main'
@@ -51,7 +49,6 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Get test data source
   env:
-    ReadmeName: ${{ parameters.readmeName }}
     Branch: ${{ parameters.branch }}
     Language: ${{ parameters.language }}
     PackageName: ${{ parameters.packageName }}
