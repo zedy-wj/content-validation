@@ -55,6 +55,10 @@ namespace DataSource
                             package = entry.csvPackage;
                         }
                     }
+                    else
+                    {
+                        throw new ArgumentException($"Package: {package} not found in config.json");
+                    }
                 }
             }
 
