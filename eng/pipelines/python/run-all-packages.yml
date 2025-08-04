@@ -1,7 +1,7 @@
 parameters:
 - name: packages
   type: string
-  description: |
+  displayName: |
     A list of package names to validate.
   default:
     - azure-ai-contentsafety
