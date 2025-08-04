@@ -504,6 +504,10 @@
       "readme": "keyvault-certificates-readme",
       "csvPackage": "@azure/keyvault-certificates"
     },
+    "azure-keyvault-common": {
+      "readme": "keyvault-common-readme",
+      "csvPackage": "@azure/keyvault-common"
+    },
     "azure-keyvault-keys": {
       "readme": "keyvault-keys-readme",
       "csvPackage": "@azure/keyvault-keys"
