@@ -1,6 +1,6 @@
 parameters:
 - name: packages
-  type: string
+  type: array
   displayName: |
     A list of package names to validate.
   default:
