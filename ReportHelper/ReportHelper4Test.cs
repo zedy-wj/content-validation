@@ -384,7 +384,7 @@ public class GithubHelper
             { "DuplicateServiceValidation", " Duplicate Service" },
             { "ExtraLabelValidation", " Extra Label" },
             { "UnnecessarySymbolsValidation", " Unnecessary Symbols" },
-            { "InvalidTagsValidation", " Invalid Tags" },
+            { "MissingGenericsValidation", " Missing Generics" },
             { "CodeFormatValidation", " Code Format" },
             { "EmptyTagsValidation", " Empty Tags" },
             { "ErrorDisplayValidation", " Error Display" }
