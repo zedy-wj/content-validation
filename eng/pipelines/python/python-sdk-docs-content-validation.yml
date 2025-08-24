@@ -98,7 +98,7 @@ stages:
             }
             templateParameters = @{
               packages    = $matrixJson
-              maxParallel = $(maxParallel)
+              maxParallel = $maxParallel
             }
           } | ConvertTo-Json -Depth 10
 
