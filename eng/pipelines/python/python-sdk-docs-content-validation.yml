@@ -99,7 +99,7 @@ stages:
   - ${{ if eq(parameters.packages, 'all') }}:
       - job: content_validation
         strategy:
-          matrix: ${{ fromJson(stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['setMatrixVar.matrixJson']) }}
+          matrix: $[ dependencies.FetchLastMonthReleasedPackages.outputs['fetch.setMatrixVar.matrixJson'] ]
           maxParallel: ${{ parameters.maxParallel }}
         variables:
           PackageName: $(packageName)
