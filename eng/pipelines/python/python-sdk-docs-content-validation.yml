@@ -73,15 +73,18 @@ stages:
         Write-Host "DEBUG: matrixJson = $matrixJson"
       name: setMatrixVar
 
-    # - checkout: self
-    #   persistCredentials: true
-
+  - job: triggerSelf
+    displayName: Trigger self pipeline
+    dependsOn: fetch
+    pool:
+      vmImage: ubuntu-latest
+    steps:
     - task: PowerShell@2
       displayName: Trigger self pipeline with package matrix
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         MAX_PARALLEL: ${{ parameters.maxParallel }}
-        MATRIX_JSON: $[ dependencies.FetchLastMonthReleasedPackages.outputs['fetch.setMatrixVar.matrixJson'] ]
+        MATRIX_JSON: $[ dependencies.fetch.outputs['setMatrixVar.matrixJson'] ]
       inputs:
         targetType: inline
         script: |
