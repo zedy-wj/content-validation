@@ -66,8 +66,9 @@ stages:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
       name: runPackagesJob
-  outputs:
-    packagesJson: $[ dependencies.fetch.outputs['runPackagesJob.packagesJson'] ]
+
+    outputs:
+      packagesJson: $[ dependencies.fetch.outputs['runPackagesJob.packagesJson'] ]
 
 
 - stage: ContentValidationTesting
@@ -95,7 +96,7 @@ stages:
   - ${{ if eq(parameters.packages, 'all') }}:
       - job: content_validation
         strategy:
-          matrix: $[ stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['runPackagesJob.packagesJson'] ]
+          matrix: $[ stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['fetch.packagesJson'] ]
           maxParallel: ${{ parameters.maxParallel }}
         pool:
           vmImage: ubuntu-latest
