@@ -100,17 +100,10 @@ namespace PendingTestingPackagesThisMonth
         {
             result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
 
-            var matrixDict = result.OrderBy(p => p)
-                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
+            var joinedResult = string.Join(",", result);
 
-            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
-
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
-            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            await File.WriteAllTextAsync(outputPath, joinedResult);
 
             return result;
         }
