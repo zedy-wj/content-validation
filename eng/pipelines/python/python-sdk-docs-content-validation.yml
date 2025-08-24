@@ -78,13 +78,20 @@ stages:
     dependsOn: fetch
     pool:
       vmImage: ubuntu-latest
+    variables:
+      MATRIX_JSON: $[ dependencies.fetch.outputs['setMatrixVar.matrixJson'] ]
+      MAX_PARALLEL: ${{ parameters.maxParallel }}
+
     steps:
+    - checkout: self
+      persistCredentials: true
+
     - task: PowerShell@2
       displayName: Trigger self pipeline with package matrix
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-        MAX_PARALLEL: ${{ parameters.maxParallel }}
-        MATRIX_JSON: $[ dependencies.fetch.outputs['setMatrixVar.matrixJson'] ]
+        MAX_PARALLEL: $(MATRIX_JSON) 
+        MATRIX_JSON: $(MAX_PARALLEL)
       inputs:
         targetType: inline
         script: |
