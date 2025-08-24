@@ -30,6 +30,7 @@ stages:
 
 
 - stage: ContentValidationTesting
+  dependsOn: FetchLastMonthReleasedPackages
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
       - job: content_validation
