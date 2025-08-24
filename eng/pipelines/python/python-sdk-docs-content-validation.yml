@@ -71,6 +71,7 @@ stages:
         $jsonObj = Get-Content "$(System.DefaultWorkingDirectory)/eng/pipelines/packages.json" -Raw | ConvertFrom-Json
         $matrixJson = $jsonObj | ConvertTo-Json -Compress
         Write-Host "##vso[task.setvariable variable=matrixJson;isOutput=true]$matrixJson"
+        Write-Host "DEBUG: matrixJson = $matrixJson"
       name: setMatrixVar
 
 
