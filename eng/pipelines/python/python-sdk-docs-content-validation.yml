@@ -29,34 +29,34 @@ stages:
         language: 'python'
 
 
-# - stage: ContentValidationTesting
-#   jobs:
-#   - ${{ if ne(parameters.packages, 'all') }}:
-#       - job: content_validation
-#         displayName: Content Validation Matrix
-#         strategy:
-#           matrix:
-#             ${{ each pkg in split(parameters.packages, ',') }}:
-#               ${{ trim(pkg) }}:
-#                 packageName: ${{ trim(pkg) }}
-#           maxParallel: ${{ parameters.maxParallel }}
-#         variables:
-#           PackageName: $(packageName)
-#         pool:
-#           vmImage: ubuntu-latest
-#         steps:
-#         - template: /eng/pipelines/common/content-validation-for-python.yml
-#           parameters:
-#             packageName: $(PackageName)
+- stage: ContentValidationTesting
+  jobs:
+  - ${{ if ne(parameters.packages, 'all') }}:
+      - job: content_validation
+        displayName: Content Validation Matrix
+        strategy:
+          matrix:
+            ${{ each pkg in split(parameters.packages, ',') }}:
+              ${{ trim(pkg) }}:
+                packageName: ${{ trim(pkg) }}
+          maxParallel: ${{ parameters.maxParallel }}
+        variables:
+          PackageName: $(packageName)
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+        - template: /eng/pipelines/common/content-validation-for-python.yml
+          parameters:
+            packageName: $(PackageName)
 
-#   - ${{ if eq(parameters.packages, 'all') }}:
-#     - template: /eng/pipelines/python/run-all-packages.yml
-#       parameters:
-#         maxParallel: ${{ parameters.maxParallel }}
+  - ${{ if eq(parameters.packages, 'all') }}:
+    - template: /eng/pipelines/python/run-all-packages.yml
+      parameters:
+        maxParallel: ${{ parameters.maxParallel }}
 
-#     # - template: /eng/pipelines/common/content-validation-special-cases.yml
-#     #   parameters:
-#     #     DotNetSdkVersion: '8.0.x'
+    # - template: /eng/pipelines/common/content-validation-special-cases.yml
+    #   parameters:
+    #     DotNetSdkVersion: '8.0.x'
 
 # - stage: TotalIssuesSummary
 #   condition: always()
