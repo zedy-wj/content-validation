@@ -46,12 +46,6 @@ stages:
         arguments: install Microsoft.Playwright.CLI
 
     - task: DotNetCoreCLI@2
-      displayName: Build all projects and libraries
-      inputs:
-        command: 'build'
-        projects: '**/*.sln'
-
-    - task: DotNetCoreCLI@2
       displayName: Run Playwright Install
       inputs:
         command: custom
