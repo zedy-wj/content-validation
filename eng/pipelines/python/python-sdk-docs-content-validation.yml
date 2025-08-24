@@ -80,6 +80,7 @@ stages:
       displayName: Trigger self pipeline with package matrix
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        MAX_PARALLEL: ${{ parameters.maxParallel }}
       inputs:
         targetType: inline
         script: |
@@ -87,7 +88,6 @@ stages:
           $orgUri     = "$(System.CollectionUri)"
           $proj       = "$(System.TeamProject)"
           $pipelineId = $(System.DefinitionId)
-          $maxParallel  = '$(maxParallel)'
           $body = @{
             resources = @{
               repositories = @{
@@ -98,7 +98,7 @@ stages:
             }
             templateParameters = @{
               packages    = $matrixJson
-              maxParallel = $maxParallel
+              maxParallel = $env:MAX_PARALLEL
             }
           } | ConvertTo-Json -Depth 10
 
