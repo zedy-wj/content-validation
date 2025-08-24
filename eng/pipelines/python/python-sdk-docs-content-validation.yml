@@ -115,23 +115,22 @@ stages:
 - stage: ContentValidationTesting
   condition: ne('${{ parameters.packages }}', 'all')
   jobs:
-  - ${{ if ne(parameters.packages, 'all') }}:
-      - job: content_validation
-        displayName: Content Validation Matrix
-        strategy:
-          matrix:
-            ${{ each pkg in split(parameters.packages, ',') }}:
-              ${{ trim(pkg) }}:
-                packageName: ${{ trim(pkg) }}
-          maxParallel: ${{ parameters.maxParallel }}
-        variables:
-          PackageName: $(packageName)
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-        - template: /eng/pipelines/common/content-validation-for-python.yml
-          parameters:
-            packageName: $(PackageName)
+    - job: content_validation
+      displayName: Content Validation Matrix
+      strategy:
+        matrix:
+          ${{ each pkg in split(parameters.packages, ',') }}:
+            ${{ trim(pkg) }}:
+              packageName: ${{ trim(pkg) }}
+        maxParallel: ${{ parameters.maxParallel }}
+      variables:
+        PackageName: $(packageName)
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - template: /eng/pipelines/common/content-validation-for-python.yml
+        parameters:
+          packageName: $(PackageName)
 
     # - template: /eng/pipelines/common/content-validation-special-cases.yml
     #   parameters:
