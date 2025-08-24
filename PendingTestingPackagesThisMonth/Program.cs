@@ -100,14 +100,6 @@ namespace PendingTestingPackagesThisMonth
         {
             result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
 
-            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/python/run-all-packages.yml");
-
-            // Create packages string in YAML list format
-            var packagesList = string.Join("\n    - ", result.OrderBy(p => p));
-            var packagesYaml = $"- {packagesList}";
-
-            await GenerateYmlFile(outputFilePath, packagesYaml, "python");
-
             var matrixDict = result.OrderBy(p => p)
                 .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
 
@@ -127,13 +119,17 @@ namespace PendingTestingPackagesThisMonth
         {
             result.RemoveWhere(packageName => packageName.StartsWith("azure-resourcemanager-"));
 
-            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/java/run-all-packages.yml");
+            var matrixDict = result.OrderBy(p => p)
+                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
 
-            // Create packages string in YAML list format
-            var packagesList = string.Join("\n    - ", result.OrderBy(p => p));
-            var packagesYaml = $"- {packagesList}";
+            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
 
-            await GenerateYmlFile(outputFilePath, packagesYaml, "java");
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
             return result;
         }
@@ -145,15 +141,19 @@ namespace PendingTestingPackagesThisMonth
             // Update package names to lowercase and replace "." with "-"
             var updatedPackages = result.Select(p => p.Replace(".", "-").ToLower()).ToList();
 
-            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/dotnet/run-all-packages.yml");
+            var matrixDict = updatedPackages.OrderBy(p => p)
+                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
 
-            // Create packages string in YAML list format
-            var packagesList = string.Join("\n    - ", updatedPackages.OrderBy(p => p));
-            var packagesYaml = $"- {packagesList}";
+            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
 
-            await GenerateYmlFile(outputFilePath, packagesYaml, "dotnet");
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
-            return result;
+            return updatedPackages;
         }
 
         public async Task<HashSet<string>> JavaScriptFilterPackages(HashSet<string> result)
@@ -163,38 +163,19 @@ namespace PendingTestingPackagesThisMonth
             // Update package names to lowercase and replace "." with "-"
             var updatedPackages = result.Select(p => p.Replace("@", "").Replace("/", "-").ToLower()).ToList();
 
-            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/javascript/run-all-packages.yml");
+            var matrixDict = updatedPackages.OrderBy(p => p)
+                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
 
-            // Create packages string in YAML list format
-            var packagesList = string.Join("\n    - ", updatedPackages.OrderBy(p => p));
-            var packagesYaml = $"- {packagesList}";
-
-            await GenerateYmlFile(outputFilePath, packagesYaml, "javascript");
-
-            return result;
-        }
-
-        private async Task GenerateYmlFile(string outputFilePath, string packagesYaml, string language)
-        {
-            if (!File.Exists(BackupFilePath))
+            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
             {
-                System.Console.WriteLine($"Backup file not found: {BackupFilePath}");
-                return;
-            }
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
 
-            // Read backup file content
-            var templateContent = await File.ReadAllTextAsync(BackupFilePath);
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
-            // Replace placeholders
-            var finalContent = templateContent
-                .Replace("${Packages}", packagesYaml)
-                .Replace("${language}", language);
-
-            // Write to output file
-            await File.WriteAllTextAsync(outputFilePath, finalContent);
-            System.Console.WriteLine($"YAML file has been written to {outputFilePath}");
-
-            
+            return updatedPackages;
         }
     }
 }
