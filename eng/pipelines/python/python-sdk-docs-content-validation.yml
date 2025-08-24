@@ -15,115 +15,139 @@ parameters:
   default: 2
 
 stages:
-- stage: ContentValidationTesting
+- stage: FetchLastMonthReleasedPackages
+  displayName: "Fetch last month released packages"
+  condition: eq('${{ parameters.packages }}', 'all')
   jobs:
-  - ${{ if ne(parameters.packages, 'all') }}:
-      - job: content_validation
-        displayName: Content Validation Matrix
-        strategy:
-          matrix:
-            ${{ each pkg in split(parameters.packages, ',') }}:
-              ${{ trim(pkg) }}:
-                packageName: ${{ trim(pkg) }}
-          maxParallel: ${{ parameters.maxParallel }}
-        variables:
-          PackageName: $(packageName)
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-        - template: /eng/pipelines/common/content-validation-for-python.yml
-          parameters:
-            packageName: $(PackageName)
-
-  - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/python/run-all-packages.yml
-      parameters:
-        maxParallel: ${{ parameters.maxParallel }}
-
-    # - template: /eng/pipelines/common/content-validation-special-cases.yml
-    #   parameters:
-    #     DotNetSdkVersion: '8.0.x'
-
-- stage: TotalIssuesSummary
-  condition: always()
-  jobs:
-  - job: Maintain_Total_Issues_List
-    displayName: Maintain_Total_Issues_List
+  - job: fetch
+    displayName: "Getting packages and generate run-all-packages.yml"
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: Download The Last Artifact history-issues-summary
+    - task: UseDotNet@2
+      displayName: 'Install .NET Core SDK'
       inputs:
-        buildType: 'specific'
-        project: '$(System.TeamProject)'
-        pipeline: '$(System.DefinitionName)'
-        buildVersionToDownload: 'latestFromBranch'
-        allowPartiallySucceededBuilds: true
-        allowFailedBuilds: true
-        branchName: 'refs/heads/main'
-        artifactName: 'issues-summary'
-        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
-      continueOnError: true
-
-    - task: DownloadPipelineArtifact@2
-      displayName: Download The Current Artifact 
-      inputs:
-        buildType: 'current'
-        downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
-
+        packageType: 'sdk'
+        version: '8.0.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet 
     - task: DotNetCoreCLI@2
-      displayName: Build issuer helper project
-      inputs:
-        command: 'build'
-        projects: 'IssuerHelper/IssuerHelper.csproj'
-
-    - script: |
-        organization=$(System.CollectionUri)
-        project=$(System.TeamProject)
-        buildId=$(Build.BuildId)
-  
-        pipelineUrl="${organization}${project}/_build/results?buildId=${buildId}"
-  
-        echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
-      displayName: Get the current pipeline url
-
-    - task: DotNetCoreCLI@2
-      displayName: Summary Total Issues of all packages
+      displayName: Running project PendingTestingPackagesThisMonth
       env:
-        PackageName: ${{ parameters.packages }}
-        PipelineRunLink: $(pipelineUrl)
-        GitHubPat: $(GITHUB_PAT)
-        Language: 'Python'
-        GitHubOwner: $(GITHUB_OWNER)
-        GitHubRepo: $(GITHUB_REPO)
+        Language: 'python'
       inputs:
         command: 'run'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
 
-    - task: PublishPipelineArtifact@1
-      displayName: "Upload pipeline test data"
-      inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/Reports
-        artifactName: issues-summary
-        publishLocation: "pipeline"
 
-    - task: Bash@3
-      displayName: 'Set Script Executable'
-      inputs:
-        targetType: 'inline'
-        script: |
-          chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh
+# - stage: ContentValidationTesting
+#   jobs:
+#   - ${{ if ne(parameters.packages, 'all') }}:
+#       - job: content_validation
+#         displayName: Content Validation Matrix
+#         strategy:
+#           matrix:
+#             ${{ each pkg in split(parameters.packages, ',') }}:
+#               ${{ trim(pkg) }}:
+#                 packageName: ${{ trim(pkg) }}
+#           maxParallel: ${{ parameters.maxParallel }}
+#         variables:
+#           PackageName: $(packageName)
+#         pool:
+#           vmImage: ubuntu-latest
+#         steps:
+#         - template: /eng/pipelines/common/content-validation-for-python.yml
+#           parameters:
+#             packageName: $(PackageName)
 
-    - task: Bash@3
-      displayName: 'Push commit about current pipeline status'
-      inputs:
-        targetType: 'filePath'
-        filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh'
-        arguments: >-
-          $(GITHUB_PAT)
-          $(GITHUB_OWNER)
-          $(GITHUB_REPO)
-          $(GIT_USER_NAME)
-          $(GIT_USER_EMAIL)
-          'Python'
+#   - ${{ if eq(parameters.packages, 'all') }}:
+#     - template: /eng/pipelines/python/run-all-packages.yml
+#       parameters:
+#         maxParallel: ${{ parameters.maxParallel }}
+
+#     # - template: /eng/pipelines/common/content-validation-special-cases.yml
+#     #   parameters:
+#     #     DotNetSdkVersion: '8.0.x'
+
+# - stage: TotalIssuesSummary
+#   condition: always()
+#   jobs:
+#   - job: Maintain_Total_Issues_List
+#     displayName: Maintain_Total_Issues_List
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#     - task: DownloadPipelineArtifact@2
+#       displayName: Download The Last Artifact history-issues-summary
+#       inputs:
+#         buildType: 'specific'
+#         project: '$(System.TeamProject)'
+#         pipeline: '$(System.DefinitionName)'
+#         buildVersionToDownload: 'latestFromBranch'
+#         allowPartiallySucceededBuilds: true
+#         allowFailedBuilds: true
+#         branchName: 'refs/heads/main'
+#         artifactName: 'issues-summary'
+#         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+#       continueOnError: true
+
+#     - task: DownloadPipelineArtifact@2
+#       displayName: Download The Current Artifact 
+#       inputs:
+#         buildType: 'current'
+#         downloadPath: '$(System.DefaultWorkingDirectory)/Artifacts'
+
+#     - task: DotNetCoreCLI@2
+#       displayName: Build issuer helper project
+#       inputs:
+#         command: 'build'
+#         projects: 'IssuerHelper/IssuerHelper.csproj'
+
+#     - script: |
+#         organization=$(System.CollectionUri)
+#         project=$(System.TeamProject)
+#         buildId=$(Build.BuildId)
+  
+#         pipelineUrl="${organization}${project}/_build/results?buildId=${buildId}"
+  
+#         echo "##vso[task.setvariable variable=pipelineUrl;]$pipelineUrl"
+#       displayName: Get the current pipeline url
+
+#     - task: DotNetCoreCLI@2
+#       displayName: Summary Total Issues of all packages
+#       env:
+#         PackageName: ${{ parameters.packages }}
+#         PipelineRunLink: $(pipelineUrl)
+#         GitHubPat: $(GITHUB_PAT)
+#         Language: 'Python'
+#         GitHubOwner: $(GITHUB_OWNER)
+#         GitHubRepo: $(GITHUB_REPO)
+#       inputs:
+#         command: 'run'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/IssuerHelper'
+
+#     - task: PublishPipelineArtifact@1
+#       displayName: "Upload pipeline test data"
+#       inputs:
+#         targetPath: $(System.DefaultWorkingDirectory)/Reports
+#         artifactName: issues-summary
+#         publishLocation: "pipeline"
+
+#     - task: Bash@3
+#       displayName: 'Set Script Executable'
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           chmod +x $(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh
+
+#     - task: Bash@3
+#       displayName: 'Push commit about current pipeline status'
+#       inputs:
+#         targetType: 'filePath'
+#         filePath: '$(System.DefaultWorkingDirectory)/eng/scripts/push-pipeline-result-markdown.sh'
+#         arguments: >-
+#           $(GITHUB_PAT)
+#           $(GITHUB_OWNER)
+#           $(GITHUB_REPO)
+#           $(GIT_USER_NAME)
+#           $(GIT_USER_EMAIL)
+#           'Python'
