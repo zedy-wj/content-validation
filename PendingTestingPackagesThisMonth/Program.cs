@@ -153,7 +153,7 @@ namespace PendingTestingPackagesThisMonth
             var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
-            return updatedPackages;
+            return result;
         }
 
         public async Task<HashSet<string>> JavaScriptFilterPackages(HashSet<string> result)
@@ -175,7 +175,7 @@ namespace PendingTestingPackagesThisMonth
             var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
-            return updatedPackages;
+            return result;
         }
     }
 }
