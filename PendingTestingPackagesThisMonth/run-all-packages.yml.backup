@@ -1,0 +1,28 @@
+parameters:
+- name: packages
+  type: object
+  displayName: |
+    A list of package names to validate.
+  default:
+    ${Packages}
+
+- name: maxParallel
+  type: number
+
+jobs:
+  - job: content_validation_all
+    displayName: Content Validation Matrix (All)
+    strategy:
+      matrix:
+        ${{ each pkg in parameters.packages }}:
+          ${{ pkg }}:
+            packageName: ${{ pkg }}
+      maxParallel: ${{ parameters.maxParallel }}
+    variables:
+      PackageName: $(packageName)
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - template: /eng/pipelines/common/content-validation-for-${language}.yml
+      parameters:
+        packageName: $(PackageName)

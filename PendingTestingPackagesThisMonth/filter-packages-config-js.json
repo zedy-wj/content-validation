@@ -1,0 +1,8 @@
+[
+  {
+    "packages": [
+        "@azure-rest/*",
+        "@azure/arm-*"
+    ]
+  }
+]

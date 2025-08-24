@@ -10,6 +10,7 @@ namespace PendingTestingPackagesThisMonth
     {
         private static readonly string RELEASE_PACKAGES_URL_PREFIX = "https://github.com/Azure/azure-sdk/tree/main/_data/releases/";
         private IPlaywright _playwright;
+        private string BackupFilePath = Path.Combine(Directory.GetCurrentDirectory(), "run-all-packages.yml.backup");
 
         public PendingTestingPackagesThisMonth(IPlaywright playwright)
         {
@@ -47,11 +48,11 @@ namespace PendingTestingPackagesThisMonth
             var dataUrl = $"{RELEASE_PACKAGES_URL_PREFIX}{folderName}/{language.ToLower()}.yml";
 
 
-            var allPackages = await data.FetchPackages(dataUrl);
+            var packages = await data.FetchPackages(dataUrl, language);
             System.Console.WriteLine("Pending Testing Packages for This Month");
         }
 
-        public async Task<string> FetchPackages(string testLink)
+        public async Task<string> FetchPackages(string testLink, string language)
         {
             var browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
             var page = await browser.NewPageAsync();
@@ -61,62 +62,125 @@ namespace PendingTestingPackagesThisMonth
             var textAreaContent = await page.EvaluateAsync<string>("() => document.querySelector('textarea#read-only-cursor-text-area')?.value");
 
             var lines = textAreaContent.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            var result = new List<Dictionary<string, string>>();
-
-            string? currentName = null;
-            string? currentVersionType = null;
+            var result = new HashSet<string>();
 
             foreach (var line in lines)
             {
                 var trimmedLine = line.Trim();
                 if (trimmedLine.StartsWith("- Name:"))
                 {
-                    currentName = trimmedLine.Substring("- Name:".Length).Trim();
-                }
-                else if (trimmedLine.StartsWith("VersionType:"))
-                {
-                    currentVersionType = trimmedLine.Substring("VersionType:".Length).Trim();
-                }
-
-                if (currentName != null && currentVersionType != null)
-                {
-                    var entry = new Dictionary<string, string>
+                    var packageName = trimmedLine.Substring("- Name:".Length).Trim();
+                    if (!string.IsNullOrEmpty(packageName))
                     {
-                        { "Name", currentName },
-                        { "VersionType", currentVersionType }
-                    };
-
-                    // Check if the entry already exists in the result list
-                    if (!result.Any(e => e["Name"] == currentName && e["VersionType"] == currentVersionType))
-                    {
-                        result.Add(entry);
+                        result.Add(packageName.Replace("'", ""));
                     }
-
-                    // Reset fields to parse the next entry
-                    currentName = null;
-                    currentVersionType = null;
                 }
             }
 
-            result = PythonFilterPackages(result);
+            HashSet<string> filteredResult = language.ToLower() switch
+            {
+                "python" => await PythonFilterPackages(result),
+                "java" => await JavaFilterPackages(result),
+                "dotnet" => await DotNetFilterPackages(result),
+                "js" => await JavaScriptFilterPackages(result),
+                _ => result
+            };
 
             // Convert to JSON format
-            var jsonResult = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+            var jsonResult = JsonSerializer.Serialize(filteredResult.ToList(), new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
 
-            // 将 JSON 写入到 result.json 文件
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "result.json");
-            await File.WriteAllTextAsync(filePath, jsonResult);
-            System.Console.WriteLine($"JSON has been written to {filePath}");
             return jsonResult == null ? throw new InvalidOperationException("Failed to serialize packages to JSON.") : jsonResult;
         }
 
-        public List<Dictionary<string, string>>PythonFilterPackages(List<Dictionary<string, string>> result)
+        public async Task<HashSet<string>> PythonFilterPackages(HashSet<string> result)
         {
+            result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
 
-            // 移除以 "azure-mgmt-" 开头的条目
-            result.RemoveAll(package => package.ContainsKey("Name") && package["Name"].StartsWith("azure-mgmt-"));
+            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/python/run-all-packages.yml");
+
+            // Create packages string in YAML list format
+            var packagesList = string.Join("\n    - ", result.OrderBy(p => p));
+            var packagesYaml = $"- {packagesList}";
+
+            await GenerateYmlFile(outputFilePath, packagesYaml, "python");
 
             return result;
+        }
+
+        public async Task<HashSet<string>> JavaFilterPackages(HashSet<string> result)
+        {
+            result.RemoveWhere(packageName => packageName.StartsWith("azure-resourcemanager-"));
+
+            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/java/run-all-packages.yml");
+
+            // Create packages string in YAML list format
+            var packagesList = string.Join("\n    - ", result.OrderBy(p => p));
+            var packagesYaml = $"- {packagesList}";
+
+            await GenerateYmlFile(outputFilePath, packagesYaml, "java");
+
+            return result;
+        }
+
+        public async Task<HashSet<string>> DotNetFilterPackages(HashSet<string> result)
+        {
+            result.RemoveWhere(packageName => packageName.StartsWith("Azure.ResourceManager."));
+
+            // Update package names to lowercase and replace "." with "-"
+            var updatedPackages = result.Select(p => p.Replace(".", "-").ToLower()).ToList();
+
+            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/dotnet/run-all-packages.yml");
+
+            // Create packages string in YAML list format
+            var packagesList = string.Join("\n    - ", updatedPackages.OrderBy(p => p));
+            var packagesYaml = $"- {packagesList}";
+
+            await GenerateYmlFile(outputFilePath, packagesYaml, "dotnet");
+
+            return result;
+        }
+
+        public async Task<HashSet<string>> JavaScriptFilterPackages(HashSet<string> result)
+        {
+            result.RemoveWhere(packageName => packageName.StartsWith("@azure/arm-") || packageName.StartsWith("@azure-rest/"));
+
+            // Update package names to lowercase and replace "." with "-"
+            var updatedPackages = result.Select(p => p.Replace("@", "").Replace("/", "-").ToLower()).ToList();
+
+            var outputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/javascript/run-all-packages.yml");
+
+            // Create packages string in YAML list format
+            var packagesList = string.Join("\n    - ", updatedPackages.OrderBy(p => p));
+            var packagesYaml = $"- {packagesList}";
+
+            await GenerateYmlFile(outputFilePath, packagesYaml, "javascript");
+
+            return result;
+        }
+
+        private async Task GenerateYmlFile(string outputFilePath, string packagesYaml, string language)
+        {
+            if (!File.Exists(BackupFilePath))
+            {
+                System.Console.WriteLine($"Backup file not found: {BackupFilePath}");
+                return;
+            }
+
+            // Read backup file content
+            var templateContent = await File.ReadAllTextAsync(BackupFilePath);
+
+            // Replace placeholders
+            var finalContent = templateContent
+                .Replace("${Packages}", packagesYaml)
+                .Replace("${language}", language);
+
+            // Write to output file
+            await File.WriteAllTextAsync(outputFilePath, finalContent);
+            System.Console.WriteLine($"YAML file has been written to {outputFilePath}");
         }
     }
 }
