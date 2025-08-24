@@ -87,6 +87,7 @@ stages:
           $orgUri     = "$(System.CollectionUri)"
           $proj       = "$(System.TeamProject)"
           $pipelineId = $(System.DefinitionId)
+          $maxParallel  = '$(maxParallel)'
           $body = @{
             resources = @{
               repositories = @{
