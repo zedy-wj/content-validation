@@ -120,8 +120,6 @@ namespace PendingTestingPackagesThisMonth
             var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
-            Console.WriteLine($"##vso[task.setvariable variable=packagesJson;isOutput=true]{jsonContent}");
-
             return result;
         }
 

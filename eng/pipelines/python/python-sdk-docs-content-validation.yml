@@ -67,22 +67,39 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
       name: runPackagesJob
 
-    outputs:
-      packagesJson: $[ dependencies.fetch.outputs['runPackagesJob.packagesJson'] ]
+    - pwsh: |
+        $jsonObj = Get-Content "$(System.DefaultWorkingDirectory)/eng/pipelines/packages.json" -Raw | ConvertFrom-Json
+        $matrixJson = $jsonObj | ConvertTo-Json -Compress
+        Write-Host "##vso[task.setvariable variable=matrixJson;isOutput=true]$matrixJson"
+      name: setMatrixVar
 
 
 - stage: ContentValidationTesting
   dependsOn: FetchLastMonthReleasedPackages
   condition: succeeded()
   jobs:
-  - ${{ if ne(parameters.packages, 'all') }}:
+  # - ${{ if ne(parameters.packages, 'all') }}:
+  #     - job: content_validation
+  #       displayName: Content Validation Matrix
+  #       strategy:
+  #         matrix:
+  #           ${{ each pkg in split(parameters.packages, ',') }}:
+  #             ${{ trim(pkg) }}:
+  #               packageName: ${{ trim(pkg) }}
+  #         maxParallel: ${{ parameters.maxParallel }}
+  #       variables:
+  #         PackageName: $(packageName)
+  #       pool:
+  #         vmImage: ubuntu-latest
+  #       steps:
+  #       - template: /eng/pipelines/common/content-validation-for-python.yml
+  #         parameters:
+  #           packageName: $(PackageName)
+
+  - ${{ if eq(parameters.packages, 'all') }}:
       - job: content_validation
-        displayName: Content Validation Matrix
         strategy:
-          matrix:
-            ${{ each pkg in split(parameters.packages, ',') }}:
-              ${{ trim(pkg) }}:
-                packageName: ${{ trim(pkg) }}
+          matrix: $[ fromJson(stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['setMatrixVar.matrixJson']) ]
           maxParallel: ${{ parameters.maxParallel }}
         variables:
           PackageName: $(packageName)
@@ -92,18 +109,6 @@ stages:
         - template: /eng/pipelines/common/content-validation-for-python.yml
           parameters:
             packageName: $(PackageName)
-
-  - ${{ if eq(parameters.packages, 'all') }}:
-      - job: content_validation
-        strategy:
-          matrix: $[ stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['fetch.packagesJson'] ]
-          maxParallel: ${{ parameters.maxParallel }}
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-        - template: /eng/pipelines/common/content-validation-for-python.yml
-          parameters:
-            packageName: $(packageName)
 
     # - template: /eng/pipelines/common/content-validation-special-cases.yml
     #   parameters:

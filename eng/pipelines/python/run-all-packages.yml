@@ -1,0 +1,46 @@
+parameters:
+- name: packages
+  type: object
+  displayName: |
+    A list of package names to validate.
+  default:
+    - azure-ai-agents
+    - azure-ai-evaluation
+    - azure-ai-ml
+    - azure-ai-projects
+    - azure-communication-phonenumbers
+    - azure-core
+    - azure-cosmos
+    - azure-identity
+    - azure-keyvault-administration
+    - azure-keyvault-certificates
+    - azure-keyvault-keys
+    - azure-keyvault-secrets
+    - azure-messaging-webpubsubservice
+    - azure-monitor-opentelemetry-exporter
+    - azure-search-documents
+    - azure-storage-blob
+    - azure-storage-file-datalake
+    - azure-storage-file-share
+    - azure-storage-queue
+
+- name: maxParallel
+  type: number
+
+jobs:
+  - job: content_validation_all
+    displayName: Content Validation Matrix (All)
+    strategy:
+      matrix:
+        ${{ each pkg in parameters.packages }}:
+          ${{ pkg }}:
+            packageName: ${{ pkg }}
+      maxParallel: ${{ parameters.maxParallel }}
+    variables:
+      PackageName: $(packageName)
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - template: /eng/pipelines/common/content-validation-for-python.yml
+      parameters:
+        packageName: $(PackageName)
