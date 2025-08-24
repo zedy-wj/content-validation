@@ -126,8 +126,8 @@ stages:
 - stage: ContentValidationTesting
   condition: ne('${{ parameters.packages }}', 'all')
   jobs:
-    - job: content_validation
-      displayName: Content Validation Matrix
+    - job: content_validation_matrix
+      displayName: Matrix
       strategy:
         matrix:
           ${{ each pkg in split(parameters.packages, ',') }}:
