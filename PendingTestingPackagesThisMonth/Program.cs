@@ -108,6 +108,20 @@ namespace PendingTestingPackagesThisMonth
 
             await GenerateYmlFile(outputFilePath, packagesYaml, "python");
 
+            var matrixDict = result.OrderBy(p => p)
+                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
+
+            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
+
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
+
+            Console.WriteLine($"##vso[task.setvariable variable=packagesJson;isOutput=true]{jsonContent}");
+
             return result;
         }
 
@@ -181,6 +195,8 @@ namespace PendingTestingPackagesThisMonth
             // Write to output file
             await File.WriteAllTextAsync(outputFilePath, finalContent);
             System.Console.WriteLine($"YAML file has been written to {outputFilePath}");
+
+            
         }
     }
 }

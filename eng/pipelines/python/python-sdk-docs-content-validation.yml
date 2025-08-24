@@ -24,13 +24,55 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - template: /eng/pipelines/common/dynamic-generate-all-packages.yml
-      parameters:
-        language: 'python'
+    - task: UseDotNet@2
+      displayName: 'Install .NET Core SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet 
+
+    - task: DotNetCoreCLI@2
+      displayName: New Manifest for tool
+      inputs:
+        command: custom
+        custom: 'new '
+        arguments: tool-manifest
+
+    - task: DotNetCoreCLI@2
+      displayName: Install Playwright CLI
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: install Microsoft.Playwright.CLI
+
+    - task: DotNetCoreCLI@2
+      displayName: Build all projects and libraries
+      inputs:
+        command: 'build'
+        projects: 'content-validation.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: Run Playwright Install
+      inputs:
+        command: custom
+        custom: 'tool '
+        arguments: run playwright install
+
+    - task: DotNetCoreCLI@2
+      displayName: Running project PendingTestingPackagesThisMonth
+      env:
+        Language: 'Python'
+      inputs:
+        command: 'run'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
+      name: runPackagesJob
+  outputs:
+    packagesJson: $[ dependencies.fetch.outputs['runPackagesJob.packagesJson'] ]
 
 
 - stage: ContentValidationTesting
   dependsOn: FetchLastMonthReleasedPackages
+  condition: succeeded()
   jobs:
   - ${{ if ne(parameters.packages, 'all') }}:
       - job: content_validation
@@ -51,9 +93,16 @@ stages:
             packageName: $(PackageName)
 
   - ${{ if eq(parameters.packages, 'all') }}:
-    - template: /eng/pipelines/python/run-all-packages.yml
-      parameters:
-        maxParallel: ${{ parameters.maxParallel }}
+      - job: content_validation
+        strategy:
+          matrix: $[ stageDependencies.FetchLastMonthReleasedPackages.fetch.outputs['runPackagesJob.packagesJson'] ]
+          maxParallel: ${{ parameters.maxParallel }}
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+        - template: /eng/pipelines/common/content-validation-for-python.yml
+          parameters:
+            packageName: $(packageName)
 
     # - template: /eng/pipelines/common/content-validation-special-cases.yml
     #   parameters:
