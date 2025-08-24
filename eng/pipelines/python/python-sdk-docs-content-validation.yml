@@ -81,7 +81,7 @@ stages:
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         MAX_PARALLEL: ${{ parameters.maxParallel }}
-        MATRIX_JSON: $[ dependencies.fetch.outputs['setMatrixVar.matrixJson'] ]
+        MATRIX_JSON: $[ dependencies.FetchLastMonthReleasedPackages.outputs['fetch.setMatrixVar.matrixJson'] ]
       inputs:
         targetType: inline
         script: |
