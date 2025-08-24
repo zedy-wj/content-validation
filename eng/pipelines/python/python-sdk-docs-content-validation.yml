@@ -81,10 +81,10 @@ stages:
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         MAX_PARALLEL: ${{ parameters.maxParallel }}
+        MATRIX_JSON: $[ dependencies.fetch.outputs['setMatrixVar.matrixJson'] ]
       inputs:
         targetType: inline
         script: |
-          $matrixJson = '$(matrixJson)'
           $orgUri     = "$(System.CollectionUri)"
           $proj       = "$(System.TeamProject)"
           $pipelineId = $(System.DefinitionId)
@@ -97,7 +97,7 @@ stages:
               }
             }
             templateParameters = @{
-              packages    = $matrixJson
+              packages    = $env:MATRIX_JSON
               maxParallel = $env:MAX_PARALLEL
             }
           } | ConvertTo-Json -Depth 10
