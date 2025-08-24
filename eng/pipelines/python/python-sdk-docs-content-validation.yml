@@ -24,19 +24,9 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: UseDotNet@2
-      displayName: 'Install .NET Core SDK'
-      inputs:
-        packageType: 'sdk'
-        version: '8.0.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet 
-    - task: DotNetCoreCLI@2
-      displayName: Running project PendingTestingPackagesThisMonth
-      env:
-        Language: 'python'
-      inputs:
-        command: 'run'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
+    - template: /eng/pipelines/common/dynamic-generate-all-packages.yml
+      parameters:
+        language: 'python'
 
 
 # - stage: ContentValidationTesting

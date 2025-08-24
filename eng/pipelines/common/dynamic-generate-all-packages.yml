@@ -1,0 +1,49 @@
+parameters:
+- name: dotnetSdkVersion  
+  type: string
+  default: '8.0.x'
+- name: language
+  type: string
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    packageType: 'sdk'
+    version: ${{ parameters.dotnetSdkVersion }}
+    installationPath: $(Agent.ToolsDirectory)/dotnet 
+
+- task: DotNetCoreCLI@2
+  displayName: New Manifest for tool
+  inputs:
+    command: custom
+    custom: 'new '
+    arguments: tool-manifest
+
+- task: DotNetCoreCLI@2
+  displayName: Install Playwright CLI
+  inputs:
+    command: custom
+    custom: 'tool '
+    arguments: install Microsoft.Playwright.CLI
+
+- task: DotNetCoreCLI@2
+  displayName: Build all projects and libraries
+  inputs:
+    command: 'build'
+    projects: 'content-validation.sln'
+
+- task: DotNetCoreCLI@2
+  displayName: Run Playwright Install
+  inputs:
+    command: custom
+    custom: 'tool '
+    arguments: run playwright install
+
+- task: DotNetCoreCLI@2
+  displayName: Running project PendingTestingPackagesThisMonth
+  env:
+    Language: ${{ parameters.language }}
+  inputs:
+    command: 'run'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
