@@ -50,7 +50,7 @@ stages:
       inputs:
         command: 'build'
         projects: 'content-validation.sln'
-        
+
     - task: DotNetCoreCLI@2
       displayName: Run Playwright Install
       inputs:
@@ -76,40 +76,40 @@ stages:
     # - checkout: self
     #   persistCredentials: true
 
-    # - task: PowerShell@2
-    #   displayName: Trigger self pipeline with package matrix
-    #   env:
-    #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    #   inputs:
-    #     targetType: inline
-    #     script: |
-    #       $matrixJson = '$(matrixJson)'
-    #       $orgUri     = "$(System.CollectionUri)"
-    #       $proj       = "$(System.TeamProject)"
-    #       $pipelineId = $(System.DefinitionId)
-    #       $body = @{
-    #         resources = @{
-    #           repositories = @{
-    #             self = @{
-    #               refName = "$(Build.SourceBranch)"
-    #             }
-    #           }
-    #         }
-    #         templateParameters = @{
-    #           packages    = $matrixJson
-    #           maxParallel = $(maxParallel)
-    #         }
-    #       } | ConvertTo-Json -Depth 10
+    - task: PowerShell@2
+      displayName: Trigger self pipeline with package matrix
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      inputs:
+        targetType: inline
+        script: |
+          $matrixJson = '$(matrixJson)'
+          $orgUri     = "$(System.CollectionUri)"
+          $proj       = "$(System.TeamProject)"
+          $pipelineId = $(System.DefinitionId)
+          $body = @{
+            resources = @{
+              repositories = @{
+                self = @{
+                  refName = "$(Build.SourceBranch)"
+                }
+              }
+            }
+            templateParameters = @{
+              packages    = $matrixJson
+              maxParallel = $(maxParallel)
+            }
+          } | ConvertTo-Json -Depth 10
 
-    #       Write-Host ">> Triggering pipeline #$pipelineId in $proj with:"
-    #       Write-Host $body
+          Write-Host ">> Triggering pipeline #$pipelineId in $proj with:"
+          Write-Host $body
 
-    #       Invoke-RestMethod `
-    #         -Uri    "$orgUri$proj/_apis/pipelines/$pipelineId/runs?api-version=6.0-preview.1" `
-    #         -Method POST `
-    #         -Headers @{ Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN" } `
-    #         -ContentType "application/json" `
-    #         -Body   $body
+          Invoke-RestMethod `
+            -Uri    "$orgUri$proj/_apis/pipelines/$pipelineId/runs?api-version=6.0-preview.1" `
+            -Method POST `
+            -Headers @{ Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN" } `
+            -ContentType "application/json" `
+            -Body   $body
 
 
 - stage: ContentValidationTesting
