@@ -33,6 +33,15 @@ namespace DataSource
             string? cookieName = config["CookieName"];
             string? cookieValue = config["CookieValue"];
 
+            if (string.IsNullOrEmpty(language))
+            {
+                throw new ArgumentException("Language must be specified in the configuration.");
+            }
+            if (string.IsNullOrEmpty(package))
+            {
+                throw new ArgumentException("PackageName must be specified in the configuration.");
+            }
+
             string configPath = Path.Combine(AppContext.BaseDirectory, "../../../config.json");
             if (!File.Exists(configPath))
             {
@@ -42,7 +51,7 @@ namespace DataSource
             var configRoot = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, ConfigEntry>>>(configJson);
 
             string? readme = null;
-            if (language != null && package != null && configRoot != null)
+            if (configRoot != null)
             {
                 var langKey = language.ToLower();
                 if (configRoot.TryGetValue(langKey, out var pkgDict) && pkgDict != null)
@@ -57,14 +66,27 @@ namespace DataSource
                     }
                     else
                     {
-                        throw new ArgumentException($"Package: {package} not found in config.json");
+                        Console.WriteLine($"Package: {package} not found in config.json");
+                        Console.WriteLine($"Therefore, its initial link does not belong to the special pattern");
+                        Console.WriteLine($"Package: {package} will be processed according to the default pattern");
                     }
                 }
             }
 
             if (string.IsNullOrEmpty(readme))
             {
-                throw new ArgumentException($"Readme not found for package={package} in config.json");
+                var langKey = language.ToLower();
+                switch (langKey)
+                {
+                    case "python":
+                        readme = package.Replace("azure-", "") + "-readme";
+                        break;
+                    case "java":
+                        readme = package.Replace("azure-", "") + "-readme";
+                        break;
+                    default:
+                        throw new ArgumentException($"Unsupported language specified: {langKey}");
+                }
             }
 
             bool isRest = false;

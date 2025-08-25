@@ -1,7 +1,8 @@
 [
   {
     "packages": [
-        "azure-mgmt-*"
+        "azure-mgmt-*",
+        "azure-cognitiveservices-speech"
     ]
   }
 ]

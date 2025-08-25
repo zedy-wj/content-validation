@@ -9,8 +9,9 @@ namespace PendingTestingPackagesThisMonth
     public class PendingTestingPackagesThisMonth
     {
         private static readonly string RELEASE_PACKAGES_URL_PREFIX = "https://github.com/Azure/azure-sdk/tree/main/_data/releases/";
+        private static readonly string PENDING_TEST_PACKAGES_LIST_LOCATION = "../eng/pipelines/packages.json";
+        private static readonly string FILTER_PACKAGES_FOR_PYTHON_PATH = "filter-packages-config-python.json";
         private IPlaywright _playwright;
-        private string BackupFilePath = Path.Combine(Directory.GetCurrentDirectory(), "run-all-packages.yml.backup");
 
         public PendingTestingPackagesThisMonth(IPlaywright playwright)
         {
@@ -47,9 +48,7 @@ namespace PendingTestingPackagesThisMonth
                 : $"{currentDate.Year}-{currentDate.Month - 1:D2}";
             var dataUrl = $"{RELEASE_PACKAGES_URL_PREFIX}{folderName}/{language.ToLower()}.yml";
 
-
             var packages = await data.FetchPackages(dataUrl, language);
-            System.Console.WriteLine("Pending Testing Packages for This Month");
         }
 
         public async Task<string> FetchPackages(string testLink, string language)
@@ -93,16 +92,43 @@ namespace PendingTestingPackagesThisMonth
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "result.json");
+            await File.WriteAllTextAsync(outputPath, jsonResult);
+
             return jsonResult == null ? throw new InvalidOperationException("Failed to serialize packages to JSON.") : jsonResult;
         }
 
         public async Task<HashSet<string>> PythonFilterPackages(HashSet<string> result)
         {
-            result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
+            var configPath = Path.Combine(Directory.GetCurrentDirectory(), FILTER_PACKAGES_FOR_PYTHON_PATH);
+
+            // Resolve filter packages in filter list.
+            if (File.Exists(configPath))
+            {
+                var configContent = await File.ReadAllTextAsync(configPath);
+                var configJson = JsonSerializer.Deserialize<List<Dictionary<string, List<string>>>>(configContent);
+                var packages = configJson?.FirstOrDefault()?["packages"] ?? new List<string>();
+
+                if (packages.Contains("azure-mgmt-*"))
+                {
+                    result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
+                }
+                foreach (var pkg in packages)
+                {
+                    if (pkg != "azure-mgmt-*")
+                    {
+                        result.Remove(pkg);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Warning: Configuration file '{FILTER_PACKAGES_FOR_PYTHON_PATH}' not found. No packages will be filtered.");
+            }
 
             var joinedResult = string.Join(",", result);
 
-            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
             await File.WriteAllTextAsync(outputPath, joinedResult);
 
             return result;
@@ -121,7 +147,7 @@ namespace PendingTestingPackagesThisMonth
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
             return result;
@@ -143,7 +169,7 @@ namespace PendingTestingPackagesThisMonth
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
             return result;
@@ -165,7 +191,7 @@ namespace PendingTestingPackagesThisMonth
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), "../eng/pipelines/packages.json");
+            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
             await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
 
             return result;
