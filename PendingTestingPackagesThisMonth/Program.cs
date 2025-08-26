@@ -11,6 +11,7 @@ namespace PendingTestingPackagesThisMonth
         private static readonly string RELEASE_PACKAGES_URL_PREFIX = "https://github.com/Azure/azure-sdk/tree/main/_data/releases/";
         private static readonly string PENDING_TEST_PACKAGES_LIST_LOCATION = "../eng/pipelines/packages.json";
         private static readonly string FILTER_PACKAGES_FOR_PYTHON_PATH = "filter-packages-config-python.json";
+        private static readonly string FILTER_PACKAGES_FOR_JAVA_PATH = "filter-packages-config-java.json";
         private IPlaywright _playwright;
 
         public PendingTestingPackagesThisMonth(IPlaywright playwright)
@@ -136,19 +137,36 @@ namespace PendingTestingPackagesThisMonth
 
         public async Task<HashSet<string>> JavaFilterPackages(HashSet<string> result)
         {
-            result.RemoveWhere(packageName => packageName.StartsWith("azure-resourcemanager-"));
+            var configPath = Path.Combine(Directory.GetCurrentDirectory(), FILTER_PACKAGES_FOR_JAVA_PATH);
 
-            var matrixDict = result.OrderBy(p => p)
-                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
-
-            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
+            // Resolve filter packages in filter list.
+            if (File.Exists(configPath))
             {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
+                var configContent = await File.ReadAllTextAsync(configPath);
+                var configJson = JsonSerializer.Deserialize<List<Dictionary<string, List<string>>>>(configContent);
+                var packages = configJson?.FirstOrDefault()?["packages"] ?? new List<string>();
 
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
-            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
+                if (packages.Contains("azure-resourcemanager-*"))
+                {
+                    result.RemoveWhere(packageName => packageName.StartsWith("azure-resourcemanager-"));
+                }
+                foreach (var pkg in packages)
+                {
+                    if (pkg != "azure-resourcemanager-*")
+                    {
+                        result.Remove(pkg);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Warning: Configuration file '{FILTER_PACKAGES_FOR_JAVA_PATH}' not found. No packages will be filtered.");
+            }
+
+            var joinedResult = string.Join(",", result);
+
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
+            await File.WriteAllTextAsync(outputPath, joinedResult);
 
             return result;
         }

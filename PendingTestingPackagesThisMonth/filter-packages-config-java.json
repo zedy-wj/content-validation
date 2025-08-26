@@ -1,7 +1,8 @@
 [
   {
     "packages": [
-        "azure-resourcemanager-*"
+        "azure-resourcemanager-*",
+        "azure-resourcemanager"
     ]
   }
 ]
