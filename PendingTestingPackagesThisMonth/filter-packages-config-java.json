@@ -2,7 +2,9 @@
   {
     "packages": [
         "azure-resourcemanager-*",
-        "azure-resourcemanager"
+        "azure-resourcemanager",
+        "azure-cosmos-kafka-connect",
+        "azure-sdk-bom"
     ]
   }
 ]

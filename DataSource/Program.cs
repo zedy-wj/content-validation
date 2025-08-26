@@ -113,6 +113,7 @@ namespace DataSource
             string? pageLink = GetPackagePageOverview(language, readme, versionSuffix, branch);
 
             List<string> allPages = new List<string>();
+            allPages.Add(pageLink);
 
             await GetAllDataSource(allPages, language, versionSuffix, pageLink, cookieName ?? string.Empty, cookieValue ?? string.Empty, branch);
 
@@ -123,7 +124,7 @@ namespace DataSource
                 Console.WriteLine("Data saved successfully.");
             }
 
-            ExportData(allPages);
+            ExportData(allPages.Distinct().ToList());
         }
 
         static string GetPackagePageOverview(string? language, string? readme, string versionSuffix, string branch = "")
