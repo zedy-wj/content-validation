@@ -4,7 +4,7 @@ trigger: none
 parameters:
 - name: packages
   displayName: |
-      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'
+      Comma-delimited list of packages to test against (by default, 'all' to run all). Example: 'azure-appconfiguration, azure-keyvault-keys'. Notes: If you select "all", two pipelines will be triggered. The first pipeline will be used to obtain the package to be tested, and then the second pipeline will be automatically triggered to run the test. You need to view the results in the automatically triggered pipeline.
   type: string
   default: 'all'
 
@@ -127,7 +127,7 @@ stages:
   condition: ne('${{ parameters.packages }}', 'all')
   jobs:
     - job: content_validation_matrix
-      displayName: Matrix
+      displayName: RunTest
       strategy:
         matrix:
           ${{ each pkg in split(parameters.packages, ',') }}:
