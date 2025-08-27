@@ -20,7 +20,7 @@ stages:
   condition: eq('${{ parameters.packages }}', 'all')
   jobs:
   - job: fetch
-    displayName: "Getting packages and generate run-all-packages.yml"
+    displayName: "Getting all packages to be tested"
     pool:
       vmImage: ubuntu-latest
     steps:
