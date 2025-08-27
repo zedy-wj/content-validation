@@ -66,6 +66,10 @@
     "azure-servicefabric": {
       "readme": "servicefabric/servicefabric",
       "csvPackage": "@azure/servicefabric"
+    },
+    "typespec-ts-http-runtime": {
+      "readme": "ts-http-runtime-readme",
+      "csvPackage": "@typespec/ts-http-runtime"
     }
   },
   "dotnet": {

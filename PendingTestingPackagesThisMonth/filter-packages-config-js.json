@@ -2,7 +2,8 @@
   {
     "packages": [
         "@azure-rest/*",
-        "@azure/arm-*"
+        "@azure/arm-*",
+        "@azure/create-playwright"
     ]
   }
 ]
