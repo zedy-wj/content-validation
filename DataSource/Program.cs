@@ -88,6 +88,10 @@ namespace DataSource
                         readme = package.Replace("azure-", "") + "-readme";
                         package = package.Replace("azure-", "@azure/");
                         break;
+                    case "dotnet":
+                        readme = package.Replace("azure-", "").Replace("-", ".") + "-readme";
+                        package = ToPascalWithDots(package);
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported language specified: {langKey}");
                 }
@@ -139,7 +143,7 @@ namespace DataSource
             }
 
             language = language?.ToLower();
-            
+
             if (branch != "main")
             {
                 return $"{SDK_API_REVIEW_URL_BASIC}{language}/api/overview/azure/{readme}?{versionSuffix}&branch={branch}";
@@ -181,7 +185,7 @@ namespace DataSource
         static async Task<string?> CompareGAAndPreview(string url, string? package, string language)
         {
             var searchPackage = package;
-            
+
             using (var httpClient = new HttpClient())
             {
                 try
@@ -194,29 +198,29 @@ namespace DataSource
                     }))
                     {
                         csvReader.Context.RegisterClassMap<PythonPackageMap>();
-    
+
                         var records = new List<PackageCSV>();
                         while (await csvReader.ReadAsync())
                         {
                             var record = csvReader.GetRecord<PackageCSV>();
                             records.Add(record);
                         }
-    
+
                         var res = records.FirstOrDefault(p => p.Package.Equals(searchPackage, StringComparison.OrdinalIgnoreCase));
 
-                        if(res != null)
+                        if (res != null)
                         {
                             string versionGA = res.VersionGA;
                             string versionPreview = res.VersionPreview;
-                            if(String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
+                            if (String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
                             {
                                 return "Preview";
                             }
-                            else if(!String.IsNullOrEmpty(versionGA) && String.IsNullOrEmpty(versionPreview))
+                            else if (!String.IsNullOrEmpty(versionGA) && String.IsNullOrEmpty(versionPreview))
                             {
                                 return "GA";
                             }
-                            else if(!String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
+                            else if (!String.IsNullOrEmpty(versionGA) && !String.IsNullOrEmpty(versionPreview))
                             {
                                 var versionRes = CompareVersions(versionGA, versionPreview);
                                 return versionRes < 0 ? "Preview" : "GA";
@@ -227,7 +231,8 @@ namespace DataSource
                                 return "GA";
                             }
                         }
-                        else{
+                        else
+                        {
                             Console.WriteLine($"Package {package} not found in the CSV.");
                             return "GA";
                         }
@@ -245,31 +250,31 @@ namespace DataSource
         {
             var (version1Parts, _) = ParseVersion(v1);
             var (version2Parts, _) = ParseVersion(v2);
-    
+
             int length = Math.Max(version1Parts.Length, version2Parts.Length);
             for (int i = 0; i < length; i++)
             {
                 int part1 = i < version1Parts.Length ? version1Parts[i] : 0;
                 int part2 = i < version2Parts.Length ? version2Parts[i] : 0;
-    
+
                 if (part1 < part2) return -1;
                 if (part1 > part2) return 1;
             }
-    
+
             return 0;
         }
-    
+
         static (int[], string) ParseVersion(string version)
         {
             var match = Regex.Match(version, @"^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<pre>[-.\w]*)?$");
             if (!match.Success)
                 throw new ArgumentException("Invalid version format");
-    
+
             int major = int.Parse(match.Groups["major"].Value);
             int minor = int.Parse(match.Groups["minor"].Value);
             int patch = int.Parse(match.Groups["patch"].Value);
             string preRelease = match.Groups["pre"].Value;
-    
+
             return (new[] { major, minor, patch }, preRelease);
         }
 
@@ -279,7 +284,7 @@ namespace DataSource
             // If the current page meets the IsTrue condition, call GetAllPages directly.
             if (IsTrue(pagelink, cookieName, cookieVal))
             {
-                
+
                 int lastSlashIndex = pagelink.LastIndexOf('/');
                 string baseUri = pagelink.Substring(0, lastSlashIndex + 1);
                 allPages.Add(pagelink);
@@ -323,7 +328,7 @@ namespace DataSource
                 {
                     Console.WriteLine("Page load timeout");
                 }
-                
+
                 // Get all child pages
                 links = await page.Locator("li.tree-item.is-expanded ul.tree-group a").AllAsync();
 
@@ -401,7 +406,7 @@ namespace DataSource
                         }
 
                         href = $"{baseUri}{href}&branch=" + branch;
-                        
+
                         if (!links.Contains(href))
                         {
                             links.Add(href);
@@ -584,12 +589,14 @@ namespace DataSource
         {
             string? link = null;
             language = language?.ToLower();
-            if(language == "python"){
+            if (language == "python")
+            {
                 foreach (var page in childPage)
                 {
                     string packageName = page.Replace(".", "-").ToLower();
-                    if(packageName.Contains("fileshare") || packageName.Contains("filedatalake")){
-                        packageName = packageName.Replace("file","file-").ToLower();
+                    if (packageName.Contains("fileshare") || packageName.Contains("filedatalake"))
+                    {
+                        packageName = packageName.Replace("file", "file-").ToLower();
                     }
                     if (branch != "main")
                     {
@@ -629,6 +636,15 @@ namespace DataSource
 
             Console.WriteLine(jsonString);
             File.WriteAllText("../ContentValidation.Test/appsettings.json", jsonString);
+        }
+        
+        static string ToPascalWithDots(string input)
+        {
+            var parts = input
+                .Split('-', StringSplitOptions.RemoveEmptyEntries)
+                .Select(p => CultureInfo.InvariantCulture.TextInfo
+                    .ToTitleCase(p.ToLowerInvariant()));
+            return string.Join(".", parts);
         }
     }
 

@@ -13,6 +13,7 @@ namespace PendingTestingPackagesThisMonth
         private static readonly string FILTER_PACKAGES_FOR_PYTHON_PATH = "filter-packages-config-python.json";
         private static readonly string FILTER_PACKAGES_FOR_JAVA_PATH = "filter-packages-config-java.json";
         private static readonly string FILTER_PACKAGES_FOR_JAVASCRIPT_PATH = "filter-packages-config-js.json";
+        private static readonly string FILTER_PACKAGES_FOR_NET_PATH = "filter-packages-config-dotnet.json";
         private IPlaywright _playwright;
 
         public PendingTestingPackagesThisMonth(IPlaywright playwright)
@@ -174,22 +175,39 @@ namespace PendingTestingPackagesThisMonth
 
         public async Task<HashSet<string>> DotNetFilterPackages(HashSet<string> result)
         {
-            result.RemoveWhere(packageName => packageName.StartsWith("Azure.ResourceManager."));
+            var configPath = Path.Combine(Directory.GetCurrentDirectory(), FILTER_PACKAGES_FOR_NET_PATH);
+
+            // Resolve filter packages in filter list.
+            if (File.Exists(configPath))
+            {
+                var configContent = await File.ReadAllTextAsync(configPath);
+                var configJson = JsonSerializer.Deserialize<List<Dictionary<string, List<string>>>>(configContent);
+                var packages = configJson?.FirstOrDefault()?["packages"] ?? new List<string>();
+
+                if (packages.Contains("Azure.ResourceManager.*"))
+                {
+                    result.RemoveWhere(packageName => packageName.StartsWith("Azure.ResourceManager."));
+                }
+                foreach (var pkg in packages)
+                {
+                    if (pkg != "Azure.ResourceManager.*")
+                    {
+                        result.Remove(pkg);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Warning: Configuration file '{FILTER_PACKAGES_FOR_PYTHON_PATH}' not found. No packages will be filtered.");
+            }
 
             // Update package names to lowercase and replace "." with "-"
             var updatedPackages = result.Select(p => p.Replace(".", "-").ToLower()).ToList();
 
-            var matrixDict = updatedPackages.OrderBy(p => p)
-                .ToDictionary(p => p, p => new Dictionary<string, string> { { "packageName", p } });
+            var joinedResult = string.Join(",", updatedPackages);
 
-            var jsonContent = JsonSerializer.Serialize(matrixDict, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
-
-            var jsonOutputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
-            await File.WriteAllTextAsync(jsonOutputPath, jsonContent);
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), PENDING_TEST_PACKAGES_LIST_LOCATION);
+            await File.WriteAllTextAsync(outputPath, joinedResult);
 
             return result;
         }
