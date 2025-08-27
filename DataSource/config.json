@@ -47,197 +47,25 @@
     }
   },
   "javascript": {
-    "azure-ai-language-text": {
-      "readme": "ai-language-text-readme",
-      "csvPackage": "@azure/ai-language-text"
-    },
-    "azure-app-configuration": {
-      "readme": "app-configuration-readme",
-      "csvPackage": "@azure/app-configuration"
-    },
-    "azure-attestation": {
-      "readme": "attestation-readme",
-      "csvPackage": "@azure/attestation"
-    },
     "azure-batch": {
       "readme": "batch/batch",
       "csvPackage": "@azure/batch"
-    },
-    "azure-communication-call-automation": {
-      "readme": "communication-call-automation-readme",
-      "csvPackage": "@azure/communication-call-automation"
     },
     "azure-communication-calling-effects": {
       "readme": "communication/@azure/communication-calling-effects",
       "csvPackage": "@azure/communication-calling-effects"
     },
-    "azure-communication-chat": {
-      "readme": "communication-chat-readme",
-      "csvPackage": "@azure/communication-chat"
-    },
-    "azure-communication-common": {
-      "readme": "communication-common-readme",
-      "csvPackage": "@azure/communication-common"
-    },
-    "azure-communication-email": {
-      "readme": "communication-email-readme",
-      "csvPackage": "@azure/communication-email"
-    },
-    "azure-communication-identity": {
-      "readme": "communication-identity-readme",
-      "csvPackage": "@azure/communication-identity"
-    },
     "azure-communication-messages": {
       "readme": "communication-messages-rest-readme",
       "csvPackage": "azure-rest/communication-messages"
-    },
-    "azure-communication-phone-numbers": {
-      "readme": "communication-phone-numbers-readme",
-      "csvPackage": "@azure/communication-phone-numbers"
     },
     "azure-communication-react": {
       "readme": "communication/@azure/communication-react",
       "csvPackage": "@azure/communication-react"
     },
-    "azure-communication-rooms": {
-      "readme": "communication-rooms-readme",
-      "csvPackage": "@azure/communication-rooms"
-    },
-    "azure-communication-sms": {
-      "readme": "communication-sms-readme",
-      "csvPackage": "@azure/communication-sms"
-    },
-    "azure-container-registry": {
-      "readme": "container-registry-readme",
-      "csvPackage": "@azure/container-registry"
-    },
-    "azure-cosmos": {
-      "readme": "cosmos-readme",
-      "csvPackage": "@azure/cosmos"
-    },
-    "azure-data-tables": {
-      "readme": "data-tables-readme",
-      "csvPackage": "@azure/data-tables"
-    },
-    "azure-digital-twins-core": {
-      "readme": "digital-twins-core-readme",
-      "csvPackage": "@azure/digital-twins-core"
-    },
-    "azure-event-hubs": {
-      "readme": "event-hubs-readme",
-      "csvPackage": "@azure/event-hubs"
-    },
-    "azure-eventgrid-namespaces": {
-      "readme": "eventgrid-namespaces-readme",
-      "csvPackage": "@azure/eventgrid-namespaces"
-    },
-    "azure-eventgrid": {
-      "readme": "eventgrid-readme",
-      "csvPackage": "@azure/eventgrid"
-    },
-    "azure-eventhubs-checkpointstore-blob": {
-      "readme": "eventhubs-checkpointstore-blob-readme",
-      "csvPackage": "@azure/eventhubs-checkpointstore-blob"
-    },
-    "azure-identity-broker": {
-      "readme": "identity-broker-readme",
-      "csvPackage": "@azure/identity-broker"
-    },
-    "azure-identity-cache-persistence": {
-      "readme": "identity-cache-persistence-readme",
-      "csvPackage": "@azure/identity-cache-persistence"
-    },
-    "azure-identity-vscode": {
-      "readme": "identity-vscode-readme",
-      "csvPackage": "@azure/identity-vscode"
-    },
-    "azure-identity": {
-      "readme": "identity-readme",
-      "csvPackage": "@azure/identity"
-    },
-    "azure-keyvault-administration": {
-      "readme": "keyvault-admin-readme",
-      "csvPackage": "@azure/keyvault-admin"
-    },
-    "azure-keyvault-certificates": {
-      "readme": "keyvault-certificates-readme",
-      "csvPackage": "@azure/keyvault-certificates"
-    },
-    "azure-keyvault-common": {
-      "readme": "keyvault-common-readme",
-      "csvPackage": "@azure/keyvault-common"
-    },
-    "azure-keyvault-keys": {
-      "readme": "keyvault-keys-readme",
-      "csvPackage": "@azure/keyvault-keys"
-    },
-    "azure-keyvault-secrets": {
-      "readme": "keyvault-secrets-readme",
-      "csvPackage": "@azure/keyvault-secrets"
-    },
-    "azure-monitor-ingestion": {
-      "readme": "monitor-ingestion-readme",
-      "csvPackage": "@azure/monitor-ingestion"
-    },
-    "azure-monitor-opentelemetry": {
-      "readme": "monitor-opentelemetry-readme",
-      "csvPackage": "@azure/monitor-opentelemetry"
-    },
-    "azure-monitor-query": {
-      "readme": "monitor-query-readme",
-      "csvPackage": "@azure/monitor-query"
-    },
-    "azure-notification-hubs": {
-      "readme": "notification-hubs-readme",
-      "csvPackage": "@azure/notification-hubs"
-    },
-    "azure-schema-registry-avro": {
-      "readme": "schema-registry-avro-readme",
-      "csvPackage": "@azure/schema-registry-avro"
-    },
-    "azure-schema-registry-json": {
-      "readme": "schema-registry-json-readme",
-      "csvPackage": "@azure/schema-registry-json"
-    },
-    "azure-schema-registry": {
-      "readme": "schema-registry-readme",
-      "csvPackage": "@azure/schema-registry"
-    },
-    "azure-search-documents": {
-      "readme": "search-documents-readme",
-      "csvPackage": "@azure/search-documents"
-    },
-    "azure-service-bus": {
-      "readme": "service-bus-readme",
-      "csvPackage": "@azure/service-bus"
-    },
     "azure-servicefabric": {
       "readme": "servicefabric/servicefabric",
       "csvPackage": "@azure/servicefabric"
-    },
-    "azure-storage-blob": {
-      "readme": "storage-blob-readme",
-      "csvPackage": "@azure/storage-blob"
-    },
-    "azure-storage-file-datalake": {
-      "readme": "storage-file-datalake-readme",
-      "csvPackage": "@azure/storage-file-datalake"
-    },
-    "azure-storage-file-share": {
-      "readme": "storage-file-share-readme",
-      "csvPackage": "@azure/storage-file-share"
-    },
-    "azure-storage-queue": {
-      "readme": "storage-queue-readme",
-      "csvPackage": "@azure/storage-queue"
-    },
-    "azure-web-pubsub-client": {
-      "readme": "web-pubsub-client-readme",
-      "csvPackage": "@azure/web-pubsub-client"
-    },
-    "azure-web-pubsub": {
-      "readme": "web-pubsub-readme",
-      "csvPackage": "@azure/web-pubsub"
     }
   },
   "dotnet": {

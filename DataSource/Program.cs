@@ -84,6 +84,10 @@ namespace DataSource
                     case "java":
                         readme = package.Replace("azure-", "") + "-readme";
                         break;
+                    case "javascript":
+                        readme = package.Replace("azure-", "") + "-readme";
+                        package = package.Replace("azure-", "@azure/");
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported language specified: {langKey}");
                 }
