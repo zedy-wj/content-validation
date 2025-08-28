@@ -116,9 +116,13 @@ namespace PendingTestingPackagesThisMonth
                 {
                     result.RemoveWhere(packageName => packageName.StartsWith("azure-mgmt-"));
                 }
+                if (packages.Contains("azure-cognitiveservices-*"))
+                {
+                    result.RemoveWhere(packageName => packageName.StartsWith("azure-cognitiveservices-"));
+                }
                 foreach (var pkg in packages)
                 {
-                    if (pkg != "azure-mgmt-*")
+                    if (pkg != "azure-mgmt-*" && pkg != "azure-cognitiveservices-*")
                     {
                         result.Remove(pkg);
                     }
