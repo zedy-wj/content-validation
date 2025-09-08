@@ -87,7 +87,7 @@ stages:
         Write-Host "##vso[task.setvariable variable=matrix;isOutput=true]$matrixJson"
       name: generateMatrix
 
-  - job: content_validation_matrix
+  - job: content_validation_matrix_all
     displayName: RunTest
     condition: eq('${{ parameters.packages }}', 'all')
     dependsOn: FetchLastMonthReleasedPackages
@@ -103,7 +103,7 @@ stages:
       parameters:
         packageName: $(PackageName)
 
-  - job: content_validation_matrix
+  - job: content_validation_matrix_not_all
     displayName: RunTest
     condition: ne('${{ parameters.packages }}', 'all')
     strategy:
