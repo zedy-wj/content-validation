@@ -89,6 +89,7 @@ stages:
 
   - job: content_validation_matrix
     displayName: RunTest
+    dependsOn: fetch
     strategy:
       matrix: $[ dependencies.fetch.outputs['generateMatrix.matrix'] ]
       maxParallel: ${{ parameters.maxParallel }}
