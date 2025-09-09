@@ -2,7 +2,7 @@
 
 ## Overview
 The Data Source Project is used to obtain the test data source (all pages need to be verified on [Microsoft Learn website](https://learn.microsoft.com/en-us/python/api/overview/azure/?view=azure-python)).
->Notes: currently only for getting Python and Java SDK doc.
+
 
 ## Getting started
 Need to configure `ReadmeName` and `Language` in the `appsettings.json` file in advance. The remaining parameters are for internal testing. To use this function in Azure DevOps Pipeline, you need to have access to internal pages and configure `CookieName` and `CookieValue` in advance. `Branch` only needs to be entered when running Pipeline.
