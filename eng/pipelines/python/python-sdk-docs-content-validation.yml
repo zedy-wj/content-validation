@@ -146,6 +146,7 @@ stages:
     - template: /eng/pipelines/common/content-validation-for-python.yml
       parameters:
         packageName: $(PackageName)
+        rules: $(SelectedRules)
 
   - job: content_validation_matrix_not_all
     displayName: RunTest_Not_All
@@ -176,6 +177,7 @@ stages:
     - template: /eng/pipelines/common/content-validation-for-python.yml
       parameters:
         packageName: $(PackageName)
+        rules: $(SelectedRules)
 
 
 # - stage: TotalIssuesSummary
