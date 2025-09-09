@@ -133,11 +133,11 @@ stages:
     steps:
     - script: |
         rules=""
-        if [ ${{ parameters.rule_MissingTypeAnnotation }} == "true" ]; then rules="$rules MissingTypeAnnotation"; fi
-        if [ ${{ parameters.rule_TableMissingContent }} == "true" ]; then rules="$rules TableMissingContent"; fi
-        if [ ${{ parameters.rule_GarbledText }} == "true" ]; then rules="$rules GarbledText"; fi
-        if [ ${{ parameters.rule_ExtraLabel }} == "true" ]; then rules="$rules ExtraLabel"; fi
-        if [ ${{ parameters.rule_UnnecessarySymbols }} == "true" ]; then rules="$rules UnnecessarySymbols"; fi
+        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingTypeAnnotation"; fi
+        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TableMissingContent"; fi
+        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledText"; fi
+        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabel"; fi
+        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbols"; fi
 
         echo "Selected rules: $rules"
         echo "##vso[task.setvariable variable=SelectedRules;isOutput=true]$rules"
@@ -164,11 +164,11 @@ stages:
     steps:
     - script: |
         rules=""
-        if [ ${{ parameters.rule_MissingTypeAnnotation }} == "true" ]; then rules="$rules MissingTypeAnnotation"; fi
-        if [ ${{ parameters.rule_TableMissingContent }} == "true" ]; then rules="$rules TableMissingContent"; fi
-        if [ ${{ parameters.rule_GarbledText }} == "true" ]; then rules="$rules GarbledText"; fi
-        if [ ${{ parameters.rule_ExtraLabel }} == "true" ]; then rules="$rules ExtraLabel"; fi
-        if [ ${{ parameters.rule_UnnecessarySymbols }} == "true" ]; then rules="$rules UnnecessarySymbols"; fi
+        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingTypeAnnotation"; fi
+        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TableMissingContent"; fi
+        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledText"; fi
+        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabel"; fi
+        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbols"; fi
 
         echo "Selected rules: $rules"
         echo "##vso[task.setvariable variable=SelectedRules;isOutput=true]$rules"
