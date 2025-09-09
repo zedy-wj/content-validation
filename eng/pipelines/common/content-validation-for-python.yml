@@ -13,7 +13,7 @@ parameters:
 
 steps:
 - script: |
-   echo "Selected rules: $(SelectedRules)"
+   echo "Selected rules: $SelectedRules"
   name: checkvalue
 
 - task: UseDotNet@2

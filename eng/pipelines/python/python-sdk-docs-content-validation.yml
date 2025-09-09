@@ -170,7 +170,7 @@ stages:
         if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbols"; fi
 
         echo "Selected rules: $rules"
-        echo "##vso[task.setvariable variable=SelectedRules;isOutput=true]$rules"
+        echo "##vso[task.setvariable variable=SelectedRules]$rules"
       name: setRules
 
     - template: /eng/pipelines/common/content-validation-for-python.yml
