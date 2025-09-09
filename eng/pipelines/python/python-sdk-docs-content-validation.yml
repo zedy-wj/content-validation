@@ -22,28 +22,28 @@ parameters:
 - name: rule_MissingTypeAnnotation
   type: boolean
   default: false
-  displayName: "MissingTypeAnnotation: the rule need to sync issues in this run?"
+  displayName: "Create issue for rule MissingTypeAnnotation"
 
 - name: rule_TableMissingContent
   type: boolean
   default: false
-  displayName: "TableMissingContent: the rule need to sync issues in this run?"
+  displayName: "Create issue for rule TableMissingContent"
 
 
 - name: rule_GarbledText
   type: boolean
   default: false
-  displayName: "GarbledText: the rule need to sync issues in this run?"
+  displayName: "Create issue for rule GarbledText"
 
 - name: rule_ExtraLabel
   type: boolean
   default: true
-  displayName: "ExtraLabel: the rule need to sync issues in this run?"
+  displayName: "Create issue for rule ExtraLabel"
 
 - name: rule_UnnecessarySymbols
   type: boolean
   default: false
-  displayName: "UnnecessarySymbols: the rule need to sync issues in this run?"
+  displayName: "Create issue for rule UnnecessarySymbols"
 
 stages:
 - stage: Content_Validation_Test
