@@ -10,13 +10,10 @@ parameters:
 - name: language
   type: string
   default: 'Python'
-- name: rules
-  type: string
-  default: ''
 
 steps:
 - script: |
-   echo "Selected rules: ${{ parameters.rules }}"
+   echo "Selected rules: $(SelectedRules)"
   name: checkvalue
 
 - task: UseDotNet@2
