@@ -19,6 +19,17 @@ parameters:
   type: string
   default: 'packagesList.txt'
 
+- name: issueSyncRules
+  displayName: Select rule types to sync issues to GitHub
+  type: object
+  default: []
+  values:
+    - MissingTypeAnnotation
+    - TableMissingContent
+    - GarbledText
+    - ExtraLabel
+    - UnnecessarySymbols
+
 stages:
 - stage: Content_Validation_Test
   displayName: "Content Validation Test"
