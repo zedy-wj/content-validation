@@ -19,16 +19,30 @@ parameters:
   type: string
   default: 'packagesList.txt'
 
-- name: issueSyncRules
-  displayName: Select rule types to sync issues to GitHub
-  type: object
-  default: []
-  values:
-    - MissingTypeAnnotation
-    - TableMissingContent
-    - GarbledText
-    - ExtraLabel
-    - UnnecessarySymbols
+- name: rule_MissingTypeAnnotation
+  type: boolean
+  default: false
+  displayName: MissingTypeAnnotation
+
+- name: rule_TableMissingContent
+  type: boolean
+  default: false
+  displayName: TableMissingContent
+
+- name: rule_GarbledText
+  type: boolean
+  default: false
+  displayName: GarbledText
+
+- name: rule_ExtraLabel
+  type: boolean
+  default: false
+  displayName: ExtraLabel
+
+- name: rule_UnnecessarySymbols
+  type: boolean
+  default: false
+  displayName: UnnecessarySymbols
 
 stages:
 - stage: Content_Validation_Test
