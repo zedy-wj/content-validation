@@ -177,7 +177,7 @@ stages:
     - template: /eng/pipelines/common/content-validation-for-python.yml
       parameters:
         packageName: $(PackageName)
-        rules: $[ dependencies.content_validation_matrix_not_all.outputs['setRules.SelectedRules'] ]
+        rules: dependencies.content_validation_matrix_not_all.outputs['setRules.SelectedRules']
 
 
 # - stage: TotalIssuesSummary
