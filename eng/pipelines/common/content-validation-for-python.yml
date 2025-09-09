@@ -10,6 +10,9 @@ parameters:
 - name: language
   type: string
   default: 'Python'
+- name: rules
+  type: string
+  default: ''
 
 steps:
 - task: UseDotNet@2
