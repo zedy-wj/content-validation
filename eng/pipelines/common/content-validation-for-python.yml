@@ -15,10 +15,6 @@ parameters:
   default: ""
 
 steps:
-- script: |
-   echo "Selected rules: ${{ parameters.rules }}"
-  name: checkvalue
-
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
@@ -100,6 +96,7 @@ steps:
   env:
     PackageName: ${{ parameters.packageName }}
     Language: ${{ parameters.language }}
+    Rules: ${{ parameters.rules }}
     GitHubToken: $(GITHUB_PAT)
     Owner: $(GITHUB_OWNER)
     Repo: $(GITHUB_REPO)

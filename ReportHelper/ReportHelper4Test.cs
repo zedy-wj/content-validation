@@ -360,7 +360,7 @@ public class GithubHelper
         return mappings.ContainsKey(key) ? mappings[key] : key;
     }
 
-    public static async Task CreateOrUpdateGitHubIssue(string owner, string repo, string githubToken, string packageName, string language)
+    public static async Task CreateOrUpdateGitHubIssue(string owner, string repo, string githubToken, string packageName, string language, List<string> syncIssuesRules)
     {
         string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/issues";
 
@@ -400,6 +400,12 @@ public class GithubHelper
 
         foreach (var rule in succeedRules)
         {
+            // Skip rules that are not in syncIssuesRules, only choired rules will create/update issues.
+            if (!syncIssuesRules.Contains(rule))
+            {
+                continue;
+            }
+
             string issueTitle = "";
 
             string mappedRule = GetMappedValue(ruleMappings, rule);

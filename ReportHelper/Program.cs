@@ -15,6 +15,7 @@ namespace ReportHelper
 
             string HostPackageName = config["PackageName"] ?? "PackageName";
             string language = config["Language"] ?? "Language";
+            string rules = config["Rules"] ?? "Rules";
             string owner = config["Owner"] ?? "Owner";
             string repo = config["Repo"] ?? "Repo";
             string githubToken = config["GitHubToken"] ?? "GitHubToken";
@@ -85,12 +86,18 @@ namespace ReportHelper
                 string differentSheetName = "DiffSheet";
                 ExcelHelper4Test.AddTestResult(differentList, excelFileName, differentSheetName);
 
+                List<string> syncIssuesRules = rules
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries) 
+                    .ToList();
                 // Update github issues
-                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language);
+                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language, syncIssuesRules);
             }else if (newDataList.Count != 0)
             {
+                List<string> syncIssuesRules = rules
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries) 
+                    .ToList();
                 // Create github issues
-                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language);
+                await GithubHelper.CreateOrUpdateGitHubIssue(owner, repo, githubToken, HostPackageName, language, syncIssuesRules);
 
             }else
             {

@@ -133,14 +133,14 @@ stages:
     steps:
     - script: |
         rules=""
-        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingTypeAnnotation"; fi
-        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TableMissingContent"; fi
-        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledText"; fi
-        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabel"; fi
-        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbols"; fi
+        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TypeAnnotationValidation"; fi
+        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingContentValidation"; fi
+        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledTextValidation"; fi
+        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabelValidation"; fi
+        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbolsValidation"; fi
 
         echo "Selected rules: $rules"
-        echo "##vso[task.setvariable variable=SelectedRules;isOutput=true]$rules"
+        echo "##vso[task.setvariable variable=SelectedRules]$rules"
       name: setRules
 
     - template: /eng/pipelines/common/content-validation-for-python.yml
@@ -164,11 +164,11 @@ stages:
     steps:
     - script: |
         rules=""
-        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingTypeAnnotation"; fi
-        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TableMissingContent"; fi
-        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledText"; fi
-        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabel"; fi
-        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbols"; fi
+        if [ "$(echo ${{ parameters.rule_MissingTypeAnnotation }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules TypeAnnotationValidation"; fi
+        if [ "$(echo ${{ parameters.rule_TableMissingContent }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules MissingContentValidation"; fi
+        if [ "$(echo ${{ parameters.rule_GarbledText }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules GarbledTextValidation"; fi
+        if [ "$(echo ${{ parameters.rule_ExtraLabel }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules ExtraLabelValidation"; fi
+        if [ "$(echo ${{ parameters.rule_UnnecessarySymbols }} | tr '[:upper:]' '[:lower:]')" = "true" ]; then rules="$rules UnnecessarySymbolsValidation"; fi
 
         echo "Selected rules: $rules"
         echo "##vso[task.setvariable variable=SelectedRules]$rules"
