@@ -14,6 +14,11 @@ parameters:
   type: number
   default: 2
 
+- name: packagesListFilePath
+  displayName: Path to packages.json file
+  type: string
+  default: 'packagesList.txt'
+
 stages:
 - stage: Content_Validation_Test
   displayName: "Content Validation Test"
@@ -62,13 +67,14 @@ stages:
       displayName: Running project PendingTestingPackagesThisMonth
       env:
         Language: 'Python'
+        PackagesListFilePath: ${{ parameters.packagesListFilePath }}
       inputs:
         command: 'run'
         workingDirectory: '$(System.DefaultWorkingDirectory)/PendingTestingPackagesThisMonth'
       name: runPackagesJob
 
     - pwsh: |
-        $packagesJson = Get-Content "$(System.DefaultWorkingDirectory)/eng/pipelines/packages.json" -Raw
+        $packagesJson = Get-Content "$(System.DefaultWorkingDirectory)/${{ parameters.packagesListFilePath }}" -Raw
         
         if ($packagesJson -notmatch '^\s*\{') {
           $packages = $packagesJson -split ',' | ForEach-Object { $_.Trim() }
@@ -88,7 +94,7 @@ stages:
       name: generateMatrix
 
   - job: content_validation_matrix_all
-    displayName: RunTest
+    displayName: RunTest_All
     condition: eq('${{ parameters.packages }}', 'all')
     dependsOn: FetchLastMonthReleasedPackages
     strategy:
@@ -104,7 +110,7 @@ stages:
         packageName: $(PackageName)
 
   - job: content_validation_matrix_not_all
-    displayName: RunTest
+    displayName: RunTest_Not_All
     condition: ne('${{ parameters.packages }}', 'all')
     strategy:
       matrix:
