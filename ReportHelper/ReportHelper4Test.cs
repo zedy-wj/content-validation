@@ -607,7 +607,7 @@ public class GithubHelper
             { "DuplicateServiceValidation", "TestDuplicateService" },
             { "ExtraLabelValidation", "TestExtraLabel" },
             { "UnnecessarySymbolsValidation", "TestUnnecessarySymbols" },
-            { "InvalidTagsValidation", "TestInvalidTags" },
+            { "MissingGenericsValidation", "TestMissingGenerics" },
             { "CodeFormatValidation", "TestCodeFormat" },
             { "EmptyTagsValidation", "TestEmptyTags" },
             { "ErrorDisplayValidation", "TestErrorDisplay" }

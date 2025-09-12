@@ -59,7 +59,7 @@ namespace DataSource
                     if (pkgDict.TryGetValue(package, out var entry) && entry != null)
                     {
                         readme = entry.readme;
-                        if (langKey == "javascript" || langKey == "dotnet")
+                        if ( (langKey == "javascript" || langKey == "dotnet") && !string.IsNullOrEmpty(entry.csvPackage))
                         {
                             package = entry.csvPackage;
                         }
